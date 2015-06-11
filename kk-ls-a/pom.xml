@@ -26,7 +26,7 @@
 	</dependency>
    
     <dependency>
-   		<groupId>cn.x.deng</groupId>
+   		<groupId>cn.x</groupId>
   		<artifactId>javaplus-x-utils</artifactId>
   		<version>1.0</version>
     </dependency>
