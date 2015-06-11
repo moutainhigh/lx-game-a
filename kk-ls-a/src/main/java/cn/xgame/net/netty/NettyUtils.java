@@ -6,7 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import java.net.InetSocketAddress;
 
 /**
- * netty工具�? * @author deng
+ * netty工具 * 
+ * @author deng
  */
 public class NettyUtils {
 	/**
@@ -23,12 +24,12 @@ public class NettyUtils {
 	/**
 	 * 写入字符
 	 * @param buf
-	 * @param arg0
+	 * @param arg
 	 */
-	public static void writeString( ByteBuf buf, String arg0 ){
-		if( arg0 == null )
+	public static void writeString( ByteBuf buf, String arg ){
+		if( arg == null )
 			throw new IllegalArgumentException( "null 字符" );
-		byte[] temp = arg0.getBytes();
+		byte[] temp = arg.getBytes();
 		if (temp.length > Short.MAX_VALUE)
 			throw new IllegalArgumentException( "字符串长度超" );
 		buf.writeShort((short) temp.length);
