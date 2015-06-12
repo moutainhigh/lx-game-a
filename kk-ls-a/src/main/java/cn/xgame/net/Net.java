@@ -1,7 +1,7 @@
 package cn.xgame.net;
 
 import cn.xgame.net.event.Events;
-import cn.xgame.net.netty.NettyUtils;
+import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -35,7 +35,7 @@ public class Net {
 //			}
 			
 		} catch (Exception e) {
-			Logs.error( "分发包错误 包号("+packageNo+") IP(" + NettyUtils.ctxToAddress(ctx)+ "), 错误信息:" + e.getMessage() );
+			Logs.error( "分发包错误 包号("+packageNo+") IP(" + IP.formAddress(ctx)+ "), 错误信息:" + e.getMessage() );
 		}
 		
 	}

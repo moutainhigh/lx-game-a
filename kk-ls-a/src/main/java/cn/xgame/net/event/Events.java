@@ -1,13 +1,13 @@
 package cn.xgame.net.event;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.xgame.net.event.all.TestEevet;
-import cn.xgame.user.Player;
 
 /**
  * 通信 消息
@@ -26,10 +26,10 @@ public enum Events {
 	private final IEvent 		eventInstance;
 	
 	Events( int value, IEvent eventInstance ) {
-		if( value >= Byte.MAX_VALUE || value < 0 ){
+		if( value >= Short.MAX_VALUE || value < 0 ){
 			throw new IllegalArgumentException( "包号不符合规范：" + value );
 		}
-		this.number 		= (byte) value;
+		this.number 		= (short) value;
 		this.eventInstance 	= eventInstance;
 		this.eventInstance.setEventId( number );
 	}
@@ -53,7 +53,7 @@ public enum Events {
 		return number;
 	}
 	public static Events fromNum( int n ){
-		return numToEnum.get( (byte)n );
+		return numToEnum.get( (short)n );
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public enum Events {
 	 * @param buf
 	 * @throws IOException 
 	 */
-	public void run( Player user, ByteBuf buf ) throws IOException {
-		eventInstance.run( user, buf );
+	public void run( ChannelHandlerContext ctx, ByteBuf buf ) throws IOException {
+		eventInstance.run( ctx, buf );
 	}
 
 }

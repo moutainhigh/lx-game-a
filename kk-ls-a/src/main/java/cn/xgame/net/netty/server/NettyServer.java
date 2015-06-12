@@ -31,7 +31,7 @@ public class NettyServer{
 	  				ch.pipeline().addLast( new NServerHandler() );
 	  			}
 	    	}).childOption( ChannelOption.SO_KEEPALIVE, false );
-	    	 
+	    	
 	    	// Bind and start to accept incoming connections.
 			bootstrap.bind(port).sync();
 		} catch (InterruptedException e) { e.printStackTrace(); }

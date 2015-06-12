@@ -1,8 +1,8 @@
 package cn.xgame.net.netty.server;
 
 import cn.xgame.net.Net;
-import cn.xgame.net.netty.NettyConfig;
-import cn.xgame.net.netty.NettyUtils;
+import cn.xgame.net.netty.Netty.Config;
+import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -29,7 +29,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 				byte head 			= in.readByte();  //包头
 				byte packageNo 		= in.readByte(); //包号
 				short dataLength 	= in.readShort(); //包长 只包括内容长//				
-				if ( dataLength < 0 || dataLength > NettyConfig.PACKAGE_LENGTH )
+				if ( dataLength < 0 || dataLength > Config.PACKAGE_LENGTH )
 	               throw new Exception( "包长错误" );
 				byte data[] 		= new byte[ dataLength ];
 				in.readBytes( data ); //内容
@@ -42,7 +42,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 				net.packageRun( ctx, packageNo, data );
 			}
 		} catch (Exception e) {
-			Logs.error( " 通信错误 IP(" + NettyUtils.ctxToAddress(ctx)+ "), 错误信息:" + e.getMessage() );
+			Logs.error( " 通信错误 IP(" + IP.formAddress(ctx)+ "), 错误信息:" + e.getMessage() );
 			ctx.close();
 		} finally {
 			in.release(); // 记得要释放掉
@@ -51,12 +51,12 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 
 	/** 有用户连�?*/
 	public void channelActive( ChannelHandlerContext ctx ) { // (1)
-		Logs.debug( NettyUtils.ctxToAddress(ctx) + " connect!" );
+		Logs.debug( IP.formAddress(ctx) + " connect!" );
 	}
 	
 	/** 连接断开 */
 	public void channelInactive( ChannelHandlerContext ctx ){
-		Logs.debug( NettyUtils.ctxToAddress( ctx ) + " disconnect!" );
+		Logs.debug( IP.formAddress( ctx ) + " disconnect!" );
 		net.exit( ctx );
 	}
 	
@@ -68,7 +68,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 	}
 	
 	private boolean checkInputData( byte head, byte foot ) { 
-		return head == NettyConfig.PACKAGE_HEAD && foot == NettyConfig.PACKAGE_FOOT; 
+		return head == Config.PACKAGE_HEAD && foot == Config.PACKAGE_FOOT; 
 	}
 	
 }
