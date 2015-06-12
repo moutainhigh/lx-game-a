@@ -14,7 +14,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 	
 	/**  读取数据
 	 * 	byte 	包头
-	 * 	byte 	包号
+	 * 	short 	包号
 	 *  short	包长 只包括内容长  
 	 *  byte[]	内容
 	 *  byte	包尾
@@ -26,18 +26,19 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 		try {
 			while ( in.isReadable() ) {
 				
-				byte head 			= in.readByte();  //包头
-				byte packageNo 		= in.readByte(); //包号
-				short dataLength 	= in.readShort(); //包长 只包括内容长//				
+				
+				byte head 			= in.readByte(); //包头
+				short packageNo 	= in.readShort(); //包号
+				short dataLength 	= in.readShort();//包长 只包括内容长//
 				if ( dataLength < 0 || dataLength > Config.PACKAGE_LENGTH )
 	               throw new Exception( "包长错误" );
+			
 				byte data[] 		= new byte[ dataLength ];
 				in.readBytes( data ); //内容
 				byte foot 			= in.readByte(); //包尾
-//				
 				if ( !checkInputData(head, foot) )
 					throw new Exception( "包头包尾错误" );
-				
+
 				//开始分发包
 				net.packageRun( ctx, packageNo, data );
 			}

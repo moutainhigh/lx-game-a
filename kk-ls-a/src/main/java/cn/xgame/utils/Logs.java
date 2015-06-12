@@ -3,8 +3,8 @@ package cn.xgame.utils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import cn.xgame.system.SystemCfg;
-import cn.xgame.user.UserData;
+import cn.xgame.a.system.SystemCfg;
+import cn.xgame.logic.user.UserData;
 
 /**
  * 日志类 包括控制台输出

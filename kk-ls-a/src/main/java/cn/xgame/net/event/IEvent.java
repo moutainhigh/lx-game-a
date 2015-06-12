@@ -26,9 +26,9 @@ public abstract class IEvent {
 	 * @return
 	 */
 	protected ByteBuf buildEmptyPackage( int capacity ){
-		ByteBuf buffer = Unpooled.buffer( capacity );
+		ByteBuf buffer = Unpooled.buffer( capacity + 6 );
 		buffer.writeByte( Config.PACKAGE_HEAD );
-		buffer.writeByte( packageNo );
+		buffer.writeShort( packageNo );
 		buffer.writeShort( (short) 0 );//长度占位符
 		return buffer;
 	}
@@ -38,7 +38,7 @@ public abstract class IEvent {
 	 * @return
 	 */
 	protected ByteBuf buildEmptyPackage( ChannelHandlerContext ctx,int capacity ){
-		ByteBuf buffer = ctx.alloc().buffer( capacity + 5 );
+		ByteBuf buffer = ctx.alloc().buffer( capacity + 6 );
 		buffer.writeByte( Config.PACKAGE_HEAD );
 		buffer.writeShort( packageNo );
 		buffer.writeShort( (short) 0 );//长度占位符

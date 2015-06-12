@@ -16,9 +16,9 @@ public class Netty {
 	public static final class Config{
 		
 		/** 包头 */
-		public static final byte 	PACKAGE_HEAD	= 115;
+		public static final byte 	PACKAGE_HEAD	= 105;
 		/** 包尾 */
-		public static final byte 	PACKAGE_FOOT	= 114;
+		public static final byte 	PACKAGE_FOOT	= 104;
 		/** 客户端最多发送字节数 */
 		public static final int 	PACKAGE_LENGTH	= 8192;
 		

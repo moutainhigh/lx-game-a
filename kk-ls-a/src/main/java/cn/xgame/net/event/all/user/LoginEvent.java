@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.system.ESB;
+import cn.xgame.logic.user.UserManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
-import cn.xgame.system.ESB;
-import cn.xgame.user.UserManager;
 import cn.xgame.utils.Logs;
 
 /**
@@ -59,7 +59,7 @@ public class LoginEvent extends IEvent {
 		}
 		
 		// 
-		ByteBuf respond = buildEmptyPackage( 1 );
+		ByteBuf respond = buildEmptyPackage( ctx, 16 );
 		respond.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			RW.writeString( respond, UID );
@@ -74,5 +74,4 @@ public class LoginEvent extends IEvent {
 		
 		
 	}
-	
 }

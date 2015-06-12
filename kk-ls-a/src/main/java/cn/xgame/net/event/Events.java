@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.xgame.net.event.all.TestEevet;
+import cn.xgame.net.event.all.gs.ConnectEvent;
+import cn.xgame.net.event.all.user.LoginEvent;
+import cn.xgame.net.event.all.user.SignupEvent;
 
 /**
  * 通信 消息
@@ -16,10 +19,20 @@ import cn.xgame.net.event.all.TestEevet;
  */
 public enum Events {
 
+	//-----------------用户
+	USER_LOGIN					( 101, 					new LoginEvent() ),
+	USER_SIGNUP					( 102, 					new SignupEvent() ),
+	
+	
+	//-----------------游戏服务器
+	GS_CONNECT					( 201, 					new ConnectEvent() ),
 	
 	
 	
-	TEST						( Short.MAX_VALUE, 		new TestEevet() ); // 测试
+	
+	
+	//-----------------测试
+	TEST						( Short.MAX_VALUE-1, 		new TestEevet() );
 	
 	
 	private final short			number;

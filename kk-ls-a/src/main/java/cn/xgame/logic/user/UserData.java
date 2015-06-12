@@ -1,4 +1,4 @@
-package cn.xgame.user;
+package cn.xgame.logic.user;
 
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.utils.PackageCheck;
