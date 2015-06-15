@@ -3,6 +3,8 @@ package cn.xgame.logic.gs;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.xgame.net.netty.Netty.Attr;
+
 
 import io.netty.channel.ChannelHandlerContext;
 import x.javaplus.util.ErrorCode;
@@ -35,17 +37,17 @@ public class GSManager {
 		GSData gs = get( gsid );
 		
 		if( gs == null ){
+			
 			gs = new GSData( gsid );
 			gss.put( gs.getId(), gs );
-		}else{
 			
-			if( !gs.ctxIsNull() )
-				return ErrorCode.GS_EXIST;
+		}else if( gs.getStatus() == GSStatus.OPEN ){
+			
+			return ErrorCode.GS_EXIST;
 		}
 		
-		gs.setStatus( GSStatus.OPEN );
-		gs.setName( name );
 		gs.setCtx( ctx );
+		gs.setName( name );
 		gs.setPort( port );
 		
 		return ErrorCode.SUCCEED;
@@ -55,7 +57,26 @@ public class GSManager {
 	public GSData get( short gsid ) {
 		return gss.get(gsid);
 	}
+
+
+	/**
+	 * 有服务器 断开 
+	 * @param ctx
+	 */
+	public void disconnect( ChannelHandlerContext ctx ) {
+		
+		short id 	= getGsid( ctx );
+		GSData gs 	= get( id );
+		if( gs == null )
+			return ;
+		// 直接设置为null
+		gs.setCtx( null );
+	}
 	
 	
+	private short getGsid( ChannelHandlerContext ctx ){
+		String attr = Attr.getAttachment(ctx);
+		return attr == null ? -1 : Short.parseShort( attr.replaceAll( "gs:", "") );
+	}
 	
 }

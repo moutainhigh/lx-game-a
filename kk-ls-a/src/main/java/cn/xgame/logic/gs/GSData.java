@@ -26,7 +26,9 @@ public class GSData {
 	public GSData( short gsid ) {
 		this.id = gsid;
 	}
-
+	public String getUID(){
+		return "gs:" + id;
+	}
 	public short getId() {
 		return id;
 	}
@@ -74,27 +76,18 @@ public class GSData {
 	}
 
 	public void setCtx( ChannelHandlerContext ctx ) {
-		
-		if( !ctxIsNull( ) ) return;
-		
-		this.setIp(IP.formAddress(ctx));
 		this.ctx = ctx;
-		Attr.setAttachment( ctx, "gs:" + id );
+		
+		if( ctx == null ){
+			
+			setStatus( GSStatus.CLOSE );
+		}else{
+			
+			setIp( IP.formAddress(ctx) );
+			Attr.setAttachment( ctx, getUID() );
+			setStatus( GSStatus.OPEN );
+		}
 	}
-
-	// 这里判断 ctx 是否 没断  没断就不重新设置了
-	public boolean ctxIsNull() {
-		
-		if( ctx == null || status != GSStatus.OPEN ) 
-			return true;
-		
-//		if( ctx != null && status == GSStatus.){
-//			
-//		}
-		
-		
-		return false;
-	}
-
-
+	
+	
 }

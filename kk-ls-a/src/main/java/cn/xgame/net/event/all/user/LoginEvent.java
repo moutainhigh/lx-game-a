@@ -65,7 +65,6 @@ public class LoginEvent extends IEvent {
 			RW.writeString( respond, UID );
 		}
 		sendPackage( ctx, respond );
-		
 	}
 	
 	// 安卓 登录

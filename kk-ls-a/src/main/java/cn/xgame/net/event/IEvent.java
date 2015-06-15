@@ -49,7 +49,7 @@ public abstract class IEvent {
 	 * 向客户端发送包
 	 */
 	public void sendPackage( ChannelHandlerContext ctx, ByteBuf buffer ) throws IOException{
-		buffer.setShort( 2, (short) (buffer.writerIndex() - 5) );//设置内容长度
+		buffer.setShort( 3, (short) (buffer.writerIndex() - 5) );//设置内容长度
 		buffer.writeByte( Config.PACKAGE_FOOT );
 		
 //		buffer.capacity( buffer.writerIndex() );

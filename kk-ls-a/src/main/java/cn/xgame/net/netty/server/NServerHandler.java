@@ -26,7 +26,6 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 		try {
 			while ( in.isReadable() ) {
 				
-				
 				byte head 			= in.readByte(); //包头
 				short packageNo 	= in.readShort(); //包号
 				short dataLength 	= in.readShort();//包长 只包括内容长//
@@ -50,7 +49,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 		}
 	}
 
-	/** 有用户连�?*/
+	/** 有用户连*/
 	public void channelActive( ChannelHandlerContext ctx ) { // (1)
 		Logs.debug( IP.formAddress(ctx) + " connect!" );
 	}
@@ -58,7 +57,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 	/** 连接断开 */
 	public void channelInactive( ChannelHandlerContext ctx ){
 		Logs.debug( IP.formAddress( ctx ) + " disconnect!" );
-		net.exit( ctx );
+		net.disconnect( ctx );
 	}
 	
 	/** 异常 */

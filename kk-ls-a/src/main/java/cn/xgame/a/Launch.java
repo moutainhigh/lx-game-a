@@ -38,8 +38,17 @@ public class Launch {
 	}
 	
 	private static void startServer() {
-		// 启动 游戏服务器
-		new NettyServer( SystemCfg.PORT ).start();
+		
+		// 启动 用户登录服务器
+		NettyServer userServer = new NettyServer( SystemCfg.USER_PORT );
+		if( userServer.start() )
+			System.out.println( "user_server starting success  port:" + SystemCfg.USER_PORT );
+		
+		// 启动 游戏登录服务器
+		NettyServer gsServer = new NettyServer( SystemCfg.GS_PORT );
+		if( gsServer.start() )
+			System.out.println( "gs_server starting success  port:" + SystemCfg.GS_PORT );
+		
 	}
 
 }
