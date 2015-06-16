@@ -62,6 +62,10 @@ public class PlayerManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int peopleNumber() {
+		return players.size();
+	}
 	
 	
 	

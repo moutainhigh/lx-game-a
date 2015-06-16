@@ -5,38 +5,41 @@ import io.netty.channel.AbstractChannel;
 
 import java.io.IOException;
 
-import x.javaplus.util.ErrorCode;
-
-import cn.xgame.a.Launch;
 import cn.xgame.a.Launch.LSClientAgency;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.logic.player.Player;
+import cn.xgame.logic.player.PlayerManager;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 
-public class ConnectEvent extends IEvent {
+/**
+ * 更新服务器 人数
+ * @author deng		
+ * @date 2015-6-16 上午10:19:07
+ */
+public class UpdatePeopleEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		
-		ErrorCode code = ErrorCode.fromNum( data.readShort() );
-		
-		Launch.handleConnect( code );
 	}
 
-	// 发送 登录
-	public void run(  ) throws IOException {
+	public void run() throws IOException {
 		
 		AbstractChannel socket = LSClientAgency.socket();
 		
-		ByteBuf buffer = buildEmptyPackage( socket, 16 );
+		ByteBuf buffer = buildEmptyPackage( socket, 6 );
 		
 		buffer.writeShort( SystemCfg.ID );
-		RW.writeString( buffer, SystemCfg.GS_NAME );
-		buffer.writeInt( SystemCfg.GS_PORT );
+		buffer.writeInt( PlayerManager.o.peopleNumber() );
 		
 		sendPackage( socket, buffer );
+		
 	}
-
 	
+	
+	
+	
+	
+	
+	
+
 }

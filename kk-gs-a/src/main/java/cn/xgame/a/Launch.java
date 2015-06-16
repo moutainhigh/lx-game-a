@@ -10,6 +10,7 @@ import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.netty.client.NettyClient;
 import cn.xgame.net.netty.server.NettyServer;
 import cn.xgame.utils.Logs;
+import cn.xgame.utils.runnable.ThreadManager;
 
 import x.javaplus.ip.IPSeeker;
 import x.javaplus.util.ErrorCode;
@@ -75,6 +76,10 @@ public class Launch {
 			// 启动游戏服务器
 			startServer();
 			
+			// 启动线程
+			ThreadManager.start();
+			
+			
 			Logs.debug( "游戏服 启动成功" );
 			
 		} catch (Exception e) {
@@ -90,7 +95,7 @@ public class Launch {
 		Logs.debug( "登录服 连接成功" );
 		
 		// 这里开始 登录 登录服务器
-		((ConnectEvent)Events.GS_CONNECT.getEventInstance()).run( LSClientAgency.socket() );
+		((ConnectEvent)Events.GS_CONNECT.getEventInstance()).run(  );
 	}
 
 	private static void initSystemProperties() {

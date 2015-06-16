@@ -86,6 +86,7 @@ public class GSData {
 			setIp( IP.formAddress(ctx) );
 			Attr.setAttachment( ctx, getUID() );
 			setStatus( GSStatus.OPEN );
+			setPeopleNum( 0 );
 		}
 	}
 	

@@ -95,5 +95,19 @@ public class GSManager {
 		String attr = Attr.getAttachment(ctx);
 		return attr == null ? -1 : Short.parseShort( attr.replaceAll( "gs:", "") );
 	}
+
+	/**
+	 * 更新 服务器 人数
+	 * @param gsid
+	 * @param peopleNum
+	 */
+	public void updatePeople( short gsid, int peopleNum ) {
+		
+		GSData gs = get( gsid );
+		if( gs == null || gs.getStatus() != GSStatus.OPEN )
+			return;
+		
+		gs.setPeopleNum( peopleNum );
+	}
 	
 }
