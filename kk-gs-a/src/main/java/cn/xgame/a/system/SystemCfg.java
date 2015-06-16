@@ -1,8 +1,14 @@
 package cn.xgame.a.system;
 
-import java.util.Properties;
+import java.io.IOException;
 
-import x.javaplus.util.Util.Propertie;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+import x.javaplus.util.Resources;
+
 
 /**
  * 系统配置文件
@@ -13,6 +19,11 @@ public class SystemCfg {
 	
 	/** 是否 调试 模式 */
 	public static boolean DEBUG = true;
+	
+	/** 开服时间*/
+	public static long 			START_MILS;
+	/** 配置表 路径*/
+	public static String		FILE_NAME;
 	
 	
 	/** 服务器ID */
@@ -33,53 +44,28 @@ public class SystemCfg {
 	public static int 			LS_PORT 	;
 	
 	
-	
-	static {
-		
-		Properties properties = Propertie.loadProperty( "system.properties" );
-		
-		DEBUG		= Boolean.parseBoolean( properties.getProperty( "debug" ) );
-		
-		ID			= Short.parseShort( properties.getProperty( "gsId" ) );
-		GS_NAME		= properties.getProperty( "gsName" );
-		GS_PORT 	= Integer.parseInt( properties.getProperty( "gsPort" ) );
-		
-		LS_ADDRESS	= properties.getProperty( "lsAddress" );
-		LS_PORT		= Integer.parseInt( properties.getProperty( "lsPort" ) );
+	static{
+		try {
+			SAXBuilder builder 	= new SAXBuilder();
+			Document document	= builder.build( Resources.getResource( "system.xml" ) );
+			Element root 		= document.getRootElement();
+			
+			START_MILS		= System.currentTimeMillis();
+			DEBUG			= Boolean.parseBoolean( root.getChildText( "debug" ) );
+			FILE_NAME		= root.getChildText( "file_name" ) ;
+			
+			ID				= Short.parseShort( root.getChildText( "gsId" ) );
+			GS_NAME 		= root.getChildText( "gsName" ) ;
+			GS_PORT 		= Integer.parseInt( root.getChildText( "gsPort" ) );
+			
+			LS_ADDRESS 		= root.getChildText( "lsAddress" );
+			LS_PORT 		= Integer.parseInt( root.getChildText( "lsPort" ) );
+			
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 	
-//	public static void init(){
-//		try {
-//			SAXBuilder builder 	= new SAXBuilder();
-//			Document document	= builder.build( FILE );
-//			Element root 		= document.getRootElement();
-//			
-//			START_MILS		= XOTime.currentTimeMillis();
-//			IS_DEBUG		= Boolean.parseBoolean( root.getChildText( "is_debug" ) );
-//			FILE_NAME		= root.getChildText( "file_name" );
-//			GAME_DISTRICT 	= Byte.parseByte( root.getChildText( "game_district" ) );
-//			PORT 			= Integer.parseInt( root.getChildText( "port" ) );
-//			LOGIN_ADDRESS 	= root.getChildText( "login_address" );
-//			LOGIN_PORT 		= Integer.parseInt( root.getChildText( "login_port" ) );
-//			WORLD_ADDRESS	= root.getChildText( "world_address" );
-//			LOG_PATH		= root.getChildText( "log_path" );
-//			PLATFORM		= root.getChildText( "platform" );
-//			SERVER_NAME		= root.getChildText( "server_name" );
-//			SERVER_ADDRESS	= root.getChildText( "server_address" );
-//			String content 	= root.getChildText( "combine_district" );
-//			if( !content.isEmpty() ){
-//				String arr[] 		= content.split( "," );
-//				COMBINE_DISTRICT 	= new byte[arr.length];
-//				for( int i = 0; i < arr.length; i++ ){
-//					COMBINE_DISTRICT[i] = Byte.parseByte( arr[i] );
-//				}
-//			}
-//			
-//			
-//		} catch (JDOMException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} 
-//	}	
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<debug>true</debug><!--是否DEBUG-->
+	<platform>LOCAL</platform><!--属于平台-->
+	<file_name></file_name><!--配置表路径-->
+	<gsId>1</gsId>
+	<gsName>校长的爱</gsName>
+	<gsPort>8100</gsPort>
+	<lsAddress>127.0.0.1</lsAddress><!--登陆服IP localhost-->
+	<lsPort>9000</lsPort><!--登陆服端口-->
+</config>
+

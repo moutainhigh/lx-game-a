@@ -101,7 +101,7 @@ public class Launch {
 	private static void initSystemProperties() {
 		
 		// 初始化 log4j
-		PropertyConfigurator.configure( Resources.getResource("log4j.properties") );
+		PropertyConfigurator.configureAndWatch( Resources.getResource("log4j.properties") );
 		
 		// 初始化 ip数据库
 		IPSeeker.I.init( "qqwry.dat" );

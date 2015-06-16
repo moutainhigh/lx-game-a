@@ -4,6 +4,9 @@
   <groupId>cn.game.lx</groupId>
   <artifactId>kk-ls-a</artifactId>
   <version>1.0</version>
+
+   
+   <build/>
   
   <packaging>jar</packaging>
   
@@ -11,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
+         
   <dependencies>
     
     <dependency>
@@ -39,4 +43,5 @@
 
   </dependencies>
     
+       
 </project>
