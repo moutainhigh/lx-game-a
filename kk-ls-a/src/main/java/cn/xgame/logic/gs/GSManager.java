@@ -1,12 +1,14 @@
 package cn.xgame.logic.gs;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.xgame.net.netty.Netty.Attr;
 
 
 import io.netty.channel.ChannelHandlerContext;
+import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
 /**
@@ -22,6 +24,21 @@ public class GSManager {
 	
 	// 服务器 列表
 	private Map<Short, GSData> gss = new HashMap<Short, GSData>();
+	
+	/**
+	 * 获取开启 服务器 列表
+	 * @return
+	 */
+	public List<GSData> getOpenGs(){
+		List<GSData> ret = Lists.newArrayList();
+		
+		for( GSData gs : gss.values() ){
+			if( gs.getStatus() == GSStatus.OPEN ){
+				ret.add(gs);
+			}
+		}
+		return ret;
+	}
 	
 	
 	/**

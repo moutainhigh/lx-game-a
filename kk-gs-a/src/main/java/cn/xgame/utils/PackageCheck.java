@@ -27,7 +27,7 @@ public class PackageCheck {
 	public boolean safeCheck( Events pack ){
 		long current = System.currentTimeMillis();
 		if( pack == lastPack && current - lastReceiveTime < MIN_INTERVAL_MILS ){
-			Logs.error( "刷包行为 - packag:" + pack + ","+ current + "-" + lastReceiveTime  + "=" + (current - lastReceiveTime) );
+//			Logs.error( "刷包行为 - packag:" + pack + ","+ current + "-" + lastReceiveTime  + "=" + (current - lastReceiveTime) );
 			return true;
 		}
 		lastPack 		= pack;

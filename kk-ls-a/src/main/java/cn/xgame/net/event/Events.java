@@ -9,6 +9,7 @@ import java.util.Map;
 
 import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.gs.ConnectEvent;
+import cn.xgame.net.event.all.user.GslistEvent;
 import cn.xgame.net.event.all.user.LoginEvent;
 import cn.xgame.net.event.all.user.SignupEvent;
 
@@ -22,6 +23,7 @@ public enum Events {
 	//-----------------用户
 	USER_LOGIN					( 101, 					new LoginEvent() ),
 	USER_SIGNUP					( 102, 					new SignupEvent() ),
+	APPER_GSLIST				( 110, 					new GslistEvent() ),
 	
 	
 	//-----------------游戏服务器
@@ -32,7 +34,7 @@ public enum Events {
 	
 	
 	//-----------------测试
-	TEST						( Short.MAX_VALUE-1, 		new TestEevet() );
+	TEST						( Short.MAX_VALUE-1, 	new TestEevet() );
 	
 	
 	private final short			number;

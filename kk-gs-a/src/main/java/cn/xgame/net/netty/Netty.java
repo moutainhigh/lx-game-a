@@ -71,8 +71,7 @@ public class Netty {
 		private static final AttributeKey<Integer> SINTEGER = new AttributeKey<Integer>( "DENG.XO.INTEGER" );
 		
 		public static String getAttachment( ChannelHandlerContext ctx ) {
-			String s = ctx.attr( SSTRING ).get();
-			return s == null ? "" : s;
+			return ctx.attr( SSTRING ).get();
 		}
 		public static int getAttachmentToInteger( ChannelHandlerContext ctx ) {
 			Integer i = ctx.attr( SINTEGER ).get();

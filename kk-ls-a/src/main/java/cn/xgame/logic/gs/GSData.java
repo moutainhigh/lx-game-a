@@ -89,5 +89,17 @@ public class GSData {
 		}
 	}
 	
+	/**
+	 * 服务器状态 0.流畅 1.拥挤 2.爆满
+	 * @return
+	 */
+	public int getCurrentStatus() {
+		if( peopleNum < 100 )
+			return 0;
+		if( peopleNum < 300 )
+			return 1;
+		return 2;
+	}
+	
 	
 }
