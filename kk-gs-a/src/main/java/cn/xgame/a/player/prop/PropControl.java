@@ -1,4 +1,4 @@
-package cn.xgame.a.player.bag;
+package cn.xgame.a.player.prop;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,8 +8,6 @@ import java.util.Map;
 
 import cn.xgame.a.player.ITransformStream;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.prop.IProp;
-import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.player.prop.stuff.Stuff;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.SystemCfg;
@@ -25,14 +23,14 @@ import x.javaplus.mysql.db.Condition;
  * @author deng		
  * @date 2015-6-17 下午6:56:27
  */
-public class BagControl implements ITransformStream{
+public class PropControl implements ITransformStream{
 
 	private Player player;
 	
 	// 背包列表
-	private Map<PropType, List<Bag>> bags = new HashMap<PropType, List<Bag>>();
+	private Map<PropType, List<IProp>> bags = new HashMap<PropType, List<IProp>>();
 	
-	public BagControl( Player player ) {
+	public PropControl( Player player ) {
 		this.player = player;
 	}
 	
@@ -40,8 +38,8 @@ public class BagControl implements ITransformStream{
 	 * 获取背包所有道具
 	 * @return
 	 */
-	public List<Bag> getAll(){
-		List<Bag> ret = Lists.newArrayList();
+	public List<IProp> getAll(){
+		List<IProp> ret = Lists.newArrayList();
 		ret.addAll( bags.get( PropType.STUFF ) );
 		ret.addAll( bags.get( PropType.CAPTAIN ) );
 		ret.addAll( bags.get( PropType.SHIP ) );
@@ -54,9 +52,9 @@ public class BagControl implements ITransformStream{
 	 * 只 塞入 基础数据
 	 */
 	public void buildTransformStream( ByteBuf response ) {
-		List<Bag> ls = getAll();
+		List<IProp> ls = getAll();
 		response.writeShort( ls.size() );
-		for( Bag bag : ls ){
+		for( IProp bag : ls ){
 			bag.putBaseBuffer( response );
 		}
 	}
@@ -79,41 +77,41 @@ public class BagControl implements ITransformStream{
 	
 	
 	// 材料
-	private List<Bag> DBFromStuff() {
+	private List<IProp> DBFromStuff() {
 		
 		StuffDao dao = SqlUtil.getStuffDao();
 		// 根据 服务器ID 和 玩家唯一ID 获取
 		String sql = new Condition( StuffDto.gsidChangeSql( SystemCfg.ID ) ).AND( StuffDto.unameChangeSql( player.getUID() ) ).toString();
 		List<StuffDto> dtos = dao.getByExact( sql );
 		
-		List<Bag> ret = Lists.newArrayList();
+		List<IProp> ret = Lists.newArrayList();
 		for( StuffDto o : dtos ){
 			Stuff stuff = new Stuff( o );
-			ret.add( new Bag( stuff ) );
+			ret.add( stuff );
 		}
 		dao.commit();
 		return ret;
 	}
 	// 舰长
-	private List<Bag> DBFromCaptain() {
+	private List<IProp> DBFromCaptain() {
 		
-		List<Bag> ret = Lists.newArrayList();
+		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰船
-	private List<Bag> DBFromShip() {
+	private List<IProp> DBFromShip() {
 		
-		List<Bag> ret = Lists.newArrayList();
+		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰长-装备
-	private List<Bag> DBFromCEquip() {
-		List<Bag> ret = Lists.newArrayList();
+	private List<IProp> DBFromCEquip() {
+		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰船-装备
-	private List<Bag> DBFromSEquip() {
-		List<Bag> ret = Lists.newArrayList();
+	private List<IProp> DBFromSEquip() {
+		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	
@@ -124,12 +122,12 @@ public class BagControl implements ITransformStream{
 	 * @param count 数量
 	 * @return
 	 */
-	public Bag createProp( PropType type, int nid, int count) {
+	public IProp createProp( PropType type, int nid, int count) {
 		// 创建一个道具出来
 		IProp prop = type.create( 2, nid, count );
 		// 在数据库 创建数据
 		prop.createDB( player );
-		return new Bag(prop);
+		return prop;
 	}
 	
 	/**
@@ -138,10 +136,10 @@ public class BagControl implements ITransformStream{
 	 * @param uid
 	 * @return
 	 */
-	private Bag getProp( PropType type, int uid ) {
-		List<Bag> ls = bags.get(type);
-		for( Bag b : ls ){
-			if( b.getProp().getuId() == uid )
+	private IProp getProp( PropType type, int uid ) {
+		List<IProp> ls = bags.get(type);
+		for( IProp b : ls ){
+			if( b.getuId() == uid )
 				return b;
 		}
 		return null;
@@ -159,15 +157,15 @@ public class BagControl implements ITransformStream{
 		
 //		b.getProp().updateDB(p);
 		
-		for( Bag b : p.getBags().getAll() ){
+		for( IProp b : p.getBags().getAll() ){
 			System.out.println( b.toString() );
 		}
 		
-		Bag bag = p.getBags().getProp( PropType.STUFF, 1 );
-		bag.getProp().setCount( 17 );
-		bag.getProp().updateDB( p );
+		IProp bag = p.getBags().getProp( PropType.STUFF, 2 );
+		bag.setCount( 27 );
+		bag.updateDB( p );
 		
-		for( Bag b : p.getBags().getAll() ){
+		for( IProp b : p.getBags().getAll() ){
 			System.out.println( b.toString() );
 		}
 	}

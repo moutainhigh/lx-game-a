@@ -5,7 +5,7 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.ITransformStream;
-import cn.xgame.a.player.bag.BagControl;
+import cn.xgame.a.player.prop.PropControl;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
@@ -23,7 +23,7 @@ public class Player extends IPlayer implements ITransformStream{
 	private PackageCheck pcheck = new PackageCheck();
 
 	// 背包
-	private BagControl bags = new BagControl( this );
+	private PropControl bags = new PropControl( this );
 	
 	
 	/**
@@ -98,10 +98,10 @@ public class Player extends IPlayer implements ITransformStream{
 		this.ctx = ctx;
 		Attr.setAttachment( this.ctx, getUID() );
 	}
-	public BagControl getBags() {
+	public PropControl getBags() {
 		return bags;
 	}
-	public void setBags(BagControl bags) {
+	public void setBags(PropControl bags) {
 		this.bags = bags;
 	}
 
