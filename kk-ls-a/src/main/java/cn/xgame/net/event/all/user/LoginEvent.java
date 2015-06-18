@@ -6,7 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.Util.Key;
 
+import cn.xgame.a.system.Constants;
 import cn.xgame.a.system.ESB;
 import cn.xgame.logic.user.UserManager;
 import cn.xgame.net.event.IEvent;
@@ -50,9 +52,11 @@ public class LoginEvent extends IEvent {
 		String password	= RW.readString(data);
 		
 		String UID		= null;
+		String key		= null;
 		ErrorCode code 	= null;
 		try {
 			UID			= UserManager.o.getUID( account, password );
+			key			= Key.generateKey( UID+Constants.PUBLICKEY );
 			code		= ErrorCode.SUCCEED;
 		} catch ( Exception e ) {
 			code		= ErrorCode.valueOf( e.getMessage() );
@@ -63,6 +67,7 @@ public class LoginEvent extends IEvent {
 		respond.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			RW.writeString( respond, UID );
+			RW.writeString( respond, key );
 		}
 		sendPackage( ctx, respond );
 	}

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.xgame.logic.player.Player;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;

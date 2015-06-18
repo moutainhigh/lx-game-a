@@ -6,9 +6,9 @@ import io.netty.channel.AbstractChannel;
 import java.io.IOException;
 
 import cn.xgame.a.Launch.LSClientAgency;
+import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.SystemCfg;
-import cn.xgame.logic.player.Player;
-import cn.xgame.logic.player.PlayerManager;
 import cn.xgame.net.event.IEvent;
 
 /**

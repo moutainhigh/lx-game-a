@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
-import cn.xgame.logic.player.Player;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
 

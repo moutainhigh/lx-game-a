@@ -7,4 +7,7 @@ package cn.xgame.a.system;
  */
 public class Constants {
 	
+	/** 协商公钥 用于登录验证 */
+	public static final String PUBLICKEY = "longxun-kuake";
+	
 }

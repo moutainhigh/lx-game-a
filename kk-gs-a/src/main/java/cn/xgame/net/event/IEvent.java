@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.AbstractChannel;
 import io.netty.channel.ChannelHandlerContext;
-import cn.xgame.logic.player.Player;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.net.netty.Netty.Config;
 
 public abstract class IEvent {

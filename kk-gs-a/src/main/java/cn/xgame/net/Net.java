@@ -1,6 +1,6 @@
 package cn.xgame.net;
 
-import cn.xgame.logic.player.PlayerManager;
+import cn.xgame.a.player.PlayerManager;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
