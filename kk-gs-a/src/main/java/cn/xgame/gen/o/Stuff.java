@@ -7,13 +7,20 @@ package cn.xgame.gen.o;
  */
 public class Stuff {
 	
+	/** 服务器ID */
+	short gsid;
+	
+	/** 玩家唯一ID */
+	String uname;
+	
 	/** 唯一ID */
 	int uid;
 	
-	/** 类型 */
-	byte type;
+	/** 表格ID */
+	int nid;
 	
-	/** 服务器ID */
-	byte gsid;
+	/** 数量 */
+	int count;
+	
 	
 }

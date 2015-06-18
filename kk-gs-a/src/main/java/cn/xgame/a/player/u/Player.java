@@ -5,6 +5,7 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.player.bag.BagControl;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
@@ -21,13 +22,17 @@ public class Player extends IPlayer implements ITransformStream{
 	// 包检测
 	private PackageCheck pcheck = new PackageCheck();
 
+	// 背包
+	private BagControl bags = new BagControl( this );
+	
+	
 	/**
 	 * 创建一个
 	 * @param uID
 	 * @param headIco
 	 * @param name
 	 */
-	public Player(String uID, int headIco, String name) {
+	public Player( String uID, int headIco, String name ) {
 		setUID(uID);
 		setGsid( SystemCfg.ID );
 		setHeadIco(headIco);
@@ -41,22 +46,9 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
+		// 在数据库取出 背包数据
+		getBags().fromDB();
 	}
-
-	public Player() {
-	}
-
-	
-	public ChannelHandlerContext getCtx() {
-		return ctx;
-	}
-	public void setCtx( ChannelHandlerContext ctx ) {
-		String country = IPSeeker.I.getCountry( IP.formAddress(ctx) );
-		setCountry( country );
-		this.ctx = ctx;
-		Attr.setAttachment( this.ctx, getUID() );
-	}
-
 
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
@@ -71,21 +63,14 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	
 	
-	
-	public boolean safeCheck(Events event) {
-		return pcheck.safeCheck( event );
-	}
 
-
+	/**  退出处理 */
 	public void exit() {
 		setLastLogoutTime( System.currentTimeMillis() );
 	}
 
 
-	/**
-	 * 获取 跨天 天数
-	 * @return
-	 */
+	/** 获取 跨天 天数 */
 	public int strideDay() {
 		long t = System.currentTimeMillis() - Time.refTimeInMillis( getLastLogoutTime(), 24, 0, 0 );
 		return (int) (t / 86400000l);
@@ -94,8 +79,30 @@ public class Player extends IPlayer implements ITransformStream{
 
 
 	
+	
+	
+	
 	public String toString(){
 		return "UID=" + getUID() + ", nickname=" + getNickname();
+	}
+
+	public boolean safeCheck( Events event ) {
+		return pcheck.safeCheck( event );
+	}
+	public ChannelHandlerContext getCtx() {
+		return ctx;
+	}
+	public void setCtx( ChannelHandlerContext ctx ) {
+		String country = IPSeeker.I.getCountry( IP.formAddress(ctx) );
+		setCountry( country );
+		this.ctx = ctx;
+		Attr.setAttachment( this.ctx, getUID() );
+	}
+	public BagControl getBags() {
+		return bags;
+	}
+	public void setBags(BagControl bags) {
+		this.bags = bags;
 	}
 
 }

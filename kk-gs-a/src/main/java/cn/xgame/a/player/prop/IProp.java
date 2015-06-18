@@ -1,6 +1,7 @@
 package cn.xgame.a.player.prop;
 
 import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.player.u.Player;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -16,7 +17,27 @@ public abstract class IProp implements ITransformStream{
 	private int nId;
 	// 数量
 	private int count;
+
 	
+	protected void initialize(int uid, int nid, int count ) {
+		this.uId = uid;
+		this.nId = nid;
+		this.count = count;
+	}
+	
+	/**
+	 * 写入基础数据到buffer
+	 * @param buffer
+	 */
+	public void putBaseBuffer( ByteBuf buffer ) {
+		buffer.writeInt(uId);
+		buffer.writeInt(nId);
+		buffer.writeInt(count);
+	}
+	
+	public abstract PropType type();
+	public abstract void createDB( Player player );
+	public abstract void updateDB( Player player );
 	
 	public int getuId() {
 		return uId;
@@ -37,25 +58,7 @@ public abstract class IProp implements ITransformStream{
 		this.count = count;
 	}
 	
-	/**
-	 * 塞入数据到buffer
-	 * @param buffer
-	 */
-	public void putBuffer( ByteBuf buffer ){
-		uId = buffer.readInt();
-		nId = buffer.readInt();
-		count = buffer.readInt();
+	public String toString(){
+		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
 	}
-	
-	/**
-	 * 写入数据到buffer
-	 * @param buffer
-	 */
-	public void toBuffer( ByteBuf buffer ) {
-		buffer.writeInt(uId);
-		buffer.writeInt(nId);
-		buffer.writeInt(count);
-	}
-	
-	
 }

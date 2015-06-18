@@ -13,9 +13,12 @@
 			setObject( "bags", dto.getBags() );
 
 			super.commit( true );		}	}
-	public static class StuffDao extends SqlDao{				public StuffDao( String tableName ) {			super( tableName );		}				public StuffDto get( String id ) {			super.select( id, true );			if( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<StuffDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<StuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<StuffDto> getLs() {			List<StuffDto> ls = Lists.newArrayList();			while( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public StuffDto update(){			_update( );			return new StuffDto();		}		public StuffDto updateByExact( String arg ){			_updateByExact( arg );			return new StuffDto();		}				public StuffDto create() {			insert();			return new StuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( StuffDto dto ) {			setObject( "uid", dto.getUid() );
-			setObject( "type", dto.getType() );
+	public static class StuffDao extends SqlDao{				public StuffDao( String tableName ) {			super( tableName );		}				public StuffDto get( String id ) {			super.select( id, true );			if( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<StuffDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<StuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<StuffDto> getLs() {			List<StuffDto> ls = Lists.newArrayList();			while( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public StuffDto update(){			_update( );			return new StuffDto();		}		public StuffDto updateByExact( String arg ){			_updateByExact( arg );			return new StuffDto();		}				public StuffDto create() {			insert();			return new StuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( StuffDto dto ) {			setObject( "type", dto.getType() );
 			setObject( "gsid", dto.getGsid() );
+			setObject( "uname", dto.getUname() );
+			setObject( "uid", dto.getUid() );
+			setObject( "nid", dto.getNid() );
+			setObject( "count", dto.getCount() );
 
 			super.commit( true );		}	}
 
@@ -86,30 +89,48 @@
 			bags = o.getBytes( "bags" );
 
 		}				@Override		public String toString() {			return "uid="+uid+","+"gsid="+gsid+","+"nickname="+nickname+","+"headIco="+headIco+","+"country="+country+","+"currency="+currency+","+"gold="+gold+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"bags="+bags;		}	}
-	public static class StuffDto implements SqlDto{		private Integer uid = null;
-		private Byte type = null;
-		private Byte gsid = null;
+	public static class StuffDto implements SqlDto{		private Byte type = null;
+		private Short gsid = null;
+		private String uname = null;
+		private Integer uid = null;
+		private Integer nid = null;
+		private Integer count = null;
 
-		public StuffDto() {		}				/**		 * Copy new one		 */		public StuffDto(StuffDto src) {			this.uid = src.uid;
-			this.type = src.type;
+		public StuffDto() {		}				/**		 * Copy new one		 */		public StuffDto(StuffDto src) {			this.type = src.type;
 			this.gsid = src.gsid;
+			this.uname = src.uname;
+			this.uid = src.uid;
+			this.nid = src.nid;
+			this.count = src.count;
 
-		}		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 类型 */		public Byte getType(){			return this.type;		}
-		/** 服务器ID */		public Byte getGsid(){			return this.gsid;		}
+		}		/** 类型 */		public Byte getType(){			return this.type;		}
+		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
+		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
+		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
+		/** 表格ID */		public Integer getNid(){			return this.nid;		}
+		/** 数量 */		public Integer getCount(){			return this.count;		}
 
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/** 类型 */		public void setType( Byte type ){			this.type = type;		}
-		/** 服务器ID */		public void setGsid( Byte gsid ){			this.gsid = gsid;		}
+		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
+		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
 
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String typeChangeSql( Byte x) {			return "type=" + x;		}
-		public static String gsidChangeSql( Byte x) {			return "gsid=" + x;		}
+		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String countChangeSql( Integer x) {			return "count=" + x;		}
 
-		@Override		public void fromDBObject(DBObject o) {			uid = o.getInt( "uid" );
-			type = o.getByte( "type" );
-			gsid = o.getByte( "gsid" );
+		@Override		public void fromDBObject(DBObject o) {			type = o.getByte( "type" );
+			gsid = o.getShort( "gsid" );
+			uname = o.getString( "uname" );
+			uid = o.getInt( "uid" );
+			nid = o.getInt( "nid" );
+			count = o.getInt( "count" );
 
-		}				@Override		public String toString() {			return "uid="+uid+","+"type="+type+","+"gsid="+gsid;		}	}
+		}				@Override		public String toString() {			return "type="+type+","+"gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
 
 }

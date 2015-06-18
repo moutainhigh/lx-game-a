@@ -1,6 +1,5 @@
 package cn.xgame.a.player.u;
 
-import cn.xgame.a.player.bag.BagControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 
 /**
@@ -28,9 +27,6 @@ public abstract class IPlayer {
 	// 充值币
 	private int gold;
 	
-	// 背包
-	private BagControl bags = new BagControl();
-	
 	
 	// 创建时间 (单位：毫秒)
 	private long createTime;
@@ -51,21 +47,18 @@ public abstract class IPlayer {
 		this.gold		= dto.getGold();
 		this.setCreateTime(dto.getCreateTime());
 		this.lastLogoutTime = dto.getLastLogoutTime();
-		this.setBags(new BagControl());
-		this.getBags().fromBytes( dto.getBags() );
 	}
 	
 	public void update( PlayerDataDto dto ) {
-		dto.setUid( UID );
+		dto.setUid(UID);
 		dto.setGsid(gsid);
 		dto.setNickname(nickname);
 		dto.setHeadIco(headIco);
 		dto.setCountry(country);
 		dto.setCurrency(currency);
 		dto.setGold(gold);
-		dto.setCreateTime(getCreateTime());
+		dto.setCreateTime(createTime);
 		dto.setLastLogoutTime(lastLogoutTime);
-		dto.setBags( getBags().toBytes());
 	}
 	
 	
@@ -110,12 +103,6 @@ public abstract class IPlayer {
 	}
 	public void setLastLogoutTime(long lastLogoutTime) {
 		this.lastLogoutTime = lastLogoutTime;
-	}
-	public BagControl getBags() {
-		return bags;
-	}
-	public void setBags(BagControl bags) {
-		this.bags = bags;
 	}
 	public short getGsid() {
 		return gsid;

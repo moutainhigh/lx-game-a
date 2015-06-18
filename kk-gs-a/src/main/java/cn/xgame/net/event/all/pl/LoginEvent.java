@@ -52,7 +52,7 @@ public class LoginEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			// 基本数据
 			player.buildTransformStream( response );
-			// 背包数据
+			// 背包基础数据
 			player.getBags().buildTransformStream( response );
 		}
 		sendPackage( ctx, response );

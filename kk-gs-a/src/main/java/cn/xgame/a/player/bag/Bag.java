@@ -20,6 +20,11 @@ public class Bag extends IBag implements ITransformStream{
 	
 	
 	
+	public Bag( IProp prop ) {
+		this.prop = prop;
+	}
+	
+	
 	public IProp getProp() {
 		return prop;
 	}
@@ -28,24 +33,21 @@ public class Bag extends IBag implements ITransformStream{
 	}
 	
 	
-	
-	public void putBuffer( ByteBuf buffer ) {
-		
-		type = buffer.readByte();
-		prop = newProp();
-		prop.putBuffer( buffer );
-	}
-	
-	public void toBuffer( ByteBuf buffer ){
-		buffer.writeByte(type);
-		prop.toBuffer( buffer );
-	}
-	
-	
 	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		prop.buildTransformStream( buffer );
+	public void buildTransformStream( ByteBuf response ) {
+		prop.buildTransformStream( response );
 	}
 	
+	/** 塞入基础数据 */
+	public void putBaseBuffer( ByteBuf response ) {
+		prop.putBaseBuffer( response );
+	}
+	
+	public String toString(){
+		return prop.toString();
+	}
+
+
+
 	
 }

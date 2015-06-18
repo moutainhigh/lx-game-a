@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 
+import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.ErrorCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -60,7 +62,7 @@ public class PlayerManager {
 	public Player getPlayer( String uID ) {
 		Player ret = get( uID );
 		if( ret == null )
-			ret = getPlayerFmDB( uID );
+			ret = getPlayerFmDB( uID, SystemCfg.ID );
 		return ret;
 	}
 	
@@ -99,7 +101,7 @@ public class PlayerManager {
 	 */
 	public Player login( ChannelHandlerContext ctx, String uID ) throws Exception{
 		
-		Player ret = getPlayerFmDB( uID );
+		Player ret = getPlayerFmDB( uID, SystemCfg.ID );
 		if( ret == null )
 			throw new Exception( ErrorCode.PLAYER_NOTFOUND.name() );
 		
@@ -169,17 +171,6 @@ public class PlayerManager {
 	//===============================================================
 	
 	/**
-	 * 保存到数据库
-	 * @param player
-	 */
-	public void update( Player player ) {
-		PlayerDataDao dao = SqlUtil.getPlayerDataDao();
-		PlayerDataDto dto = dao.update();
-		player.update( dto );
-		dao.commit(dto);
-	}
-	
-	/**
 	 * 创建
 	 * @param player
 	 */
@@ -191,14 +182,27 @@ public class PlayerManager {
 	}
 	
 	/**
+	 * 保存到数据库
+	 * @param player
+	 */
+	public void update( Player player ) {
+		PlayerDataDao dao = SqlUtil.getPlayerDataDao();
+		String sql = new Condition( PlayerDataDto.uidChangeSql(player.getUID()) ).AND( PlayerDataDto.gsidChangeSql(player.getGsid()) ).toString();
+		PlayerDataDto dto = dao.updateByExact( sql );
+		player.update( dto );
+		dao.commit(dto);
+	}
+	
+	/**
 	 * 从数据库 获取玩家
 	 * @param uID
 	 * @return
 	 */
-	public Player getPlayerFmDB( String uID ) {
-		PlayerDataDao dao 	= SqlUtil.getPlayerDataDao();
-		PlayerDataDto dto 	= dao.get( uID );
-		Player ret 			= dto != null ? new Player( dto ) : null;
+	public Player getPlayerFmDB( String uID, short gsid ) {
+		PlayerDataDao dao = SqlUtil.getPlayerDataDao();
+		String sql = new Condition( PlayerDataDto.uidChangeSql(uID) ).AND( PlayerDataDto.gsidChangeSql(gsid) ).toString();
+		List<PlayerDataDto> dtos = dao.getByExact( sql );
+		Player ret = dtos.isEmpty() ? null : new Player( dtos.get(0) );
 		dao.commit();
 		return ret;
 	}
