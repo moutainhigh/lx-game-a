@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.xgame.a.player.IFromDB;
 import cn.xgame.a.player.ITransformStream;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.prop.stuff.Stuff;
@@ -23,7 +24,7 @@ import x.javaplus.mysql.db.Condition;
  * @author deng		
  * @date 2015-6-17 下午6:56:27
  */
-public class PropControl implements ITransformStream{
+public class PropControl implements ITransformStream, IFromDB{
 
 	private Player player;
 	
@@ -51,6 +52,7 @@ public class PropControl implements ITransformStream{
 	/**
 	 * 只 塞入 基础数据
 	 */
+	@Override
 	public void buildTransformStream( ByteBuf response ) {
 		List<IProp> ls = getAll();
 		response.writeShort( ls.size() );
@@ -59,25 +61,24 @@ public class PropControl implements ITransformStream{
 		}
 	}
 	
-
-	/** 从DB获取数据  */
+	@Override
 	public void fromDB() {
 		bags.clear();
 		// 材料
-		bags.put( PropType.STUFF, DBFromStuff() );
+		bags.put( PropType.STUFF, fromDBStuff() );
 		// 舰长
-		bags.put( PropType.CAPTAIN, DBFromCaptain() );
+		bags.put( PropType.CAPTAIN, fromDBCaptain() );
 		// 舰船
-		bags.put( PropType.SHIP, DBFromShip() );
+		bags.put( PropType.SHIP, fromDBShip() );
 		// 舰长-装备
-		bags.put( PropType.CEQUIP, DBFromCEquip() );
+		bags.put( PropType.CEQUIP, fromDBCEquip() );
 		// 舰船-装备
-		bags.put( PropType.SEQUIP, DBFromSEquip() );
+		bags.put( PropType.SEQUIP, fromDBSEquip() );
 	}
 	
 	
 	// 材料
-	private List<IProp> DBFromStuff() {
+	private List<IProp> fromDBStuff() {
 		
 		StuffDao dao = SqlUtil.getStuffDao();
 		// 根据 服务器ID 和 玩家唯一ID 获取
@@ -93,24 +94,24 @@ public class PropControl implements ITransformStream{
 		return ret;
 	}
 	// 舰长
-	private List<IProp> DBFromCaptain() {
+	private List<IProp> fromDBCaptain() {
 		
 		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰船
-	private List<IProp> DBFromShip() {
+	private List<IProp> fromDBShip() {
 		
 		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰长-装备
-	private List<IProp> DBFromCEquip() {
+	private List<IProp> fromDBCEquip() {
 		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
 	// 舰船-装备
-	private List<IProp> DBFromSEquip() {
+	private List<IProp> fromDBSEquip() {
 		List<IProp> ret = Lists.newArrayList();
 		return ret;
 	}
@@ -124,7 +125,7 @@ public class PropControl implements ITransformStream{
 	 */
 	public IProp createProp( PropType type, int nid, int count) {
 		// 创建一个道具出来
-		IProp prop = type.create( 2, nid, count );
+		IProp prop = type.create( player.generatorPropUID(type), nid, count );
 		// 在数据库 创建数据
 		prop.createDB( player );
 		return prop;
@@ -136,7 +137,7 @@ public class PropControl implements ITransformStream{
 	 * @param uid
 	 * @return
 	 */
-	private IProp getProp( PropType type, int uid ) {
+	public IProp getProp( PropType type, int uid ) {
 		List<IProp> ls = bags.get(type);
 		for( IProp b : ls ){
 			if( b.getuId() == uid )
@@ -149,25 +150,20 @@ public class PropControl implements ITransformStream{
 		
 		Player p = PlayerManager.o.getPlayer( "101" );
 		
-//		BagControl bag = new BagControl(p);
+//		p.getProps().createProp( PropType.STUFF, 101, 20 );
+//		p.getProps().createProp( PropType.CAPTAIN, 201, 1 );
+		
+		for( IProp b : p.getProps().getAll() ){
+			System.out.println( b.toString() );
+		}
 //		
-//		Bag b = bag.createProp( PropType.STUFF, 101, 20 );
-		
-//		b.getProp().setCount( 30 );
-		
-//		b.getProp().updateDB(p);
-		
-		for( IProp b : p.getBags().getAll() ){
-			System.out.println( b.toString() );
-		}
-		
-		IProp bag = p.getBags().getProp( PropType.STUFF, 2 );
-		bag.setCount( 27 );
-		bag.updateDB( p );
-		
-		for( IProp b : p.getBags().getAll() ){
-			System.out.println( b.toString() );
-		}
+//		IProp bag = p.getProps().getProp( PropType.STUFF, 2 );
+//		bag.setCount( 27 );
+//		bag.updateDB( p );
+//		
+//		for( IProp b : p.getProps().getAll() ){
+//			System.out.println( b.toString() );
+//		}
 	}
 
 

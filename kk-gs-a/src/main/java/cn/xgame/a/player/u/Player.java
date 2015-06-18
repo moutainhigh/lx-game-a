@@ -5,7 +5,9 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.player.prop.PropBaseUID;
 import cn.xgame.a.player.prop.PropControl;
+import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
@@ -23,8 +25,10 @@ public class Player extends IPlayer implements ITransformStream{
 	private PackageCheck pcheck = new PackageCheck();
 
 	// 背包
-	private PropControl bags = new PropControl( this );
+	private PropControl props = new PropControl( this );
 	
+	// 所有道具唯一ID基础值 
+	private PropBaseUID propBaseUid = new PropBaseUID( this );
 	
 	/**
 	 * 创建一个
@@ -46,8 +50,10 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
-		// 在数据库取出 背包数据
-		getBags().fromDB();
+		// 在数据库取出 玩家的所有道具
+		props.fromDB();
+		// 取出所有道具类型的基础UID
+		propBaseUid.fromDB();
 	}
 
 	@Override
@@ -77,7 +83,14 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 
 
-
+	/**
+	 * 生成对应道具 唯一ID
+	 * @param type  
+	 * @return
+	 */
+	public int generatorPropUID( PropType type ) {
+		return propBaseUid.generatorUID( type );
+	}
 	
 	
 	
@@ -98,11 +111,14 @@ public class Player extends IPlayer implements ITransformStream{
 		this.ctx = ctx;
 		Attr.setAttachment( this.ctx, getUID() );
 	}
-	public PropControl getBags() {
-		return bags;
+	public PropBaseUID getPropBaseUid() {
+		return propBaseUid;
 	}
-	public void setBags(PropControl bags) {
-		this.bags = bags;
+	public PropControl getProps() {
+		return props;
 	}
+
+
+
 
 }
