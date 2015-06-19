@@ -2,7 +2,7 @@
 <config>
 	<debug>true</debug><!--是否DEBUG-->
 	<platform>LOCAL</platform><!--属于平台-->
-	<file_name></file_name><!--配置表路径-->
+	<file_name>D:/地球银河/bin/server/resources</file_name><!--配置表路径-->
 	<gsId>1</gsId>
 	<gsName>校长的爱</gsName>
 	<gsPort>8100</gsPort>

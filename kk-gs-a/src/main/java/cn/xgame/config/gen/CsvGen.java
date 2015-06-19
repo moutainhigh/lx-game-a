@@ -1,45 +1,6 @@
-package cn.xgame.config.gen;
-
-import java.util.List;
-
-import x.javaplus.collections.Lists;
-import x.javaplus.util.Util.File;
-
-import cn.xgame.config.o.PlanetMap;
-
-public class CsvGen {
-	
-	private static final List<PlanetMap> data = Lists.newArrayList();
-	//C:\Users\dell_\Desktop
-	
-	public static void load(){
-		try {
-			List<String> content = File.getLines( "C:/Users/dell_/Desktop/PlanetMap.csv" );
-			String[] head = content.get(1).split(",");
-			
-			for( int i = 0; i < head.length; i++ )
-				System.out.println( head[i] );
-			
-			
-			for( String s : content )
-				System.out.println( s );
-			
-		} catch (Exception e) {
-		}
-	}
-	
-	
-	
-	public static PlanetMap get( short id ){
-		for( PlanetMap o : data ){
-			if( o.id == id )
-				return o;
-		}
-		return null;
-	}
-	
-	
-	public static void main(String[] args) {
-		CsvGen.load();
-	}
-}
+package cn.xgame.config.gen;import java.util.List;import java.util.Map;import x.javaplus.collections.Lists;import x.javaplus.csv.util.Csv;import cn.xgame.a.system.SystemCfg;import cn.xgame.config.o.Item;
+public class CsvGen {	public static final List<Item> items = Lists.newArrayList();
+	public static void load(){		loadItem( "item.csv" );
+	}	private static void loadItem( String file ){				Csv csv = new Csv( SystemCfg.FILE_NAME + "/" + file );				for( Map<String, String> data : csv.getValues() ){			Item o = new Item(data);			items.add( o );		}	}
+	public static Item getItem( int x ){		for( Item o : items ){			if( o.ID == x )				return o;		}		return null;	}
+}
