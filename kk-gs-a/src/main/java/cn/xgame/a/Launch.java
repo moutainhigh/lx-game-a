@@ -5,6 +5,7 @@ import io.netty.channel.AbstractChannel;
 import org.apache.log4j.PropertyConfigurator;
 
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.netty.client.NettyClient;
@@ -106,6 +107,8 @@ public class Launch {
 		// 初始化 ip数据库
 		IPSeeker.I.init( "qqwry.dat" );
 		
+		// 加载配置表
+		CsvGen.load();
 	}
 	
 	private static void startServer() {

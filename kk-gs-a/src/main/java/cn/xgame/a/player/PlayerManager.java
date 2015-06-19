@@ -20,8 +20,8 @@ import cn.xgame.utils.Illegality;
 
 public class PlayerManager {
 	
-	public static PlayerManager o = new PlayerManager();
 	private PlayerManager(){}
+	public static PlayerManager o = new PlayerManager();
 	
 	
 	private Map<String, Player> players = new HashMap<String, Player>();

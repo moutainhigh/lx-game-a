@@ -20,7 +20,7 @@ import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
 
 /**
- * 背包操作中心
+ * 玩家所有道具 操作中心
  * @author deng		
  * @date 2015-6-17 下午6:56:27
  */
@@ -28,8 +28,8 @@ public class PropControl implements ITransformStream, IFromDB{
 
 	private Player player;
 	
-	// 背包列表
-	private Map<PropType, List<IProp>> bags = new HashMap<PropType, List<IProp>>();
+	// 所有道具列表
+	private Map<PropType, List<IProp>> props = new HashMap<PropType, List<IProp>>();
 	
 	public PropControl( Player player ) {
 		this.player = player;
@@ -41,11 +41,11 @@ public class PropControl implements ITransformStream, IFromDB{
 	 */
 	public List<IProp> getAll(){
 		List<IProp> ret = Lists.newArrayList();
-		ret.addAll( bags.get( PropType.STUFF ) );
-		ret.addAll( bags.get( PropType.CAPTAIN ) );
-		ret.addAll( bags.get( PropType.SHIP ) );
-		ret.addAll( bags.get( PropType.CEQUIP ) );
-		ret.addAll( bags.get( PropType.SEQUIP ) );
+		ret.addAll( props.get( PropType.STUFF ) );
+		ret.addAll( props.get( PropType.CAPTAIN ) );
+		ret.addAll( props.get( PropType.SHIP ) );
+		ret.addAll( props.get( PropType.CEQUIP ) );
+		ret.addAll( props.get( PropType.SEQUIP ) );
 		return ret;
 	}
 	
@@ -63,17 +63,17 @@ public class PropControl implements ITransformStream, IFromDB{
 	
 	@Override
 	public void fromDB() {
-		bags.clear();
+		props.clear();
 		// 材料
-		bags.put( PropType.STUFF, fromDBStuff() );
+		props.put( PropType.STUFF, fromDBStuff() );
 		// 舰长
-		bags.put( PropType.CAPTAIN, fromDBCaptain() );
+		props.put( PropType.CAPTAIN, fromDBCaptain() );
 		// 舰船
-		bags.put( PropType.SHIP, fromDBShip() );
+		props.put( PropType.SHIP, fromDBShip() );
 		// 舰长-装备
-		bags.put( PropType.CEQUIP, fromDBCEquip() );
+		props.put( PropType.CEQUIP, fromDBCEquip() );
 		// 舰船-装备
-		bags.put( PropType.SEQUIP, fromDBSEquip() );
+		props.put( PropType.SEQUIP, fromDBSEquip() );
 	}
 	
 	
@@ -138,7 +138,7 @@ public class PropControl implements ITransformStream, IFromDB{
 	 * @return
 	 */
 	public IProp getProp( PropType type, int uid ) {
-		List<IProp> ls = bags.get(type);
+		List<IProp> ls = props.get(type);
 		for( IProp b : ls ){
 			if( b.getuId() == uid )
 				return b;
