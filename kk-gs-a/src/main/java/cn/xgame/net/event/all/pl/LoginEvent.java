@@ -58,6 +58,15 @@ public class LoginEvent extends IEvent{
 			player.getManors().buildTransformStream( response );
 		}
 		sendPackage( ctx, response );
+		
+		
+		// 这里表示 已经登录成功了
+		if( code == ErrorCode.SUCCEED ){
+			
+			// 记录最后一次登录的服务器ID
+			player.rLastGsid();
+		}
+		
 	}
 
 

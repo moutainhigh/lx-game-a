@@ -12,6 +12,7 @@ import cn.xgame.a.system.SystemCfg;
 import cn.xgame.a.world.planet.home.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
+import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.netty.Netty.Attr;
 import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
@@ -124,7 +125,9 @@ public class Player extends IPlayer implements ITransformStream{
 		return props;
 	}
 
-
-
+	/** 记录 最后一次登录的服务器ID */
+	public void rLastGsid() {
+		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
+	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
+import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
@@ -23,6 +24,7 @@ public enum Events {
 	//-----------------登录服务器
 	GS_CONNECT						( 201, 					new ConnectEvent() ),
 	UPDATA_PEOPLE					( 210, 					new UpdatePeopleEvent() ),
+	RLAST_GSID						( 220, 					new RLastGsidEvent() ),
 	
 	
 	

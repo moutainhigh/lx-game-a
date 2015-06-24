@@ -2,7 +2,6 @@ package cn.xgame.a;
 
 import org.apache.log4j.PropertyConfigurator;
 
-import x.javaplus.ip.IPSeeker;
 import x.javaplus.util.Resources;
 
 
@@ -31,9 +30,6 @@ public class Launch {
 		
 		// 初始化 log4j
 		PropertyConfigurator.configureAndWatch( Resources.getResource("log4j.properties") );
-		
-		// 初始化 ip数据库
-		IPSeeker.I.init( "qqwry.dat" );
 		
 	}
 	

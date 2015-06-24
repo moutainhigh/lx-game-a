@@ -117,6 +117,19 @@ public class UserManager {
 		return dto == null ? 0 : dto.getLastGsid();
 	}
 	
+
+	/**
+	 * 保存 用户最后一次登录的服务器ID
+	 * @param uid
+	 * @param gsid
+	 */
+	public void updateLastGsid( String uid, short gsid ) {
+		UserDao dao = SqlUtil.getUserDao();
+		UserDto dto = dao.update();
+		dto.setId(uid);
+		dto.setLastGsid(gsid);
+		dao.commit(dto);
+	}
 	
 	
 	/**
@@ -145,6 +158,8 @@ public class UserManager {
 			System.out.println( e.getMessage() );
 		}
 	}
+
+
 
 
 

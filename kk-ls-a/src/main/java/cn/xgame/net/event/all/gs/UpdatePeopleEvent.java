@@ -26,7 +26,7 @@ public class UpdatePeopleEvent extends IEvent{
 		GSManager.o.updatePeople( gsid, peopleNum, onlinePeople );
 		
 		// 暂时 不返回包
-		Logs.debug( "服务器更新人数  peopleNum=" + peopleNum );
+		Logs.debug( "服务器更新人数  peopleNum=" + peopleNum + ", onlinePeople=" + onlinePeople );
 	}
 
 }
