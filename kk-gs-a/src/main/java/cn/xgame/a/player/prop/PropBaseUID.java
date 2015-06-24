@@ -37,10 +37,10 @@ public class PropBaseUID implements IFromDB{
 		String sql;
 		try {
 			sql			= new Condition( StuffDto.unameChangeSql( player.getUID() ) ).AND( StuffDto.gsidChangeSql(player.getGsid() ) ).toString();
-			STUFF_UID 	= SqlUtil.getMaxId( getClassName( StuffDto.class ), "uid", sql );
+			STUFF_UID 	= SqlUtil.getMaxId( SqlUtil.getClassName( StuffDto.class ), "uid", sql );
 			
 			sql			= new Condition( CaptainDto.unameChangeSql( player.getUID() ) ).AND( CaptainDto.gsidChangeSql(player.getGsid() ) ).toString();
-			CAPTAIN_UID	= SqlUtil.getMaxId( getClassName( CaptainDto.class ), "uid", sql );
+			CAPTAIN_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( CaptainDto.class ), "uid", sql );
 			
 		} catch (SQLException e) {
 			Logs.error( "PropBaseUID.fromDB", e );
@@ -69,10 +69,7 @@ public class PropBaseUID implements IFromDB{
 		return 1;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	private String getClassName( Class clzss ) {
-		return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();
-	}
+
 	
 	public static void main(String[] args) {
 	}

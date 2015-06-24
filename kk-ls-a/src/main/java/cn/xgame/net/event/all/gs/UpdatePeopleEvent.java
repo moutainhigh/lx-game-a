@@ -19,10 +19,11 @@ public class UpdatePeopleEvent extends IEvent{
 	@Override
 	public void run(ChannelHandlerContext ctx, ByteBuf data) throws IOException {
 		
-		short gsid 		= data.readShort();
-		int peopleNum 	= data.readInt();
+		short gsid 			= data.readShort();
+		int onlinePeople 	= data.readInt();
+		int peopleNum 		= data.readInt();
 		
-		GSManager.o.updatePeople( gsid, peopleNum );
+		GSManager.o.updatePeople( gsid, peopleNum, onlinePeople );
 		
 		// 暂时 不返回包
 		Logs.debug( "服务器更新人数  peopleNum=" + peopleNum );

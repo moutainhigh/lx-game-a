@@ -17,6 +17,9 @@ public class GSData {
 	
 	// 服务器 当前人数
 	private int peopleNum = 0;
+	// 服务器 在线人数
+	private int onlinePeople = 0;
+	
 	// 服务器 状态 0.正常开启 1.关闭 2.闲置
 	private GSStatus status = GSStatus.CLOSE;
 	
@@ -95,11 +98,17 @@ public class GSData {
 	 * @return
 	 */
 	public int getCurrentStatus() {
-		if( peopleNum < 100 )
+		if( onlinePeople < 100 )
 			return 0;
-		if( peopleNum < 300 )
+		if( onlinePeople < 300 )
 			return 1;
 		return 2;
+	}
+	public int getOnlinePeople() {
+		return onlinePeople;
+	}
+	public void setOnlinePeople(int onlinePeople) {
+		this.onlinePeople = onlinePeople;
 	}
 	
 	

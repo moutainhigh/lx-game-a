@@ -1,5 +1,6 @@
 package cn.xgame.a.player;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,12 @@ public class PlayerManager {
 	public Player get( String uID ){
 		return players.get(uID);
 	}
-	public int peopleNumber() {
+	
+	/**
+	 * 获取在线人数
+	 * @return
+	 */
+	public int onlinePeople() {
 		return players.size();
 	}
 	
@@ -218,19 +224,32 @@ public class PlayerManager {
 		return !dto.isEmpty();
 	}
 	
+	/**
+	 * 获取服务器总人数
+	 * @return
+	 */
+	public int peopleNumber() {
+		try {
+			return (int) SqlUtil.getCount( SqlUtil.getClassName( PlayerDataDto.class ) );
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
+	
 	public static void main(String[] args) throws Exception {
 		
 		try {
 			
-			o.create( null, "101", 1, "大峰哥2" );
+//			o.create( null, "102", 1, "大峰哥3" );
 			
-			
+			System.out.println( o.peopleNumber() );
 			
 		} catch (Exception e) {
-			System.out.println( e.getMessage() );
 		}
 		
 		
-		
 	}
+
+
+
 }

@@ -29,17 +29,11 @@ public class UpdatePeopleEvent extends IEvent{
 		ByteBuf buffer = buildEmptyPackage( socket, 6 );
 		
 		buffer.writeShort( SystemCfg.ID );
+		buffer.writeInt( PlayerManager.o.onlinePeople() );
 		buffer.writeInt( PlayerManager.o.peopleNumber() );
 		
 		sendPackage( socket, buffer );
 		
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

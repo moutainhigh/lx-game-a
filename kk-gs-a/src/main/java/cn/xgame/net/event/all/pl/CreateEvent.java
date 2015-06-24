@@ -38,6 +38,8 @@ public class CreateEvent extends IEvent {
 			// 获取玩家信息
 			player	= PlayerManager.o.create( ctx, UID, headIco, name );
 			
+			// 
+			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
@@ -46,7 +48,12 @@ public class CreateEvent extends IEvent {
 		ByteBuf response = buildEmptyPackage( ctx, 6 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			// 基本数据
 			player.buildTransformStream( response );
+			// 背包基础数据
+			player.getProps().buildTransformStream( response );
+			// 领地数据
+			player.getManors().buildTransformStream( response );
 		}
 		sendPackage( ctx, response );
 		

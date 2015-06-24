@@ -20,7 +20,37 @@ public class UserManager {
 	
 //	private Map<String, UserData> users = new HashMap<String, UserData>();
 	
-	
+	/**
+	 * 根据账号密码 获取UID 如果没有找到账号 那么就创建
+	 * @param account
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
+	public String getMustUID( String account, String password ) throws Exception {
+		
+		UserDao dao 		= SqlUtil.getUserDao();
+		UserDto dto 		= null;
+		// 先判断是否有这个账号
+		List<UserDto> dtos 	= dao.getByExact( UserDto.accountChangeSql(account) );
+		if( !dtos.isEmpty() ){
+			dao.commit();
+			// 如果有这个账号判断 密码是否正确
+			dto				= dtos.get(0);
+			if( !dto.getPassword().equals(password) )
+				throw new Exception( ErrorCode.PASSWORD_ERROR.name() );
+		}else{
+			// 如果没有这个账号 那么就在数据库创建
+			String UID = generateUID( account, dao );
+			dto = dao.create();
+			dto.setId( UID );
+			dto.setAccount( account );
+			dto.setPassword( password );
+			dao.commit( dto );
+		}
+		
+		return dto.getId();
+	}
 	
 	/**
 	 * 根据账号密码 获取UID
@@ -33,15 +63,15 @@ public class UserManager {
 		
 		UserDao dao 		= SqlUtil.getUserDao();
 		
-		String sql			= new Condition( UserDto.accountChangeSql( account ) ).AND(UserDto.passwordChangeSql(password) ).toString();
+		String sql			= new Condition( UserDto.accountChangeSql(account) ).AND( UserDto.passwordChangeSql(password) ).toString();
 		List<UserDto> dtos 	= dao.getByExact( sql );
+		dao.commit();
+		
 		if( dtos.isEmpty() )
 			throw new Exception( ErrorCode.AORP_ERROR.name() );
 		
 		// 默认获取第一个
 		UserDto dto = dtos.get(0);
-		
-		dao.commit();
 		return dto.getId();
 	}
 	
@@ -58,9 +88,10 @@ public class UserManager {
 		// 先获取 看是不是有该账号了
 		String sql			= new Condition( UserDto.accountChangeSql( account ) ).toString();
 		List<UserDto> dtos 	= dao.getByExact( sql );
-		if( !dtos.isEmpty() )
+		if( !dtos.isEmpty() ){
+			dao.commit();
 			throw new Exception( ErrorCode.ACCOUNT_EXIST.name() );
-		
+		}
 		// 先获取 唯一ID
 		String UID = generateUID( account, dao );
 		
@@ -74,8 +105,17 @@ public class UserManager {
 		return dto.getId();
 	}
 
-	
-	
+	/**
+	 * 获取用户 最后一次登录的服务器ID
+	 * @param uID
+	 * @return
+	 */
+	public short getLastGsid( String uID ) {
+		UserDao dao = SqlUtil.getUserDao();
+		UserDto dto = dao.get(uID);
+		dao.commit();
+		return dto == null ? 0 : dto.getLastGsid();
+	}
 	
 	
 	
@@ -100,11 +140,14 @@ public class UserManager {
 	public static void main(String[] args) throws Exception {
 		
 		try {
-			o.create( "test4", "111" );
+			System.out.println( o.getLastGsid( "331058520" ) );
 		} catch (Exception e) {
 			System.out.println( e.getMessage() );
 		}
 	}
+
+
+
 
 	
 	

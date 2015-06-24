@@ -9,6 +9,7 @@ import java.util.List;
 
 import cn.xgame.logic.gs.GSData;
 import cn.xgame.logic.gs.GSManager;
+import cn.xgame.logic.user.UserManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -22,16 +23,19 @@ public class GslistEvent extends IEvent{
 	@Override
 	public void run( ChannelHandlerContext ctx, ByteBuf data ) throws IOException {
 		
-		// 暂时空包
-		//..
+		String UID = RW.readString(data);
 		
+		
+		
+		// 获取 用户最后一次 登录的服务器ID
+		short lastGsid 	= UserManager.o.getLastGsid( UID );
 		
 		// 
 		ByteBuf respond = buildEmptyPackage( ctx, 1024 );
-		
+		respond.writeShort( lastGsid );
+		respond.writeShort( GSManager.o.getRecommendGsid() );
 		// 获取 开启服务器 列表
 		List<GSData> ls = GSManager.o.getOpenGs();
-		
 		respond.writeShort( ls.size() );
 		for( GSData gs : ls ){
 			respond.writeShort( gs.getId() );

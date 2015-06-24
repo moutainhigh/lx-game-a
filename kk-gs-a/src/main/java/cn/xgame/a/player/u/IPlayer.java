@@ -1,5 +1,6 @@
 package cn.xgame.a.player.u;
 
+import cn.xgame.a.world.planet.home.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 
 /**
@@ -35,6 +36,11 @@ public abstract class IPlayer {
 	private long lastLogoutTime;
 	
 	
+	/////////////////////////////////////
+	// 玩家领地
+	private ManorControl manors;
+	
+	
 	
 	public void wrap( PlayerDataDto dto ){
 		
@@ -45,8 +51,10 @@ public abstract class IPlayer {
 		this.country	= dto.getCountry();
 		this.currency	= dto.getCurrency();
 		this.gold		= dto.getGold();
-		this.setCreateTime(dto.getCreateTime());
+		this.createTime	= dto.getCreateTime();
 		this.lastLogoutTime = dto.getLastLogoutTime();
+		this.manors		= new ManorControl( );
+		this.manors.fromBytes( dto.getManors() );
 	}
 	
 	public void update( PlayerDataDto dto ) {
@@ -59,6 +67,7 @@ public abstract class IPlayer {
 		dto.setGold(gold);
 		dto.setCreateTime(createTime);
 		dto.setLastLogoutTime(lastLogoutTime);
+		dto.setManors(manors.toBytes());
 	}
 	
 	
@@ -115,6 +124,12 @@ public abstract class IPlayer {
 	}
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
+	}
+	public ManorControl getManors() {
+		return manors;
+	}
+	public void setManors(ManorControl manor) {
+		this.manors = manor;
 	}
 	
 	

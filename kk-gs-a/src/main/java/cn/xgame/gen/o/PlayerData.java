@@ -8,11 +8,17 @@ package cn.xgame.gen.o;
  */
 public class PlayerData {
 	
-	/** 唯一ID */
-	String uid;
-
 	/** 服务器ID */
 	short gsid;
+	
+	/** 唯一ID */
+	String uid;
+	
+	/** 创建时间 */
+	long createTime;
+	
+	/** 上次下线时间 */
+	long lastLogoutTime;
 	
 	/** 名字 */
 	String nickname;
@@ -29,13 +35,8 @@ public class PlayerData {
 	/** 充值币 */
 	int gold;
 	
-	/** 创建时间 */
-	long createTime;
 	
-	/** 上次下线时间 */
-	long lastLogoutTime;
-	
-	/** 背包 */
-	byte[] bags;
+	/** 领地 */
+	byte[] manors;
 	
 }

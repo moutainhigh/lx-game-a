@@ -54,6 +54,8 @@ public class LoginEvent extends IEvent{
 			player.buildTransformStream( response );
 			// 背包基础数据
 			player.getProps().buildTransformStream( response );
+			// 领地数据
+			player.getManors().buildTransformStream( response );
 		}
 		sendPackage( ctx, response );
 	}

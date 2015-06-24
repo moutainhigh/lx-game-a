@@ -1,4 +1,4 @@
-package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) throws SQLException{			DBObject db = DBObject.create();			db.prepareStatement( "select max(" + col + ") from " + tableName + " where " + criteria );			db.executeQuery();			if ( db.next())				return db.getInt( 1 );			db.close();			return 0;		}				public static CaptainDao getCaptainDao() {			return new CaptainDao( "captain" );		}
+package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) throws SQLException{			DBObject db = DBObject.create();			db.prepareStatement( "select max(" + col + ") from " + tableName + " where " + criteria );			db.executeQuery();			if ( db.next())				return db.getInt( 1 );			db.close();			return 0;		}				/**		 * 获取某张表的数据总数		 * @param tableName		 * @return		 */		public static long getCount( String tableName ) throws SQLException {			DBObject db = DBObject.create();			db.prepareStatement( "select COUNT(*) from " + tableName );			db.executeQuery();			if ( db.next() )				return db.getLong( 1 );			db.close();			return 0;		}				@SuppressWarnings("rawtypes")		public static String getClassName( Class clzss ) {			return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();		}		public static CaptainDao getCaptainDao() {			return new CaptainDao( "captain" );		}
 		public static PlayerDataDao getPlayerDataDao() {			return new PlayerDataDao( "playerdata" );		}
 		public static StuffDao getStuffDao() {			return new StuffDao( "stuff" );		}
 
@@ -9,16 +9,16 @@
 			setObject( "count", dto.getCount() );
 
 			super.commit( true );		}	}
-	public static class PlayerDataDao extends SqlDao{				public PlayerDataDao( String tableName ) {			super( tableName );		}				public PlayerDataDto get( String id ) {			super.select( id, true );			if( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlayerDataDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<PlayerDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlayerDataDto> getLs() {			List<PlayerDataDto> ls = Lists.newArrayList();			while( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlayerDataDto update(){			_update( );			return new PlayerDataDto();		}		public PlayerDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlayerDataDto();		}				public PlayerDataDto create() {			insert();			return new PlayerDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlayerDataDto dto ) {			setObject( "uid", dto.getUid() );
-			setObject( "gsid", dto.getGsid() );
+	public static class PlayerDataDao extends SqlDao{				public PlayerDataDao( String tableName ) {			super( tableName );		}				public PlayerDataDto get( String id ) {			super.select( id, true );			if( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlayerDataDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<PlayerDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlayerDataDto> getLs() {			List<PlayerDataDto> ls = Lists.newArrayList();			while( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlayerDataDto update(){			_update( );			return new PlayerDataDto();		}		public PlayerDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlayerDataDto();		}				public PlayerDataDto create() {			insert();			return new PlayerDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlayerDataDto dto ) {			setObject( "gsid", dto.getGsid() );
+			setObject( "uid", dto.getUid() );
+			setObject( "createTime", dto.getCreateTime() );
+			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
 			setObject( "nickname", dto.getNickname() );
 			setObject( "headIco", dto.getHeadIco() );
 			setObject( "country", dto.getCountry() );
 			setObject( "currency", dto.getCurrency() );
 			setObject( "gold", dto.getGold() );
-			setObject( "createTime", dto.getCreateTime() );
-			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
-			setObject( "bags", dto.getBags() );
+			setObject( "manors", dto.getManors() );
 
 			super.commit( true );		}	}
 	public static class StuffDao extends SqlDao{				public StuffDao( String tableName ) {			super( tableName );		}				public StuffDto get( String id ) {			super.select( id, true );			if( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<StuffDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<StuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<StuffDto> getLs() {			List<StuffDto> ls = Lists.newArrayList();			while( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public StuffDto update(){			_update( );			return new StuffDto();		}		public StuffDto updateByExact( String arg ){			_updateByExact( arg );			return new StuffDto();		}				public StuffDto create() {			insert();			return new StuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( StuffDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -66,73 +66,73 @@
 			count = o.getInt( "count" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
-	public static class PlayerDataDto implements SqlDto{		private String uid = null;
-		private Short gsid = null;
+	public static class PlayerDataDto implements SqlDto{		private Short gsid = null;
+		private String uid = null;
+		private Long createTime = null;
+		private Long lastLogoutTime = null;
 		private String nickname = null;
 		private Integer headIco = null;
 		private String country = null;
 		private Integer currency = null;
 		private Integer gold = null;
-		private Long createTime = null;
-		private Long lastLogoutTime = null;
-		private byte[] bags = null;
+		private byte[] manors = null;
 
-		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.uid = src.uid;
-			this.gsid = src.gsid;
+		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
+			this.uid = src.uid;
+			this.createTime = src.createTime;
+			this.lastLogoutTime = src.lastLogoutTime;
 			this.nickname = src.nickname;
 			this.headIco = src.headIco;
 			this.country = src.country;
 			this.currency = src.currency;
 			this.gold = src.gold;
-			this.createTime = src.createTime;
-			this.lastLogoutTime = src.lastLogoutTime;
-			this.bags = src.bags;
+			this.manors = src.manors;
 
-		}		/** 唯一ID */		public String getUid(){			return this.uid;		}
-		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
+		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
+		/** 唯一ID */		public String getUid(){			return this.uid;		}
+		/** 创建时间 */		public Long getCreateTime(){			return this.createTime;		}
+		/** 上次下线时间 */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
 		/** 名字 */		public String getNickname(){			return this.nickname;		}
 		/** 头像图标ID */		public Integer getHeadIco(){			return this.headIco;		}
 		/** 区域 */		public String getCountry(){			return this.country;		}
 		/** 游戏币 */		public Integer getCurrency(){			return this.currency;		}
 		/** 充值币 */		public Integer getGold(){			return this.gold;		}
-		/** 创建时间 */		public Long getCreateTime(){			return this.createTime;		}
-		/** 上次下线时间 */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
-		/** 背包 */		public byte[] getBags(){			return this.bags;		}
+		/** 领地 */		public byte[] getManors(){			return this.manors;		}
 
-		/** 唯一ID */		public void setUid( String uid ){			this.uid = uid;		}
 		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/** 唯一ID */		public void setUid( String uid ){			this.uid = uid;		}
+		/** 创建时间 */		public void setCreateTime( Long createTime ){			this.createTime = createTime;		}
+		/** 上次下线时间 */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
 		/** 名字 */		public void setNickname( String nickname ){			this.nickname = nickname;		}
 		/** 头像图标ID */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
 		/** 区域 */		public void setCountry( String country ){			this.country = country;		}
 		/** 游戏币 */		public void setCurrency( Integer currency ){			this.currency = currency;		}
 		/** 充值币 */		public void setGold( Integer gold ){			this.gold = gold;		}
-		/** 创建时间 */		public void setCreateTime( Long createTime ){			this.createTime = createTime;		}
-		/** 上次下线时间 */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
-		/** 背包 */		public void setBags( byte[] bags ){			this.bags = bags;		}
+		/** 领地 */		public void setManors( byte[] manors ){			this.manors = manors;		}
 
-		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
+		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
+		public static String createTimeChangeSql( Long x) {			return "createTime=" + x;		}
+		public static String lastLogoutTimeChangeSql( Long x) {			return "lastLogoutTime=" + x;		}
 		public static String nicknameChangeSql( String x) {			return "nickname=" + "'"+x+"'";		}
 		public static String headIcoChangeSql( Integer x) {			return "headIco=" + x;		}
 		public static String countryChangeSql( String x) {			return "country=" + "'"+x+"'";		}
 		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
-		public static String createTimeChangeSql( Long x) {			return "createTime=" + x;		}
-		public static String lastLogoutTimeChangeSql( Long x) {			return "lastLogoutTime=" + x;		}
-		public static String bagsChangeSql( byte[] x) {			return "bags=" + x;		}
+		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
 
-		@Override		public void fromDBObject(DBObject o) {			uid = o.getString( "uid" );
-			gsid = o.getShort( "gsid" );
+		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
+			uid = o.getString( "uid" );
+			createTime = o.getLong( "createTime" );
+			lastLogoutTime = o.getLong( "lastLogoutTime" );
 			nickname = o.getString( "nickname" );
 			headIco = o.getInt( "headIco" );
 			country = o.getString( "country" );
 			currency = o.getInt( "currency" );
 			gold = o.getInt( "gold" );
-			createTime = o.getLong( "createTime" );
-			lastLogoutTime = o.getLong( "lastLogoutTime" );
-			bags = o.getBytes( "bags" );
+			manors = o.getBytes( "manors" );
 
-		}				@Override		public String toString() {			return "uid="+uid+","+"gsid="+gsid+","+"nickname="+nickname+","+"headIco="+headIco+","+"country="+country+","+"currency="+currency+","+"gold="+gold+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"bags="+bags;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"country="+country+","+"currency="+currency+","+"gold="+gold+","+"manors="+manors;		}	}
 	public static class StuffDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

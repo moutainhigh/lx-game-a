@@ -9,6 +9,7 @@ import cn.xgame.a.player.prop.PropBaseUID;
 import cn.xgame.a.player.prop.PropControl;
 import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.a.world.planet.home.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.netty.Netty.Attr;
@@ -24,11 +25,15 @@ public class Player extends IPlayer implements ITransformStream{
 	// 包检测
 	private PackageCheck pcheck = new PackageCheck();
 
+	
+	
+	//////////////////////数据库相关//////////////////////////
 	// 背包
 	private PropControl props = new PropControl( this );
 	
 	// 所有道具唯一ID基础值 
 	private PropBaseUID propBaseUid = new PropBaseUID( this );
+	
 	
 	/**
 	 * 创建一个
@@ -42,6 +47,7 @@ public class Player extends IPlayer implements ITransformStream{
 		setHeadIco(headIco);
 		setNickname(name);
 		setCreateTime( System.currentTimeMillis() );
+		setManors( new ManorControl() );
 	}
 	
 	/**

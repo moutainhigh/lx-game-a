@@ -21,9 +21,11 @@ public class GSManager {
 	public static GSManager o = new GSManager();
 	private GSManager(){}
 	
-	
 	// 服务器 列表
 	private Map<Short, GSData> gss = new HashMap<Short, GSData>();
+	
+	// 推荐服务器ID
+	private short recommendGsid;
 	
 	/**
 	 * 获取开启 服务器 列表
@@ -101,13 +103,40 @@ public class GSManager {
 	 * @param gsid
 	 * @param peopleNum
 	 */
-	public void updatePeople( short gsid, int peopleNum ) {
+	public void updatePeople( short gsid, int peopleNum, int onlinePeople ) {
 		
 		GSData gs = get( gsid );
 		if( gs == null || gs.getStatus() != GSStatus.OPEN )
 			return;
 		
 		gs.setPeopleNum( peopleNum );
+		gs.setOnlinePeople( onlinePeople );
+		
+		// 更新推荐服务器ID
+		updateRecommendGsid();
+	}
+
+	// 更新推荐服务器ID
+	private void updateRecommendGsid() {
+		
+		int num = 1000000000;
+		for( GSData gs : gss.values() ){
+			if( gs.getStatus() == GSStatus.OPEN ){
+				if( gs.getPeopleNum() < num ){
+					
+					num = gs.getPeopleNum();
+					recommendGsid = gs.getId();
+				}
+			}
+		}
+	}
+
+	/** 获取推荐服务器id */
+	public short getRecommendGsid() {
+		return recommendGsid;
+	}
+	public void setRecommendGsid(short recommendGsid) {
+		this.recommendGsid = recommendGsid;
 	}
 	
 }

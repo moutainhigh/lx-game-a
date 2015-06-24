@@ -55,7 +55,7 @@ public class LoginEvent extends IEvent {
 		String key		= null;
 		ErrorCode code 	= null;
 		try {
-			UID			= UserManager.o.getUID( account, password );
+			UID			= UserManager.o.getMustUID( account, password );
 			key			= Key.generateKey( UID+Constants.PUBLICKEY );
 			code		= ErrorCode.SUCCEED;
 		} catch ( Exception e ) {

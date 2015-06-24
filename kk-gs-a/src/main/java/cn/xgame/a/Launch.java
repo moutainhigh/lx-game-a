@@ -5,6 +5,7 @@ import io.netty.channel.AbstractChannel;
 import org.apache.log4j.PropertyConfigurator;
 
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.a.world.WorldManager;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.ConnectEvent;
@@ -74,10 +75,16 @@ public class Launch {
 			
 			Logs.debug( "登录服 登录成功" );
 			
-			// 启动游戏服务器
+			// 1.加载配置表
+			CsvGen.load();
+			
+			// 2.初始化 星图
+			WorldManager.o.initialize();
+			
+			// 3.启动游戏服务器
 			startServer();
 			
-			// 启动线程
+			// 4.启动线程
 			ThreadManager.start();
 			
 			
@@ -105,17 +112,13 @@ public class Launch {
 		PropertyConfigurator.configureAndWatch( Resources.getResource("log4j.properties") );
 		
 		// 初始化 ip数据库
-		IPSeeker.I.init( "qqwry.dat" );
-		
-		// 加载配置表
-		CsvGen.load();
+		IPSeeker.I.init( Resources.getResource( "qqwry.dat" ) );
 	}
 	
 	private static void startServer() {
 		
 		// 启动 服务器
 		new NettyServer( SystemCfg.GS_PORT );
-		
 	}
 
 }

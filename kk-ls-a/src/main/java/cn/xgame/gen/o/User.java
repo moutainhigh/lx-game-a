@@ -10,4 +10,7 @@ public class User {
 	/**  密码 */
 	String password;
 	
+	/**  最后一次登录的服务器ID */
+	short lastGsid;
+	
 }
