@@ -1,4 +1,4 @@
-package cn.xgame.a.player.prop;
+package cn.xgame.a.prop;
 
 import cn.xgame.a.player.ITransformStream;
 import cn.xgame.a.player.u.Player;

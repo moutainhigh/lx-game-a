@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import cn.xgame.net.event.IEvent;
 
@@ -16,4 +18,8 @@ public class TestEevet extends IEvent{
 		
 	}
 
+	public static void main(String[] args) throws UnknownHostException {
+		System.out.println( InetAddress.getLocalHost().getHostAddress() );//获得本机IP
+//		　　address=addr.getHostName()toString;//获得本机名称
+	}
 }

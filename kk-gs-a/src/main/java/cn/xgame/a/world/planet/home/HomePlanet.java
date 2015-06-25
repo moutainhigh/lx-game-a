@@ -5,13 +5,14 @@ import java.util.Map;
 
 
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.planet.IPlanet;
 
 /**
  * 一个母星
  * @author deng		
  * @date 2015-6-18 下午4:24:05
  */
-public class HomePlanet {
+public class HomePlanet extends IPlanet{
 
 	// 玩家列表
 	private Map<String, Player> players = new HashMap<String, Player>();

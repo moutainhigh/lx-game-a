@@ -1,9 +1,9 @@
-package cn.xgame.a.player.prop.sequip;
+package cn.xgame.a.prop.sequip;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.prop.IProp;
-import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.PropType;
 
 /**
  * 舰船装备对象

@@ -1,9 +1,9 @@
-package cn.xgame.a.player.prop.ship;
+package cn.xgame.a.prop.ship;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.prop.IProp;
-import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.PropType;
 
 /**
  * 舰船对象

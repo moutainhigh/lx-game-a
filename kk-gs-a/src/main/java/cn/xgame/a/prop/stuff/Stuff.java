@@ -1,11 +1,11 @@
-package cn.xgame.a.player.prop.stuff;
+package cn.xgame.a.prop.stuff;
 
 
 import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.prop.IProp;
-import cn.xgame.a.player.prop.PropType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.PropType;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.gen.dto.MysqlGen.StuffDao;
 import cn.xgame.gen.dto.MysqlGen.StuffDto;

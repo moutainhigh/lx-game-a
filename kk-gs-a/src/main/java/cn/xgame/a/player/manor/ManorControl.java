@@ -1,4 +1,4 @@
-package cn.xgame.a.world.planet.home.manor;
+package cn.xgame.a.player.manor;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.IArrayStream;

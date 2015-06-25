@@ -118,7 +118,7 @@ public class Launch {
 	private static void startServer() {
 		
 		// 启动 服务器
-		new NettyServer( SystemCfg.GS_PORT );
+		new NettyServer( SystemCfg.GS_PORT ).start();
 	}
 
 }

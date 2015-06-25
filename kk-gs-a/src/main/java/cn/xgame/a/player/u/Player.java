@@ -5,11 +5,11 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.ITransformStream;
-import cn.xgame.a.player.prop.PropBaseUID;
-import cn.xgame.a.player.prop.PropControl;
-import cn.xgame.a.player.prop.PropType;
+import cn.xgame.a.player.depot.PropBaseUID;
+import cn.xgame.a.player.depot.DepotControl;
+import cn.xgame.a.player.manor.ManorControl;
+import cn.xgame.a.prop.PropType;
 import cn.xgame.a.system.SystemCfg;
-import cn.xgame.a.world.planet.home.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -30,7 +30,7 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	//////////////////////数据库相关//////////////////////////
 	// 背包
-	private PropControl props = new PropControl( this );
+	private DepotControl props = new DepotControl( this );
 	
 	// 所有道具唯一ID基础值 
 	private PropBaseUID propBaseUid = new PropBaseUID( this );
@@ -121,7 +121,7 @@ public class Player extends IPlayer implements ITransformStream{
 	public PropBaseUID getPropBaseUid() {
 		return propBaseUid;
 	}
-	public PropControl getProps() {
+	public DepotControl getProps() {
 		return props;
 	}
 

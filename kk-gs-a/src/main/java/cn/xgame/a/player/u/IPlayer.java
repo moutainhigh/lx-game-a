@@ -1,6 +1,6 @@
 package cn.xgame.a.player.u;
 
-import cn.xgame.a.world.planet.home.manor.ManorControl;
+import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 
 /**

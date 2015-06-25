@@ -1,4 +1,4 @@
-package cn.xgame.a.player.prop;
+package cn.xgame.a.player.depot;
 
 import java.sql.SQLException;
 
@@ -6,6 +6,7 @@ import x.javaplus.mysql.db.Condition;
 
 import cn.xgame.a.player.IFromDB;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.PropType;
 import cn.xgame.gen.dto.MysqlGen.CaptainDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.gen.dto.MysqlGen.StuffDto;

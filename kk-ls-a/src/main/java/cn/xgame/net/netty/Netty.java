@@ -4,7 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+
+import cn.xgame.utils.Logs;
 
 /**
  * netty工具类
@@ -28,11 +32,30 @@ public class Netty {
 	public static final class IP{
 		
 		/** 根据 ChannelHandlerContext 获取IP ( 本地IP ) */
-		public static String formAddress( ChannelHandlerContext ctx ){
-			if( ctx == null ) return "";
+		public static String formAddressLocal( ChannelHandlerContext ctx ){
+			if( ctx == null ) throw new RuntimeException("IP.formAddressLocal ctx不能为null");
 			InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
 			return insocket.getAddress().getHostAddress();
 		}
+		
+		/** 根据 ChannelHandlerContext 获取IP ( 实际IP ) */
+		public static String formAddress( ChannelHandlerContext ctx ){
+			if( ctx == null ) 
+				throw new RuntimeException("IP.formAddress ctx不能为null");
+			
+			InetSocketAddress insocket = (InetSocketAddress) ctx.channel().remoteAddress();
+			String ip = insocket.getAddress().getHostAddress();
+			if( ip.equals( "127.0.0.1" ) ){
+				
+				try {
+					ip = InetAddress.getLocalHost().getHostAddress();
+				} catch (UnknownHostException e) {
+					Logs.error( "IP.formAddress", e );
+				}
+			}
+			return ip;
+		}
+		
 	}
 	
 	public static final class RW{

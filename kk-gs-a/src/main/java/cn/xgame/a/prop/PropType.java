@@ -1,10 +1,10 @@
-package cn.xgame.a.player.prop;
+package cn.xgame.a.prop;
 
-import cn.xgame.a.player.prop.captain.Captain;
-import cn.xgame.a.player.prop.cequip.CEquip;
-import cn.xgame.a.player.prop.sequip.SEquip;
-import cn.xgame.a.player.prop.ship.Ship;
-import cn.xgame.a.player.prop.stuff.Stuff;
+import cn.xgame.a.prop.captain.Captain;
+import cn.xgame.a.prop.cequip.CEquip;
+import cn.xgame.a.prop.sequip.SEquip;
+import cn.xgame.a.prop.ship.Ship;
+import cn.xgame.a.prop.stuff.Stuff;
 
 /**
  * 道具大类型

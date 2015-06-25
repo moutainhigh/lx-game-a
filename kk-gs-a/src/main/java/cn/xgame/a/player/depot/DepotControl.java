@@ -1,16 +1,17 @@
-package cn.xgame.a.player.prop;
+package cn.xgame.a.player.depot;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.xgame.a.player.IFromDB;
 import cn.xgame.a.player.ITransformStream;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.prop.stuff.Stuff;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IDepot;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.PropType;
+import cn.xgame.a.prop.stuff.Stuff;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.gen.dto.MysqlGen.StuffDao;
@@ -24,30 +25,15 @@ import x.javaplus.mysql.db.Condition;
  * @author deng		
  * @date 2015-6-17 下午6:56:27
  */
-public class PropControl implements ITransformStream, IFromDB{
+public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 
 	private Player player;
 	
-	// 所有道具列表
-	private Map<PropType, List<IProp>> props = new HashMap<PropType, List<IProp>>();
 	
-	public PropControl( Player player ) {
+	public DepotControl( Player player ) {
 		this.player = player;
 	}
 	
-	/**
-	 * 获取背包所有道具
-	 * @return
-	 */
-	public List<IProp> getAll(){
-		List<IProp> ret = Lists.newArrayList();
-		ret.addAll( props.get( PropType.STUFF ) );
-		ret.addAll( props.get( PropType.CAPTAIN ) );
-		ret.addAll( props.get( PropType.SHIP ) );
-		ret.addAll( props.get( PropType.CEQUIP ) );
-		ret.addAll( props.get( PropType.SEQUIP ) );
-		return ret;
-	}
 	
 	/**
 	 * 只 塞入 基础数据
@@ -131,20 +117,7 @@ public class PropControl implements ITransformStream, IFromDB{
 		return prop;
 	}
 	
-	/**
-	 * 获取道具
-	 * @param type
-	 * @param uid
-	 * @return
-	 */
-	public IProp getProp( PropType type, int uid ) {
-		List<IProp> ls = props.get(type);
-		for( IProp b : ls ){
-			if( b.getuId() == uid )
-				return b;
-		}
-		return null;
-	}
+
 	
 	public static void main(String[] args) {
 		
