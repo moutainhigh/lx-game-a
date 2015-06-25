@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import cn.xgame.a.player.IFromDB;
-import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.IFromDB;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IDepot;

@@ -1,6 +1,6 @@
 package cn.xgame.a.prop;
 
-import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import io.netty.buffer.ByteBuf;
 

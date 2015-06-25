@@ -1,8 +1,8 @@
 package cn.xgame.a.player.manor;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.IArrayStream;
-import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.IArrayStream;
+import cn.xgame.a.ITransformStream;
 
 /**
  * 玩家领地 操作中心

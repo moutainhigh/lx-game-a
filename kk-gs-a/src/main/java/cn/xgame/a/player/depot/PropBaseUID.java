@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import x.javaplus.mysql.db.Condition;
 
-import cn.xgame.a.player.IFromDB;
+import cn.xgame.a.IFromDB;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.gen.dto.MysqlGen.CaptainDto;

@@ -1,4 +1,4 @@
-package cn.xgame.a.player;
+package cn.xgame.a;
 
 public interface IArrayStream {
 	

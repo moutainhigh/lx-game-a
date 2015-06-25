@@ -4,7 +4,7 @@ import x.javaplus.ip.IPSeeker;
 import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import cn.xgame.a.player.ITransformStream;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.depot.PropBaseUID;
 import cn.xgame.a.player.depot.DepotControl;
 import cn.xgame.a.player.manor.ManorControl;
