@@ -40,11 +40,11 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 */
 	@Override
 	public void buildTransformStream( ByteBuf response ) {
-		List<IProp> ls = getAll();
-		response.writeShort( ls.size() );
-		for( IProp bag : ls ){
-			bag.putBaseBuffer( response );
-		}
+//		List<IProp> ls = getAll();
+//		response.writeShort( ls.size() );
+//		for( IProp bag : ls ){
+//			bag.putBaseBuffer( response );
+//		}
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package cn.xgame.a.player.u;
 
-import x.javaplus.ip.IPSeeker;
 import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +13,6 @@ import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.netty.Netty.Attr;
-import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.PackageCheck;
 
@@ -69,7 +67,6 @@ public class Player extends IPlayer implements ITransformStream{
 		RW.writeString( buffer, getUID() );
 		RW.writeString( buffer, getNickname() );
 		buffer.writeInt( getHeadIco() );
-		RW.writeString( buffer, getCountry() ) ;
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );
 	}
@@ -113,8 +110,6 @@ public class Player extends IPlayer implements ITransformStream{
 		return ctx;
 	}
 	public void setCtx( ChannelHandlerContext ctx ) {
-		String country = IPSeeker.I.getCountry( IP.formAddress(ctx) );
-		setCountry( country );
 		this.ctx = ctx;
 		Attr.setAttachment( this.ctx, getUID() );
 	}

@@ -1,0 +1,5 @@
+package cn.xgame.config.o;import java.util.Map;import x.javaplus.string.StringUtil;public class Ship {	public final short id;	public final String name;	public final int room;	public final int en;	public final int hp;	public final int mess;	public final String answer;
+
+	public Ship( Map<String, String> data ){		id = Short.parseShort( StringUtil.convertNumberString( data.get("id") ) );		name = data.get("name");		room = Integer.parseInt( StringUtil.convertNumberString( data.get("room") ) );		en = Integer.parseInt( StringUtil.convertNumberString( data.get("en") ) );		hp = Integer.parseInt( StringUtil.convertNumberString( data.get("hp") ) );		mess = Integer.parseInt( StringUtil.convertNumberString( data.get("mess") ) );		answer = data.get("answer");
+
+	}}

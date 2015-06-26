@@ -11,6 +11,8 @@ import x.javaplus.util.Util.Key;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.Constants;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -56,6 +58,9 @@ public class LoginEvent extends IEvent{
 			player.getProps().buildTransformStream( response );
 			// 领地数据
 			player.getManors().buildTransformStream( response );
+			// 发送自己母星数据
+			HomePlanet home = WorldManager.o.getHPlanetInPlayer( player );
+			home.buildTransformStream( response );
 		}
 		sendPackage( ctx, response );
 		

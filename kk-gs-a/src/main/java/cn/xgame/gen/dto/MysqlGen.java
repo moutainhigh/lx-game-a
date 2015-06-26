@@ -15,7 +15,7 @@
 			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
 			setObject( "nickname", dto.getNickname() );
 			setObject( "headIco", dto.getHeadIco() );
-			setObject( "country", dto.getCountry() );
+			setObject( "countryId", dto.getCountryId() );
 			setObject( "currency", dto.getCurrency() );
 			setObject( "gold", dto.getGold() );
 			setObject( "manors", dto.getManors() );
@@ -72,7 +72,7 @@
 		private Long lastLogoutTime = null;
 		private String nickname = null;
 		private Integer headIco = null;
-		private String country = null;
+		private Short countryId = null;
 		private Integer currency = null;
 		private Integer gold = null;
 		private byte[] manors = null;
@@ -83,7 +83,7 @@
 			this.lastLogoutTime = src.lastLogoutTime;
 			this.nickname = src.nickname;
 			this.headIco = src.headIco;
-			this.country = src.country;
+			this.countryId = src.countryId;
 			this.currency = src.currency;
 			this.gold = src.gold;
 			this.manors = src.manors;
@@ -94,7 +94,7 @@
 		/** 上次下线时间 */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
 		/** 名字 */		public String getNickname(){			return this.nickname;		}
 		/** 头像图标ID */		public Integer getHeadIco(){			return this.headIco;		}
-		/** 区域 */		public String getCountry(){			return this.country;		}
+		/** 区域 */		public Short getCountryId(){			return this.countryId;		}
 		/** 游戏币 */		public Integer getCurrency(){			return this.currency;		}
 		/** 充值币 */		public Integer getGold(){			return this.gold;		}
 		/** 领地 */		public byte[] getManors(){			return this.manors;		}
@@ -105,7 +105,7 @@
 		/** 上次下线时间 */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
 		/** 名字 */		public void setNickname( String nickname ){			this.nickname = nickname;		}
 		/** 头像图标ID */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
-		/** 区域 */		public void setCountry( String country ){			this.country = country;		}
+		/** 区域 */		public void setCountryId( Short countryId ){			this.countryId = countryId;		}
 		/** 游戏币 */		public void setCurrency( Integer currency ){			this.currency = currency;		}
 		/** 充值币 */		public void setGold( Integer gold ){			this.gold = gold;		}
 		/** 领地 */		public void setManors( byte[] manors ){			this.manors = manors;		}
@@ -116,7 +116,7 @@
 		public static String lastLogoutTimeChangeSql( Long x) {			return "lastLogoutTime=" + x;		}
 		public static String nicknameChangeSql( String x) {			return "nickname=" + "'"+x+"'";		}
 		public static String headIcoChangeSql( Integer x) {			return "headIco=" + x;		}
-		public static String countryChangeSql( String x) {			return "country=" + "'"+x+"'";		}
+		public static String countryIdChangeSql( Short x) {			return "countryId=" + x;		}
 		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
 		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
@@ -127,12 +127,12 @@
 			lastLogoutTime = o.getLong( "lastLogoutTime" );
 			nickname = o.getString( "nickname" );
 			headIco = o.getInt( "headIco" );
-			country = o.getString( "country" );
+			countryId = o.getShort( "countryId" );
 			currency = o.getInt( "currency" );
 			gold = o.getInt( "gold" );
 			manors = o.getBytes( "manors" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"country="+country+","+"currency="+currency+","+"gold="+gold+","+"manors="+manors;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"manors="+manors;		}	}
 	public static class StuffDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

@@ -27,7 +27,7 @@ public class PlayerData {
 	int headIco;
 	
 	/** 区域 */
-	String country;
+	short countryId;
 	
 	/** 游戏币 */
 	int currency;

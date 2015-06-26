@@ -1,0 +1,5 @@
+package cn.xgame.config.o;import java.util.Map;import x.javaplus.string.StringUtil;public class Stars {	public final short id;	public final String name;	public final short level;	public final String goods;	public final byte tpye;	public final int x;	public final int y;	public final String building;
+
+	public Stars( Map<String, String> data ){		id = Short.parseShort( StringUtil.convertNumberString( data.get("id") ) );		name = data.get("name");		level = Short.parseShort( StringUtil.convertNumberString( data.get("level") ) );		goods = data.get("goods");		tpye = Byte.parseByte( StringUtil.convertNumberString( data.get("tpye") ) );		x = Integer.parseInt( StringUtil.convertNumberString( data.get("x") ) );		y = Integer.parseInt( StringUtil.convertNumberString( data.get("y") ) );		building = data.get("building");
+
+	}}

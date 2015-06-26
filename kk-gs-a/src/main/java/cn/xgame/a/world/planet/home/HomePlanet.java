@@ -1,9 +1,12 @@
 package cn.xgame.a.world.planet.home;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.IPlanet;
 
@@ -12,7 +15,7 @@ import cn.xgame.a.world.planet.IPlanet;
  * @author deng		
  * @date 2015-6-18 下午4:24:05
  */
-public class HomePlanet extends IPlanet{
+public class HomePlanet extends IPlanet implements ITransformStream{
 
 	// 玩家列表
 	private Map<String, Player> players = new HashMap<String, Player>();
@@ -26,6 +29,13 @@ public class HomePlanet extends IPlanet{
 		
 		if( players.get(player.getUID()) == null )
 			players.put( player.getUID(), player );
+		
+	}
+
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		// TODO Auto-generated method stub
 		
 	}
 	

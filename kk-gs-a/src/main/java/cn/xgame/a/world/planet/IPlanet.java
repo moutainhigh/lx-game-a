@@ -1,5 +1,7 @@
 package cn.xgame.a.world.planet;
 
+import cn.xgame.config.o.Stars;
+
 /**
  * 星球基类
  * @author deng		
@@ -8,7 +10,7 @@ package cn.xgame.a.world.planet;
 public class IPlanet {
 
 	// 星球配置表
-	
+	protected Stars templet;
 	
 	// 星球总空间
 	protected short maxSpace;

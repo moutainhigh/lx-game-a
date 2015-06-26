@@ -20,8 +20,8 @@ public abstract class IPlayer {
 	// 头像图标ID
 	private int headIco;
 	
-	// 区域
-	private String country;
+	// 区域 - 属于星球ID
+	private short countryId;
 	
 	// 游戏币
 	private int currency;
@@ -48,7 +48,7 @@ public abstract class IPlayer {
 		this.gsid		= dto.getGsid();
 		this.nickname 	= dto.getNickname();
 		this.headIco	= dto.getHeadIco();
-		this.country	= dto.getCountry();
+		this.countryId	= dto.getCountryId();
 		this.currency	= dto.getCurrency();
 		this.gold		= dto.getGold();
 		this.createTime	= dto.getCreateTime();
@@ -62,7 +62,7 @@ public abstract class IPlayer {
 		dto.setGsid(gsid);
 		dto.setNickname(nickname);
 		dto.setHeadIco(headIco);
-		dto.setCountry(country);
+		dto.setCountryId(countryId);
 		dto.setCurrency(currency);
 		dto.setGold(gold);
 		dto.setCreateTime(createTime);
@@ -89,11 +89,11 @@ public abstract class IPlayer {
 	public void setHeadIco(int headIco) {
 		this.headIco = headIco;
 	}
-	public String getCountry() {
-		return country;
+	public short getCountryId() {
+		return countryId;
 	}
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCountryId(short countryId) {
+		this.countryId = countryId;
 	}
 	public int getCurrency() {
 		return currency;
