@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.gen.dto.MysqlGen.M_sequipDto;
 
 /**
  * 舰船装备对象
@@ -12,8 +13,17 @@ import cn.xgame.a.prop.PropType;
  */
 public class SEquip extends IProp{
 
+	/**
+	 * 从数据库获取
+	 * @param o
+	 */
+	public static SEquip wrapDB( M_sequipDto o ) {
+		SEquip ret = new SEquip( o.getUid(), o.getNid(), o.getCount() );
+		return ret;
+	}
+	
 	public SEquip(int uid, int nid, int count) {
-		initialize(uid, nid, count);
+		super(uid, nid, count);
 	}
 
 	@Override

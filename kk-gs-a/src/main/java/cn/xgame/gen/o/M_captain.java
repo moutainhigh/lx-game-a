@@ -5,7 +5,7 @@ package cn.xgame.gen.o;
  * @author deng		
  * @date 2015-6-18 下午3:59:28
  */
-public class Captain {
+public class M_captain {
 	
 	/** 服务器ID */
 	short gsid;

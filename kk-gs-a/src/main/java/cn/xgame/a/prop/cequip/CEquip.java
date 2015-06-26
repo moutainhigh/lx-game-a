@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Weapon;
+import cn.xgame.gen.dto.MysqlGen.M_cequipDto;
 
 /**
  * 舰长装备对象
@@ -12,8 +15,20 @@ import cn.xgame.a.prop.PropType;
  */
 public class CEquip extends IProp{
 
+	private final Weapon templet;
+	
+	/**
+	 * 从数据库获取
+	 * @param o
+	 */
+	public static CEquip wrapDB( M_cequipDto o ) {
+		CEquip ret = new CEquip( o.getUid(), o.getNid(), o.getCount() );
+		return ret;
+	}
+	
 	public CEquip(int uid, int nid, int count) {
-		initialize(uid, nid, count);
+		super(uid, nid, count);
+		templet = CsvGen.getWeapon(nid);
 	}
 
 	@Override
@@ -39,4 +54,7 @@ public class CEquip extends IProp{
 		
 	}
 
+	
+	public Weapon templet() { return templet; }
+	
 }

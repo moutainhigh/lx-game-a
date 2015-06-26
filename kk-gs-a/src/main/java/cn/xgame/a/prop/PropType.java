@@ -1,9 +1,9 @@
 package cn.xgame.a.prop;
 
-import cn.xgame.a.prop.captain.Captain;
+import cn.xgame.a.prop.captain.Captains;
 import cn.xgame.a.prop.cequip.CEquip;
 import cn.xgame.a.prop.sequip.SEquip;
-import cn.xgame.a.prop.ship.Ship;
+import cn.xgame.a.prop.ship.Ships;
 import cn.xgame.a.prop.stuff.Stuff;
 
 /**
@@ -25,7 +25,7 @@ public enum PropType {
 	CAPTAIN( 2 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new Captain( uid, nid, count );
+			return new Captains( uid, nid, count );
 		}
 	},
 	
@@ -33,7 +33,7 @@ public enum PropType {
 	SHIP( 3 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new Ship( uid, nid, count );
+			return new Ships( uid, nid, count );
 		}
 	},
 	

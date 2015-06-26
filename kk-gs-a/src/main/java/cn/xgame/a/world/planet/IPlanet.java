@@ -6,7 +6,7 @@ import cn.xgame.a.world.planet.data.building.BuildingControl;
 import cn.xgame.a.world.planet.data.depot.DepotControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.config.o.Stars;
-import cn.xgame.gen.dto.MysqlGen.PlanetDto;
+import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 
 /**
  * 星球基类
@@ -39,7 +39,7 @@ public class IPlanet implements ITransformStream{
 	 * 初始化 并且保存数据库
 	 * @param dto
 	 */
-	public void init( PlanetDto dto ) {
+	public void init( PlanetDataDto dto ) {
 		maxSpace = templet.room;
 		specialtys.fromTemplet( templet.goods );
 		buildings.fromTemplet( templet.building );
@@ -54,7 +54,7 @@ public class IPlanet implements ITransformStream{
 	 * 从数据库获取数据
 	 * @param dto
 	 */
-	public void wrap( PlanetDto dto ){
+	public void wrap( PlanetDataDto dto ){
 		maxSpace = dto.getMaxSpace();
 		specialtys.fromBytes( dto.getSpecialtys() );
 		depots.fromBytes( dto.getDepots() );

@@ -7,9 +7,12 @@ import x.javaplus.mysql.db.Condition;
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.gen.dto.MysqlGen.CaptainDto;
+import cn.xgame.gen.dto.MysqlGen.M_captainDto;
+import cn.xgame.gen.dto.MysqlGen.M_cequipDto;
+import cn.xgame.gen.dto.MysqlGen.M_sequipDto;
+import cn.xgame.gen.dto.MysqlGen.M_shipDto;
+import cn.xgame.gen.dto.MysqlGen.M_stuffDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
-import cn.xgame.gen.dto.MysqlGen.StuffDto;
 import cn.xgame.utils.Logs;
 
 /**
@@ -21,11 +24,11 @@ public class PropBaseUID implements IFromDB{
 
 	private Player player;
 	
-	private int STUFF_UID;
-	private int CAPTAIN_UID;
-	private int SHIP_UID;
-	private int CEQUIP_UID;
-	private int SEQUIP_UID;
+	private int STUFF_UID 	= 0;
+	private int CAPTAIN_UID = 0;
+	private int SHIP_UID 	= 0;
+	private int CEQUIP_UID 	= 0;
+	private int SEQUIP_UID 	= 0;
 	
 	public PropBaseUID( Player player ) {
 		this.player = player;
@@ -37,11 +40,20 @@ public class PropBaseUID implements IFromDB{
 		
 		String sql;
 		try {
-			sql			= new Condition( StuffDto.unameChangeSql( player.getUID() ) ).AND( StuffDto.gsidChangeSql(player.getGsid() ) ).toString();
-			STUFF_UID 	= SqlUtil.getMaxId( SqlUtil.getClassName( StuffDto.class ), "uid", sql );
+			sql			= new Condition( M_stuffDto.unameChangeSql( player.getUID() ) ).AND( M_stuffDto.gsidChangeSql(player.getGsid() ) ).toString();
+			STUFF_UID 	= SqlUtil.getMaxId( SqlUtil.getClassName( M_stuffDto.class ), "uid", sql );
 			
-			sql			= new Condition( CaptainDto.unameChangeSql( player.getUID() ) ).AND( CaptainDto.gsidChangeSql(player.getGsid() ) ).toString();
-			CAPTAIN_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( CaptainDto.class ), "uid", sql );
+			sql			= new Condition( M_captainDto.unameChangeSql( player.getUID() ) ).AND( M_captainDto.gsidChangeSql(player.getGsid() ) ).toString();
+			CAPTAIN_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( M_captainDto.class ), "uid", sql );
+			
+			sql			= new Condition( M_shipDto.unameChangeSql( player.getUID() ) ).AND( M_shipDto.gsidChangeSql(player.getGsid() ) ).toString();
+			SHIP_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( M_shipDto.class ), "uid", sql );
+			
+			sql			= new Condition( M_cequipDto.unameChangeSql( player.getUID() ) ).AND( M_cequipDto.gsidChangeSql(player.getGsid() ) ).toString();
+			CEQUIP_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( M_cequipDto.class ), "uid", sql );
+			
+			sql			= new Condition( M_sequipDto.unameChangeSql( player.getUID() ) ).AND( M_sequipDto.gsidChangeSql(player.getGsid() ) ).toString();
+			SEQUIP_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( M_sequipDto.class ), "uid", sql );
 			
 		} catch (SQLException e) {
 			Logs.error( "PropBaseUID.fromDB", e );

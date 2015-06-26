@@ -5,7 +5,7 @@ package cn.xgame.gen.o;
  * @author deng		
  * @date 2015-6-26 上午10:02:40
  */
-public class Planet {
+public class PlanetData {
 	
 	/** 星球ID */
 	short id;

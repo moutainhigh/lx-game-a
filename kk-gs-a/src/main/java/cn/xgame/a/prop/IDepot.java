@@ -14,10 +14,9 @@ import x.javaplus.collections.Lists;
 public class IDepot {
 
 	// 所有道具列表
-	protected Map<PropType, List<IProp>> props ;
-	
-	public IDepot(){
-		props = new HashMap<PropType, List<IProp>>();
+	protected Map<PropType, List<IProp>> props = new HashMap<PropType, List<IProp>>();
+
+	public void initialize() {
 //		List<IProp> ret = Lists.newArrayList();
 //		for( )
 	}
@@ -54,11 +53,25 @@ public class IDepot {
 	 */
 	public IProp getProp( PropType type, int uid ) {
 		List<IProp> ls = props.get(type);
+		if( ls == null ) return null;
 		for( IProp b : ls ){
 			if( b.getuId() == uid )
 				return b;
 		}
 		return null;
+	}
+	
+	/**
+	 * 添加一个道具
+	 * @param prop
+	 */
+	public void append( IProp prop ) {
+		List<IProp> temp = props.get( prop.type() );
+		if( temp == null ){
+			temp = Lists.newArrayList();
+			props.put( prop.type() , temp );
+		}
+		temp.add(prop);
 	}
 	
 }

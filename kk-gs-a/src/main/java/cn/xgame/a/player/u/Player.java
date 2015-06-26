@@ -46,12 +46,13 @@ public class Player extends IPlayer implements ITransformStream{
 	 * @param name
 	 */
 	public Player( String uID, int headIco, String name ) {
-		setUID(uID);
+		setUID( uID );
 		setGsid( SystemCfg.ID );
-		setHeadIco(headIco);
-		setNickname(name);
+		setHeadIco( headIco );
+		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		setManors( new ManorControl() );
+		props.initialize();
 	}
 	
 	/**

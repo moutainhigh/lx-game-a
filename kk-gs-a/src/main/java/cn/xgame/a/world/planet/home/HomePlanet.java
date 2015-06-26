@@ -12,8 +12,8 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.config.o.Stars;
-import cn.xgame.gen.dto.MysqlGen.PlanetDao;
-import cn.xgame.gen.dto.MysqlGen.PlanetDto;
+import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
+import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -36,7 +36,7 @@ public class HomePlanet extends IPlanet {
 	private TechControl techs = new TechControl();
 
 	@Override
-	public void wrap( PlanetDto dto ) {
+	public void wrap( PlanetDataDto dto ) {
 		super.wrap(dto);
 		wrapPlayer( dto.getPlayers() );
 		techs.fromBytes( dto.getTechs() );
@@ -92,8 +92,8 @@ public class HomePlanet extends IPlanet {
 
 	// 更新数据库
 	private void updateDB() {
-		PlanetDao dao = SqlUtil.getPlanetDao();
-		PlanetDto dto = dao.update();
+		PlanetDataDao dao = SqlUtil.getPlanetDataDao();
+		PlanetDataDto dto = dao.update();
 		dto.setId( getId() );
 		dto.setMaxSpace( getMaxSpace() );
 		dto.setBuildings( getBuildings().toBytes() );

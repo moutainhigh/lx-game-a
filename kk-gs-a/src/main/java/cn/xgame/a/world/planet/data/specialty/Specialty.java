@@ -13,7 +13,7 @@ import cn.xgame.config.o.Material;
  */
 public class Specialty implements IBufferStream,ITransformStream{
 
-	private Material templet;
+	private final Material templet;
 	
 	// 产出时间
 	private int yieldTime;
@@ -23,7 +23,7 @@ public class Specialty implements IBufferStream,ITransformStream{
 	
 	
 	public Specialty( int id ) {
-		templet = new Material( CsvGen.getMaterial(id) );
+		templet = CsvGen.getMaterial(id);
 	}
 
 	@Override

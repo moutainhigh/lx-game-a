@@ -13,13 +13,13 @@ import cn.xgame.config.o.Building;
  */
 public class Buildings implements IBufferStream,ITransformStream {
 
-	private Building templet;
+	private final Building templet;
 	
 	// 位置
 	private short index;
 	
 	public Buildings( int id ) {
-		templet = new Building( CsvGen.getBuilding(id) );
+		templet = CsvGen.getBuilding(id);
 	}
 	
 	@Override

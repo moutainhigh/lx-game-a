@@ -11,8 +11,8 @@ import cn.xgame.a.world.planet.entrepot.EntrepotPlanet;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Stars;
-import cn.xgame.gen.dto.MysqlGen.PlanetDao;
-import cn.xgame.gen.dto.MysqlGen.PlanetDto;
+import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
+import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.utils.Logs;
 
@@ -67,8 +67,8 @@ public class WorldManager {
 	}
 
 	private void append( IPlanet planet ) {
-		PlanetDao dao = SqlUtil.getPlanetDao();
-		PlanetDto dto = dao.get( planet.getId() );
+		PlanetDataDao dao = SqlUtil.getPlanetDataDao();
+		PlanetDataDto dto = dao.get( planet.getId() );
 		if( dto == null ){
 			dto = dao.create();
 			planet.init( dto );

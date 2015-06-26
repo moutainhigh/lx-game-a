@@ -6,9 +6,11 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Material;
+import cn.xgame.gen.dto.MysqlGen.M_stuffDao;
+import cn.xgame.gen.dto.MysqlGen.M_stuffDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
-import cn.xgame.gen.dto.MysqlGen.StuffDao;
-import cn.xgame.gen.dto.MysqlGen.StuffDto;
 
 /**
  * 材料对象
@@ -16,6 +18,9 @@ import cn.xgame.gen.dto.MysqlGen.StuffDto;
  * @date 2015-6-17 下午7:46:35
  */
 public class Stuff extends IProp{
+	
+	private final Material templet;
+	
 	
 	@Override
 	public PropType type() {
@@ -26,10 +31,9 @@ public class Stuff extends IProp{
 	 * 从数据库获取
 	 * @param o
 	 */
-	public Stuff( StuffDto o ) {
-		setuId( o.getUid() );
-		setnId( o.getNid() );
-		setCount( o.getCount() );
+	public static Stuff wrapDB( M_stuffDto o ) {
+		Stuff ret = new Stuff( o.getUid(), o.getNid(), o.getCount() );
+		return ret;
 	}
 
 	/**
@@ -39,7 +43,8 @@ public class Stuff extends IProp{
 	 * @param count
 	 */
 	public Stuff( int uid, int nid, int count ) {
-		initialize( uid, nid, count );
+		super( uid, nid, count );
+		templet = CsvGen.getMaterial( nid );
 	}
 	
 	@Override
@@ -50,8 +55,8 @@ public class Stuff extends IProp{
 	
 	@Override
 	public void createDB( Player player ) {
-		StuffDao dao = SqlUtil.getStuffDao();
-		StuffDto dto = dao.create();
+		M_stuffDao dao = SqlUtil.getM_stuffDao();
+		M_stuffDto dto = dao.create();
 		dto.setGsid( player.getGsid() );
 		dto.setUname( player.getUID() );
 		dto.setUid( getuId() );
@@ -62,14 +67,15 @@ public class Stuff extends IProp{
 	
 	@Override
 	public void updateDB( Player player ) {
-		StuffDao dao 	= SqlUtil.getStuffDao();
-		String sql 		= new Condition( StuffDto.uidChangeSql( getuId() ) ).AND( StuffDto.gsidChangeSql( player.getGsid() ) ).
-				AND( StuffDto.unameChangeSql( player.getUID() ) ).toString();
-		StuffDto dto 	= dao.updateByExact( sql );
+		M_stuffDao dao 	= SqlUtil.getM_stuffDao();
+		String sql 		= new Condition( M_stuffDto.uidChangeSql( getuId() ) ).AND( M_stuffDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_stuffDto.unameChangeSql( player.getUID() ) ).toString();
+		M_stuffDto dto 	= dao.updateByExact( sql );
 		dto.setNid( getnId() );
 		dto.setCount( getCount() );
 		dao.commit(dto);
 	}
 
 
+	public Material templet(){ return templet; }
 }
