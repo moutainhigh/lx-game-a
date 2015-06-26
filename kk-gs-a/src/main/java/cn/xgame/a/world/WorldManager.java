@@ -46,13 +46,11 @@ public class WorldManager {
 					HomePlanet home = new HomePlanet( star );
 					append( home );
 					homes.add( home );
-					
 				}else if( star.tpye == 2 ){
 					
 					EntrepotPlanet entrepot = new EntrepotPlanet(star);
 					append( entrepot );
 					entrepots.add( entrepot );
-					
 				}else if( star.tpye == 3 ){
 					
 					EctypePlanet ectype = new EctypePlanet(star);

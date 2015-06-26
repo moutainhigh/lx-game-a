@@ -1,5 +1,6 @@
 package cn.xgame.a.prop.cequip;
 
+import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -7,6 +8,8 @@ import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Weapon;
 import cn.xgame.gen.dto.MysqlGen.M_cequipDto;
+import cn.xgame.gen.dto.MysqlGen.M_cequipDao;
+import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 
 /**
  * 舰长装备对象
@@ -32,29 +35,39 @@ public class CEquip extends IProp{
 	}
 
 	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public PropType type() {
-		return PropType.CEQUIP;
-	}
-
-	@Override
 	public void createDB(Player player) {
-		// TODO Auto-generated method stub
+		M_cequipDao dao = SqlUtil.getM_cequipDao();
+		M_cequipDto dto = dao.create();
+		dto.setGsid( player.getGsid() );
+		dto.setUname( player.getUID() );
+		dto.setUid( getuId() );
+		dto.setNid( getnId() );
+		dto.setCount( getCount() );
+		///--下面加上属于自己的东西
 		
+		dao.commit(dto);
 	}
 
 	@Override
 	public void updateDB(Player player) {
+		M_cequipDao dao 	= SqlUtil.getM_cequipDao();
+		String sql 		= new Condition( M_cequipDto.uidChangeSql( getuId() ) ).AND( M_cequipDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_cequipDto.unameChangeSql( player.getUID() ) ).toString();
+		M_cequipDto dto 	= dao.updateByExact( sql );
+		dto.setNid( getnId() );
+		dto.setCount( getCount() );
+		///--下面加上属于自己的东西
+		
+		dao.commit(dto);
+	}
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 	public Weapon templet() { return templet; }
-	
+	@Override
+	public PropType type() { return PropType.CEQUIP; }
 }

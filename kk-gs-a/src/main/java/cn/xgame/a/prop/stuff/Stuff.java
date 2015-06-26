@@ -20,12 +20,7 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 public class Stuff extends IProp{
 	
 	private final Material templet;
-	
-	
-	@Override
-	public PropType type() {
-		return PropType.STUFF;
-	}
+
 	
 	/**
 	 * 从数据库获取
@@ -47,11 +42,6 @@ public class Stuff extends IProp{
 		templet = CsvGen.getMaterial( nid );
 	}
 	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-//		toBuffer( buffer );
-	}
-
 	
 	@Override
 	public void createDB( Player player ) {
@@ -75,7 +65,15 @@ public class Stuff extends IProp{
 		dto.setCount( getCount() );
 		dao.commit(dto);
 	}
-
+	
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		
+		
+	}
 
 	public Material templet(){ return templet; }
+	@Override
+	public PropType type() { return PropType.STUFF; }
+	
 }

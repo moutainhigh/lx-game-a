@@ -35,16 +35,6 @@ public class Captains extends IProp {
 	}
 
 	@Override
-	public void buildTransformStream( ByteBuf buffer ) {
-		
-	}
-
-	@Override
-	public PropType type() {
-		return PropType.CAPTAIN;
-	}
-
-	@Override
 	public void createDB(Player player) {
 		M_captainDao dao = SqlUtil.getM_captainDao();
 		M_captainDto dto = dao.create();
@@ -71,8 +61,12 @@ public class Captains extends IProp {
 		dao.commit(dto);
 	}
 	
-	
+	@Override
+	public void buildTransformStream( ByteBuf buffer ) {
+		
+	}
 
 	public Captain templet(){ return templet; }
-
+	@Override
+	public PropType type() { return PropType.CAPTAIN; }
 }
