@@ -1,5 +1,8 @@
 package cn.xgame.gen;
 
+import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.gen.dto.MysqlGen.TestDao;
+import cn.xgame.gen.dto.MysqlGen.TestDto;
 import x.javaplus.mysql.db.Dbcp;
 
 
@@ -46,6 +49,11 @@ public class Test {
 //		dao.deleteByExact( sql );
 //		dao.commit();
 		
+		TestDao dao = SqlUtil.getTestDao();
+		TestDto dto = dao.update();
+		dto.setId( "1a2312" );
+		dto.setA( 14 );
+		dao.commit(dto);
 		
 		System.out.println( Dbcp.toMessage() );
 	}

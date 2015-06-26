@@ -1,15 +1,26 @@
 package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) throws SQLException{			DBObject db = DBObject.create();			db.prepareStatement( "select max(" + col + ") from " + tableName + " where " + criteria );			db.executeQuery();			if ( db.next())				return db.getInt( 1 );			db.close();			return 0;		}				/**		 * 获取某张表的数据总数		 * @param tableName		 * @return		 */		public static long getCount( String tableName ) throws SQLException {			DBObject db = DBObject.create();			db.prepareStatement( "select COUNT(*) from " + tableName );			db.executeQuery();			if ( db.next() )				return db.getLong( 1 );			db.close();			return 0;		}				@SuppressWarnings("rawtypes")		public static String getClassName( Class clzss ) {			return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();		}		public static CaptainDao getCaptainDao() {			return new CaptainDao( "captain" );		}
+		public static PlanetDao getPlanetDao() {			return new PlanetDao( "planet" );		}
 		public static PlayerDataDao getPlayerDataDao() {			return new PlayerDataDao( "playerdata" );		}
 		public static StuffDao getStuffDao() {			return new StuffDao( "stuff" );		}
+		public static TestDao getTestDao() {			return new TestDao( "test" );		}
 
-	}			public static class CaptainDao extends SqlDao{				public CaptainDao( String tableName ) {			super( tableName );		}				public CaptainDto get( String id ) {			super.select( id, true );			if( next() ){				CaptainDto x = new CaptainDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<CaptainDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<CaptainDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<CaptainDto> getLs() {			List<CaptainDto> ls = Lists.newArrayList();			while( next() ){				CaptainDto x = new CaptainDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public CaptainDto update(){			_update( );			return new CaptainDto();		}		public CaptainDto updateByExact( String arg ){			_updateByExact( arg );			return new CaptainDto();		}				public CaptainDto create() {			insert();			return new CaptainDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( CaptainDto dto ) {			setObject( "gsid", dto.getGsid() );
+	}			public static class CaptainDao extends SqlDao{				public CaptainDao( String tableName ) {			super( tableName );		}				public CaptainDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				CaptainDto x = new CaptainDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<CaptainDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<CaptainDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<CaptainDto> getLs() {			List<CaptainDto> ls = Lists.newArrayList();			while( next() ){				CaptainDto x = new CaptainDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public CaptainDto update(){			_update( );			return new CaptainDto();		}		public CaptainDto updateByExact( String arg ){			_updateByExact( arg );			return new CaptainDto();		}				public CaptainDto create() {			insert();			return new CaptainDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( CaptainDto dto ) {			setObject( "gsid", dto.getGsid() );
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
 			setObject( "count", dto.getCount() );
 
 			super.commit( true );		}	}
-	public static class PlayerDataDao extends SqlDao{				public PlayerDataDao( String tableName ) {			super( tableName );		}				public PlayerDataDto get( String id ) {			super.select( id, true );			if( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlayerDataDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<PlayerDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlayerDataDto> getLs() {			List<PlayerDataDto> ls = Lists.newArrayList();			while( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlayerDataDto update(){			_update( );			return new PlayerDataDto();		}		public PlayerDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlayerDataDto();		}				public PlayerDataDto create() {			insert();			return new PlayerDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlayerDataDto dto ) {			setObject( "gsid", dto.getGsid() );
+	public static class PlanetDao extends SqlDao{				public PlanetDao( String tableName ) {			super( tableName );		}				public PlanetDto get( Short id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDto x = new PlanetDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDto> getAll( Short id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDto> getLs() {			List<PlanetDto> ls = Lists.newArrayList();			while( next() ){				PlanetDto x = new PlanetDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDto update(){			_update( );			return new PlanetDto();		}		public PlanetDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDto();		}				public PlanetDto create() {			insert();			return new PlanetDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDto dto ) {			setObject( "id", dto.getId() );
+			setObject( "maxSpace", dto.getMaxSpace() );
+			setObject( "players", dto.getPlayers() );
+			setObject( "buildings", dto.getBuildings() );
+			setObject( "depots", dto.getDepots() );
+			setObject( "specialtys", dto.getSpecialtys() );
+			setObject( "techs", dto.getTechs() );
+
+			super.commit( true );		}	}
+	public static class PlayerDataDao extends SqlDao{				public PlayerDataDao( String tableName ) {			super( tableName );		}				public PlayerDataDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlayerDataDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PlayerDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlayerDataDto> getLs() {			List<PlayerDataDto> ls = Lists.newArrayList();			while( next() ){				PlayerDataDto x = new PlayerDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlayerDataDto update(){			_update( );			return new PlayerDataDto();		}		public PlayerDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlayerDataDto();		}				public PlayerDataDto create() {			insert();			return new PlayerDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlayerDataDto dto ) {			setObject( "gsid", dto.getGsid() );
 			setObject( "uid", dto.getUid() );
 			setObject( "createTime", dto.getCreateTime() );
 			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
@@ -21,11 +32,15 @@
 			setObject( "manors", dto.getManors() );
 
 			super.commit( true );		}	}
-	public static class StuffDao extends SqlDao{				public StuffDao( String tableName ) {			super( tableName );		}				public StuffDto get( String id ) {			super.select( id, true );			if( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<StuffDto> getAll( String id ) {			super.select( id, false );			return getLs();		}		public List<StuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<StuffDto> getLs() {			List<StuffDto> ls = Lists.newArrayList();			while( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public StuffDto update(){			_update( );			return new StuffDto();		}		public StuffDto updateByExact( String arg ){			_updateByExact( arg );			return new StuffDto();		}				public StuffDto create() {			insert();			return new StuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( StuffDto dto ) {			setObject( "gsid", dto.getGsid() );
+	public static class StuffDao extends SqlDao{				public StuffDao( String tableName ) {			super( tableName );		}				public StuffDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<StuffDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<StuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<StuffDto> getLs() {			List<StuffDto> ls = Lists.newArrayList();			while( next() ){				StuffDto x = new StuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public StuffDto update(){			_update( );			return new StuffDto();		}		public StuffDto updateByExact( String arg ){			_updateByExact( arg );			return new StuffDto();		}				public StuffDto create() {			insert();			return new StuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( StuffDto dto ) {			setObject( "gsid", dto.getGsid() );
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
 			setObject( "count", dto.getCount() );
+
+			super.commit( true );		}	}
+	public static class TestDao extends SqlDao{				public TestDao( String tableName ) {			super( tableName );		}				public TestDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				TestDto x = new TestDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<TestDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<TestDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<TestDto> getLs() {			List<TestDto> ls = Lists.newArrayList();			while( next() ){				TestDto x = new TestDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public TestDto update(){			_update( );			return new TestDto();		}		public TestDto updateByExact( String arg ){			_updateByExact( arg );			return new TestDto();		}				public TestDto create() {			insert();			return new TestDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( TestDto dto ) {			setObject( "id", dto.getId() );
+			setObject( "a", dto.getA() );
 
 			super.commit( true );		}	}
 
@@ -66,6 +81,55 @@
 			count = o.getInt( "count" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
+	public static class PlanetDto implements SqlDto{		private Short id = null;
+		private Short maxSpace = null;
+		private byte[] players = null;
+		private byte[] buildings = null;
+		private byte[] depots = null;
+		private byte[] specialtys = null;
+		private byte[] techs = null;
+
+		public PlanetDto() {		}				/**		 * Copy new one		 */		public PlanetDto(PlanetDto src) {			this.id = src.id;
+			this.maxSpace = src.maxSpace;
+			this.players = src.players;
+			this.buildings = src.buildings;
+			this.depots = src.depots;
+			this.specialtys = src.specialtys;
+			this.techs = src.techs;
+
+		}		/** 星球ID */		public Short getId(){			return this.id;		}
+		/** 星球总空间 */		public Short getMaxSpace(){			return this.maxSpace;		}
+		/** 玩家列表 */		public byte[] getPlayers(){			return this.players;		}
+		/** 星球建筑 */		public byte[] getBuildings(){			return this.buildings;		}
+		/** 星球仓库 */		public byte[] getDepots(){			return this.depots;		}
+		/** 星球特产 */		public byte[] getSpecialtys(){			return this.specialtys;		}
+		/** 星球科技 */		public byte[] getTechs(){			return this.techs;		}
+
+		/** 星球ID */		public void setId( Short id ){			this.id = id;		}
+		/** 星球总空间 */		public void setMaxSpace( Short maxSpace ){			this.maxSpace = maxSpace;		}
+		/** 玩家列表 */		public void setPlayers( byte[] players ){			this.players = players;		}
+		/** 星球建筑 */		public void setBuildings( byte[] buildings ){			this.buildings = buildings;		}
+		/** 星球仓库 */		public void setDepots( byte[] depots ){			this.depots = depots;		}
+		/** 星球特产 */		public void setSpecialtys( byte[] specialtys ){			this.specialtys = specialtys;		}
+		/** 星球科技 */		public void setTechs( byte[] techs ){			this.techs = techs;		}
+
+		public static String idChangeSql( Short x) {			return "id=" + x;		}
+		public static String maxSpaceChangeSql( Short x) {			return "maxSpace=" + x;		}
+		public static String playersChangeSql( byte[] x) {			return "players=" + x;		}
+		public static String buildingsChangeSql( byte[] x) {			return "buildings=" + x;		}
+		public static String depotsChangeSql( byte[] x) {			return "depots=" + x;		}
+		public static String specialtysChangeSql( byte[] x) {			return "specialtys=" + x;		}
+		public static String techsChangeSql( byte[] x) {			return "techs=" + x;		}
+
+		@Override		public void fromDBObject(DBObject o) {			id = o.getShort( "id" );
+			maxSpace = o.getShort( "maxSpace" );
+			players = o.getBytes( "players" );
+			buildings = o.getBytes( "buildings" );
+			depots = o.getBytes( "depots" );
+			specialtys = o.getBytes( "specialtys" );
+			techs = o.getBytes( "techs" );
+
+		}				@Override		public String toString() {			return "id="+id+","+"maxSpace="+maxSpace+","+"players="+players+","+"buildings="+buildings+","+"depots="+depots+","+"specialtys="+specialtys+","+"techs="+techs;		}	}
 	public static class PlayerDataDto implements SqlDto{		private Short gsid = null;
 		private String uid = null;
 		private Long createTime = null;
@@ -170,5 +234,24 @@
 			count = o.getInt( "count" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
+	public static class TestDto implements SqlDto{		private String id = null;
+		private Integer a = null;
+
+		public TestDto() {		}				/**		 * Copy new one		 */		public TestDto(TestDto src) {			this.id = src.id;
+			this.a = src.a;
+
+		}		/** 无 */		public String getId(){			return this.id;		}
+		/** 无 */		public Integer getA(){			return this.a;		}
+
+		/** 无 */		public void setId( String id ){			this.id = id;		}
+		/** 无 */		public void setA( Integer a ){			this.a = a;		}
+
+		public static String idChangeSql( String x) {			return "id=" + "'"+x+"'";		}
+		public static String aChangeSql( Integer x) {			return "a=" + x;		}
+
+		@Override		public void fromDBObject(DBObject o) {			id = o.getString( "id" );
+			a = o.getInt( "a" );
+
+		}				@Override		public String toString() {			return "id="+id+","+"a="+a;		}	}
 
 }

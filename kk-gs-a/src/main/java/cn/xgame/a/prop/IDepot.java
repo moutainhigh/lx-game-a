@@ -14,8 +14,13 @@ import x.javaplus.collections.Lists;
 public class IDepot {
 
 	// 所有道具列表
-	protected Map<PropType, List<IProp>> props = new HashMap<PropType, List<IProp>>();
+	protected Map<PropType, List<IProp>> props ;
 	
+	public IDepot(){
+		props = new HashMap<PropType, List<IProp>>();
+//		List<IProp> ret = Lists.newArrayList();
+//		for( )
+	}
 	
 	/**
 	 * 获取背包所有道具
@@ -23,11 +28,21 @@ public class IDepot {
 	 */
 	public List<IProp> getAll(){
 		List<IProp> ret = Lists.newArrayList();
-		ret.addAll( props.get( PropType.STUFF ) );
-		ret.addAll( props.get( PropType.CAPTAIN ) );
-		ret.addAll( props.get( PropType.SHIP ) );
-		ret.addAll( props.get( PropType.CEQUIP ) );
-		ret.addAll( props.get( PropType.SEQUIP ) );
+		List<IProp> temp = props.get( PropType.STUFF );
+		if( temp != null )
+			ret.addAll( temp );
+		temp = props.get( PropType.CAPTAIN );
+		if( temp != null )
+			ret.addAll( temp );
+		temp = props.get( PropType.SHIP );
+		if( temp != null )
+			ret.addAll( temp );
+		temp = props.get( PropType.CEQUIP );
+		if( temp != null )
+			ret.addAll( temp );
+		temp = props.get( PropType.CEQUIP );
+		if( temp != null )
+			ret.addAll( temp );
 		return ret;
 	}
 	

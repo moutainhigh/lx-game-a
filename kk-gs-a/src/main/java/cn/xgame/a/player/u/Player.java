@@ -13,11 +13,15 @@ import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.netty.Netty.Attr;
+import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.PackageCheck;
 
 public class Player extends IPlayer implements ITransformStream{
 
+	// 玩家的IP地址
+	private String ip;
+	
 	// 网络通信socket
 	private ChannelHandlerContext ctx = null;
 	
@@ -32,6 +36,7 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 所有道具唯一ID基础值 
 	private PropBaseUID propBaseUid = new PropBaseUID( this );
+	
 	
 	
 	/**
@@ -85,7 +90,11 @@ public class Player extends IPlayer implements ITransformStream{
 		long t = System.currentTimeMillis() - Time.refTimeInMillis( getLastLogoutTime(), 24, 0, 0 );
 		return (int) (t / 86400000l);
 	}
-
+	
+	/** 记录 最后一次登录的服务器ID */
+	public void rLastGsid() {
+		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
+	}
 
 	/**
 	 * 生成对应道具 唯一ID
@@ -112,6 +121,10 @@ public class Player extends IPlayer implements ITransformStream{
 	public void setCtx( ChannelHandlerContext ctx ) {
 		this.ctx = ctx;
 		Attr.setAttachment( this.ctx, getUID() );
+		ip = IP.formAddress( this.ctx );
+	}
+	public String getIp() {
+		return ip;
 	}
 	public PropBaseUID getPropBaseUid() {
 		return propBaseUid;
@@ -120,9 +133,5 @@ public class Player extends IPlayer implements ITransformStream{
 		return props;
 	}
 
-	/** 记录 最后一次登录的服务器ID */
-	public void rLastGsid() {
-		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
-	}
 
 }

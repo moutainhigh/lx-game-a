@@ -5,11 +5,16 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.ectype.EctypePlanet;
 import cn.xgame.a.world.planet.entrepot.EntrepotPlanet;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Stars;
+import cn.xgame.gen.dto.MysqlGen.PlanetDao;
+import cn.xgame.gen.dto.MysqlGen.PlanetDto;
+import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.utils.Logs;
 
 /**
  * 世界银河 星图  管理中心
@@ -34,39 +39,63 @@ public class WorldManager {
 	public void initialize(){
 		
 		for( Stars star : CsvGen.starss ){
-			if( star.tpye == 1 ){
-				HomePlanet home = new HomePlanet();
-				homes.add( home );
-			}else if( star.tpye == 2 ){
-				EntrepotPlanet entrepot = new EntrepotPlanet();
-				entrepots.add( entrepot );
-			}else if( star.tpye == 3 ){
-				EctypePlanet ectype = new EctypePlanet();
-				ectypes.add( ectype );
+			
+			try {
+				if( star.tpye == 1 ){
+					
+					HomePlanet home = new HomePlanet( star );
+					append( home );
+					homes.add( home );
+					
+				}else if( star.tpye == 2 ){
+					
+					EntrepotPlanet entrepot = new EntrepotPlanet(star);
+					append( entrepot );
+					entrepots.add( entrepot );
+					
+				}else if( star.tpye == 3 ){
+					
+					EctypePlanet ectype = new EctypePlanet(star);
+					append( ectype );
+					ectypes.add( ectype );
+				}
+			} catch (Exception e) {
+				Logs.error( "初始化星图错误 at="+star.id, e );
 			}
 		}
 		
 	}
-	
-	
-	
-	
+
+	private void append( IPlanet planet ) {
+		PlanetDao dao = SqlUtil.getPlanetDao();
+		PlanetDto dto = dao.get( planet.getId() );
+		if( dto == null ){
+			dto = dao.create();
+			planet.init( dto );
+			dao.commit( dto );
+		}else{
+			planet.wrap( dto );
+			dao.commit();
+		}
+	}
+
+
 	/**
 	 * 分配母星
 	 * @param player
-	 * @param ip
 	 */
-	public void allotHomePlanet( Player player, String ip ){
+	public HomePlanet allotHomePlanet( Player player ){
 		
 		// 先根据ip获取对应母星
-		HomePlanet home = getHomeInIP( ip );
+		HomePlanet home = getHomeInIP( player.getIp() );
 		
 		// 把玩家放入 母星
 		home.add( player );
-		player.setCountryId( (short) 1 );// 这里对应设置 是为了 方便查找
+		player.setCountryId( home.getId() );// 这里对应设置 是为了 方便查找
 		
 		// 初始化 领地
 //		player.
+		return home;
 	}
 	
 	// 根据ip获取 对应母星
@@ -81,7 +110,11 @@ public class WorldManager {
 	 * @return
 	 */
 	public HomePlanet getHPlanetInPlayer( Player player ) {
-		return homes.get(0);
+		for( HomePlanet home : homes ){
+			if( home.getId() == player.getCountryId() )
+				return home;
+		}
+		return null;
 	}
 	
 

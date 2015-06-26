@@ -40,11 +40,11 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 */
 	@Override
 	public void buildTransformStream( ByteBuf response ) {
-//		List<IProp> ls = getAll();
-//		response.writeShort( ls.size() );
-//		for( IProp bag : ls ){
-//			bag.putBaseBuffer( response );
-//		}
+		List<IProp> ls = getAll();
+		response.writeShort( ls.size() );
+		for( IProp bag : ls ){
+			bag.putBaseBuffer( response );
+		}
 	}
 	
 	@Override
@@ -121,7 +121,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	
 	public static void main(String[] args) {
 		
-		Player p = PlayerManager.o.getPlayer( "101" );
+		Player p = PlayerManager.o.getPlayer( "101", SystemCfg.ID );
 		
 //		p.getProps().createProp( PropType.STUFF, 101, 20 );
 //		p.getProps().createProp( PropType.CAPTAIN, 201, 1 );

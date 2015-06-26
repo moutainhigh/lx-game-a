@@ -11,6 +11,8 @@ import x.javaplus.util.Util.Key;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.Constants;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -29,6 +31,7 @@ public class CreateEvent extends IEvent {
 		
 		ErrorCode code 	= null;
 		Player player 	= null;
+		HomePlanet home = null;
 		try {
 			
 			// 验证key是否正确
@@ -38,7 +41,8 @@ public class CreateEvent extends IEvent {
 			// 获取玩家信息
 			player	= PlayerManager.o.create( ctx, UID, headIco, name );
 			
-			// 
+			// 分配母星
+			home = WorldManager.o.allotHomePlanet( player );
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -54,6 +58,8 @@ public class CreateEvent extends IEvent {
 			player.getProps().buildTransformStream( response );
 			// 领地数据
 			player.getManors().buildTransformStream( response );
+			// 发送自己母星数据
+			home.buildTransformStream( response );
 		}
 		sendPackage( ctx, response );
 	

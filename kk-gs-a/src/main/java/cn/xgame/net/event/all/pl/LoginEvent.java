@@ -34,6 +34,7 @@ public class LoginEvent extends IEvent{
 		
 		ErrorCode code 	= null;
 		Player player 	= null;
+		HomePlanet home = null;
 		try {
 			
 			// 验证key是否正确
@@ -41,7 +42,10 @@ public class LoginEvent extends IEvent{
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
 			// 获取玩家信息
-			player	= PlayerManager.o.login( ctx, UID );
+			player 	= PlayerManager.o.login( ctx, UID );
+			
+			// 获取母星 信息
+			home 	= WorldManager.o.getHPlanetInPlayer( player );
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -59,7 +63,6 @@ public class LoginEvent extends IEvent{
 			// 领地数据
 			player.getManors().buildTransformStream( response );
 			// 发送自己母星数据
-			HomePlanet home = WorldManager.o.getHPlanetInPlayer( player );
 			home.buildTransformStream( response );
 		}
 		sendPackage( ctx, response );

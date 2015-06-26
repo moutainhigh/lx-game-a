@@ -77,18 +77,18 @@ public class Launch {
 			
 			// 1.加载配置表
 			CsvGen.load();
+			Logs.debug( "配置表加载完成" );
 			
 			// 2.初始化 星图
 			WorldManager.o.initialize();
+			Logs.debug( "星图初始化完成" );
 			
 			// 3.启动游戏服务器
 			startServer();
 			
 			// 4.启动线程
 			ThreadManager.start();
-			
-			
-			Logs.debug( "游戏服 启动成功" );
+			Logs.debug( "线程启动完成 -- " );
 			
 		} catch (Exception e) {
 			Logs.error( e.getMessage() );
@@ -113,12 +113,15 @@ public class Launch {
 		
 		// 初始化 ip数据库
 		IPSeeker.I.init( Resources.getResource( "qqwry.dat" ) );
+		
+		Logs.debug( "系统配置加载完成" );
 	}
 	
 	private static void startServer() {
 		
 		// 启动 服务器
-		new NettyServer( SystemCfg.GS_PORT ).start();
+		if( new NettyServer( SystemCfg.GS_PORT ).start() )
+			Logs.debug( "服务器 启动完成" );
 	}
 
 }

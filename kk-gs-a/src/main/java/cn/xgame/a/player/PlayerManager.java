@@ -63,12 +63,13 @@ public class PlayerManager {
 	/**
 	 * 获取 玩家  没有会在数据库获取
 	 * @param uID
+	 * @param gsid 
 	 * @return
 	 */
-	public Player getPlayer( String uID ) {
+	public Player getPlayer( String uID, short gsid ) {
 		Player ret = get( uID );
 		if( ret == null )
-			ret = getPlayerFmDB( uID, SystemCfg.ID );
+			ret = getPlayerFmDB( uID, gsid );
 		return ret;
 	}
 	
@@ -144,7 +145,7 @@ public class PlayerManager {
 		
 		Player ret = new Player( uID, headIco, name );
 		// 设置socket
-//		ret.setCtx( ctx );
+		ret.setCtx( ctx );
 		// 放入内存
 		players.put( ret.getUID(), ret );
 		
