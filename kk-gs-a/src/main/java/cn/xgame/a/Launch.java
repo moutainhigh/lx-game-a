@@ -1,5 +1,7 @@
 package cn.xgame.a;
 
+import java.io.File;
+
 import io.netty.channel.AbstractChannel;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -15,6 +17,7 @@ import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.ThreadManager;
 
 import x.javaplus.ip.IPSeeker;
+import x.javaplus.mysql.App;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
 
@@ -52,6 +55,11 @@ public class Launch {
 	public static void main(String[] args) {
 		
 		try {
+			// 构建数据库
+			String path = "sql";
+			File file = new File(path);
+			if( file.isDirectory() )
+				App.generateMysql( path );
 			
 			// 1 加载系统配置
 			initSystemProperties();

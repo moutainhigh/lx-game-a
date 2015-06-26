@@ -18,7 +18,7 @@ public class Net {
 		
 		Events event 		= Events.fromNum( packageNo );
 		
-		Logs.debug( "申请包 " + packageNo );
+		Logs.debug( ctx, "申请包 " + packageNo );
 		try{
 			if( event == null ) throw new Exception( "event为空" );
 	

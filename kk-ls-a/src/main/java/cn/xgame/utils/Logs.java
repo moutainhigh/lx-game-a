@@ -1,9 +1,12 @@
 package cn.xgame.utils;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.net.netty.Netty.IP;
 
 /**
  * 日志类 包括控制台输出
@@ -21,11 +24,12 @@ public class Logs {
 
 	/** debug输出 */
 	public static void debug( Object log ) { if( SystemCfg.DEBUG ) logger.debug( "[ systen ]: "+log ); }
+	public static void debug( ChannelHandlerContext ctx, Object log ) { if( SystemCfg.DEBUG ) logger.debug( "[ "+IP.formAddress(ctx)+" ]: "+log ); }
 	
 	
 	public static void main(String[] args) {
 		PropertyConfigurator.configureAndWatch( "log4jconfig/log4j.properties" );
-		
-		error( "asdasds" );
+		Logs.debug( "" );
+		Logs.error( "asdasds" );
 	}
 }

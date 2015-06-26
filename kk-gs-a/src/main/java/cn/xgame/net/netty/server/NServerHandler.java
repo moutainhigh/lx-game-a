@@ -51,12 +51,12 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 
 	/** 有用户连*/
 	public void channelActive( ChannelHandlerContext ctx ) { // (1)
-		Logs.debug( IP.formAddress(ctx) + " connect!" );
+		Logs.debug( ctx, " connect!" );
 	}
 	
 	/** 连接断开 */
 	public void channelInactive( ChannelHandlerContext ctx ){
-		Logs.debug( IP.formAddress( ctx ) + " disconnect!" );
+		Logs.debug( ctx, " disconnect!" );
 		net.disconnect( ctx );
 	}
 	
