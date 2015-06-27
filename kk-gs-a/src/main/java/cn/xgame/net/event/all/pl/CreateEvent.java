@@ -42,7 +42,7 @@ public class CreateEvent extends IEvent {
 			player	= PlayerManager.o.create( ctx, UID, headIco, name );
 			
 			// 分配母星
-			home = WorldManager.o.allotHomePlanet( player );
+			home 	= WorldManager.o.allotHomePlanet( player );
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -68,6 +68,9 @@ public class CreateEvent extends IEvent {
 			
 			// 记录最后一次登录的服务器ID
 			player.rLastGsid();
+			
+			// 保存数据库一次
+			PlayerManager.o.update(player);
 		}
 	}
 
