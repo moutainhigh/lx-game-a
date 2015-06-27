@@ -99,6 +99,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			Captains x = Captains.wrapDB(o);
 			ret.add(x);
 		}
+		dao.commit();
 		return ret;
 	}
 	// 舰船
@@ -111,6 +112,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			Ships x = Ships.wrapDB(o);
 			ret.add( x );
 		}
+		dao.commit();
 		return ret;
 	}
 	// 舰长-装备
@@ -123,6 +125,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			CEquip x = CEquip.wrapDB(o);
 			ret.add( x );
 		}
+		dao.commit();
 		return ret;
 	}
 	// 舰船-装备
@@ -135,6 +138,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			SEquip x = SEquip.wrapDB(o);
 			ret.add( x );
 		}
+		dao.commit();
 		return ret;
 	}
 	

@@ -1,6 +1,5 @@
 package cn.xgame.a.player;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,6 +221,7 @@ public class PlayerManager {
 	private boolean isRepeat( String name ) {
 		PlayerDataDao dao = SqlUtil.getPlayerDataDao();
 		List<PlayerDataDto> dto = dao.getByExact( PlayerDataDto.nicknameChangeSql(name) );
+		dao.commit();
 		return !dto.isEmpty();
 	}
 	
@@ -230,11 +230,7 @@ public class PlayerManager {
 	 * @return
 	 */
 	public int peopleNumber() {
-		try {
-			return (int) SqlUtil.getCount( SqlUtil.getClassName( PlayerDataDto.class ) );
-		} catch (SQLException e) {
-			return 0;
-		}
+		return (int) SqlUtil.getCount( SqlUtil.getClassName( PlayerDataDto.class ) );
 	}
 	
 	public static void main(String[] args) throws Exception {

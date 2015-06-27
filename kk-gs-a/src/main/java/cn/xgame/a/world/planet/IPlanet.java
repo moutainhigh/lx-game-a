@@ -16,7 +16,7 @@ import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 public class IPlanet implements ITransformStream{
 
 	// 星球配置表
-	private Stars templet;
+	private final Stars templet;
 	
 	// 星球总空间
 	private short maxSpace;
@@ -32,7 +32,7 @@ public class IPlanet implements ITransformStream{
 	
 	
 	public IPlanet( Stars clone ){
-		templet = new Stars(clone);
+		templet = clone;
 	}
 	
 	/**
@@ -70,12 +70,8 @@ public class IPlanet implements ITransformStream{
 		buildings.buildTransformStream( buffer );
 	}
 
-	public Stars templet(){
-		return templet;
-	}
-	public Short getId() {
-		return templet.id;
-	}
+	public Stars templet(){ return templet; }
+	public Short getId() { return templet.id; }
 	public short getMaxSpace() {
 		return maxSpace;
 	}
