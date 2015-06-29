@@ -35,7 +35,7 @@ public class PlayerManager {
 	 */
 	public void eventRun( String uID, Events event, ByteBuf data ) throws Exception {
 		
-		Player player = get( uID );
+		Player player = getPlayerFmOnline( uID );
 		if( player == null )
 			throw new Exception( "UID无效,UID="+uID );
 		
@@ -44,11 +44,6 @@ public class PlayerManager {
 		
 		// 分发给对应 包处理
 		event.run( player, data );
-	}
-	
-	
-	public Player get( String uID ){
-		return players.get(uID);
 	}
 	
 	/**
@@ -60,13 +55,22 @@ public class PlayerManager {
 	}
 	
 	/**
+	 * 从在线列表 获取 玩家 
+	 * @param uID
+	 * @return
+	 */
+	public Player getPlayerFmOnline( String uID ){
+		return players.get(uID);
+	}
+	
+	/**
 	 * 获取 玩家  没有会在数据库获取
 	 * @param uID
 	 * @param gsid 
 	 * @return
 	 */
 	public Player getPlayer( String uID, short gsid ) {
-		Player ret = get( uID );
+		Player ret = getPlayerFmOnline( uID );
 		if( ret == null )
 			ret = getPlayerFmDB( uID, gsid );
 		return ret;

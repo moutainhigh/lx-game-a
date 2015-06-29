@@ -3,9 +3,9 @@ package cn.xgame.a.world.planet.home;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import x.javaplus.collections.Lists;
 
 
 import cn.xgame.a.player.PlayerManager;
@@ -34,7 +34,7 @@ public class HomePlanet extends IPlanet {
 
 
 	// 玩家列表
-	private Map<String, Player> players = new HashMap<String, Player>();
+	private List<Child> childs = Lists.newArrayList();
 	
 	// 科技列表
 	private TechControl techs = new TechControl();
@@ -51,47 +51,26 @@ public class HomePlanet extends IPlanet {
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		short size = buf.readShort();
 		for( int i = 0; i < size; i++ ){
-			String uid = RW.readString(buf);
-			short gsid = buf.readShort();
-			Player player = PlayerManager.o.getPlayer( uid, gsid );
-			players.put(uid, player);
+			Child child = new Child( RW.readString(buf), buf.readShort() );
+			childs.add( child );
 		}
 	}
 	
 	private byte[] toPlayers(){
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeShort( players.size() );
-		for( Player player : players.values() ){
-			RW.writeString( buf, player.getUID() );
-			buf.writeShort( player.getGsid() );
+		buf.writeShort( childs.size() );
+		for( Child child : childs ){
+			RW.writeString( buf, child.UID );
+			buf.writeShort( child.gsid );
 		}
 		return buf.array();
 	}
 	
 
-	/**
-	 * 星球结构
-	 * id ：Short
-	 * 
-	 * 
-	 */
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		super.buildTransformStream(buffer);
 		techs.buildTransformStream(buffer);
-	}
-
-
-	/**
-	 * 添加一个 玩家
-	 * @param player
-	 */
-	public void add( Player player ) {
-		
-		if( players.get(player.getUID()) == null )
-			players.put( player.getUID(), player );
-		
-		updateDB();
 	}
 
 	@Override
@@ -108,6 +87,28 @@ public class HomePlanet extends IPlanet {
 		dao.commit(dto);
 	}
 
+	/**
+	 * 添加一个 玩家
+	 * @param player
+	 */
+	public void add( Player player ) {
+		Child child = getChild( player.getUID() );
+		if( child == null )
+			addChild( player );
+	}
+	
+	private void addChild( Player player ) {
+		Child child = new Child( player.getUID(), player.getGsid() );
+		childs.add( child );
+	}
+	private Child getChild(String uid) {
+		for( Child child : childs ){
+			if( child.UID.equals( uid ) )
+				return child;
+		}
+		return null;
+	}
+	
 	/** 线程 */
 	public void run() {
 		// 这里处理 特产
@@ -123,8 +124,9 @@ public class HomePlanet extends IPlanet {
 	// 同步特产信息
 	private void synchronizeSpecialty( Specialty spe ) {
 		
-		for( Player player : players.values() ){
-			if( !player.isOnline() )
+		for( Child child : childs ){
+			Player player = PlayerManager.o.getPlayerFmOnline( child.UID );
+			if( player == null || !player.isOnline() )
 				continue;
 			
 			((Update_2211)Events.UPDATE_2211.getEventInstance()).run( player, spe );
