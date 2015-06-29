@@ -116,8 +116,6 @@ public class HomePlanet extends IPlanet {
 		for( Specialty spe : ls ){
 			if( spe.run() )
 				synchronizeSpecialty( spe );
-		
-		
 		}
 	}
 
