@@ -42,7 +42,7 @@ public class NServerHandler extends ChannelInboundHandlerAdapter{
 				net.packageRun( ctx, packageNo, data );
 			}
 		} catch (Exception e) {
-			Logs.error( " 通信错误 IP(" + IP.formAddress(ctx)+ "), 错误信息:" + e.getMessage() );
+			Logs.error( " 通信错误 IP(" + IP.formAddress(ctx)+ ")", e );
 			ctx.close();
 		} finally {
 			in.release(); // 记得要释放掉

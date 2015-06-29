@@ -16,4 +16,13 @@ public class EctypePlanet extends IPlanet{
 		
 	}
 
+	
+	
+	
+	
+	@Override
+	public void updateDB() {
+		
+	}
+
 }

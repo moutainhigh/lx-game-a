@@ -34,27 +34,28 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 			Specialty o = new Specialty( Integer.parseInt( x[0] ) );
 			o.setYieldTime( Integer.parseInt( x[1] ) );
 			o.setYieldNum( Integer.parseInt( x[2] ) );
-			specialtys.add(o);
+			o.setMaxYieldNum( Integer.parseInt( x[3] ) );
+			getSpecialtys().add(o);
 		}
 	}
 
 	@Override
 	public void fromBytes( byte[] data ) {
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		short size = buf.readShort();
+		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			int id = buf.readInt();
 			Specialty o = new Specialty( id );
 			o.wrapBuffer(buf);
-			specialtys.add(o);
+			getSpecialtys().add(o);
 		}
 	}
 
 	@Override
 	public byte[] toBytes() {
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeShort( specialtys.size() );
-		for( Specialty o : specialtys ){
+		buf.writeByte( getSpecialtys().size() );
+		for( Specialty o : getSpecialtys() ){
 			buf.writeInt( o.templet().id );
 			o.putBuffer( buf );
 		}
@@ -63,10 +64,17 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( specialtys.size() );
-		for( Specialty o : specialtys ){
+		buffer.writeByte( getSpecialtys().size() );
+		for( Specialty o : getSpecialtys() ){
 			o.buildTransformStream( buffer );
 		}
+	}
+
+	public List<Specialty> getSpecialtys() {
+		return specialtys;
+	}
+	public void setSpecialtys(List<Specialty> specialtys) {
+		this.specialtys = specialtys;
 	}
 
 	

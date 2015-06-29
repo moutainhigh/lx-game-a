@@ -75,6 +75,7 @@ public class Player extends IPlayer implements ITransformStream{
 		buffer.writeInt( getHeadIco() );
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );
+		buffer.writeByte( 1 );
 	}
 	
 	
@@ -106,7 +107,13 @@ public class Player extends IPlayer implements ITransformStream{
 		return propBaseUid.generatorUID( type );
 	}
 	
-	
+	/**
+	 * 玩家是否在线
+	 * @return
+	 */
+	public boolean isOnline() {
+		return ctx != null && Attr.getAttachment(ctx) != null;
+	}
 	
 	
 	public String toString(){
@@ -133,6 +140,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public DepotControl getProps() {
 		return props;
 	}
+
+
 
 
 }

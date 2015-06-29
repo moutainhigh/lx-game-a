@@ -1,4 +1,4 @@
-package cn.xgame.a.world.planet.data.depot;
+package cn.xgame.a.world.planet.data.resource;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
 
 /**
- * 星球仓库 操作中心
+ * 星球资源 操作中心
  * @author deng		
  * @date 2015-6-25 下午4:59:59
  */
-public class DepotControl extends IDepot implements IArrayStream,ITransformStream{
+public class ResourceControl extends IDepot implements IArrayStream,ITransformStream{
 
 	@Override
 	public void fromBytes(byte[] data) {

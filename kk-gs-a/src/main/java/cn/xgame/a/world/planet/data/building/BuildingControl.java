@@ -28,7 +28,7 @@ public class BuildingControl implements IArrayStream,ITransformStream{
 			if( ls[i].isEmpty() ) continue;
 			String[] x 	= ls[i].split( ";" );
 			Buildings o = new Buildings( Integer.parseInt( x[0] ) );
-			o.setIndex( Short.parseShort( x[1] ) );
+			o.setIndex( Byte.parseByte( x[1] ) );
 			buildings.add(o);
 		}
 	}
@@ -38,7 +38,7 @@ public class BuildingControl implements IArrayStream,ITransformStream{
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		short size = buf.readShort();
+		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			int id = buf.readInt();
 			Buildings o = new Buildings( id );
@@ -50,7 +50,7 @@ public class BuildingControl implements IArrayStream,ITransformStream{
 	@Override
 	public byte[] toBytes() {
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeShort( buildings.size() );
+		buf.writeByte( buildings.size() );
 		for( Buildings o : buildings ){
 			buf.writeInt( o.templet().id );
 			o.putBuffer( buf );
@@ -61,7 +61,7 @@ public class BuildingControl implements IArrayStream,ITransformStream{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( buildings.size() );
+		buffer.writeByte( buildings.size() );
 		for( Buildings o : buildings ){
 			o.buildTransformStream( buffer );
 		}

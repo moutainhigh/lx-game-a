@@ -4,17 +4,21 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.net.event.Events;
+import cn.xgame.net.event.all.pl.update.Update_2211;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -90,8 +94,8 @@ public class HomePlanet extends IPlanet {
 		updateDB();
 	}
 
-	// 更新数据库
-	private void updateDB() {
+	@Override
+	public void updateDB() {
 		PlanetDataDao dao = SqlUtil.getPlanetDataDao();
 		PlanetDataDto dto = dao.update();
 		dto.setId( getId() );
@@ -102,6 +106,29 @@ public class HomePlanet extends IPlanet {
 		dto.setTechs( techs.toBytes() );
 		dto.setPlayers( toPlayers() );
 		dao.commit(dto);
+	}
+
+	/** 线程 */
+	public void run() {
+		// 这里处理 特产
+		List<Specialty> ls = getSpecialtys().getSpecialtys();
+		for( Specialty spe : ls ){
+			if( spe.run() )
+				synchronizeSpecialty( spe );
+		
+		
+		}
+	}
+
+	// 同步特产信息
+	private void synchronizeSpecialty( Specialty spe ) {
+		
+		for( Player player : players.values() ){
+			if( !player.isOnline() )
+				continue;
+			
+			((Update_2211)Events.UPDATE_2211.getEventInstance()).run( player, spe );
+		}
 	}
 	
 }

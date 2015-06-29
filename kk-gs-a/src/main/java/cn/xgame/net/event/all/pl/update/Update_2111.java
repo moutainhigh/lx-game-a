@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all;
+package cn.xgame.net.event.all.pl.update;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,16 +8,14 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 测试包
+ * 更新包  玩家背包
  * @author deng		
- * @date 2015-6-29 下午5:45:07
+ * @date 2015-6-29 下午5:40:59
  */
-public class TestEevet extends IEvent{
+public class Update_2111 extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		
 	}
-
 
 }

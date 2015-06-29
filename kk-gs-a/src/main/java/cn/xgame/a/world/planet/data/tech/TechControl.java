@@ -25,7 +25,7 @@ public class TechControl implements IArrayStream,ITransformStream{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( 0 );
+		buffer.writeByte( 0 );
 	}
 
 }

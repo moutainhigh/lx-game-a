@@ -3,7 +3,7 @@ package cn.xgame.a.world.planet;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
-import cn.xgame.a.world.planet.data.depot.DepotControl;
+import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
@@ -13,7 +13,7 @@ import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
  * @author deng		
  * @date 2015-6-25 下午4:32:24
  */
-public class IPlanet implements ITransformStream{
+public abstract class IPlanet implements ITransformStream{
 
 	// 星球配置表
 	private final Stars templet;
@@ -24,8 +24,8 @@ public class IPlanet implements ITransformStream{
 	// 星球特产
 	private SpecialtyControl specialtys = new SpecialtyControl();
 	
-	// 星球仓库
-	private DepotControl depots = new DepotControl();
+	// 星球资源
+	private ResourceControl depots = new ResourceControl();
 	
 	// 星球建筑
 	private BuildingControl buildings = new BuildingControl();
@@ -66,10 +66,11 @@ public class IPlanet implements ITransformStream{
 		buffer.writeShort( getId() );
 		buffer.writeShort( maxSpace );
 		specialtys.buildTransformStream( buffer );
-		depots.buildTransformStream( buffer );
 		buildings.buildTransformStream( buffer );
 	}
 
+	/** 保存数据库 */
+	public abstract void updateDB();
 	public Stars templet(){ return templet; }
 	public Short getId() { return templet.id; }
 	public short getMaxSpace() {
@@ -84,10 +85,10 @@ public class IPlanet implements ITransformStream{
 	public void setSpecialtys(SpecialtyControl specialtys) {
 		this.specialtys = specialtys;
 	}
-	public DepotControl getDepots() {
+	public ResourceControl getDepots() {
 		return depots;
 	}
-	public void setDepots(DepotControl depots) {
+	public void setDepots(ResourceControl depots) {
 		this.depots = depots;
 	}
 	public BuildingControl getBuildings() {

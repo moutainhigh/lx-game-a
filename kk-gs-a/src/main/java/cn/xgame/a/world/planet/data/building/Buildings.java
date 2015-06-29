@@ -16,7 +16,7 @@ public class Buildings implements IBufferStream,ITransformStream {
 	private final Building templet;
 	
 	// 位置
-	private short index;
+	private byte index;
 	
 	public Buildings( int id ) {
 		templet = CsvGen.getBuilding(id);
@@ -24,25 +24,25 @@ public class Buildings implements IBufferStream,ITransformStream {
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
-		buf.writeShort( index );
+		buf.writeByte( index );
 	}
 
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		index = buf.readShort();
+		index = buf.readByte();
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( templet.id );
-		buffer.writeShort( index );
+		buffer.writeByte( index );
 	}
 	
 	public Building templet(){ return templet; }
-	public short getIndex() {
+	public byte getIndex() {
 		return index;
 	}
-	public void setIndex(short index) {
+	public void setIndex(byte index) {
 		this.index = index;
 	}
 

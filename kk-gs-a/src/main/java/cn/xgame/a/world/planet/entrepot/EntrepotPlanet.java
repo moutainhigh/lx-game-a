@@ -16,5 +16,11 @@ public class EntrepotPlanet extends IPlanet{
 		
 	}
 
+	@Override
+	public void updateDB() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

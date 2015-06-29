@@ -4,21 +4,21 @@ import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
 /**
- * 每两分钟 执行 一次
+ * 一分钟执行一次
  * @author deng		
- * @date 2015-6-16 上午10:50:38
+ * @date 2015-6-29 下午4:55:08
  */
-public class TwoMinuteHandleImp extends IThread{
+public class OneMinuteHandleImp extends IThread {
 
 	@Override
 	public void run() {
 		try {
 			
 			
-			
-			
+		
+		
 		} catch (Exception e) {
-			Logs.error( "TwoMinuteHandleImp:" , e );
+			Logs.error( "OneMinuteHandleImp:", e );
 		}
 	}
 

@@ -58,10 +58,6 @@ public class LoginEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			// 基本数据
 			player.buildTransformStream( response );
-			// 背包基础数据
-			player.getProps().buildTransformStream( response );
-			// 领地数据
-			player.getManors().buildTransformStream( response );
 			// 发送自己母星数据
 			home.buildTransformStream( response );
 		}
