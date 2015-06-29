@@ -31,7 +31,7 @@ import x.javaplus.util.Resources;
  */
 public class Launch {
 
-	
+	/** 一个简单的 客户端 */
 	public static class LSClientAgency{
 		
 		private static NettyClient client;
@@ -55,25 +55,22 @@ public class Launch {
 	public static void main(String[] args) {
 		
 		try {
-			// 构建数据库
-			String path = "sql";
-			File file = new File(path);
-			if( file.isDirectory() )
-				App.generateMysql( path );
+			// 0.构建数据库
+			buildDB( "sql" );
 			
-			// 1 加载系统配置
+			// 1.加载系统配置
 			initSystemProperties();
 			
-			// 2 连接 and 登录 - 登录服务器 
+			// 2.连接 and 登录 - 登录服务器 
 			connectLoginServer();
 			
 		} catch (Exception e) {
-			Logs.error( e.getMessage() );
+			Logs.error( "Launch.main", e );
 			LSClientAgency.close();
 		}
 		
 	}
-	
+
 	/**  连接登录服务 响应  */
 	public static void handleConnect( ErrorCode code ){
 		
@@ -99,10 +96,10 @@ public class Launch {
 			Logs.debug( "线程启动完成 -- " );
 			
 		} catch (Exception e) {
-			Logs.error( e.getMessage() );
+			Logs.error( "Launch.main", e );
 			LSClientAgency.close();
 		}
-			
+		
 	}
 	
 	private static void connectLoginServer() throws Exception {
@@ -123,6 +120,12 @@ public class Launch {
 		IPSeeker.I.init( Resources.getResource( "qqwry.dat" ) );
 		
 		Logs.debug( "系统配置加载完成" );
+	}
+	
+	// 构建数据库
+	private static void buildDB( String path ) {
+		if( new File( path ).isDirectory() )
+			App.generateMysql( path );
 	}
 	
 	private static void startServer() {
