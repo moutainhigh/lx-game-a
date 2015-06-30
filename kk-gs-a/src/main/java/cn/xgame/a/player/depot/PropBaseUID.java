@@ -35,6 +35,7 @@ public class PropBaseUID implements IFromDB{
 
 	@Override
 	public void fromDB() {
+		
 		String sql	= new Condition( M_stuffDto.unameChangeSql( player.getUID() ) ).AND( M_stuffDto.gsidChangeSql(player.getGsid() ) ).toString();
 		STUFF_UID 	= SqlUtil.getMaxId( SqlUtil.getClassName( M_stuffDto.class ), "uid", sql );
 		

@@ -8,7 +8,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 更新包 星球总空间
+ * 更新包 星球基础数据
  * @author deng		
  * @date 2015-6-29 下午5:43:45
  */

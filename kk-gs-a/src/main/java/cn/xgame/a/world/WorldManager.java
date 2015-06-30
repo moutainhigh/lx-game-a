@@ -100,21 +100,7 @@ public class WorldManager {
 	private HomePlanet getHomeInIP(String ip) {
 		return homes.get(0);
 	}
-
-
-	/**
-	 * 获取玩家所属母星
-	 * @param player
-	 * @return
-	 */
-	public HomePlanet getHPlanetInPlayer( Player player ) {
-		for( HomePlanet home : homes ){
-			if( home.getId() == player.getCountryId() )
-				return home;
-		}
-		return null;
-	}
-
+	
 	/** 线程 */
 	public void run() {
 		for( HomePlanet home : homes ){
@@ -130,6 +116,75 @@ public class WorldManager {
 			ectype.updateDB();
 		}
 	}
+
+	/**
+	 * 获取玩家所属母星
+	 * @param player
+	 * @return
+	 */
+	public HomePlanet getHPlanetInPlayer( Player player ) {
+		return getHomePlanet( player.getCountryId() );
+	}
+
+	/**
+	 * 获取母星 根据星球ID
+	 * @param nid
+	 * @return
+	 */
+	public HomePlanet getHomePlanet( short nid ) {
+		for( HomePlanet home : homes ){
+			if( home.getId() == nid )
+				return home;
+		}
+		return null;
+	}
+
+	/**
+	 * 获取中转星 根据星球ID
+	 * @param nid
+	 * @return
+	 */
+	public EntrepotPlanet getEntrepotPlanet( short nid ) {
+		for( EntrepotPlanet entrepot : entrepots ){
+			if( entrepot.getId() == nid )
+				return entrepot;
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取副本星 根据星球ID
+	 * @param nid
+	 * @return
+	 */
+	public EctypePlanet getEctypePlanet( short nid ) {
+		for( EctypePlanet ectype : ectypes ){
+			if( ectype.getId() == nid )
+				return ectype;
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取星球 - 根据表格ID
+	 * @param nid
+	 * @return
+	 */
+	public IPlanet getPlanet( short nid ) {
+		Stars star = CsvGen.getStars( nid );
+		if( star.tpye == 1 ){
+			return getHomePlanet( nid );
+		}else if( star.tpye == 2 ){
+			return getEntrepotPlanet( nid );
+		}else if( star.tpye == 3 ){
+			return getEctypePlanet( nid );
+		}
+		return null;
+	}
+
+
+
+
 	
 
 

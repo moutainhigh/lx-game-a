@@ -8,7 +8,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 更新包 玩家金币
+ * 更新包 玩家基础数据
  * @author deng		
  * @date 2015-6-29 下午5:37:56
  */

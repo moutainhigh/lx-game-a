@@ -60,8 +60,8 @@ public class HomePlanet extends IPlanet {
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		buf.writeShort( childs.size() );
 		for( Child child : childs ){
-			RW.writeString( buf, child.UID );
-			buf.writeShort( child.gsid );
+			RW.writeString( buf, child.getUID() );
+			buf.writeShort( child.getGsid() );
 		}
 		return buf.array();
 	}
@@ -103,7 +103,7 @@ public class HomePlanet extends IPlanet {
 	}
 	private Child getChild(String uid) {
 		for( Child child : childs ){
-			if( child.UID.equals( uid ) )
+			if( child.getUID().equals( uid ) )
 				return child;
 		}
 		return null;
@@ -123,7 +123,7 @@ public class HomePlanet extends IPlanet {
 	private void synchronizeSpecialty( Specialty spe ) {
 		
 		for( Child child : childs ){
-			Player player = PlayerManager.o.getPlayerFmOnline( child.UID );
+			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( player == null || !player.isOnline() )
 				continue;
 			

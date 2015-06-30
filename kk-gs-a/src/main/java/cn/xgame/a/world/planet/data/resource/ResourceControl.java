@@ -30,9 +30,11 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		List<IProp> ls = getAll();
-		buffer.writeShort( ls.size() );
+		buffer.writeByte( ls.size() );
 		for( IProp prop : ls ){
-			prop.putBaseBuffer(buffer);
+//			prop.putBaseBuffer(buffer);
+			buffer.writeInt( prop.getnId() );
+			buffer.writeInt( prop.getCount() );
 		}
 	}
 

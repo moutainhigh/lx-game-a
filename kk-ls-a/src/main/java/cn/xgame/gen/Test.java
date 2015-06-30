@@ -58,6 +58,6 @@ public class Test {
 		
 		dao.commit(dto);
 		
-		System.out.println( Dbcp.toMessage() );
+		Dbcp.print();
 	}
 }
