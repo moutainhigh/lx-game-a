@@ -69,8 +69,16 @@ public class HomePlanet extends IPlanet {
 
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
+		// 基础数据
 		super.buildTransformStream(buffer);
-		techs.buildTransformStream(buffer);
+		// 所有建筑数据
+		getBuildingControl().putBuilding(buffer);
+		// 所有科技数据
+		techs.putTechs(buffer);
+		// 建筑中
+		getBuildingControl().putUnBuilding(buffer);
+		// 研究中
+		techs.putUnTech(buffer);
 	}
 
 	@Override
@@ -79,9 +87,9 @@ public class HomePlanet extends IPlanet {
 		PlanetDataDto dto = dao.update();
 		dto.setId( getId() );
 		dto.setMaxSpace( getMaxSpace() );
-		dto.setBuildings( getBuildings().toBytes() );
-		dto.setDepots( getDepots().toBytes() );
-		dto.setSpecialtys( getSpecialtys().toBytes() );
+		dto.setBuildings( getBuildingControl().toBytes() );
+		dto.setDepots( getDepotControl().toBytes() );
+		dto.setSpecialtys( getSpecialtyControl().toBytes() );
 		dto.setTechs( techs.toBytes() );
 		dto.setPlayers( toPlayers() );
 		dao.commit(dto);
@@ -112,7 +120,7 @@ public class HomePlanet extends IPlanet {
 	/** 线程 */
 	public void run() {
 		// 这里处理 特产
-		List<Specialty> ls = getSpecialtys().getSpecialtys();
+		List<Specialty> ls = getSpecialtyControl().getSpecialtys();
 		for( Specialty spe : ls ){
 			if( spe.run() )
 				synchronizeSpecialty( spe );

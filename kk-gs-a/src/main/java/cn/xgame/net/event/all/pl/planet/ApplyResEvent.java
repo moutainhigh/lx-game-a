@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl;
+package cn.xgame.net.event.all.pl.planet;
 
 import io.netty.buffer.ByteBuf;
 
@@ -16,7 +16,7 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-6-30 上午10:12:18
  */
-public class ApplyPlanetResEvent extends IEvent{
+public class ApplyResEvent extends IEvent{
 
 	@Override
 	public void run( Player player, ByteBuf data ) throws IOException {
@@ -36,7 +36,7 @@ public class ApplyPlanetResEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 512 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			planet.getDepots().buildTransformStream(response);
+			planet.getDepotControl().buildTransformStream(response);
 		}
 		sendPackage( player.getCtx(), response );
 		

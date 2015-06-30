@@ -1,6 +1,5 @@
 package cn.xgame.utils.runnable.task;
 
-import x.javaplus.mysql.db.Dbcp;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
@@ -16,7 +15,7 @@ public class OneMinuteHandleImp extends IThread {
 		try {
 			
 			// 这里测试打印 数据库 使用情况
-			Dbcp.print();
+//			Dbcp.print();
 		
 		
 		} catch (Exception e) {

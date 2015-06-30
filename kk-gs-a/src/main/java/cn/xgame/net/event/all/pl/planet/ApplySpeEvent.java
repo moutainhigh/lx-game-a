@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl;
+package cn.xgame.net.event.all.pl.planet;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,25 +8,25 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
-import cn.xgame.a.world.planet.home.HomePlanet;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 申请某个母星球数据
+ * 申请星球特产
  * @author deng		
- * @date 2015-6-30 上午10:10:37
+ * @date 2015-6-30 下午4:47:08
  */
-public class ApplyHomePlanetEvent extends IEvent {
+public class ApplySpeEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
 		short nid = data.readShort();
 		
-		HomePlanet home = WorldManager.o.getHomePlanet( nid );
+		IPlanet planet = WorldManager.o.getPlanet( nid );
 		ErrorCode code = null;
 		try {
-			if( home == null )
+			if( planet == null )
 				throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
 			
 			code = ErrorCode.SUCCEED;
@@ -37,10 +37,9 @@ public class ApplyHomePlanetEvent extends IEvent {
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 512 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			home.buildTransformStream( response );
+			planet.getSpecialtyControl().buildTransformStream(response);
 		}
 		sendPackage( player.getCtx(), response );
-		
 	}
 
 }

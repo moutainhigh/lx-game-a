@@ -22,13 +22,13 @@ public abstract class IPlanet implements ITransformStream{
 	private short maxSpace;
 	
 	// 星球特产
-	private SpecialtyControl specialtys = new SpecialtyControl();
+	private SpecialtyControl specialtyControl = new SpecialtyControl();
 	
 	// 星球资源
-	private ResourceControl depots = new ResourceControl();
+	private ResourceControl depotControl = new ResourceControl();
 	
 	// 星球建筑
-	private BuildingControl buildings = new BuildingControl();
+	private BuildingControl buildingControl = new BuildingControl();
 	
 	
 	public IPlanet( Stars clone ){
@@ -41,13 +41,13 @@ public abstract class IPlanet implements ITransformStream{
 	 */
 	public void init( PlanetDataDto dto ) {
 		maxSpace = templet.room;
-		specialtys.fromTemplet( templet.goods );
-		buildings.fromTemplet( templet.building );
+		specialtyControl.fromTemplet( templet.goods );
+		buildingControl.fromTemplet( templet.building );
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
-		dto.setBuildings( buildings.toBytes() );
-		dto.setSpecialtys( specialtys.toBytes() );
+		dto.setBuildings( getBuildingControl().toBytes() );
+		dto.setSpecialtys( specialtyControl.toBytes() );
 	}
 	
 	/**
@@ -56,17 +56,15 @@ public abstract class IPlanet implements ITransformStream{
 	 */
 	public void wrap( PlanetDataDto dto ){
 		maxSpace = dto.getMaxSpace();
-		specialtys.fromBytes( dto.getSpecialtys() );
-		depots.fromBytes( dto.getDepots() );
-		buildings.fromBytes( dto.getBuildings() );
+		specialtyControl.fromBytes( dto.getSpecialtys() );
+		depotControl.fromBytes( dto.getDepots() );
+		buildingControl.fromBytes( dto.getBuildings() );
 	}
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeShort( getId() );
 		buffer.writeShort( maxSpace );
-		specialtys.buildTransformStream( buffer );
-		buildings.buildTransformStream( buffer );
 	}
 
 	/** 保存数据库 */
@@ -79,23 +77,23 @@ public abstract class IPlanet implements ITransformStream{
 	public void setMaxSpace(short maxSpace) {
 		this.maxSpace = maxSpace;
 	}
-	public SpecialtyControl getSpecialtys() {
-		return specialtys;
+	public SpecialtyControl getSpecialtyControl() {
+		return specialtyControl;
 	}
-	public void setSpecialtys(SpecialtyControl specialtys) {
-		this.specialtys = specialtys;
+	public void setSpecialtyControl(SpecialtyControl specialtys) {
+		this.specialtyControl = specialtys;
 	}
-	public ResourceControl getDepots() {
-		return depots;
+	public ResourceControl getDepotControl() {
+		return depotControl;
 	}
-	public void setDepots(ResourceControl depots) {
-		this.depots = depots;
+	public void setDepotControl(ResourceControl depots) {
+		this.depotControl = depots;
 	}
-	public BuildingControl getBuildings() {
-		return buildings;
+	public BuildingControl getBuildingControl() {
+		return buildingControl;
 	}
-	public void setBuildings(BuildingControl buildings) {
-		this.buildings = buildings;
+	public void setBuildingControl(BuildingControl buildingControl) {
+		this.buildingControl = buildingControl;
 	}
 
 

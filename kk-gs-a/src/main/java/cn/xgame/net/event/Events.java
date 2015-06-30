@@ -11,10 +11,11 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
-import cn.xgame.net.event.all.pl.ApplyHomePlanetEvent;
-import cn.xgame.net.event.all.pl.ApplyPlanetResEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
+import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
 import cn.xgame.net.event.all.pl.update.Update_2201;
@@ -40,8 +41,9 @@ public enum Events {
 	PLAYER_LOGIN					( 1001, 				new LoginEvent() ),
 	PLAYER_CREATE					( 1002, 				new CreateEvent() ),
 	//-----------------星球
-	APPLY_PLANET					( 1101, 				new ApplyHomePlanetEvent() ),
-	APPLY_PLANET_RES				( 1111, 				new ApplyPlanetResEvent() ),
+	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
+	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
+	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
 	
 	
 	//-----------------更新包
