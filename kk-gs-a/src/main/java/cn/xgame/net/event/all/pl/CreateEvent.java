@@ -16,6 +16,11 @@ import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
+/**
+ * 创建角色
+ * @author deng		
+ * @date 2015-6-30 上午10:12:37
+ */
 public class CreateEvent extends IEvent {
 
 	@Override

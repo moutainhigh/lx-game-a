@@ -11,12 +11,16 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
+import cn.xgame.net.event.all.pl.ApplyPlanetEvent;
+import cn.xgame.net.event.all.pl.ApplyPlanetResEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
 import cn.xgame.net.event.all.pl.update.Update_2201;
 import cn.xgame.net.event.all.pl.update.Update_2211;
+import cn.xgame.net.event.all.pl.update.Update_2221;
+import cn.xgame.net.event.all.pl.update.Update_2231;
 
 /**
  * 通信 消息
@@ -35,6 +39,10 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN					( 1001, 				new LoginEvent() ),
 	PLAYER_CREATE					( 1002, 				new CreateEvent() ),
+	//-----------------星球
+	APPLY_PLANET					( 1101, 				new ApplyPlanetEvent() ),
+	APPLY_PLANET_RES				( 1111, 				new ApplyPlanetResEvent() ),
+	
 	
 	//-----------------更新包
 	UPDATE_2101						( 2101, 				new Update_2101() ),
@@ -42,6 +50,8 @@ public enum Events {
 	
 	UPDATE_2201						( 2201, 				new Update_2201() ),
 	UPDATE_2211						( 2211, 				new Update_2211() ),
+	UPDATE_2221						( 2221, 				new Update_2221() ),
+	UPDATE_2231						( 2231, 				new Update_2231() ),
 	
 
 	
