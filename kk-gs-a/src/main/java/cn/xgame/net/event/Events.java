@@ -16,6 +16,11 @@ import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
+import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
+import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
+import cn.xgame.net.event.all.pl.planet.SponsorBuiVoEvent;
+import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
+import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
 import cn.xgame.net.event.all.pl.update.Update_2201;
@@ -40,10 +45,16 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN					( 1001, 				new LoginEvent() ),
 	PLAYER_CREATE					( 1002, 				new CreateEvent() ),
+	
 	//-----------------星球
 	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
 	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
 	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
+	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
+	SPONSOR_BUIVOTE					( 1131, 				new SponsorBuiVoEvent() ),
+	SPONSOR_TECHVOTE				( 1132, 				new SponsorTechVoEvent() ),
+	SPONSOR_EXPEL					( 1133, 				new SponsorExpelEvent() ),
+	PARTICIPATE_VOTE				( 1141, 				new ParticipateBuildVoEvent() ),
 	
 	
 	//-----------------更新包

@@ -8,6 +8,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.world.planet.data.Vote;
 
 /**
  * 星球建筑 操作中心
@@ -124,6 +125,58 @@ public class BuildingControl implements IArrayStream{
 			o.buildTransformStream( buffer );
 			buffer.writeInt( o.getrTime() );
 		}
+	}
+
+	// 获取所有
+	private List<Buildings> getAllBuilding() {
+		List<Buildings> ret = Lists.newArrayList();
+		ret.addAll(buildings);
+		ret.addAll(unBuildings);
+		ret.addAll(voBuildings);
+		return ret;
+	}
+
+
+	
+	/**
+	 * 判断index位置是否被占用
+	 * @param index
+	 * @param room 
+	 * @return
+	 */
+	public boolean isOccupyInIndex( byte index, byte room ) {
+		List<Buildings> ls = getAllBuilding();
+		for( Buildings o : ls ){
+			if( o.indexIsOverlap( index, room ) )
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 添加一个 投票中建筑
+	 * @param nid
+	 * @param index
+	 * @param time
+	 */
+	public void appendVoteBuild( int nid, byte index, int time ) {
+		UnBuildings unb = new UnBuildings(nid);
+		unb.setIndex(index);
+		unb.setVote( new Vote( time ) );
+		voBuildings.add(unb);
+	}
+
+	/**
+	 * 获取一个投票中的建筑
+	 * @param nid
+	 * @return
+	 */
+	public UnBuildings getVoteBuild( int nid ) {
+		for( UnBuildings o : voBuildings ){
+			if( o.templet().id == nid )
+				return o;
+		}
+		return null;
 	}
 	
 }

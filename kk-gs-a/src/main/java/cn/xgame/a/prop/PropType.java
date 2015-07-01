@@ -1,5 +1,8 @@
 package cn.xgame.a.prop;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.xgame.a.prop.captain.Captains;
 import cn.xgame.a.prop.cequip.CEquip;
 import cn.xgame.a.prop.sequip.SEquip;
@@ -54,12 +57,25 @@ public enum PropType {
 	};
 	
 	private final byte	number;
+	private static final Map<Byte, PropType> numToEnum = new HashMap<Byte, PropType>();
 	
 	PropType( int n ){
 		number = (byte) n;
 	}
+
+	static{
+		for( PropType a : values() ){
+			PropType p = numToEnum.put( a.number, a );
+			if( p != null ){
+				throw new RuntimeException( a.number + "重复了" );
+			}
+		}
+	}
 	
 	public byte toNumber(){ return number; }
+	public static PropType fromNumber( int n ){
+		return numToEnum.get( (byte)n );
+	}
 
 	public abstract IProp create( int uid, int nid, int count);
 	

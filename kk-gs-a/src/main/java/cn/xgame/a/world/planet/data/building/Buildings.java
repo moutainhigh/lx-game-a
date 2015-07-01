@@ -46,5 +46,15 @@ public class Buildings implements IBufferStream,ITransformStream {
 		this.index = index;
 	}
 
+	/**
+	 * 该位置 是否重叠
+	 * @param index
+	 * @param room
+	 * @return
+	 */
+	public boolean indexIsOverlap( byte oindex, byte oroom ) {
+		return oindex < index+templet.room && oindex+oroom > index;
+	}
+
 
 }

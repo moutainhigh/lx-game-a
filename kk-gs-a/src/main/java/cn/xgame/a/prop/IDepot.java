@@ -16,11 +16,6 @@ public class IDepot {
 	// 所有道具列表
 	protected Map<PropType, List<IProp>> props = new HashMap<PropType, List<IProp>>();
 
-	public void initialize() {
-//		List<IProp> ret = Lists.newArrayList();
-//		for( )
-	}
-	
 	/**
 	 * 获取背包所有道具
 	 * @return
@@ -52,6 +47,7 @@ public class IDepot {
 	 * @return
 	 */
 	public IProp getProp( PropType type, int uid ) {
+		if( type == null ) return null;
 		List<IProp> ls = props.get(type);
 		if( ls == null ) return null;
 		for( IProp b : ls ){
@@ -59,6 +55,26 @@ public class IDepot {
 				return b;
 		}
 		return null;
+	}
+	
+	/**
+	 * 获取一个可以累加的道具
+	 * @param type
+	 * @param uid
+	 * @return
+	 */
+	public IProp getCanAccProp( PropType type, int nid ) {
+		if( type == null ) return null;
+		List<IProp> ls = props.get(type);
+		if( ls == null ) return null;
+		for( IProp b : ls ){
+			if( b.getnId() == nid && b.isCanAcc() )
+				return b;
+		}
+		return null;
+	}
+	public IProp getCanAccProp( IProp prop ){
+		return getCanAccProp( prop.type(), prop.getnId() );
 	}
 	
 	/**
@@ -72,6 +88,23 @@ public class IDepot {
 			props.put( prop.type() , temp );
 		}
 		temp.add(prop);
+	}
+	
+	/**
+	 * 删除一个道具
+	 * @param prop
+	 */
+	public boolean remove( IProp prop ){
+		if( prop == null ) return false;
+		List<IProp> temp = props.get( prop.type() );
+		if( temp == null ) return false;
+		for( IProp b : temp ){
+			if( b.getuId() == prop.getuId() ){
+				temp.remove( b );
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

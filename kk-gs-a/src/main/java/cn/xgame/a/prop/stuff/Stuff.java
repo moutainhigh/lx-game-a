@@ -67,6 +67,15 @@ public class Stuff extends IProp{
 	}
 	
 	@Override
+	public void deleteDB(Player player) {
+		M_stuffDao dao 	= SqlUtil.getM_stuffDao();
+		String sql 		= new Condition( M_stuffDto.uidChangeSql( getuId() ) ).AND( M_stuffDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_stuffDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact(sql);
+		dao.commit();
+	}
+	
+	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		
 		
@@ -75,5 +84,7 @@ public class Stuff extends IProp{
 	public Material templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.STUFF; }
+
+
 	
 }

@@ -62,6 +62,15 @@ public class Ships extends IProp{
 	}
 	
 	@Override
+	public void deleteDB(Player player) {
+		M_shipDao dao 	= SqlUtil.getM_shipDao();
+		String sql 		= new Condition( M_shipDto.uidChangeSql( getuId() ) ).AND( M_shipDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_shipDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact(sql);
+		dao.commit();
+	}
+	
+	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		// TODO Auto-generated method stub
 		
@@ -70,5 +79,7 @@ public class Ships extends IProp{
 	public Ship templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.SHIP; }
+
+
 
 }

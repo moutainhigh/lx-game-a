@@ -50,10 +50,10 @@ public class CEquip extends IProp{
 
 	@Override
 	public void updateDB(Player player) {
-		M_cequipDao dao 	= SqlUtil.getM_cequipDao();
-		String sql 		= new Condition( M_cequipDto.uidChangeSql( getuId() ) ).AND( M_cequipDto.gsidChangeSql( player.getGsid() ) ).
+		M_cequipDao dao = SqlUtil.getM_cequipDao();
+		String sql = new Condition( M_cequipDto.uidChangeSql( getuId() ) ).AND( M_cequipDto.gsidChangeSql( player.getGsid() ) ).
 				AND( M_cequipDto.unameChangeSql( player.getUID() ) ).toString();
-		M_cequipDto dto 	= dao.updateByExact( sql );
+		M_cequipDto dto = dao.updateByExact( sql );
 		dto.setNid( getnId() );
 		dto.setCount( getCount() );
 		///--下面加上属于自己的东西
@@ -61,6 +61,15 @@ public class CEquip extends IProp{
 		dao.commit(dto);
 	}
 
+	@Override
+	public void deleteDB(Player player) {
+		M_cequipDao dao = SqlUtil.getM_cequipDao();
+		String sql = new Condition( M_cequipDto.uidChangeSql( getuId() ) ).AND( M_cequipDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_cequipDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact(sql);
+		dao.commit();
+	}
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		// TODO Auto-generated method stub
@@ -70,4 +79,6 @@ public class CEquip extends IProp{
 	public Weapon templet() { return templet; }
 	@Override
 	public PropType type() { return PropType.CEQUIP; }
+
+
 }

@@ -50,15 +50,24 @@ public class Captains extends IProp {
 
 	@Override
 	public void updateDB(Player player) {
-		M_captainDao dao 	= SqlUtil.getM_captainDao();
-		String sql 		= new Condition( M_captainDto.uidChangeSql( getuId() ) ).AND( M_captainDto.gsidChangeSql( player.getGsid() ) ).
+		M_captainDao dao = SqlUtil.getM_captainDao();
+		String sql = new Condition( M_captainDto.uidChangeSql( getuId() ) ).AND( M_captainDto.gsidChangeSql( player.getGsid() ) ).
 				AND( M_captainDto.unameChangeSql( player.getUID() ) ).toString();
-		M_captainDto dto 	= dao.updateByExact( sql );
+		M_captainDto dto = dao.updateByExact( sql );
 		dto.setNid( getnId() );
 		dto.setCount( getCount() );
 		///--下面加上属于自己的东西
 		
 		dao.commit(dto);
+	}
+	
+	@Override
+	public void deleteDB(Player player) {
+		M_captainDao dao = SqlUtil.getM_captainDao();
+		String sql = new Condition( M_captainDto.uidChangeSql( getuId() ) ).AND( M_captainDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_captainDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact( sql );
+		dao.commit();
 	}
 	
 	@Override
@@ -69,4 +78,6 @@ public class Captains extends IProp {
 	public Captain templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.CAPTAIN; }
+
+
 }

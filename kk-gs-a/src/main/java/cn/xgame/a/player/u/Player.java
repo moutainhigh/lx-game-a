@@ -52,7 +52,6 @@ public class Player extends IPlayer implements ITransformStream{
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		setManors( new ManorControl() );
-		props.initialize();
 	}
 	
 	/**

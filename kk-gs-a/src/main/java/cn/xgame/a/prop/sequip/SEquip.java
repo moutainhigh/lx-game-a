@@ -45,17 +45,25 @@ public class SEquip extends IProp{
 
 	@Override
 	public void updateDB(Player player) {
-		M_sequipDao dao 	= SqlUtil.getM_sequipDao();
-		String sql 		= new Condition( M_sequipDto.uidChangeSql( getuId() ) ).AND( M_sequipDto.gsidChangeSql( player.getGsid() ) ).
+		M_sequipDao dao = SqlUtil.getM_sequipDao();
+		String sql = new Condition( M_sequipDto.uidChangeSql( getuId() ) ).AND( M_sequipDto.gsidChangeSql( player.getGsid() ) ).
 				AND( M_sequipDto.unameChangeSql( player.getUID() ) ).toString();
-		M_sequipDto dto 	= dao.updateByExact( sql );
+		M_sequipDto dto = dao.updateByExact( sql );
 		dto.setNid( getnId() );
 		dto.setCount( getCount() );
 		///--下面加上属于自己的东西
 		
 		dao.commit(dto);
 	}
-
+	
+	@Override
+	public void deleteDB(Player player) {
+		M_sequipDao dao = SqlUtil.getM_sequipDao();
+		String sql = new Condition( M_sequipDto.uidChangeSql( getuId() ) ).AND( M_sequipDto.gsidChangeSql( player.getGsid() ) ).
+				AND( M_sequipDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact(sql);
+		dao.commit();
+	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
@@ -65,5 +73,7 @@ public class SEquip extends IProp{
 	
 	@Override
 	public PropType type() { return PropType.SEQUIP; }
+
+
 	
 }

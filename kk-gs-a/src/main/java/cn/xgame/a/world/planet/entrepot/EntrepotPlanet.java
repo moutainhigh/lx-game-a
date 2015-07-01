@@ -1,5 +1,7 @@
 package cn.xgame.a.world.planet.entrepot;
 
+import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
@@ -21,6 +23,16 @@ public class EntrepotPlanet extends IPlanet{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean isCanDonate() { return true; }
+	@Override
+	public void donateResource(Player player, IProp prop) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 
 }

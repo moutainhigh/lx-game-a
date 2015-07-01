@@ -26,8 +26,8 @@ public abstract class IProp implements ITransformStream{
 	public IProp( int uid, int nid, int count ){
 		this.uId 	= uid;
 		this.nId 	= nid;
-		this.count	= count;
 		this.item 	= CsvGen.getItem(nid);
+		addCount( count );
 	}
 	
 	/**
@@ -40,9 +40,23 @@ public abstract class IProp implements ITransformStream{
 		buffer.writeInt(count);
 	}
 	
+	/** 获取这个物品的贡献度 */
+	public int getContributions() {
+		return item.sellgold == 0 ? 1 : item.sellgold * 5;
+	}
+	
+	/**
+	 * 是否可以累加
+	 * @return
+	 */
+	public boolean isCanAcc() {
+		return count < item.manymax;
+	}
+	
 	public abstract PropType type();
 	public abstract void createDB( Player player );
 	public abstract void updateDB( Player player );
+	public abstract void deleteDB( Player player );
 	
 	public int getuId() {
 		return uId;
@@ -62,9 +76,20 @@ public abstract class IProp implements ITransformStream{
 	public void setCount(int count) {
 		this.count = count;
 	}
+	public int addCount(int count) {
+		int ret = 0;
+		if( (this.count+=count) > item.manymax ){
+			ret = (int) (this.count - item.manymax);
+			this.count = (int) item.manymax;
+		}
+		return ret;
+	}
 	public Item item(){ return item; }
 	
 	public String toString(){
 		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
 	}
+
+
+
 }

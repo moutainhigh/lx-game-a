@@ -24,5 +24,11 @@ public class EctypePlanet extends IPlanet{
 	public void updateDB() {
 		
 	}
+	
+	
+	@Override
+	public boolean isCanDonate() { return false; }
+
+
 
 }

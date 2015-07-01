@@ -17,6 +17,8 @@ import cn.xgame.a.prop.sequip.SEquip;
 import cn.xgame.a.prop.ship.Ships;
 import cn.xgame.a.prop.stuff.Stuff;
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Item;
 import cn.xgame.gen.dto.MysqlGen.M_captainDao;
 import cn.xgame.gen.dto.MysqlGen.M_captainDto;
 import cn.xgame.gen.dto.MysqlGen.M_cequipDao;
@@ -143,44 +145,76 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	}
 	
 	/**
-	 * 创建一个道具 并 保存数据库 以及放入背包
-	 * @param type
+	 * 添加道具 并 保存数据库 以及放入背包
 	 * @param nid 表格ID
 	 * @param count 数量
 	 * @return
 	 */
-	public IProp createProp( PropType type, int nid, int count) {
+	public void appendProp( int nid, int count) {
+		
+		Item item 		= CsvGen.getItem(nid);
+		PropType type 	= PropType.fromNumber( item.bagtype );
+		
+		IProp prop 		= getCanAccProp( type, nid );
+		if( prop == null ){
+			createProp( type, nid, count );
+		}else{
+			// 算出差值
+			int surplus = prop.addCount( count );
+			// 保存数据库
+			prop.updateDB(player);
+			// 如果有多余的 就在创建一个 
+			if( surplus > 0 )
+				createProp( type, nid, surplus );
+		}
+	}
+	
+	/**
+	 * 创建一个道具
+	 * @param type
+	 * @param nid
+	 * @param count
+	 * @return
+	 */
+	private void createProp( PropType type, int nid, int count){
 		// 创建一个道具出来
 		IProp prop = type.create( player.generatorPropUID(type), nid, count );
 		// 放入背包
 		append( prop );
 		// 在数据库 创建数据
 		prop.createDB( player );
-		return prop;
+		// 这里看数量是否超过累加数
+		if( prop.getCount() < count )
+			createProp( type, nid, count - prop.getCount() );
 	}
 	
-
+	public boolean remove( IProp prop ){
+		// 从数据库删除
+		prop.deleteDB(player);
+		// 然后在从内存中删除
+		return super.remove(prop);
+	}
+	
 	
 
 	public static void main(String[] args) {
 		
-		Player p = PlayerManager.o.getPlayer( "101", SystemCfg.ID );
+		CsvGen.load();
 		
-//		p.getProps().createProp( PropType.STUFF, 101, 20 );
-//		p.getProps().createProp( PropType.CAPTAIN, 201, 1 );
+		Player p = PlayerManager.o.getPlayer( "217902094", SystemCfg.ID );
+		
+		p.getProps().appendProp( 10030, 189 );
+//		p.getProps().addProp( 12001, 1 );
 		
 		for( IProp b : p.getProps().getAll() ){
 			System.out.println( b.toString() );
 		}
-//		
-//		IProp bag = p.getProps().getProp( PropType.STUFF, 2 );
-//		bag.setCount( 27 );
-//		bag.updateDB( p );
-//		
-//		for( IProp b : p.getProps().getAll() ){
-//			System.out.println( b.toString() );
-//		}
+		
+		
+		
 	}
+
+
 
 
 
