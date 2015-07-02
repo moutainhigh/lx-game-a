@@ -20,6 +20,17 @@ public class Ships extends IProp{
 
 	private final Ship templet;
 	
+	public Ships(int uid, int nid, int count) {
+		super(uid, nid, count);
+		templet = CsvGen.getShip((short) nid);
+	}
+
+	@Override
+	public IProp clone() {
+		Ships ret = new Ships(getuId(), getnId(), getCount());
+		return ret;
+	}
+	
 	/**
 	 * 从数据库获取
 	 * @param o
@@ -29,11 +40,6 @@ public class Ships extends IProp{
 		return ret;
 	}
 	
-	public Ships(int uid, int nid, int count) {
-		super(uid, nid, count);
-		templet = CsvGen.getShip((short) nid);
-	}
-
 	@Override
 	public void createDB(Player player) {
 		M_shipDao dao = SqlUtil.getM_shipDao();
@@ -79,6 +85,8 @@ public class Ships extends IProp{
 	public Ship templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.SHIP; }
+
+
 
 
 

@@ -89,6 +89,9 @@ public class Child implements IBufferStream{
 	public void setPasss(int passs) {
 		this.passs = passs;
 	}
+	public void addPasss(int passs) {
+		this.passs += passs;
+	}
 	public boolean isCanSponsorVote() {
 		return isCanSponsorVote;
 	}

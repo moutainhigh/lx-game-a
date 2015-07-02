@@ -126,6 +126,11 @@ public class Player extends IPlayer implements ITransformStream{
 		return ctx;
 	}
 	public void setCtx( ChannelHandlerContext ctx ) {
+		if( this.ctx != null ){
+			Attr.setAttachment( this.ctx, null );
+			this.ctx.close();
+			this.ctx = null;
+		}
 		this.ctx = ctx;
 		Attr.setAttachment( this.ctx, getUID() );
 		ip = IP.formAddress( this.ctx );

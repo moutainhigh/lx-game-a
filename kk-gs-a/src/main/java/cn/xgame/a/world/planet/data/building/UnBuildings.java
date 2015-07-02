@@ -1,6 +1,6 @@
 package cn.xgame.a.world.planet.data.building;
 
-import cn.xgame.a.world.planet.data.Vote;
+import cn.xgame.a.world.planet.data.vote.Vote;
 
 /**
  * 未建筑 的建筑 - 先投票 然后经过时间 建筑<br>

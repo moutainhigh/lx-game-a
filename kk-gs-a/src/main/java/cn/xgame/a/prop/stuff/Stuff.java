@@ -6,8 +6,6 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Material;
 import cn.xgame.gen.dto.MysqlGen.M_stuffDao;
 import cn.xgame.gen.dto.MysqlGen.M_stuffDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -19,8 +17,22 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
  */
 public class Stuff extends IProp{
 	
-	private final Material templet;
-
+	
+	/**
+	 * 创建一个 并保存到数据库
+	 * @param uid
+	 * @param nid
+	 * @param count
+	 */
+	public Stuff( int uid, int nid, int count ) {
+		super( uid, nid, count );
+	}
+	
+	@Override
+	public IProp clone() {
+		Stuff ret = new Stuff(getuId(), getnId(), getCount());
+		return ret;
+	}
 	
 	/**
 	 * 从数据库获取
@@ -30,18 +42,6 @@ public class Stuff extends IProp{
 		Stuff ret = new Stuff( o.getUid(), o.getNid(), o.getCount() );
 		return ret;
 	}
-
-	/**
-	 * 创建一个 并保存到数据库
-	 * @param uid
-	 * @param nid
-	 * @param count
-	 */
-	public Stuff( int uid, int nid, int count ) {
-		super( uid, nid, count );
-		templet = CsvGen.getMaterial( nid );
-	}
-	
 	
 	@Override
 	public void createDB( Player player ) {
@@ -81,7 +81,6 @@ public class Stuff extends IProp{
 		
 	}
 
-	public Material templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.STUFF; }
 

@@ -111,7 +111,7 @@ public class PlayerManager {
 	 */
 	public Player login( ChannelHandlerContext ctx, String uID ) throws Exception{
 		
-		Player ret = getPlayerFmDB( uID, SystemCfg.ID );
+		Player ret = getPlayer( uID, SystemCfg.ID );
 		if( ret == null )
 			throw new Exception( ErrorCode.PLAYER_NOTFOUND.name() );
 		

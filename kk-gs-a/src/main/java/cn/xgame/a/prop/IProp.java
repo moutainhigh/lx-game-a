@@ -53,6 +53,11 @@ public abstract class IProp implements ITransformStream{
 		return count < item.manymax;
 	}
 	
+	/**
+	 * 克隆一个
+	 */
+	public abstract IProp clone();
+	
 	public abstract PropType type();
 	public abstract void createDB( Player player );
 	public abstract void updateDB( Player player );
@@ -76,14 +81,35 @@ public abstract class IProp implements ITransformStream{
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int addCount(int count) {
-		int ret = 0;
-		if( (this.count+=count) > item.manymax ){
-			ret = (int) (this.count - item.manymax);
-			this.count = (int) item.manymax;
-		}
-		return ret;
+	
+	/**
+	 * 添加数量 
+	 * @param num
+	 * @return 多出的
+	 */
+	public int addCount( int num ) {
+		int ret 	= count + Math.abs( num );
+		if( ret > item.manymax )
+			count 	= item.manymax;
+		else
+			count	= ret;
+		return ret > item.manymax ? ret - item.manymax : 0;
 	}
+	
+	/**
+	 * 扣除数量
+	 * @param num
+	 * @return 不够的
+	 */
+	public int deductCount( int num ){
+		int ret 	= count - Math.abs( num );
+		if( ret < 0 )
+			count 	= 0;
+		else
+			count	= ret;
+		return ret < 0 ? Math.abs(ret) : 0;
+	}
+	
 	public Item item(){ return item; }
 	
 	public String toString(){

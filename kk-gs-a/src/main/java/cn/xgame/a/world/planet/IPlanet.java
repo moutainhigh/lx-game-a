@@ -69,20 +69,20 @@ public abstract class IPlanet implements ITransformStream{
 		buffer.writeShort( maxSpace );
 	}
 
-	/**
-	 * 发起建筑投票
-	 * @param player 
-	 * @param nid
-	 * @param time 
-	 * @param type
-	 */
+	/** 发起 建筑 投票 */
 	public void sponsorBuivote( Player player, int nid, byte index, int time ) throws Exception { }
 	/** 参与 建筑 投票*/
 	public void participateBuildVote(Player player, int nid, byte isAgree) throws Exception { }
+	
+	/** 发起 科技 投票 */
+	public void sponsorTechVote( Player player, int nid, int time ) throws Exception { }
 	/** 参与 科技 投票 */
 	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { }
+	
+	/** 发起 驱逐元老 投票 */
+	public void sponsorGenrVote( Player player, String uid, int time ) throws Exception { }
 	/** 参与 驱逐元老 投票 */
-	public void participateGenrVote(Player player, String uid,byte isAgree) throws Exception { }
+	public void participateGenrVote( Player player, String uid,byte isAgree ) throws Exception { }
 	
 	/** 捐献资源 */
 	public void donateResource( Player player, IProp prop ){}

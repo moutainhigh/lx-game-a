@@ -18,6 +18,7 @@ import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
+import cn.xgame.a.world.planet.data.vote.VotePlayer;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Building;
 import cn.xgame.config.o.Stars;
@@ -42,12 +43,19 @@ public class HomePlanet extends IPlanet {
 	// 体制
 	private Institution institution;
 	
+	// 星球货币
+	private long currency;
+	
 	// 玩家列表
 	private List<Child> childs = Lists.newArrayList();
 	
 	// 科技列表
 	private TechControl techs = new TechControl();
 
+	public long getCurrency() { return currency; }
+	public void setCurrency(long currency) {
+		this.currency = currency;
+	}
 	public Institution getInstitution() { return institution; }
 	public void setInstitution(Institution institution) {
 		this.institution = institution;
@@ -181,6 +189,9 @@ public class HomePlanet extends IPlanet {
 		
 		// 添加资源
 		getDepotControl().appendProp(prop);
+
+		// 这里检查  建筑中列表 里面是否有材料不足而暂停的建筑中建筑
+		// TODO
 		
 		// 添加玩家的贡献度
 		Child child = getChild( player.getUID() );
@@ -232,8 +243,10 @@ public class HomePlanet extends IPlanet {
 		Building templet = CsvGen.getBuilding(nid);
 		if( buildingControl.isOccupyInIndex( index, templet.room ) )
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
+		
 		// 添加到投票中
-		buildingControl.appendVoteBuild( nid, index, time );
+		buildingControl.appendVoteBuild( player.getUID(), nid, index, time );
+		
 		// 记录玩家发起数
 		child.addSponsors( 1 );
 	}
@@ -246,12 +259,40 @@ public class HomePlanet extends IPlanet {
 		if( child == null || child.getPrivilege() == 0 )
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
-		// 设置投票
+		// 判断是否已经参与投票了
 		UnBuildings unBuild = buildingControl.getVoteBuild( nid );
-		unBuild.getVote().setIsAgrees( isAgree );
-		// 下面判断 票是否投完
-		// TODO
+		if( unBuild.getVote().isParticipateVote( player.getUID() ) )
+			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
 		
+		// 设置投票
+		byte status = unBuild.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
+		// 说明投票完成
+		if( status != -1 ){
+			if( status == 1 ) // 同意建筑
+				startBuild( unBuild );
+			if( status == 0 ){ // 反对建筑
+				//...
+			}
+			// 最后不管怎样都要删掉的
+			buildingControl.removeVoteBuild( nid );
+		}
+	}
+	
+	// 开始建筑
+	private void startBuild( UnBuildings unBuild )  {
+		
+		// 判断资源是否够 - 开始扣资源
+		if( getDepotControl().deductProp( unBuild.templet().needres ) )
+			unBuild.setrTime( (int) (System.currentTimeMillis()/1000) );
+		else
+			unBuild.setrTime( -1 );
+		
+		// 放入建筑中 列表
+		getBuildingControl().appendUnBuild( unBuild );
+		
+		// 设置发起人的通过数
+		Child sponsor = getChild( unBuild.getVote().getSponsorUid() );
+		sponsor.addPasss( 1 );
 	}
 	
 	@Override
@@ -259,5 +300,5 @@ public class HomePlanet extends IPlanet {
 	@Override
 	public void participateGenrVote(Player player, String uid,byte isAgree) throws Exception { }
 
-
+	
 }

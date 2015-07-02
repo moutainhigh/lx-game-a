@@ -20,6 +20,17 @@ public class Captains extends IProp {
 
 	private final Captain templet;
 
+	public Captains( int uid, int nid, int count ) {
+		super( uid, nid, count );
+		templet = CsvGen.getCaptain(nid);
+	}
+
+	@Override
+	public IProp clone() {
+		Captains ret = new Captains( getuId(), getnId(), getCount() );
+		return ret ;
+	}
+	
 	/**
 	 * 从数据库获取
 	 * @param o
@@ -28,12 +39,7 @@ public class Captains extends IProp {
 		Captains ret = new Captains( o.getUid(), o.getNid(), o.getCount() );
 		return ret;
 	}
-
-	public Captains( int uid, int nid, int count ) {
-		super( uid, nid, count );
-		templet = CsvGen.getCaptain(nid);
-	}
-
+	
 	@Override
 	public void createDB(Player player) {
 		M_captainDao dao = SqlUtil.getM_captainDao();
@@ -76,6 +82,7 @@ public class Captains extends IProp {
 	}
 
 	public Captain templet(){ return templet; }
+	
 	@Override
 	public PropType type() { return PropType.CAPTAIN; }
 

@@ -1,6 +1,7 @@
 package cn.xgame.a.prop;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class IDepot {
 	}
 	
 	/**
-	 * 获取道具
+	 * 根据唯一ID 获取道具
 	 * @param type
 	 * @param uid
 	 * @return
@@ -55,6 +56,25 @@ public class IDepot {
 				return b;
 		}
 		return null;
+	}
+	public IProp getProp( IProp prop ){
+		return getProp( prop.type(), prop.getuId() );
+	}
+	
+	/**
+	 * 根据表格ID 获取道具列表
+	 * @param nid
+	 * @return
+	 */
+	public List<IProp> getProp( int nid ) {
+		List<IProp> ret = Lists.newArrayList();
+		List<IProp> ls = getAll();
+		for( IProp prop : ls ){
+			if( prop.getnId() == nid ){
+				ret.add( prop );
+			}
+		}
+		return ret;
 	}
 	
 	/**
@@ -91,16 +111,18 @@ public class IDepot {
 	}
 	
 	/**
-	 * 删除一个道具
+	 * 删除一个道具 - 主要是根据道具唯一ID来删除
 	 * @param prop
 	 */
 	public boolean remove( IProp prop ){
 		if( prop == null ) return false;
 		List<IProp> temp = props.get( prop.type() );
 		if( temp == null ) return false;
-		for( IProp b : temp ){
-			if( b.getuId() == prop.getuId() ){
-				temp.remove( b );
+		
+		Iterator<IProp> ls = temp.iterator();
+		while( ls.hasNext() ){
+			if( ls.next().getuId() == prop.getuId() ){
+				ls.remove();
 				return true;
 			}
 		}

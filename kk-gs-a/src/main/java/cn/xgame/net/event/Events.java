@@ -18,7 +18,9 @@ import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
-import cn.xgame.net.event.all.pl.planet.SponsorBuiVoEvent;
+import cn.xgame.net.event.all.pl.planet.ParticipateExpelEvent;
+import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
+import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
@@ -51,10 +53,15 @@ public enum Events {
 	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
 	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
 	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
-	SPONSOR_BUIVOTE					( 1131, 				new SponsorBuiVoEvent() ),
-	SPONSOR_TECHVOTE				( 1132, 				new SponsorTechVoEvent() ),
-	SPONSOR_EXPEL					( 1133, 				new SponsorExpelEvent() ),
-	PARTICIPATE_VOTE				( 1141, 				new ParticipateBuildVoEvent() ),
+	// 建筑
+	SPONSOR_BUILDVOTE				( 1131, 				new SponsorBuildVoEvent() ),
+	PARTICIPATE_BUILDVOTE			( 1132, 				new ParticipateBuildVoEvent() ),
+	// 科技
+	SPONSOR_TECHVOTE				( 1141, 				new SponsorTechVoEvent() ),
+	PARTICIPATE_TECHVOTE			( 1142, 				new ParticipateTechVoEvent() ),
+	// 元老
+	SPONSOR_EXPEL					( 1151, 				new SponsorExpelEvent() ),
+	PARTICIPATE_EXPEL				( 1152, 				new ParticipateExpelEvent() ),
 	
 	
 	//-----------------更新包

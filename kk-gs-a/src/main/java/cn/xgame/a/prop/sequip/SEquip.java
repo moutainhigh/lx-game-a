@@ -16,6 +16,17 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
  */
 public class SEquip extends IProp{
 
+	
+	public SEquip(int uid, int nid, int count) {
+		super(uid, nid, count);
+	}
+
+	@Override
+	public IProp clone() {
+		SEquip ret = new SEquip(getuId(), getnId(), getCount());
+		return ret;
+	}
+	
 	/**
 	 * 从数据库获取
 	 * @param o
@@ -25,10 +36,6 @@ public class SEquip extends IProp{
 		return ret;
 	}
 	
-	public SEquip(int uid, int nid, int count) {
-		super(uid, nid, count);
-	}
-
 	@Override
 	public void createDB(Player player) {
 		M_sequipDao dao = SqlUtil.getM_sequipDao();

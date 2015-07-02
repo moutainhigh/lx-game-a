@@ -1,7 +1,6 @@
 package cn.xgame.config;
 
 import cn.xgame.a.system.SystemCfg;
-import cn.xgame.config.gen.CsvGen;
 import x.javaplus.csv.App;
 
 public class Build {
@@ -10,7 +9,7 @@ public class Build {
 	
 		generateConfigs();
 		
-		CsvGen.load();
+//		CsvGen.load();
 		
 		System.out.println( "generate finish" );
 	}

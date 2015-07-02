@@ -16,7 +16,7 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-7-1 上午10:27:47
  */
-public class SponsorBuiVoEvent extends IEvent{
+public class SponsorBuildVoEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {

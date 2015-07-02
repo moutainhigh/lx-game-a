@@ -3,12 +3,13 @@ package cn.xgame.a.world.planet.data.building;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.world.planet.data.Vote;
+import cn.xgame.a.world.planet.data.vote.Vote;
 
 /**
  * 星球建筑 操作中心
@@ -155,14 +156,15 @@ public class BuildingControl implements IArrayStream{
 
 	/**
 	 * 添加一个 投票中建筑
-	 * @param nid
-	 * @param index
-	 * @param time
+	 * @param uid 发起人的UID
+	 * @param nid 建筑表格ID
+	 * @param index 建筑要建筑的位置
+	 * @param time 发起时间限制
 	 */
-	public void appendVoteBuild( int nid, byte index, int time ) {
+	public void appendVoteBuild( String uid, int nid, byte index, int time ) {
 		UnBuildings unb = new UnBuildings(nid);
 		unb.setIndex(index);
-		unb.setVote( new Vote( time ) );
+		unb.setVote( new Vote( uid, time ) );
 		voBuildings.add(unb);
 	}
 
@@ -177,6 +179,29 @@ public class BuildingControl implements IArrayStream{
 				return o;
 		}
 		return null;
+	}
+
+	/**
+	 * 删除一个投票中的建筑
+	 * @param nid
+	 */
+	public void removeVoteBuild( int nid ) {
+		Iterator<UnBuildings> it = voBuildings.iterator();
+		while( it.hasNext() ){
+			if( it.next().templet().id == nid ){
+				it.remove();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * 添加一个 建筑到建筑中列表
+	 * @param unBuild
+	 */
+	public void appendUnBuild( UnBuildings unBuild ) {
+		
+		unBuildings.add(unBuild);
 	}
 	
 }

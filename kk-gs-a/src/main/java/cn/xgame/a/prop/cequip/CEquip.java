@@ -20,6 +20,17 @@ public class CEquip extends IProp{
 
 	private final Weapon templet;
 	
+	public CEquip(int uid, int nid, int count) {
+		super(uid, nid, count);
+		templet = CsvGen.getWeapon(nid);
+	}
+
+	@Override
+	public IProp clone() {
+		CEquip ret = new CEquip(getuId(), getnId(), getCount());
+		return ret;
+	}
+	
 	/**
 	 * 从数据库获取
 	 * @param o
@@ -29,11 +40,6 @@ public class CEquip extends IProp{
 		return ret;
 	}
 	
-	public CEquip(int uid, int nid, int count) {
-		super(uid, nid, count);
-		templet = CsvGen.getWeapon(nid);
-	}
-
 	@Override
 	public void createDB(Player player) {
 		M_cequipDao dao = SqlUtil.getM_cequipDao();
