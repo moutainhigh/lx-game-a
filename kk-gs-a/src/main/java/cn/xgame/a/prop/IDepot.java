@@ -121,7 +121,8 @@ public class IDepot {
 		
 		Iterator<IProp> ls = temp.iterator();
 		while( ls.hasNext() ){
-			if( ls.next().getuId() == prop.getuId() ){
+			IProp next = ls.next();
+			if( next.getuId() == prop.getuId() ){
 				ls.remove();
 				return true;
 			}

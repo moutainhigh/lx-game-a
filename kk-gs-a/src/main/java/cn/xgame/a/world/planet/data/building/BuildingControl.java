@@ -188,7 +188,8 @@ public class BuildingControl implements IArrayStream{
 	public void removeVoteBuild( int nid ) {
 		Iterator<UnBuildings> it = voBuildings.iterator();
 		while( it.hasNext() ){
-			if( it.next().templet().id == nid ){
+			UnBuildings next = it.next();
+			if( next.templet().id == nid ){
 				it.remove();
 				break;
 			}
