@@ -30,7 +30,7 @@ public class PlayerData {
 	int adjutantId;
 	
 	/** 区域 */
-	short countryId;
+	int countryId;
 	
 	/** 游戏币 */
 	int currency;

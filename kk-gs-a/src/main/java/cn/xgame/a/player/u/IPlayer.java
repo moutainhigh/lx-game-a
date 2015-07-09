@@ -23,7 +23,7 @@ public abstract class IPlayer {
 	private int adjutantId;
 	
 	// 区域 - 属于星球ID
-	private short countryId;
+	private int countryId;
 	
 	// 游戏币
 	private int currency;
@@ -93,10 +93,10 @@ public abstract class IPlayer {
 	public void setHeadIco(int headIco) {
 		this.headIco = headIco;
 	}
-	public short getCountryId() {
+	public int getCountryId() {
 		return countryId;
 	}
-	public void setCountryId(short countryId) {
+	public void setCountryId(int countryId) {
 		this.countryId = countryId;
 	}
 	public int getCurrency() {

@@ -10,7 +10,7 @@
 			setObject( "nid", dto.getNid() );
 
 			super.commit( true );		}	}
-	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Short id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Short id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
+	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Integer id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Integer id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
 			setObject( "maxSpace", dto.getMaxSpace() );
 			setObject( "players", dto.getPlayers() );
 			setObject( "buildings", dto.getBuildings() );
@@ -78,7 +78,7 @@
 			nid = o.getInt( "nid" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid;		}	}
-	public static class PlanetDataDto implements SqlDto{		private Short id = null;
+	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
 		private byte[] buildings = null;
@@ -94,7 +94,7 @@
 			this.specialtys = src.specialtys;
 			this.techs = src.techs;
 
-		}		/** 星球ID */		public Short getId(){			return this.id;		}
+		}		/** 星球ID */		public Integer getId(){			return this.id;		}
 		/** 星球总空间 */		public Short getMaxSpace(){			return this.maxSpace;		}
 		/** 玩家列表 */		public byte[] getPlayers(){			return this.players;		}
 		/** 星球建筑 */		public byte[] getBuildings(){			return this.buildings;		}
@@ -102,7 +102,7 @@
 		/** 星球特产 */		public byte[] getSpecialtys(){			return this.specialtys;		}
 		/** 星球科技 */		public byte[] getTechs(){			return this.techs;		}
 
-		/** 星球ID */		public void setId( Short id ){			this.id = id;		}
+		/** 星球ID */		public void setId( Integer id ){			this.id = id;		}
 		/** 星球总空间 */		public void setMaxSpace( Short maxSpace ){			this.maxSpace = maxSpace;		}
 		/** 玩家列表 */		public void setPlayers( byte[] players ){			this.players = players;		}
 		/** 星球建筑 */		public void setBuildings( byte[] buildings ){			this.buildings = buildings;		}
@@ -110,7 +110,7 @@
 		/** 星球特产 */		public void setSpecialtys( byte[] specialtys ){			this.specialtys = specialtys;		}
 		/** 星球科技 */		public void setTechs( byte[] techs ){			this.techs = techs;		}
 
-		public static String idChangeSql( Short x) {			return "id=" + x;		}
+		public static String idChangeSql( Integer x) {			return "id=" + x;		}
 		public static String maxSpaceChangeSql( Short x) {			return "maxSpace=" + x;		}
 		public static String playersChangeSql( byte[] x) {			return "players=" + x;		}
 		public static String buildingsChangeSql( byte[] x) {			return "buildings=" + x;		}
@@ -118,7 +118,7 @@
 		public static String specialtysChangeSql( byte[] x) {			return "specialtys=" + x;		}
 		public static String techsChangeSql( byte[] x) {			return "techs=" + x;		}
 
-		@Override		public void fromDBObject(DBObject o) {			id = o.getShort( "id" );
+		@Override		public void fromDBObject(DBObject o) {			id = o.getInt( "id" );
 			maxSpace = o.getShort( "maxSpace" );
 			players = o.getBytes( "players" );
 			buildings = o.getBytes( "buildings" );
@@ -134,7 +134,7 @@
 		private String nickname = null;
 		private Integer headIco = null;
 		private Integer adjutantId = null;
-		private Short countryId = null;
+		private Integer countryId = null;
 		private Integer currency = null;
 		private Integer gold = null;
 		private byte[] manors = null;
@@ -158,7 +158,7 @@
 		/** 名字 */		public String getNickname(){			return this.nickname;		}
 		/** 头像图标ID */		public Integer getHeadIco(){			return this.headIco;		}
 		/** 副官ID */		public Integer getAdjutantId(){			return this.adjutantId;		}
-		/** 区域 */		public Short getCountryId(){			return this.countryId;		}
+		/** 区域 */		public Integer getCountryId(){			return this.countryId;		}
 		/** 游戏币 */		public Integer getCurrency(){			return this.currency;		}
 		/** 充值币 */		public Integer getGold(){			return this.gold;		}
 		/** 领地 */		public byte[] getManors(){			return this.manors;		}
@@ -170,7 +170,7 @@
 		/** 名字 */		public void setNickname( String nickname ){			this.nickname = nickname;		}
 		/** 头像图标ID */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
 		/** 副官ID */		public void setAdjutantId( Integer adjutantId ){			this.adjutantId = adjutantId;		}
-		/** 区域 */		public void setCountryId( Short countryId ){			this.countryId = countryId;		}
+		/** 区域 */		public void setCountryId( Integer countryId ){			this.countryId = countryId;		}
 		/** 游戏币 */		public void setCurrency( Integer currency ){			this.currency = currency;		}
 		/** 充值币 */		public void setGold( Integer gold ){			this.gold = gold;		}
 		/** 领地 */		public void setManors( byte[] manors ){			this.manors = manors;		}
@@ -182,7 +182,7 @@
 		public static String nicknameChangeSql( String x) {			return "nickname=" + "'"+x+"'";		}
 		public static String headIcoChangeSql( Integer x) {			return "headIco=" + x;		}
 		public static String adjutantIdChangeSql( Integer x) {			return "adjutantId=" + x;		}
-		public static String countryIdChangeSql( Short x) {			return "countryId=" + x;		}
+		public static String countryIdChangeSql( Integer x) {			return "countryId=" + x;		}
 		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
 		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
@@ -194,7 +194,7 @@
 			nickname = o.getString( "nickname" );
 			headIco = o.getInt( "headIco" );
 			adjutantId = o.getInt( "adjutantId" );
-			countryId = o.getShort( "countryId" );
+			countryId = o.getInt( "countryId" );
 			currency = o.getInt( "currency" );
 			gold = o.getInt( "gold" );
 			manors = o.getBytes( "manors" );

@@ -8,7 +8,7 @@ package cn.xgame.gen.o;
 public class PlanetData {
 	
 	/** 星球ID */
-	short id;
+	int id;
 	
 	/** 星球总空间 */
 	short maxSpace;

@@ -33,6 +33,7 @@ public class CreateEvent extends IEvent {
 		String key	= RW.readString(data);
 		int headIco	= data.readInt();
 		String name = RW.readString(data);
+		int adjutantId = data.readInt();
 		
 		ErrorCode code 	= null;
 		Player player 	= null;
@@ -44,7 +45,7 @@ public class CreateEvent extends IEvent {
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
 			// 获取玩家信息
-			player	= PlayerManager.o.create( ctx, UID, headIco, name );
+			player	= PlayerManager.o.create( ctx, UID, headIco, adjutantId, name );
 			
 			// 分配母星
 			home 	= WorldManager.o.allotHomePlanet( player );

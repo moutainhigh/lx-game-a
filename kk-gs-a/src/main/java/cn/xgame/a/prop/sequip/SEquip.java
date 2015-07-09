@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Weapon;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -13,14 +15,16 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
  */
 public class SEquip extends IProp{
 
-	public int a;
+	private final Weapon templet;
 	
 	public SEquip(int uid, int nid, int count) {
 		super(uid, nid, count);
+		templet = CsvGen.getWeapon(nid);
 	}
 	
 	public SEquip( PropsDto o ) {
 		super(o);
+		templet = CsvGen.getWeapon(getnId());
 	}
 
 	@Override
@@ -35,6 +39,7 @@ public class SEquip extends IProp{
 		
 	}
 	
+	public Weapon templet() { return templet; }
 	@Override
 	public PropType type() { return PropType.SEQUIP; }
 

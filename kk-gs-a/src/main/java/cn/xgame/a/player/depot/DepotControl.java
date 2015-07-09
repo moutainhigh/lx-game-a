@@ -10,7 +10,6 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.a.prop.sequip.SEquip;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Item;
@@ -136,14 +135,6 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 //			System.out.println( b.toString() );
 //		}
 		
-		SEquip seq = new SEquip( 1,20001,1 );
-		seq.a = 101;
-		
-		IProp bb = seq;
-		
-		SEquip se = (SEquip) bb;
-		
-		System.out.println( se.a );
 	}
 
 

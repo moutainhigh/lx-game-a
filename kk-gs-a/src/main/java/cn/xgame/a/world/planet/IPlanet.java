@@ -93,7 +93,7 @@ public abstract class IPlanet implements ITransformStream{
 	/** 保存数据库 */
 	public abstract void updateDB();
 	public Stars templet(){ return templet; }
-	public Short getId() { return templet.id; }
+	public int getId() { return templet.id; }
 	public short getMaxSpace() {
 		return maxSpace;
 	}

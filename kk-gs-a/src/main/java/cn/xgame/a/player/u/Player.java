@@ -81,12 +81,11 @@ public class Player extends IPlayer implements ITransformStream{
 		RW.writeString( buffer, getUID() );
 		RW.writeString( buffer, getNickname() );
 		buffer.writeInt( getHeadIco() );
+		buffer.writeInt( getAdjutantId() );
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );
 		buffer.writeByte( 1 );
 	}
-	
-	
 	
 
 	/**  退出处理 */

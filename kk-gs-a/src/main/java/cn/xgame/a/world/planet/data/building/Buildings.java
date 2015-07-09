@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Building;
+import cn.xgame.config.o.Sbuilding;
 
 /**
  * 建筑
@@ -13,13 +13,13 @@ import cn.xgame.config.o.Building;
  */
 public class Buildings implements IBufferStream,ITransformStream {
 
-	private final Building templet;
+	private final Sbuilding templet;
 	
 	// 位置
 	private byte index;
 	
 	public Buildings( int id ) {
-		templet = CsvGen.getBuilding(id);
+		templet = CsvGen.getSbuilding(id);
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class Buildings implements IBufferStream,ITransformStream {
 		buffer.writeByte( index );
 	}
 	
-	public Building templet(){ return templet; }
+	public Sbuilding templet(){ return templet; }
 	public byte getIndex() {
 		return index;
 	}

@@ -20,7 +20,7 @@ import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Building;
+import cn.xgame.config.o.Sbuilding;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
@@ -249,7 +249,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
 		// 判断位置是否占用
-		Building templet = CsvGen.getBuilding(nid);
+		Sbuilding templet = CsvGen.getSbuilding(nid);
 		if( buildingControl.isOccupyInIndex( index, templet.usegrid ) )
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
 		

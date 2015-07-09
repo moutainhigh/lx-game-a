@@ -134,7 +134,7 @@ public class WorldManager {
 	 * @param nid
 	 * @return
 	 */
-	public HomePlanet getHomePlanet( short nid ) {
+	public HomePlanet getHomePlanet( int nid ) {
 		for( HomePlanet home : homes ){
 			if( home.getId() == nid )
 				return home;
