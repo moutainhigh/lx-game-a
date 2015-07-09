@@ -44,17 +44,17 @@ public class WorldManager {
 		for( Stars star : CsvGen.starss ){
 			
 			try {
-				if( star.tpye == 1 ){
+				if( star.type == 1 ){
 					
 					HomePlanet home = new HomePlanet( star );
 					append( home );
 					homes.add( home );
-				}else if( star.tpye == 2 ){
+				}else if( star.type == 2 ){
 					
 					EntrepotPlanet entrepot = new EntrepotPlanet(star);
 					append( entrepot );
 					entrepots.add( entrepot );
-				}else if( star.tpye == 3 ){
+				}else if( star.type == 3 ){
 					
 					EctypePlanet ectype = new EctypePlanet(star);
 					append( ectype );
@@ -177,11 +177,11 @@ public class WorldManager {
 		Stars star = CsvGen.getStars( nid );
 		if( star == null )
 			return null;
-		if( star.tpye == 1 ){
+		if( star.type == 1 ){
 			return getHomePlanet( nid );
-		}else if( star.tpye == 2 ){
+		}else if( star.type == 2 ){
 			return getEntrepotPlanet( nid );
-		}else if( star.tpye == 3 ){
+		}else if( star.type == 3 ){
 			return getEctypePlanet( nid );
 		}
 		return null;
