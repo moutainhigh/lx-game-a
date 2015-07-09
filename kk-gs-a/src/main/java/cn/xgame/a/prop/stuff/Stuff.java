@@ -1,14 +1,11 @@
 package cn.xgame.a.prop.stuff;
 
 
-import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.gen.dto.MysqlGen.M_stuffDao;
-import cn.xgame.gen.dto.MysqlGen.M_stuffDto;
-import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
  * 材料对象
@@ -18,14 +15,14 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 public class Stuff extends IProp{
 	
 	
-	/**
-	 * 创建一个 并保存到数据库
-	 * @param uid
-	 * @param nid
-	 * @param count
-	 */
 	public Stuff( int uid, int nid, int count ) {
 		super( uid, nid, count );
+	}
+	
+	public Stuff( PropsDto o ){
+		super(o);
+		// 下面加自己的属性 o.getAttach();
+		
 	}
 	
 	@Override
@@ -34,46 +31,6 @@ public class Stuff extends IProp{
 		return ret;
 	}
 	
-	/**
-	 * 从数据库获取
-	 * @param o
-	 */
-	public static Stuff wrapDB( M_stuffDto o ) {
-		Stuff ret = new Stuff( o.getUid(), o.getNid(), o.getCount() );
-		return ret;
-	}
-	
-	@Override
-	public void createDB( Player player ) {
-		M_stuffDao dao = SqlUtil.getM_stuffDao();
-		M_stuffDto dto = dao.create();
-		dto.setGsid( player.getGsid() );
-		dto.setUname( player.getUID() );
-		dto.setUid( getuId() );
-		dto.setNid( getnId() );
-		dto.setCount( getCount() );
-		dao.commit(dto);
-	}
-	
-	@Override
-	public void updateDB( Player player ) {
-		M_stuffDao dao 	= SqlUtil.getM_stuffDao();
-		String sql 		= new Condition( M_stuffDto.uidChangeSql( getuId() ) ).AND( M_stuffDto.gsidChangeSql( player.getGsid() ) ).
-				AND( M_stuffDto.unameChangeSql( player.getUID() ) ).toString();
-		M_stuffDto dto 	= dao.updateByExact( sql );
-		dto.setNid( getnId() );
-		dto.setCount( getCount() );
-		dao.commit(dto);
-	}
-	
-	@Override
-	public void deleteDB(Player player) {
-		M_stuffDao dao 	= SqlUtil.getM_stuffDao();
-		String sql 		= new Condition( M_stuffDto.uidChangeSql( getuId() ) ).AND( M_stuffDto.gsidChangeSql( player.getGsid() ) ).
-				AND( M_stuffDto.unameChangeSql( player.getUID() ) ).toString();
-		dao.deleteByExact(sql);
-		dao.commit();
-	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
@@ -84,6 +41,15 @@ public class Stuff extends IProp{
 	@Override
 	public PropType type() { return PropType.STUFF; }
 
+	@Override
+	public void createDB(Player player) {
+		super.create(player, null);
+	}
+
+	@Override
+	public void updateDB(Player player) {
+		super.update(player, null);
+	}
 
 	
 }

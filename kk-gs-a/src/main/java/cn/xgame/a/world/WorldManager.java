@@ -175,6 +175,8 @@ public class WorldManager {
 	 */
 	public IPlanet getPlanet( short nid ) {
 		Stars star = CsvGen.getStars( nid );
+		if( star == null )
+			return null;
 		if( star.tpye == 1 ){
 			return getHomePlanet( nid );
 		}else if( star.tpye == 2 ){

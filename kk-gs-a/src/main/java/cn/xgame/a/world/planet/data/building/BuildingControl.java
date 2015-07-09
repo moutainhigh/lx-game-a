@@ -106,9 +106,14 @@ public class BuildingControl implements IArrayStream{
 
 	/** 塞入 所有建筑 */
 	public void putBuilding( ByteBuf buffer ) {
-		buffer.writeByte( buildings.size() );
+		buffer.writeByte( buildings.size() + unBuildings.size() );
 		for( Buildings o : buildings ){
 			o.buildTransformStream( buffer );
+			buffer.writeInt( 0 );
+		}
+		for( UnBuildings o : unBuildings ){
+			o.buildTransformStream( buffer );
+			buffer.writeInt( o.getrTime() );
 		}
 	}
 	/** 塞入 投票建筑 */
@@ -120,15 +125,15 @@ public class BuildingControl implements IArrayStream{
 		}
 	}
 	/** 塞入 建筑中 */
-	public void putUnBuilding( ByteBuf buffer ) {
-		buffer.writeByte( unBuildings.size() );
-		for( UnBuildings o : unBuildings ){
-			o.buildTransformStream( buffer );
-			buffer.writeInt( o.getrTime() );
-		}
-	}
+//	public void putUnBuilding( ByteBuf buffer ) {
+//		buffer.writeByte( unBuildings.size() );
+//		for( UnBuildings o : unBuildings ){
+//			o.buildTransformStream( buffer );
+//			buffer.writeInt( o.getrTime() );
+//		}
+//	}
 
-	// 获取所有
+	// 获取所有 已建筑+建筑中+投票中
 	private List<Buildings> getAllBuilding() {
 		List<Buildings> ret = Lists.newArrayList();
 		ret.addAll(buildings);

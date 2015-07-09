@@ -1,45 +1,13 @@
-package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select max(" + col + ") from " + tableName + " where " + criteria );				db.executeQuery();				if ( db.next())					return db.getInt( 1 );			} catch (Exception e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				/**		 * 获取某张表的数据总数		 * @param tableName		 * @return		 */		public static long getCount( String tableName ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select COUNT(*) from " + tableName );				db.executeQuery();				if ( db.next() )					return db.getLong( 1 );			} catch (SQLException e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				@SuppressWarnings("rawtypes")		public static String getClassName( Class clzss ) {			return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();		}		public static M_captainDao getM_captainDao() {			return new M_captainDao( "m_captain" );		}
-		public static M_cequipDao getM_cequipDao() {			return new M_cequipDao( "m_cequip" );		}
-		public static M_sequipDao getM_sequipDao() {			return new M_sequipDao( "m_sequip" );		}
-		public static M_shipDao getM_shipDao() {			return new M_shipDao( "m_ship" );		}
-		public static M_stuffDao getM_stuffDao() {			return new M_stuffDao( "m_stuff" );		}
+package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select max(" + col + ") from " + tableName + " where " + criteria );				db.executeQuery();				if ( db.next())					return db.getInt( 1 );			} catch (Exception e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				/**		 * 获取某张表的数据总数		 * @param tableName		 * @return		 */		public static long getCount( String tableName ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select COUNT(*) from " + tableName );				db.executeQuery();				if ( db.next() )					return db.getLong( 1 );			} catch (SQLException e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				@SuppressWarnings("rawtypes")		public static String getClassName( Class clzss ) {			return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();		}		public static CaptainsDao getCaptainsDao() {			return new CaptainsDao( "captains" );		}
 		public static PlanetDataDao getPlanetDataDao() {			return new PlanetDataDao( "planetdata" );		}
 		public static PlayerDataDao getPlayerDataDao() {			return new PlayerDataDao( "playerdata" );		}
-		public static TestDao getTestDao() {			return new TestDao( "test" );		}
+		public static PropsDao getPropsDao() {			return new PropsDao( "props" );		}
+		public static ShipsDao getShipsDao() {			return new ShipsDao( "ships" );		}
 
-	}			public static class M_captainDao extends SqlDao{				public M_captainDao( String tableName ) {			super( tableName );		}				public M_captainDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				M_captainDto x = new M_captainDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<M_captainDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<M_captainDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<M_captainDto> getLs() {			List<M_captainDto> ls = Lists.newArrayList();			while( next() ){				M_captainDto x = new M_captainDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public M_captainDto update(){			_update( );			return new M_captainDto();		}		public M_captainDto updateByExact( String arg ){			_updateByExact( arg );			return new M_captainDto();		}				public M_captainDto create() {			insert();			return new M_captainDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( M_captainDto dto ) {			setObject( "gsid", dto.getGsid() );
+	}			public static class CaptainsDao extends SqlDao{				public CaptainsDao( String tableName ) {			super( tableName );		}				public CaptainsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				CaptainsDto x = new CaptainsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<CaptainsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<CaptainsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<CaptainsDto> getLs() {			List<CaptainsDto> ls = Lists.newArrayList();			while( next() ){				CaptainsDto x = new CaptainsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public CaptainsDto update(){			_update( );			return new CaptainsDto();		}		public CaptainsDto updateByExact( String arg ){			_updateByExact( arg );			return new CaptainsDto();		}				public CaptainsDto create() {			insert();			return new CaptainsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( CaptainsDto dto ) {			setObject( "gsid", dto.getGsid() );
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
-			setObject( "count", dto.getCount() );
-
-			super.commit( true );		}	}
-	public static class M_cequipDao extends SqlDao{				public M_cequipDao( String tableName ) {			super( tableName );		}				public M_cequipDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				M_cequipDto x = new M_cequipDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<M_cequipDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<M_cequipDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<M_cequipDto> getLs() {			List<M_cequipDto> ls = Lists.newArrayList();			while( next() ){				M_cequipDto x = new M_cequipDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public M_cequipDto update(){			_update( );			return new M_cequipDto();		}		public M_cequipDto updateByExact( String arg ){			_updateByExact( arg );			return new M_cequipDto();		}				public M_cequipDto create() {			insert();			return new M_cequipDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( M_cequipDto dto ) {			setObject( "gsid", dto.getGsid() );
-			setObject( "uname", dto.getUname() );
-			setObject( "uid", dto.getUid() );
-			setObject( "nid", dto.getNid() );
-			setObject( "count", dto.getCount() );
-
-			super.commit( true );		}	}
-	public static class M_sequipDao extends SqlDao{				public M_sequipDao( String tableName ) {			super( tableName );		}				public M_sequipDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				M_sequipDto x = new M_sequipDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<M_sequipDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<M_sequipDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<M_sequipDto> getLs() {			List<M_sequipDto> ls = Lists.newArrayList();			while( next() ){				M_sequipDto x = new M_sequipDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public M_sequipDto update(){			_update( );			return new M_sequipDto();		}		public M_sequipDto updateByExact( String arg ){			_updateByExact( arg );			return new M_sequipDto();		}				public M_sequipDto create() {			insert();			return new M_sequipDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( M_sequipDto dto ) {			setObject( "gsid", dto.getGsid() );
-			setObject( "uname", dto.getUname() );
-			setObject( "uid", dto.getUid() );
-			setObject( "nid", dto.getNid() );
-			setObject( "count", dto.getCount() );
-
-			super.commit( true );		}	}
-	public static class M_shipDao extends SqlDao{				public M_shipDao( String tableName ) {			super( tableName );		}				public M_shipDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				M_shipDto x = new M_shipDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<M_shipDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<M_shipDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<M_shipDto> getLs() {			List<M_shipDto> ls = Lists.newArrayList();			while( next() ){				M_shipDto x = new M_shipDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public M_shipDto update(){			_update( );			return new M_shipDto();		}		public M_shipDto updateByExact( String arg ){			_updateByExact( arg );			return new M_shipDto();		}				public M_shipDto create() {			insert();			return new M_shipDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( M_shipDto dto ) {			setObject( "gsid", dto.getGsid() );
-			setObject( "uname", dto.getUname() );
-			setObject( "uid", dto.getUid() );
-			setObject( "nid", dto.getNid() );
-			setObject( "count", dto.getCount() );
-
-			super.commit( true );		}	}
-	public static class M_stuffDao extends SqlDao{				public M_stuffDao( String tableName ) {			super( tableName );		}				public M_stuffDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				M_stuffDto x = new M_stuffDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<M_stuffDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<M_stuffDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<M_stuffDto> getLs() {			List<M_stuffDto> ls = Lists.newArrayList();			while( next() ){				M_stuffDto x = new M_stuffDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public M_stuffDto update(){			_update( );			return new M_stuffDto();		}		public M_stuffDto updateByExact( String arg ){			_updateByExact( arg );			return new M_stuffDto();		}				public M_stuffDto create() {			insert();			return new M_stuffDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( M_stuffDto dto ) {			setObject( "gsid", dto.getGsid() );
-			setObject( "uname", dto.getUname() );
-			setObject( "uid", dto.getUid() );
-			setObject( "nid", dto.getNid() );
-			setObject( "count", dto.getCount() );
 
 			super.commit( true );		}	}
 	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Short id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Short id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
@@ -57,202 +25,59 @@
 			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
 			setObject( "nickname", dto.getNickname() );
 			setObject( "headIco", dto.getHeadIco() );
+			setObject( "adjutantId", dto.getAdjutantId() );
 			setObject( "countryId", dto.getCountryId() );
 			setObject( "currency", dto.getCurrency() );
 			setObject( "gold", dto.getGold() );
 			setObject( "manors", dto.getManors() );
 
 			super.commit( true );		}	}
-	public static class TestDao extends SqlDao{				public TestDao( String tableName ) {			super( tableName );		}				public TestDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				TestDto x = new TestDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<TestDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<TestDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<TestDto> getLs() {			List<TestDto> ls = Lists.newArrayList();			while( next() ){				TestDto x = new TestDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public TestDto update(){			_update( );			return new TestDto();		}		public TestDto updateByExact( String arg ){			_updateByExact( arg );			return new TestDto();		}				public TestDto create() {			insert();			return new TestDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( TestDto dto ) {			setObject( "id", dto.getId() );
-			setObject( "a", dto.getA() );
+	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
+			setObject( "uname", dto.getUname() );
+			setObject( "uid", dto.getUid() );
+			setObject( "nid", dto.getNid() );
+			setObject( "count", dto.getCount() );
+			setObject( "attach", dto.getAttach() );
+
+			super.commit( true );		}	}
+	public static class ShipsDao extends SqlDao{				public ShipsDao( String tableName ) {			super( tableName );		}				public ShipsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				ShipsDto x = new ShipsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<ShipsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<ShipsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<ShipsDto> getLs() {			List<ShipsDto> ls = Lists.newArrayList();			while( next() ){				ShipsDto x = new ShipsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public ShipsDto update(){			_update( );			return new ShipsDto();		}		public ShipsDto updateByExact( String arg ){			_updateByExact( arg );			return new ShipsDto();		}				public ShipsDto create() {			insert();			return new ShipsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( ShipsDto dto ) {			setObject( "gsid", dto.getGsid() );
+			setObject( "uname", dto.getUname() );
+			setObject( "uid", dto.getUid() );
+			setObject( "nid", dto.getNid() );
 
 			super.commit( true );		}	}
 
-	public static class M_captainDto implements SqlDto{		private Short gsid = null;
+	public static class CaptainsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;
 		private Integer nid = null;
-		private Integer count = null;
 
-		public M_captainDto() {		}				/**		 * Copy new one		 */		public M_captainDto(M_captainDto src) {			this.gsid = src.gsid;
+		public CaptainsDto() {		}				/**		 * Copy new one		 */		public CaptainsDto(CaptainsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
 			this.uid = src.uid;
 			this.nid = src.nid;
-			this.count = src.count;
 
 		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
 		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
 		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
 		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
 
 		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
 		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
-			count = o.getInt( "count" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
-	public static class M_cequipDto implements SqlDto{		private Short gsid = null;
-		private String uname = null;
-		private Integer uid = null;
-		private Integer nid = null;
-		private Integer count = null;
-
-		public M_cequipDto() {		}				/**		 * Copy new one		 */		public M_cequipDto(M_cequipDto src) {			this.gsid = src.gsid;
-			this.uname = src.uname;
-			this.uid = src.uid;
-			this.nid = src.nid;
-			this.count = src.count;
-
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
-
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
-
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
-
-		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
-			uname = o.getString( "uname" );
-			uid = o.getInt( "uid" );
-			nid = o.getInt( "nid" );
-			count = o.getInt( "count" );
-
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
-	public static class M_sequipDto implements SqlDto{		private Short gsid = null;
-		private String uname = null;
-		private Integer uid = null;
-		private Integer nid = null;
-		private Integer count = null;
-
-		public M_sequipDto() {		}				/**		 * Copy new one		 */		public M_sequipDto(M_sequipDto src) {			this.gsid = src.gsid;
-			this.uname = src.uname;
-			this.uid = src.uid;
-			this.nid = src.nid;
-			this.count = src.count;
-
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
-
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
-
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
-
-		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
-			uname = o.getString( "uname" );
-			uid = o.getInt( "uid" );
-			nid = o.getInt( "nid" );
-			count = o.getInt( "count" );
-
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
-	public static class M_shipDto implements SqlDto{		private Short gsid = null;
-		private String uname = null;
-		private Integer uid = null;
-		private Integer nid = null;
-		private Integer count = null;
-
-		public M_shipDto() {		}				/**		 * Copy new one		 */		public M_shipDto(M_shipDto src) {			this.gsid = src.gsid;
-			this.uname = src.uname;
-			this.uid = src.uid;
-			this.nid = src.nid;
-			this.count = src.count;
-
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
-
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
-
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
-
-		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
-			uname = o.getString( "uname" );
-			uid = o.getInt( "uid" );
-			nid = o.getInt( "nid" );
-			count = o.getInt( "count" );
-
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
-	public static class M_stuffDto implements SqlDto{		private Short gsid = null;
-		private String uname = null;
-		private Integer uid = null;
-		private Integer nid = null;
-		private Integer count = null;
-
-		public M_stuffDto() {		}				/**		 * Copy new one		 */		public M_stuffDto(M_stuffDto src) {			this.gsid = src.gsid;
-			this.uname = src.uname;
-			this.uid = src.uid;
-			this.nid = src.nid;
-			this.count = src.count;
-
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
-
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
-
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
-
-		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
-			uname = o.getString( "uname" );
-			uid = o.getInt( "uid" );
-			nid = o.getInt( "nid" );
-			count = o.getInt( "count" );
-
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid;		}	}
 	public static class PlanetDataDto implements SqlDto{		private Short id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
@@ -308,6 +133,7 @@
 		private Long lastLogoutTime = null;
 		private String nickname = null;
 		private Integer headIco = null;
+		private Integer adjutantId = null;
 		private Short countryId = null;
 		private Integer currency = null;
 		private Integer gold = null;
@@ -319,6 +145,7 @@
 			this.lastLogoutTime = src.lastLogoutTime;
 			this.nickname = src.nickname;
 			this.headIco = src.headIco;
+			this.adjutantId = src.adjutantId;
 			this.countryId = src.countryId;
 			this.currency = src.currency;
 			this.gold = src.gold;
@@ -330,6 +157,7 @@
 		/** 上次下线时间 */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
 		/** 名字 */		public String getNickname(){			return this.nickname;		}
 		/** 头像图标ID */		public Integer getHeadIco(){			return this.headIco;		}
+		/** 副官ID */		public Integer getAdjutantId(){			return this.adjutantId;		}
 		/** 区域 */		public Short getCountryId(){			return this.countryId;		}
 		/** 游戏币 */		public Integer getCurrency(){			return this.currency;		}
 		/** 充值币 */		public Integer getGold(){			return this.gold;		}
@@ -341,6 +169,7 @@
 		/** 上次下线时间 */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
 		/** 名字 */		public void setNickname( String nickname ){			this.nickname = nickname;		}
 		/** 头像图标ID */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
+		/** 副官ID */		public void setAdjutantId( Integer adjutantId ){			this.adjutantId = adjutantId;		}
 		/** 区域 */		public void setCountryId( Short countryId ){			this.countryId = countryId;		}
 		/** 游戏币 */		public void setCurrency( Integer currency ){			this.currency = currency;		}
 		/** 充值币 */		public void setGold( Integer gold ){			this.gold = gold;		}
@@ -352,6 +181,7 @@
 		public static String lastLogoutTimeChangeSql( Long x) {			return "lastLogoutTime=" + x;		}
 		public static String nicknameChangeSql( String x) {			return "nickname=" + "'"+x+"'";		}
 		public static String headIcoChangeSql( Integer x) {			return "headIco=" + x;		}
+		public static String adjutantIdChangeSql( Integer x) {			return "adjutantId=" + x;		}
 		public static String countryIdChangeSql( Short x) {			return "countryId=" + x;		}
 		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
@@ -363,30 +193,86 @@
 			lastLogoutTime = o.getLong( "lastLogoutTime" );
 			nickname = o.getString( "nickname" );
 			headIco = o.getInt( "headIco" );
+			adjutantId = o.getInt( "adjutantId" );
 			countryId = o.getShort( "countryId" );
 			currency = o.getInt( "currency" );
 			gold = o.getInt( "gold" );
 			manors = o.getBytes( "manors" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"manors="+manors;		}	}
-	public static class TestDto implements SqlDto{		private String id = null;
-		private Integer a = null;
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"manors="+manors;		}	}
+	public static class PropsDto implements SqlDto{		private Short gsid = null;
+		private String uname = null;
+		private Integer uid = null;
+		private Integer nid = null;
+		private Integer count = null;
+		private byte[] attach = null;
 
-		public TestDto() {		}				/**		 * Copy new one		 */		public TestDto(TestDto src) {			this.id = src.id;
-			this.a = src.a;
+		public PropsDto() {		}				/**		 * Copy new one		 */		public PropsDto(PropsDto src) {			this.gsid = src.gsid;
+			this.uname = src.uname;
+			this.uid = src.uid;
+			this.nid = src.nid;
+			this.count = src.count;
+			this.attach = src.attach;
 
-		}		/** 无 */		public String getId(){			return this.id;		}
-		/** 无 */		public Integer getA(){			return this.a;		}
+		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
+		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
+		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
+		/** 表格ID */		public Integer getNid(){			return this.nid;		}
+		/** 数量 */		public Integer getCount(){			return this.count;		}
+		/** 附加数据 */		public byte[] getAttach(){			return this.attach;		}
 
-		/** 无 */		public void setId( String id ){			this.id = id;		}
-		/** 无 */		public void setA( Integer a ){			this.a = a;		}
+		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
+		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
+		/** 附加数据 */		public void setAttach( byte[] attach ){			this.attach = attach;		}
 
-		public static String idChangeSql( String x) {			return "id=" + "'"+x+"'";		}
-		public static String aChangeSql( Integer x) {			return "a=" + x;		}
+		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String countChangeSql( Integer x) {			return "count=" + x;		}
+		public static String attachChangeSql( byte[] x) {			return "attach=" + x;		}
 
-		@Override		public void fromDBObject(DBObject o) {			id = o.getString( "id" );
-			a = o.getInt( "a" );
+		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
+			uname = o.getString( "uname" );
+			uid = o.getInt( "uid" );
+			nid = o.getInt( "nid" );
+			count = o.getInt( "count" );
+			attach = o.getBytes( "attach" );
 
-		}				@Override		public String toString() {			return "id="+id+","+"a="+a;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count+","+"attach="+attach;		}	}
+	public static class ShipsDto implements SqlDto{		private Short gsid = null;
+		private String uname = null;
+		private Integer uid = null;
+		private Integer nid = null;
+
+		public ShipsDto() {		}				/**		 * Copy new one		 */		public ShipsDto(ShipsDto src) {			this.gsid = src.gsid;
+			this.uname = src.uname;
+			this.uid = src.uid;
+			this.nid = src.nid;
+
+		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
+		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
+		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
+		/** 表格ID */		public Integer getNid(){			return this.nid;		}
+
+		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
+		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
+
+		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+
+		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
+			uname = o.getString( "uname" );
+			uid = o.getInt( "uid" );
+			nid = o.getInt( "nid" );
+
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid;		}	}
 
 }

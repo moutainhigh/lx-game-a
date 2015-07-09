@@ -1,11 +1,11 @@
 package cn.xgame.gen.o;
 
 /**
- * 材料
+ * 所有舰长数据
  * @author deng		
- * @date 2015-6-17 下午7:51:25
+ * @date 2015-7-9 下午2:46:04
  */
-public class M_stuff {
+public class Captains {
 	
 	/** 服务器ID */
 	short gsid;
@@ -18,9 +18,4 @@ public class M_stuff {
 	
 	/** 表格ID */
 	int nid;
-	
-	/** 数量 */
-	int count;
-	
-	
 }

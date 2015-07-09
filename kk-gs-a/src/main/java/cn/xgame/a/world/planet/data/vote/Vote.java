@@ -27,6 +27,10 @@ public class Vote implements ITransformStream , IBufferStream{
 	// 时间限制 单位-秒
 	private int timeRestrict;
 	
+	// 临时变量
+	private short agreePrivileges = 0; // 不同意的所有 话语权总和
+	private short disagreePrivileges = 0;// 同意的所有 话语权总和
+
 	public Vote( String uid, int time ) {
 		this.sponsorUid = uid;
 		this.timeRestrict = time;
@@ -35,9 +39,9 @@ public class Vote implements ITransformStream , IBufferStream{
 	}
 
 	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
+	public void buildTransformStream( ByteBuf buffer ) {
+		buffer.writeShort( agreePrivileges );
+		buffer.writeShort( disagreePrivileges );
 	}
 
 	@Override
@@ -61,30 +65,16 @@ public class Vote implements ITransformStream , IBufferStream{
 	public byte setIsAgrees( VotePlayer plyer, byte isAgree ) {
 		if( isAgree == 1 ){
 			agrees.add(plyer);
-			if( getAgreePrivileges() > 5000 ) // 必须大于50%才能算同意
+			agreePrivileges += plyer.getPrivilege();
+			if( agreePrivileges > 5000 ) // 必须大于50%才能算同意
 				return 1;
 		}else{
 			disagrees.add(plyer);
-			if( getDisagreePrivileges() >= 5000 ) // 大于等于50%就算不同意
+			disagreePrivileges += plyer.getPrivilege();
+			if( disagreePrivileges >= 5000 ) // 大于等于50%就算不同意
 				return 0;
 		}
 		return -1;
-	}
-
-	// 不同意的所有 话语权总和
-	private int getDisagreePrivileges() {
-		int ret = 0;
-		for( VotePlayer v : disagrees )
-			ret += v.getPrivilege();
-		return ret;
-	}
-
-	// 同意的所有 话语权总和
-	private int getAgreePrivileges() {
-		int ret = 0;
-		for( VotePlayer v : agrees )
-			ret += v.getPrivilege();
-		return ret;
 	}
 
 	/**

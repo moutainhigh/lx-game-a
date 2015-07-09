@@ -26,6 +26,9 @@ public class PlayerData {
 	/** 头像图标ID */
 	int headIco;
 	
+	/** 副官ID */
+	int adjutantId;
+	
 	/** 区域 */
 	short countryId;
 	

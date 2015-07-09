@@ -1,11 +1,11 @@
 package cn.xgame.gen.o;
 
 /**
- * 舰船
+ * 所有道具
  * @author deng		
- * @date 2015-6-26 下午4:36:49
+ * @date 2015-7-9 下午1:26:04
  */
-public class M_ship {
+public class Props {
 
 	/** 服务器ID */
 	short gsid;
@@ -21,4 +21,8 @@ public class M_ship {
 	
 	/** 数量 */
 	int count;
+	
+	/** 附加数据 */
+	byte[] attach;
+	
 }

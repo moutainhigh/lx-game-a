@@ -1,15 +1,12 @@
 package cn.xgame.a.prop.ship;
 
-import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ship;
-import cn.xgame.gen.dto.MysqlGen.M_shipDto;
-import cn.xgame.gen.dto.MysqlGen.M_shipDao;
-import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
  * 舰船对象
@@ -22,58 +19,29 @@ public class Ships extends IProp{
 	
 	public Ships(int uid, int nid, int count) {
 		super(uid, nid, count);
-		templet = CsvGen.getShip((short) nid);
+		templet = CsvGen.getShip(nid);
 	}
 
+	public Ships( PropsDto o ){
+		super(o);
+		// 下面加自己的属性 o.getAttach();
+		templet = CsvGen.getShip( getnId() );
+	}
+	
 	@Override
 	public IProp clone() {
-		Ships ret = new Ships(getuId(), getnId(), getCount());
-		return ret;
-	}
-	
-	/**
-	 * 从数据库获取
-	 * @param o
-	 */
-	public static Ships wrapDB( M_shipDto o ) {
-		Ships ret = new Ships( o.getUid(), o.getNid(), o.getCount() );
+		Ships ret = new Ships( getuId(), getnId(), getCount());
 		return ret;
 	}
 	
 	@Override
-	public void createDB(Player player) {
-		M_shipDao dao = SqlUtil.getM_shipDao();
-		M_shipDto dto = dao.create();
-		dto.setGsid( player.getGsid() );
-		dto.setUname( player.getUID() );
-		dto.setUid( getuId() );
-		dto.setNid( getnId() );
-		dto.setCount( getCount() );
-		///--下面加上属于自己的东西
-		
-		dao.commit(dto);
+	public void createDB( Player player ) {
+		super.create( player, null );
 	}
 
 	@Override
-	public void updateDB(Player player) {
-		M_shipDao dao 	= SqlUtil.getM_shipDao();
-		String sql 		= new Condition( M_shipDto.uidChangeSql( getuId() ) ).AND( M_shipDto.gsidChangeSql( player.getGsid() ) ).
-				AND( M_shipDto.unameChangeSql( player.getUID() ) ).toString();
-		M_shipDto dto 	= dao.updateByExact( sql );
-		dto.setNid( getnId() );
-		dto.setCount( getCount() );
-		///--下面加上属于自己的东西
-		
-		dao.commit(dto);
-	}
-	
-	@Override
-	public void deleteDB(Player player) {
-		M_shipDao dao 	= SqlUtil.getM_shipDao();
-		String sql 		= new Condition( M_shipDto.uidChangeSql( getuId() ) ).AND( M_shipDto.gsidChangeSql( player.getGsid() ) ).
-				AND( M_shipDto.unameChangeSql( player.getUID() ) ).toString();
-		dao.deleteByExact(sql);
-		dao.commit();
+	public void updateDB( Player player ) {
+		super.update( player, null );
 	}
 	
 	@Override
@@ -85,6 +53,8 @@ public class Ships extends IProp{
 	public Ship templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.SHIP; }
+
+
 
 
 

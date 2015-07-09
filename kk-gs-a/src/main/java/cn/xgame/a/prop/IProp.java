@@ -1,9 +1,13 @@
 package cn.xgame.a.prop;
 
+import x.javaplus.mysql.db.Condition;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Item;
+import cn.xgame.gen.dto.MysqlGen.PropsDao;
+import cn.xgame.gen.dto.MysqlGen.PropsDto;
+import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -23,11 +27,28 @@ public abstract class IProp implements ITransformStream{
 	// 数量
 	private int count;
 	
+	/**
+	 * 创建一个 并保存到数据库
+	 * @param uid
+	 * @param nid
+	 * @param count
+	 */
 	public IProp( int uid, int nid, int count ){
 		this.uId 	= uid;
 		this.nId 	= nid;
 		this.item 	= CsvGen.getItem(nid);
 		addCount( count );
+	}
+	
+	/**
+	 * 从数据库获取数据
+	 * @param o
+	 */
+	public IProp( PropsDto o ){
+		this.uId 	= o.getUid();
+		this.nId 	= o.getNid();
+		this.item 	= CsvGen.getItem(nId);
+		addCount( o.getCount() );
 	}
 	
 	/**
@@ -38,6 +59,74 @@ public abstract class IProp implements ITransformStream{
 		buffer.writeInt(uId);
 		buffer.writeInt(nId);
 		buffer.writeInt(count);
+	}
+	
+	/**
+	 * 克隆一个
+	 */
+	public abstract IProp clone();
+	
+	/**
+	 * 道具类型
+	 * @return
+	 */
+	public abstract PropType type();
+	
+	/**
+	 * 在数据库创建数据
+	 * @param player
+	 */
+	public abstract void createDB( Player player );
+	protected void create( Player player, byte[] attach ){
+		PropsDao dao = SqlUtil.getPropsDao();
+		PropsDto dto = dao.create();
+		dto.setGsid( player.getGsid() );
+		dto.setUname( player.getUID() );
+		dto.setUid( getuId() );
+		dto.setNid( getnId() );
+		dto.setCount( getCount() );
+		dto.setAttach( attach );
+		dao.commit(dto);
+	}
+	
+	/**
+	 * 更新数据库数据
+	 * @param player
+	 */
+	public abstract void updateDB( Player player );
+	protected void update( Player player, byte[] attach ) {
+		PropsDao dao 	= SqlUtil.getPropsDao();
+		String sql 		= new Condition( PropsDto.uidChangeSql( getuId() ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
+		PropsDto dto	= dao.updateByExact( sql );
+		dto.setNid( getnId() );
+		dto.setCount( getCount() );
+		dto.setAttach( attach );
+		dao.commit(dto);
+	}
+	
+	/**
+	 * 从数据库删除数据
+	 * @param player
+	 */
+	public void deleteDB( Player player ){
+		PropsDao dao 	= SqlUtil.getPropsDao();
+		String sql 		= new Condition( PropsDto.uidChangeSql( getuId() ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact(sql);
+		dao.commit();
+	}
+	
+	public Item item(){ return item; }
+	public int getuId() { return uId; }
+	public void setuId(int uId) { this.uId = uId; }
+	public int getnId() { return nId; }
+	public void setnId(int nId) { this.nId = nId; }
+	public int getCount() { return count; }
+	public void setCount(int count) { this.count = count; }
+	
+	public String toString(){
+		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
 	}
 	
 	/** 获取这个物品的贡献度 */
@@ -51,35 +140,6 @@ public abstract class IProp implements ITransformStream{
 	 */
 	public boolean isCanAcc() {
 		return count < item.manymax;
-	}
-	
-	/**
-	 * 克隆一个
-	 */
-	public abstract IProp clone();
-	
-	public abstract PropType type();
-	public abstract void createDB( Player player );
-	public abstract void updateDB( Player player );
-	public abstract void deleteDB( Player player );
-	
-	public int getuId() {
-		return uId;
-	}
-	public void setuId(int uId) {
-		this.uId = uId;
-	}
-	public int getnId() {
-		return nId;
-	}
-	public void setnId(int nId) {
-		this.nId = nId;
-	}
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
 	}
 	
 	/**
@@ -109,12 +169,11 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
+
 	
-	public Item item(){ return item; }
 	
-	public String toString(){
-		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
-	}
+	
+
 
 
 

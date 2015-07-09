@@ -84,6 +84,8 @@ public abstract class IPlanet implements ITransformStream{
 	/** 参与 驱逐元老 投票 */
 	public void participateGenrVote( Player player, String uid,byte isAgree ) throws Exception { }
 	
+	/** 申请所有政务数据 */
+	public void putAlllAffair(ByteBuf response) { }
 	/** 捐献资源 */
 	public void donateResource( Player player, IProp prop ){}
 	/** 是否可以捐献 */
@@ -116,6 +118,7 @@ public abstract class IPlanet implements ITransformStream{
 	public void setBuildingControl(BuildingControl buildingControl) {
 		this.buildingControl = buildingControl;
 	}
+
 
 
 }

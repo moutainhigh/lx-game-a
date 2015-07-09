@@ -4,10 +4,10 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.depot.PropBaseUID;
+import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.depot.DepotControl;
 import cn.xgame.a.player.manor.ManorControl;
-import cn.xgame.a.prop.PropType;
+import cn.xgame.a.player.ship.DockControl;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
@@ -31,13 +31,18 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	
 	//////////////////////数据库相关//////////////////////////
+	
+	// 所有道具唯一ID基础值 
+	private DBBaseUID propBaseUid = new DBBaseUID( this );
+
 	// 背包
 	private DepotControl props = new DepotControl( this );
 	
-	// 所有道具唯一ID基础值 
-	private PropBaseUID propBaseUid = new PropBaseUID( this );
+	// 船坞
+	private DockControl docks = new DockControl( this );
 	
-	
+	// 舰长室
+	private CaptainsControl captains = new CaptainsControl( this );
 	
 	/**
 	 * 创建一个
@@ -60,10 +65,14 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
-		// 在数据库取出 玩家的所有道具
-		props.fromDB();
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
+		// 在数据库取出 玩家的所有道具
+		props.fromDB();
+		// 在数据库取出 玩家舰船数据
+		docks.fromDB();
+		// 在数据库取出 玩家舰长数据
+		captains.fromDB();
 	}
 
 	@Override
@@ -97,13 +106,14 @@ public class Player extends IPlayer implements ITransformStream{
 		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
 	}
 
-	/**
-	 * 生成对应道具 唯一ID
-	 * @param type  
-	 * @return
-	 */
-	public int generatorPropUID( PropType type ) {
-		return propBaseUid.generatorUID( type );
+	public int generatorPropUID() {
+		return propBaseUid.generatorPropUID();
+	}
+	public int generatorShipUID() {
+		return propBaseUid.generatorShipUID();
+	}
+	public int generatorCaptainUID() {
+		return propBaseUid.generatorCaptainUID();
 	}
 	
 	/**
@@ -138,14 +148,18 @@ public class Player extends IPlayer implements ITransformStream{
 	public String getIp() {
 		return ip;
 	}
-	public PropBaseUID getPropBaseUid() {
+	public DBBaseUID getPropBaseUid() {
 		return propBaseUid;
 	}
 	public DepotControl getProps() {
 		return props;
 	}
-
-
+	public DockControl getDocks() {
+		return docks;
+	}
+	public CaptainsControl getCaptains() {
+		return captains;
+	}
 
 
 }

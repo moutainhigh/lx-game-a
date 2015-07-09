@@ -53,7 +53,7 @@ public class Buildings implements IBufferStream,ITransformStream {
 	 * @return
 	 */
 	public boolean indexIsOverlap( byte oindex, byte oroom ) {
-		return oindex < index+templet.room && oindex+oroom > index;
+		return oindex < index+templet.usegrid && oindex+oroom > index;
 	}
 
 

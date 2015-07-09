@@ -10,6 +10,7 @@ import x.javaplus.util.ErrorCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import cn.xgame.a.player.u.Init;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
@@ -146,18 +147,22 @@ public class PlayerManager {
 		if( isRepeat( name ) )
 			throw new Exception( ErrorCode.NAME_REPEAT.name() );
 		
-		Player ret = new Player( uID, headIco, name );
-		// 设置socket
-		ret.setCtx( ctx );
-		// 放入内存
-		players.put( ret.getUID(), ret );
-		
-		// 最后在数据库创建
-		create( ret );
+		Player ret = null;
+		try {
+			ret = Init.run( uID, headIco, 40001, name );
+			// 设置socket
+			ret.setCtx( ctx );
+			// 放入内存
+			players.put( ret.getUID(), ret );
+			
+			// 最后在数据库创建
+			create( ret );
+		} catch (Exception e) {
+			throw new Exception( ErrorCode.OTHER_ERROR.name() );
+		}
 		
 		return ret;
 	}
-	
 
 	/**
 	 * 玩家 退出

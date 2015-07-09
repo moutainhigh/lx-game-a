@@ -11,8 +11,12 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
+import cn.xgame.net.event.all.pl.ApplyBagEvent;
+import cn.xgame.net.event.all.pl.ApplyCaptainEvent;
+import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
@@ -47,12 +51,17 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN					( 1001, 				new LoginEvent() ),
 	PLAYER_CREATE					( 1002, 				new CreateEvent() ),
+	APPLY_BAGS						( 1011, 				new ApplyBagEvent() ),
+	APPLY_DOCKS						( 1012, 				new ApplyDockEvent() ),
+	APPLY_CAPTAINS					( 1013, 				new ApplyCaptainEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
 	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
 	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
+	APPLY_ALLLAFFAIR				( 1113, 				new ApplyAlllAffairEvent() ),
 	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
+	
 	// 建筑
 	SPONSOR_BUILDVOTE				( 1131, 				new SponsorBuildVoEvent() ),
 	PARTICIPATE_BUILDVOTE			( 1132, 				new ParticipateBuildVoEvent() ),

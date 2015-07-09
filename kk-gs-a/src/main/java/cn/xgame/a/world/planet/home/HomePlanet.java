@@ -111,14 +111,22 @@ public class HomePlanet extends IPlanet {
 	public void buildTransformStream( ByteBuf buffer ) {
 		// 基础数据
 		super.buildTransformStream(buffer);
-		// 所有建筑数据
+		// 已建筑数据 and 建筑中数据
 		getBuildingControl().putBuilding(buffer);
 		// 所有科技数据
 		techs.putTechs(buffer);
-		// 建筑中
-		getBuildingControl().putUnBuilding(buffer);
 		// 研究中
 		techs.putUnTech(buffer);
+	}
+	
+	@Override
+	public void putAlllAffair( ByteBuf response ) { 
+		// 投票中建筑
+		getBuildingControl().putVoBuilding(response);
+		// 投票中科技
+		techs.putVoTech(response);
+		// 投票中驱逐元老
+		response.writeByte(0);
 	}
 
 	@Override
@@ -203,7 +211,8 @@ public class HomePlanet extends IPlanet {
 		short privilege = (short) (((float)child.getContribution() / (float)allcont) * 10000f);
 		child.setPrivilege( privilege );
 	}
-
+	
+	
 	/**
 	 * 获取该星球的 所有贡献值总和 - 对玩家进行标记是否可以发起投票
 	 * @return
@@ -241,7 +250,7 @@ public class HomePlanet extends IPlanet {
 		
 		// 判断位置是否占用
 		Building templet = CsvGen.getBuilding(nid);
-		if( buildingControl.isOccupyInIndex( index, templet.room ) )
+		if( buildingControl.isOccupyInIndex( index, templet.usegrid ) )
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
 		
 		// 添加到投票中

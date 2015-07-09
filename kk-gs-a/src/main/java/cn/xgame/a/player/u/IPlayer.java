@@ -19,6 +19,8 @@ public abstract class IPlayer {
 	private String nickname;
 	// 头像图标ID
 	private int headIco;
+	// 副官ID
+	private int adjutantId;
 	
 	// 区域 - 属于星球ID
 	private short countryId;
@@ -48,6 +50,7 @@ public abstract class IPlayer {
 		this.gsid		= dto.getGsid();
 		this.nickname 	= dto.getNickname();
 		this.headIco	= dto.getHeadIco();
+		this.adjutantId = dto.getAdjutantId();
 		this.countryId	= dto.getCountryId();
 		this.currency	= dto.getCurrency();
 		this.gold		= dto.getGold();
@@ -62,6 +65,7 @@ public abstract class IPlayer {
 		dto.setGsid(gsid);
 		dto.setNickname(nickname);
 		dto.setHeadIco(headIco);
+		dto.setAdjutantId(adjutantId);
 		dto.setCountryId(countryId);
 		dto.setCurrency(currency);
 		dto.setGold(gold);
@@ -130,6 +134,12 @@ public abstract class IPlayer {
 	}
 	public void setManors(ManorControl manor) {
 		this.manors = manor;
+	}
+	public int getAdjutantId() {
+		return adjutantId;
+	}
+	public void setAdjutantId(int adjutantId) {
+		this.adjutantId = adjutantId;
 	}
 	
 	
