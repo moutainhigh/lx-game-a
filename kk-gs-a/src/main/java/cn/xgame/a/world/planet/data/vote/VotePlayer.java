@@ -1,6 +1,8 @@
 package cn.xgame.a.world.planet.data.vote;
 
+import io.netty.buffer.ByteBuf;
 import cn.xgame.a.world.planet.home.Child;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 一个投票的玩家数据
@@ -19,6 +21,19 @@ public class VotePlayer {
 		this.privilege = player.getPrivilege();
 	}
 	
+	/**
+	 * 从数据库获取
+	 * @param buf
+	 */
+	public VotePlayer( ByteBuf buf ){
+		UID = RW.readString(buf);
+		privilege = buf.readShort();
+	}
+	
+	public void putBuffer( ByteBuf buf ) {
+		RW.writeString(buf, UID);
+		buf.writeShort(privilege);
+	}
 	
 	public String getUID() {
 		return UID;
@@ -32,5 +47,7 @@ public class VotePlayer {
 	public void setPrivilege(short privilege) {
 		this.privilege = privilege;
 	}
+
+
 
 }

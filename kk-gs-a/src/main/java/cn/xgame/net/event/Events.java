@@ -17,6 +17,7 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
@@ -33,6 +34,7 @@ import cn.xgame.net.event.all.pl.update.Update_2201;
 import cn.xgame.net.event.all.pl.update.Update_2211;
 import cn.xgame.net.event.all.pl.update.Update_2221;
 import cn.xgame.net.event.all.pl.update.Update_2231;
+import cn.xgame.net.event.all.pl.update.Update_2242;
 
 /**
  * 通信 消息
@@ -60,6 +62,7 @@ public enum Events {
 	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
 	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
 	APPLY_ALLLAFFAIR				( 1113, 				new ApplyAlllAffairEvent() ),
+	APPLY_GENRS						( 1114, 				new ApplyGenrsEvent() ),
 	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
 	
 	// 建筑
@@ -81,6 +84,7 @@ public enum Events {
 	UPDATE_2211						( 2211, 				new Update_2211() ),
 	UPDATE_2221						( 2221, 				new Update_2221() ),
 	UPDATE_2231						( 2231, 				new Update_2231() ),
+	UPDATE_2242						( 2242, 				new Update_2242() ),
 	
 
 	

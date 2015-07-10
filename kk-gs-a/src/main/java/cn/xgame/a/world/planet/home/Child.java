@@ -2,18 +2,22 @@ package cn.xgame.a.world.planet.home;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
+import cn.xgame.a.ITransformStream;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 一个在母星的玩家数据
  * @author deng		
  * @date 2015-6-29 下午7:26:22
  */
-public class Child implements IBufferStream{
+public class Child implements IBufferStream, ITransformStream{
 
 	// 玩家唯一ID
 	private String UID;
 	// 玩家属于服务器
 	private short gsid;
+	// 玩家名字
+	private String name;
 	// 话语权
 	private short privilege = 0;
 	// 贡献度
@@ -33,20 +37,28 @@ public class Child implements IBufferStream{
 
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		RW.writeString( buf, name );
 		buf.writeShort( privilege );
 		buf.writeInt( contribution );
 		buf.writeInt( sponsors );
 		buf.writeInt( passs );
 	}
 
-
+	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		name			= RW.readString(buf);
 		privilege 		= buf.readShort();
 		contribution 	= buf.readInt();
 		sponsors 		= buf.readInt();
 		passs 			= buf.readInt();
 	}
 
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		RW.writeString(buffer, UID);
+		putBuffer( buffer );
+	}
+	
 	public String getUID() {
 		return UID;
 	}
@@ -98,6 +110,14 @@ public class Child implements IBufferStream{
 	public void setCanSponsorVote(boolean isCanSponsorVote) {
 		this.isCanSponsorVote = isCanSponsorVote;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
 
 	
 }

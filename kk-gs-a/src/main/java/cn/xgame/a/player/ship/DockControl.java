@@ -38,6 +38,7 @@ public class DockControl implements ITransformStream,IFromDB{
 		ShipsDao dao = SqlUtil.getShipsDao();
 		String sql = new Condition( ShipsDto.gsidChangeSql( SystemCfg.ID ) ).AND( ShipsDto.unameChangeSql( root.getUID() ) ).toString();
 		List<ShipsDto> dtos	= dao.getByExact( sql );
+		dao.commit();
 		for( ShipsDto dto : dtos ){
 			ShipInfo ship = new ShipInfo( dto );
 			ships.add(ship);

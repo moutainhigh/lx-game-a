@@ -50,10 +50,10 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	@Override
 	public void fromDB() {
 		props.clear();
-		
 		PropsDao dao = SqlUtil.getPropsDao();
 		String sql = new Condition( PropsDto.gsidChangeSql( SystemCfg.ID ) ).AND( PropsDto.unameChangeSql( root.getUID() ) ).toString();
 		List<PropsDto> dtos = dao.getByExact(sql);
+		dao.commit();
 		for( PropsDto dto : dtos ){
 			IProp prop = wrapInDB( dto );
 			append( prop );

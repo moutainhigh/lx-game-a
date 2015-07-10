@@ -37,6 +37,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		CaptainsDao dao = SqlUtil.getCaptainsDao();
 		String sql = new Condition( CaptainsDto.gsidChangeSql( SystemCfg.ID ) ).AND( CaptainsDto.unameChangeSql( root.getUID() ) ).toString();
 		List<CaptainsDto> dtos = dao.getByExact( sql );
+		dao.commit();
 		for( CaptainsDto dto : dtos ){
 			CaptainInfo ship = new CaptainInfo( dto );
 			captains.add(ship);
@@ -81,4 +82,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		dao.commit(dto);
 	}
 	
+//	private void updateDB( CaptainInfo cap ) {
+//	}
+//	
 }

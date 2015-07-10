@@ -9,6 +9,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.data.vote.Vote;
 
 /**
@@ -63,7 +64,7 @@ public class BuildingControl implements IArrayStream{
 			int id = buf.readInt();
 			UnBuildings o = new UnBuildings( id );
 			o.wrapBuffer(buf);
-			o.getVote().wrapBuffer(buf);
+			o.setVote( new Vote( buf ) );
 			voBuildings.add(o);
 		}
 		// 建筑中
@@ -161,16 +162,18 @@ public class BuildingControl implements IArrayStream{
 
 	/**
 	 * 添加一个 投票中建筑
-	 * @param uid 发起人的UID
+	 * @param player 发起人
 	 * @param nid 建筑表格ID
 	 * @param index 建筑要建筑的位置
 	 * @param time 发起时间限制
+	 * @return 
 	 */
-	public void appendVoteBuild( String uid, int nid, byte index, int time ) {
+	public UnBuildings appendVoteBuild( Player player, int nid, byte index, int time ) {
 		UnBuildings unb = new UnBuildings(nid);
 		unb.setIndex(index);
-		unb.setVote( new Vote( uid, time ) );
+		unb.setVote( new Vote( player, time ) );
 		voBuildings.add(unb);
+		return unb;
 	}
 
 	/**
@@ -190,11 +193,11 @@ public class BuildingControl implements IArrayStream{
 	 * 删除一个投票中的建筑
 	 * @param nid
 	 */
-	public void removeVoteBuild( int nid ) {
+	public void removeVoteBuild( UnBuildings o ) {
 		Iterator<UnBuildings> it = voBuildings.iterator();
 		while( it.hasNext() ){
 			UnBuildings next = it.next();
-			if( next.templet().id == nid ){
+			if( next.templet().id == o.templet().id && next.getIndex() == o.getIndex() ){
 				it.remove();
 				break;
 			}

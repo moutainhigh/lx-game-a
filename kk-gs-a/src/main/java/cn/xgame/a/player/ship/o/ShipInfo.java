@@ -12,6 +12,10 @@ import cn.xgame.gen.dto.MysqlGen.ShipsDto;
  */
 public class ShipInfo extends IObject implements ITransformStream{
 
+	// 舰长唯一ID
+	private int captainUID;
+	
+	
 	
 	public ShipInfo( int uid, int nid ) {
 		setuId(uid);
@@ -27,6 +31,13 @@ public class ShipInfo extends IObject implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( getuId() );
 		buffer.writeInt( getnId() );
+	}
+
+	public int getCaptainUID() {
+		return captainUID;
+	}
+	public void setCaptainUID(int captainUID) {
+		this.captainUID = captainUID;
 	}
 	
 }

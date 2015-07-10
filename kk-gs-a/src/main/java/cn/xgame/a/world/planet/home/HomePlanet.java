@@ -27,6 +27,7 @@ import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.pl.update.Update_2211;
+import cn.xgame.net.event.all.pl.update.Update_2242;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -68,6 +69,16 @@ public class HomePlanet extends IPlanet {
 	
 	@Override
 	public boolean isCanDonate() { return true; }
+	
+	@Override
+	public List<Child> getAllGenrs() { 
+		List<Child> ret = Lists.newArrayList();
+		for( Child c : childs ){
+			if( c.isCanSponsorVote() )
+				ret.add(c);
+		}
+		return ret; 
+	}
 	
 	@Override
 	public void wrap( PlanetDataDto dto ) {
@@ -155,6 +166,7 @@ public class HomePlanet extends IPlanet {
 	
 	private void addChild( Player player ) {
 		Child child = new Child( player.getUID(), player.getGsid() );
+		child.setName( player.getNickname() );
 		childs.add( child );
 	}
 	public Child getChild(String uid) {
@@ -240,6 +252,8 @@ public class HomePlanet extends IPlanet {
 		}
 	};
 	
+	/////////////////// =================建筑====================
+	
 	@Override
 	public void sponsorBuivote( Player player, int nid, byte index, int time ) throws Exception { 
 		
@@ -254,10 +268,25 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
 		
 		// 添加到投票中
-		buildingControl.appendVoteBuild( player.getUID(), nid, index, time );
+		UnBuildings voteBuild = buildingControl.appendVoteBuild( player, nid, index, time );
 		
 		// 记录玩家发起数
 		child.addSponsors( 1 );
+		
+		// 下面同步消息给玩家
+		synchronizeBuivote( 1, voteBuild );
+	}
+	/**
+	 * 投票列表 同步玩家
+	 * @param isAdd
+	 * @param voteBuild
+	 */
+	private void synchronizeBuivote( int isAdd, UnBuildings voteBuild ) {
+		for( Child child : childs ){
+			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
+			if( player == null || !player.isOnline() ) continue;
+			((Update_2242)Events.UPDATE_2242.getEventInstance()).run( player, isAdd, voteBuild );
+		}
 	}
 	
 	@Override
@@ -280,10 +309,13 @@ public class HomePlanet extends IPlanet {
 			if( status == 1 ) // 同意建筑
 				startBuild( unBuild );
 			if( status == 0 ){ // 反对建筑
-				//...
+				//...暂时没有处理
 			}
 			// 最后不管怎样都要删掉的
-			buildingControl.removeVoteBuild( nid );
+			buildingControl.removeVoteBuild( unBuild );
+			
+			// 同步
+			synchronizeBuivote( 0, unBuild );
 		}
 	}
 	
@@ -304,10 +336,15 @@ public class HomePlanet extends IPlanet {
 		sponsor.addPasss( 1 );
 	}
 	
+	/////////////////// =================科技====================
 	@Override
 	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { }
+	
+	/////////////////// =================元老====================
 	@Override
 	public void participateGenrVote(Player player, String uid,byte isAgree) throws Exception { }
 
+	
+	
 	
 }

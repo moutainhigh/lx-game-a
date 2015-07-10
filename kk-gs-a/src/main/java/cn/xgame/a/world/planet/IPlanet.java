@@ -1,5 +1,7 @@
 package cn.xgame.a.world.planet;
 
+import java.util.List;
+
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
@@ -7,6 +9,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
+import cn.xgame.a.world.planet.home.Child;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 
@@ -86,6 +89,8 @@ public abstract class IPlanet implements ITransformStream{
 	
 	/** 申请所有政务数据 */
 	public void putAlllAffair(ByteBuf response) { }
+	/** 申请所有元老数据 */
+	public List<Child> getAllGenrs() { return null; }
 	/** 捐献资源 */
 	public void donateResource( Player player, IProp prop ){}
 	/** 是否可以捐献 */
@@ -118,6 +123,8 @@ public abstract class IPlanet implements ITransformStream{
 	public void setBuildingControl(BuildingControl buildingControl) {
 		this.buildingControl = buildingControl;
 	}
+
+
 
 
 
