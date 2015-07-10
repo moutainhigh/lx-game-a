@@ -27,8 +27,8 @@ public class Child implements IBufferStream, ITransformStream{
 	// 通过数
 	private int passs = 0;
 	
-	// 是否可以发起投票
-	private boolean isCanSponsorVote = false;
+	// 是否元老
+	private boolean isSenator = false;
 	
 	public Child( String UID, short gsid ) {
 		this.UID = UID;
@@ -104,11 +104,11 @@ public class Child implements IBufferStream, ITransformStream{
 	public void addPasss(int passs) {
 		this.passs += passs;
 	}
-	public boolean isCanSponsorVote() {
-		return isCanSponsorVote;
+	public boolean isSenator() {
+		return isSenator;
 	}
-	public void setCanSponsorVote(boolean isCanSponsorVote) {
-		this.isCanSponsorVote = isCanSponsorVote;
+	public void setSenator(boolean isSenator) {
+		this.isSenator = isSenator;
 	}
 	public String getName() {
 		return name;

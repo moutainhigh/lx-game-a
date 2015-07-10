@@ -46,7 +46,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( captains.size() );
+		buffer.writeByte( captains.size() );
 		for( CaptainInfo captain : captains ){
 			captain.buildTransformStream(buffer);
 		}

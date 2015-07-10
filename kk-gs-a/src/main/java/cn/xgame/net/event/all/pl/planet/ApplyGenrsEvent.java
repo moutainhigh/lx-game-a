@@ -29,7 +29,7 @@ public class ApplyGenrsEvent extends IEvent {
 			ls = planet.getAllGenrs();
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-		response.writeShort( ls == null ? 0 : ls.size() );
+		response.writeByte( ls == null ? 0 : ls.size() );
 		if( ls != null ){
 			for( Child o : ls ){
 				o.buildTransformStream(response);

@@ -205,6 +205,16 @@ public class BuildingControl implements IArrayStream{
 	}
 
 	/**
+	 * 是否可以建筑 该建筑
+	 * @param nid
+	 * @return
+	 */
+	public boolean isCanBuild( int nid ) {
+		return getVoteBuild( nid ) == null;
+	}
+	
+	
+	/**
 	 * 添加一个 建筑到建筑中列表
 	 * @param unBuild
 	 */
@@ -212,5 +222,6 @@ public class BuildingControl implements IArrayStream{
 		
 		unBuildings.add(unBuild);
 	}
-	
+
+
 }

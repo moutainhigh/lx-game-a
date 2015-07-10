@@ -49,6 +49,8 @@ public class HomePlanet extends IPlanet {
 	
 	// 玩家列表
 	private List<Child> childs = Lists.newArrayList();
+	// 被驱逐投票中的元老列表
+	private List<OustChild> oustChilds = Lists.newArrayList();
 	
 	// 科技列表
 	private TechControl techs = new TechControl();
@@ -74,7 +76,7 @@ public class HomePlanet extends IPlanet {
 	public List<Child> getAllGenrs() { 
 		List<Child> ret = Lists.newArrayList();
 		for( Child c : childs ){
-			if( c.isCanSponsorVote() )
+			if( c.isSenator() )
 				ret.add(c);
 		}
 		return ret; 
@@ -84,6 +86,7 @@ public class HomePlanet extends IPlanet {
 	public void wrap( PlanetDataDto dto ) {
 		super.wrap(dto);
 		wrapPlayer( dto.getPlayers() );
+		wrapOustPlayer( null );
 		techs.fromBytes( dto.getTechs() );
 		// 先排个序
 		updateChildSequence();
@@ -117,7 +120,13 @@ public class HomePlanet extends IPlanet {
 		return buf.array();
 	}
 	
-
+	private void wrapOustPlayer( byte[] data ) {
+		
+	}
+	private byte[] toOustPlayers(){
+		return null;
+	}
+	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		// 基础数据
@@ -151,6 +160,7 @@ public class HomePlanet extends IPlanet {
 		dto.setSpecialtys( getSpecialtyControl().toBytes() );
 		dto.setTechs( techs.toBytes() );
 		dto.setPlayers( toPlayers() );
+		toOustPlayers();
 		dao.commit(dto);
 	}
 
@@ -232,10 +242,12 @@ public class HomePlanet extends IPlanet {
 	public int updateAllContribution() {
 		// 下面标记是否可以发起投票
 		int ret = 0;
+		int privilege = 0;
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
-			child.setCanSponsorVote( true );
 			ret += child.getContribution();
+			privilege += child.getPrivilege();
+			child.setSenator( institution.isSenator( i , privilege ) );
 		}
 		return ret;
 	}
@@ -259,13 +271,17 @@ public class HomePlanet extends IPlanet {
 		
 		// 判断是否有权限发起投票
 		Child child = getChild( player.getUID() );
-		if( child == null || !child.isCanSponsorVote() )
+		if( child == null || !child.isSenator() )
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
 		// 判断位置是否占用
 		Sbuilding templet = CsvGen.getSbuilding(nid);
 		if( buildingControl.isOccupyInIndex( index, templet.usegrid ) )
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
+		
+		// 判断该建筑能不能建
+		if( buildingControl.isCanBuild( nid ) )
+			throw new Exception( ErrorCode.YET_ATLIST.name() );
 		
 		// 添加到投票中
 		UnBuildings voteBuild = buildingControl.appendVoteBuild( player, nid, index, time );
@@ -341,6 +357,34 @@ public class HomePlanet extends IPlanet {
 	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { }
 	
 	/////////////////// =================元老====================
+	@Override
+	public void sponsorGenrVote( Player player, String uid, String explain ) throws Exception { 
+		
+		// 判断 有没有权限
+		Child child = getChild( player.getUID() );
+		if( child == null || !child.isSenator() )
+			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+		// 判断 被驱逐的是不是 元老
+		child = getChild( player.getUID() );
+		if( child == null || !child.isSenator() )
+			throw new Exception( ErrorCode.NOT_SENATOR.name() );
+		// 在看是不是已经在投票列表中
+		OustChild oust = getOustChild( uid );
+		if( oust != null )
+			throw new Exception( ErrorCode.YET_ATLIST.name() );
+		
+		oust = new OustChild( player, uid, explain );
+		oustChilds.add(oust);
+	}
+	
+	private OustChild getOustChild( String uid ) {
+		for( OustChild o : oustChilds ){
+			if( o.getUid() == uid )
+				return o;
+		}
+		return null;
+	}
+	
 	@Override
 	public void participateGenrVote(Player player, String uid,byte isAgree) throws Exception { }
 

@@ -47,7 +47,7 @@ public class DockControl implements ITransformStream,IFromDB{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( ships.size() );
+		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships ){
 			ship.buildTransformStream( buffer );
 		}
