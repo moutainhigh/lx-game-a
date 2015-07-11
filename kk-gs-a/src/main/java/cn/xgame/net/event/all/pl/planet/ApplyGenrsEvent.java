@@ -8,7 +8,7 @@ import java.util.List;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
-import cn.xgame.a.world.planet.home.Child;
+import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.net.event.IEvent;
 
 /**

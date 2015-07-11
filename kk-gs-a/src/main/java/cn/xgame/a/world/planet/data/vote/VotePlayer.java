@@ -1,7 +1,7 @@
 package cn.xgame.a.world.planet.data.vote;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.world.planet.home.Child;
+import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.net.netty.Netty.RW;
 
 /**

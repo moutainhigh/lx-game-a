@@ -13,6 +13,7 @@
 	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Integer id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Integer id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
 			setObject( "maxSpace", dto.getMaxSpace() );
 			setObject( "players", dto.getPlayers() );
+			setObject( "expelGenr", dto.getExpelGenr() );
 			setObject( "buildings", dto.getBuildings() );
 			setObject( "depots", dto.getDepots() );
 			setObject( "specialtys", dto.getSpecialtys() );
@@ -81,6 +82,7 @@
 	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
+		private byte[] expelGenr = null;
 		private byte[] buildings = null;
 		private byte[] depots = null;
 		private byte[] specialtys = null;
@@ -89,6 +91,7 @@
 		public PlanetDataDto() {		}				/**		 * Copy new one		 */		public PlanetDataDto(PlanetDataDto src) {			this.id = src.id;
 			this.maxSpace = src.maxSpace;
 			this.players = src.players;
+			this.expelGenr = src.expelGenr;
 			this.buildings = src.buildings;
 			this.depots = src.depots;
 			this.specialtys = src.specialtys;
@@ -97,6 +100,7 @@
 		}		/** 星球ID */		public Integer getId(){			return this.id;		}
 		/** 星球总空间 */		public Short getMaxSpace(){			return this.maxSpace;		}
 		/** 玩家列表 */		public byte[] getPlayers(){			return this.players;		}
+		/** 驱逐元老列表 */		public byte[] getExpelGenr(){			return this.expelGenr;		}
 		/** 星球建筑 */		public byte[] getBuildings(){			return this.buildings;		}
 		/** 星球仓库 */		public byte[] getDepots(){			return this.depots;		}
 		/** 星球特产 */		public byte[] getSpecialtys(){			return this.specialtys;		}
@@ -105,6 +109,7 @@
 		/** 星球ID */		public void setId( Integer id ){			this.id = id;		}
 		/** 星球总空间 */		public void setMaxSpace( Short maxSpace ){			this.maxSpace = maxSpace;		}
 		/** 玩家列表 */		public void setPlayers( byte[] players ){			this.players = players;		}
+		/** 驱逐元老列表 */		public void setExpelGenr( byte[] expelGenr ){			this.expelGenr = expelGenr;		}
 		/** 星球建筑 */		public void setBuildings( byte[] buildings ){			this.buildings = buildings;		}
 		/** 星球仓库 */		public void setDepots( byte[] depots ){			this.depots = depots;		}
 		/** 星球特产 */		public void setSpecialtys( byte[] specialtys ){			this.specialtys = specialtys;		}
@@ -113,6 +118,7 @@
 		public static String idChangeSql( Integer x) {			return "id=" + x;		}
 		public static String maxSpaceChangeSql( Short x) {			return "maxSpace=" + x;		}
 		public static String playersChangeSql( byte[] x) {			return "players=" + x;		}
+		public static String expelGenrChangeSql( byte[] x) {			return "expelGenr=" + x;		}
 		public static String buildingsChangeSql( byte[] x) {			return "buildings=" + x;		}
 		public static String depotsChangeSql( byte[] x) {			return "depots=" + x;		}
 		public static String specialtysChangeSql( byte[] x) {			return "specialtys=" + x;		}
@@ -121,12 +127,13 @@
 		@Override		public void fromDBObject(DBObject o) {			id = o.getInt( "id" );
 			maxSpace = o.getShort( "maxSpace" );
 			players = o.getBytes( "players" );
+			expelGenr = o.getBytes( "expelGenr" );
 			buildings = o.getBytes( "buildings" );
 			depots = o.getBytes( "depots" );
 			specialtys = o.getBytes( "specialtys" );
 			techs = o.getBytes( "techs" );
 
-		}				@Override		public String toString() {			return "id="+id+","+"maxSpace="+maxSpace+","+"players="+players+","+"buildings="+buildings+","+"depots="+depots+","+"specialtys="+specialtys+","+"techs="+techs;		}	}
+		}				@Override		public String toString() {			return "id="+id+","+"maxSpace="+maxSpace+","+"players="+players+","+"expelGenr="+expelGenr+","+"buildings="+buildings+","+"depots="+depots+","+"specialtys="+specialtys+","+"techs="+techs;		}	}
 	public static class PlayerDataDto implements SqlDto{		private Short gsid = null;
 		private String uid = null;
 		private Long createTime = null;

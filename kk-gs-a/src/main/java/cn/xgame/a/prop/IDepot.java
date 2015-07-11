@@ -35,7 +35,7 @@ public class IDepot {
 		temp = props.get( PropType.CEQUIP );
 		if( temp != null )
 			ret.addAll( temp );
-		temp = props.get( PropType.CEQUIP );
+		temp = props.get( PropType.SEQUIP );
 		if( temp != null )
 			ret.addAll( temp );
 		return ret;

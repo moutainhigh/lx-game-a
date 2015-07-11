@@ -16,6 +16,9 @@ public class PlanetData {
 	/** 玩家列表 */
 	byte[] players;
 	
+	/** 驱逐元老列表 */
+	byte[] expelGenr;
+	
 	/** 星球建筑 */
 	byte[] buildings;
 	

@@ -9,7 +9,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
-import cn.xgame.a.world.planet.home.Child;
+import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 

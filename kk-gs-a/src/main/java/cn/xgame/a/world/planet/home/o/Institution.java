@@ -1,4 +1,4 @@
-package cn.xgame.a.world.planet.home;
+package cn.xgame.a.world.planet.home.o;
 
 public enum Institution {
 	/**

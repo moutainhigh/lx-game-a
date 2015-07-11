@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -19,6 +20,10 @@ import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
+import cn.xgame.a.world.planet.home.o.Child;
+import cn.xgame.a.world.planet.home.o.Institution;
+import cn.xgame.a.world.planet.home.o.OustChild;
+import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Sbuilding;
 import cn.xgame.config.o.Stars;
@@ -26,8 +31,7 @@ import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.event.Events;
-import cn.xgame.net.event.all.pl.update.Update_2211;
-import cn.xgame.net.event.all.pl.update.Update_2242;
+import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -86,7 +90,7 @@ public class HomePlanet extends IPlanet {
 	public void wrap( PlanetDataDto dto ) {
 		super.wrap(dto);
 		wrapPlayer( dto.getPlayers() );
-		wrapOustPlayer( null );
+		wrapOustPlayer( dto.getExpelGenr() );
 		techs.fromBytes( dto.getTechs() );
 		// 先排个序
 		updateChildSequence();
@@ -98,6 +102,7 @@ public class HomePlanet extends IPlanet {
 
 	private void wrapPlayer( byte[] data ) {
 		if( data == null ) return ;
+		childs.clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		short size = buf.readShort();
 		for( int i = 0; i < size; i++ ){
@@ -121,10 +126,24 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	private void wrapOustPlayer( byte[] data ) {
-		
+		if( data == null ) return ;
+		oustChilds.clear();
+		ByteBuf buf = Unpooled.copiedBuffer(data);
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			OustChild o = new OustChild( null, null, null );
+			o.wrapBuffer(buf);
+			oustChilds.add(o);
+		}
 	}
 	private byte[] toOustPlayers(){
-		return null;
+		if( oustChilds.isEmpty() ) return null;
+		ByteBuf buf = Unpooled.buffer( 1024 );
+		buf.writeByte( oustChilds.size() );
+		for( OustChild o : oustChilds ){
+			o.putBuffer(buf);
+		}
+		return buf.array();
 	}
 	
 	@Override
@@ -146,7 +165,13 @@ public class HomePlanet extends IPlanet {
 		// 投票中科技
 		techs.putVoTech(response);
 		// 投票中驱逐元老
-		response.writeByte(0);
+		response.writeByte( oustChilds.size() );
+		for( OustChild o : oustChilds ){
+			Child child = getChild( o.getUid() );
+			child.buildTransformStream(response);
+			RW.writeString( response, o.getExplain() );
+			o.getVote().buildTransformStream(response);
+		}
 	}
 
 	@Override
@@ -160,7 +185,7 @@ public class HomePlanet extends IPlanet {
 		dto.setSpecialtys( getSpecialtyControl().toBytes() );
 		dto.setTechs( techs.toBytes() );
 		dto.setPlayers( toPlayers() );
-		toOustPlayers();
+		dto.setExpelGenr( toOustPlayers() );
 		dao.commit(dto);
 	}
 
@@ -193,22 +218,10 @@ public class HomePlanet extends IPlanet {
 		List<Specialty> ls = getSpecialtyControl().getSpecialtys();
 		for( Specialty spe : ls ){
 			if( spe.run() )
-				synchronizeSpecialty( spe );
+				Syn.specialty( childs, spe );
 		}
 	}
 	
-	// 同步特产信息
-	private void synchronizeSpecialty( Specialty spe ) {
-		
-		for( Child child : childs ){
-			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
-			if( player == null || !player.isOnline() )
-				continue;
-			
-			((Update_2211)Events.UPDATE_2211.getEventInstance()).run( player, spe );
-		}
-	}
-
 	/** 更新体制 */
 	public void updateInstitution() {
 		setInstitution(Institution.REPUBLIC);
@@ -290,32 +303,20 @@ public class HomePlanet extends IPlanet {
 		child.addSponsors( 1 );
 		
 		// 下面同步消息给玩家
-		synchronizeBuivote( 1, voteBuild );
-	}
-	/**
-	 * 投票列表 同步玩家
-	 * @param isAdd
-	 * @param voteBuild
-	 */
-	private void synchronizeBuivote( int isAdd, UnBuildings voteBuild ) {
-		for( Child child : childs ){
-			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
-			if( player == null || !player.isOnline() ) continue;
-			((Update_2242)Events.UPDATE_2242.getEventInstance()).run( player, isAdd, voteBuild );
-		}
+		Syn.buiVote( childs, 1, voteBuild );
 	}
 	
 	@Override
 	public void participateBuildVote( Player player, int nid, byte isAgree ) throws Exception { 
 		
-		// 判断是否有权限投票
+		// 判断是否有权限投票 只要有话语权都可以投票
 		Child child = getChild( player.getUID() );
 		if( child == null || child.getPrivilege() == 0 )
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
 		// 判断是否已经参与投票了
 		UnBuildings unBuild = buildingControl.getVoteBuild( nid );
-		if( unBuild.getVote().isParticipateVote( player.getUID() ) )
+		if( unBuild == null || unBuild.getVote().isParticipateVote( player.getUID() ) )
 			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
 		
 		// 设置投票
@@ -331,7 +332,7 @@ public class HomePlanet extends IPlanet {
 			buildingControl.removeVoteBuild( unBuild );
 			
 			// 同步
-			synchronizeBuivote( 0, unBuild );
+			Syn.buiVote( childs, 0, unBuild );
 		}
 	}
 	
@@ -365,7 +366,7 @@ public class HomePlanet extends IPlanet {
 		if( child == null || !child.isSenator() )
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		// 判断 被驱逐的是不是 元老
-		child = getChild( player.getUID() );
+		child = getChild( uid );
 		if( child == null || !child.isSenator() )
 			throw new Exception( ErrorCode.NOT_SENATOR.name() );
 		// 在看是不是已经在投票列表中
@@ -375,18 +376,67 @@ public class HomePlanet extends IPlanet {
 		
 		oust = new OustChild( player, uid, explain );
 		oustChilds.add(oust);
+		
+		synchronizeGenrVote( childs, 1, oust );
+	}
+	
+	private void synchronizeGenrVote( List<Child> childs, int isAdd, OustChild oust) {
+		for( Child child : childs ){
+			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
+			if( player == null || !player.isOnline() ) continue;
+			Child x = getChild( oust.getUid() );
+			((Update_2252)Events.UPDATE_2252.getEventInstance()).run( player, isAdd, oust, x );
+		}
 	}
 	
 	private OustChild getOustChild( String uid ) {
 		for( OustChild o : oustChilds ){
-			if( o.getUid() == uid )
+			if( o.getUid().equals( uid ) )
 				return o;
 		}
 		return null;
 	}
-	
+	private void removeVoteGenr( OustChild oust ) {
+		Iterator<OustChild> it = oustChilds.iterator();
+		while( it.hasNext() ){
+			OustChild next = it.next();
+			if( next.getUid().equals( oust.getUid() ) ){
+				it.remove();
+				break;
+			}
+		}
+	}
 	@Override
-	public void participateGenrVote(Player player, String uid,byte isAgree) throws Exception { }
+	public void participateGenrVote( Player player, String uid, byte isAgree ) throws Exception {
+		
+		// 判断是否有权限投票  只有元老才能投票
+		Child child = getChild( player.getUID() );
+		if( child == null || child.isSenator() )
+			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+		
+		// 判断是否已经参与投票了
+		OustChild oust = getOustChild( uid );
+		if( oust == null || oust.getVote().isParticipateVote( player.getUID() ) )
+			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
+		
+		// 设置投票
+		byte status = oust.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
+		// 说明投票完成
+		if( status != -1 ){
+			if( status == 1 ) { // 同意
+	
+			}
+			if( status == 0 ){ // 反对
+				//...暂时没有处理
+			}
+			// 最后不管怎样都要删掉的
+			removeVoteGenr( oust );
+			// 同步
+			synchronizeGenrVote( childs, 0, oust );
+		}
+		
+	}
+
 
 	
 	
