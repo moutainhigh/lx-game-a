@@ -1,6 +1,5 @@
 package cn.xgame.utils.runnable.task;
 
-import cn.xgame.a.world.WorldManager;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.utils.Logs;
@@ -19,9 +18,6 @@ public class FiveMinuteHandleImp extends IThread{
 			
 			// 给登录服务器 更新 服务器人数
 			((UpdatePeopleEvent)Events.UPDATA_PEOPLE.getEventInstance()).run();
-			
-			// 每个母星的 特产 
-			WorldManager.o.run();
 			
 			
 		} catch (Exception e) {

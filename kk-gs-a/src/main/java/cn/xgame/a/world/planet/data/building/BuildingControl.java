@@ -114,7 +114,7 @@ public class BuildingControl implements IArrayStream{
 		}
 		for( UnBuildings o : unBuildings ){
 			o.buildTransformStream( buffer );
-			buffer.writeInt( o.getrTime() );
+			buffer.writeInt( o.getPastTime() );
 		}
 	}
 	/** 塞入 投票建筑 */
@@ -143,6 +143,18 @@ public class BuildingControl implements IArrayStream{
 		return ret;
 	}
 
+	/**
+	 * 获取等待中的建筑中 列表
+	 * @return
+	 */
+	public List<UnBuildings> getWaitBuild() {
+		List<UnBuildings> ret = Lists.newArrayList();
+		for( UnBuildings o : unBuildings ){
+			if( o.getrTime() == -1 )
+				ret.add(o);
+		}
+		return ret;
+	}
 
 	
 	/**
@@ -215,12 +227,31 @@ public class BuildingControl implements IArrayStream{
 	
 	
 	/**
-	 * 添加一个 建筑到建筑中列表
+	 * 添加一个 建筑到建造列表
 	 * @param unBuild
 	 */
 	public void appendUnBuild( UnBuildings unBuild ) {
-		
+		unBuild.setVote(null);
 		unBuildings.add(unBuild);
+	}
+
+	/**
+	 * 建造 线程
+	 */
+	public UnBuildings runDevelopment() {
+		Iterator<UnBuildings> iter = unBuildings.iterator();
+		while( iter.hasNext() ){
+			UnBuildings o = iter.next();
+			if( o.isComplete() ){
+				// 放入建筑列表
+				Buildings build = new Buildings(o);
+				buildings.add(build);
+				// 然后才从列表中删除
+				iter.remove();
+				return o;
+			}
+		}
+		return null;
 	}
 
 

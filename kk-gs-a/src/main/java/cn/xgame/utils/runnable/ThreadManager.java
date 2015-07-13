@@ -5,6 +5,7 @@ import cn.xgame.utils.runnable.task.DailyHandleImp;
 import cn.xgame.utils.runnable.task.FiveMinuteHandleImp;
 import cn.xgame.utils.runnable.task.OneMinuteHandleImp;
 import cn.xgame.utils.runnable.task.TwoMinuteHandleImp;
+import cn.xgame.utils.runnable.task.TwohundredMilliscondHandleImp;
 
 
 
@@ -24,6 +25,8 @@ public class ThreadManager {
 	private static TwoMinuteHandleImp 	twoMinuteHandleImp	= null;
 	// 每五分钟
 	private static FiveMinuteHandleImp  fiveMinuteHandleImp = null;
+	// 每两百毫秒
+	private static TwohundredMilliscondHandleImp twohundredMilliscondHandleImp = null;
 	
 	/** 开启所有 线程 */
 	public static void start(){
@@ -32,17 +35,21 @@ public class ThreadManager {
 		dailyHandleImp = new DailyHandleImp();
 		dailyHandleImp.start( Time.toWeehoursTime(), 86400000l );
 
-		// 没2分钟 刷新服务器人数 到登录服务器 1*60*1000
+		// 每1分钟  1*60*1000
 		oneMinuteHandleImp = new OneMinuteHandleImp();
 		oneMinuteHandleImp.start( 60000l );
 
-		// 没2分钟 刷新服务器人数 到登录服务器 2*60*1000
+		// 每2分钟  2*60*1000
 		twoMinuteHandleImp = new TwoMinuteHandleImp();
 		twoMinuteHandleImp.start( 120000l );
 		
-		// 没5分钟 刷新服务器人数 到登录服务器 5*60*1000
+		// 每5分钟 5*60*1000
 		fiveMinuteHandleImp = new FiveMinuteHandleImp();
 		fiveMinuteHandleImp.start( 300000l );
+		
+		// 每200毫秒
+		twohundredMilliscondHandleImp = new TwohundredMilliscondHandleImp();
+		twohundredMilliscondHandleImp.start( 200l );
 	}
 	
 	/** 关闭所有 线程 */
@@ -56,6 +63,8 @@ public class ThreadManager {
 		twoMinuteHandleImp = null;
 		fiveMinuteHandleImp.stop();
 		fiveMinuteHandleImp = null;
+		twohundredMilliscondHandleImp.stop();
+		twohundredMilliscondHandleImp = null;
 		
 	}
 		

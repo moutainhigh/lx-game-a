@@ -32,6 +32,23 @@ public class UnBuildings extends Buildings{
 	public void setVote(Vote vote) {
 		this.vote = vote;
 	}
+
+	/**
+	 * 获取已经过去的时间 - 单位秒
+	 * @return
+	 */
+	public int getPastTime() {
+		return 10;
+	}
+
+	/**
+	 * 是否建筑完成
+	 * @return
+	 */
+	public boolean isComplete() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }

@@ -104,22 +104,6 @@ public class WorldManager {
 		return homes.get(0);
 	}
 	
-	/** 线程 */
-	public void run() {
-		for( HomePlanet home : homes ){
-			// 在这里 处理 特产线程
-			home.run();
-			// 在这里保存一下 星球数据 以后所有的改动都不需要及时保存 就在这里保存就够了
-			home.updateDB();
-		}
-		
-		for( EctypePlanet ectype : ectypes ){
-			
-			// 在这里保存一下 星球数据 以后所有的改动都不需要及时保存 就在这里保存就够了
-			ectype.updateDB();
-		}
-	}
-
 	/**
 	 * 获取玩家所属母星
 	 * @param player
@@ -187,6 +171,37 @@ public class WorldManager {
 		return null;
 	}
 
+	/** 线程 */
+	public void run() {
+		for( HomePlanet home : homes ){
+			// 在这里 处理 特产线程
+			home.run();
+			// 在这里保存一下 星球数据 以后所有的改动都不需要及时保存 就在这里保存就够了
+			home.updateDB();
+		}
+		
+		for( EctypePlanet ectype : ectypes ){
+			
+			// 在这里保存一下 星球数据 以后所有的改动都不需要及时保存 就在这里保存就够了
+			ectype.updateDB();
+		}
+		
+		for( EntrepotPlanet entrepot : entrepots ){
+			
+			// 在这里保存一下 星球数据 以后所有的改动都不需要及时保存 就在这里保存就够了
+			entrepot.updateDB();
+		}
+	}
+	
+	/**
+	 * 执行 研发线程 - 包括建筑建造 和 科技研究
+	 */
+	public void runDevelopment() {
+		for( HomePlanet home : homes ){
+			home.runDevelopment();
+		}
+	}
+	
 	/**
 	 * 给某个星球捐献资源
 	 * @param player 
@@ -204,5 +219,7 @@ public class WorldManager {
 		// 开捐赠
 		planet.donateResource( player, prop );
 	}
+
+
 	
 }

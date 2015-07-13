@@ -64,6 +64,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		List<IProp> ls = getAll();
 		buffer.writeByte( ls.size() );
 		for( IProp prop : ls ){
+			buffer.writeInt( prop.getuId() );
 			buffer.writeInt( prop.getnId() );
 			buffer.writeInt( prop.getCount() );
 		}
@@ -73,19 +74,23 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	 * 添加一个资源
 	 * @param prop
 	 */
-	public void appendProp( IProp param ){
-		
+	public List<IProp> appendProp( IProp param ){
+		List<IProp> ret = Lists.newArrayList();
 		IProp prop = getCanAccProp( param );
 		if( prop == null ){
 			append( param );
+			ret.add( param );
 		}else{
 			int surplus = prop.addCount( param.getCount() );
+			ret.add( prop );
 			// 这里说明还有剩余的
 			if( surplus > 0 ){
 				param.setCount( surplus );
 				append( param );
+				ret.add( param );
 			}
 		}
+		return ret;
 	}
 
 	/** 这里自己封一个 为了给物品一个唯一ID */

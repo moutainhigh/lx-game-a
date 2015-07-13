@@ -2,6 +2,8 @@ package cn.xgame.a.world.planet.data.tech;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Tech;
 
 /**
  * 科技
@@ -10,10 +12,22 @@ import cn.xgame.a.ITransformStream;
  */
 public class Techs implements ITransformStream {
 
+	private final Tech templet;
+	
+	public Techs( int id ) {
+		templet = CsvGen.getTech(id);
+	}
+	
+	public Techs( Techs src ){
+		templet = src.templet;
+	}
+	
+	public Tech templet() { return templet; }
+
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
+		buffer.writeInt( templet.id );
 	}
+
 
 }

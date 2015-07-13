@@ -22,6 +22,10 @@ public class Buildings implements IBufferStream,ITransformStream {
 		templet = CsvGen.getSbuilding(id);
 	}
 	
+	public Buildings( Buildings src ) {
+		this.templet = src.templet;
+	}
+	
 	@Override
 	public void putBuffer(ByteBuf buf) {
 		buf.writeByte( index );

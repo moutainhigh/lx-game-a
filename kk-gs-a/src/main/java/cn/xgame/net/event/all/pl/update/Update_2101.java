@@ -16,6 +16,7 @@ public class Update_2101 extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
+		
 	}
 
 }

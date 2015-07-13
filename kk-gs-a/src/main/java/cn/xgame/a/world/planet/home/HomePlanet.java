@@ -19,6 +19,7 @@ import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
+import cn.xgame.a.world.planet.data.tech.UnTechs;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
 import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
@@ -45,36 +46,44 @@ public class HomePlanet extends IPlanet {
 		super(clone);
 	}
 
+	//////////////////////////////临时数据
 	// 体制
 	private Institution institution;
 	
-	// 星球货币
-	private long currency;
+	// 科技等级
+	private byte techLevel = 0;
 	
+	//////////////////////////////数据库相关
 	// 玩家列表
 	private List<Child> childs = Lists.newArrayList();
 	// 被驱逐投票中的元老列表
 	private List<OustChild> oustChilds = Lists.newArrayList();
 	
 	// 科技列表
-	private TechControl techs = new TechControl();
+	private TechControl techControl = new TechControl();
 
-	public long getCurrency() { return currency; }
-	public void setCurrency(long currency) {
-		this.currency = currency;
-	}
+	
+	
+	
+	
 	public Institution getInstitution() { return institution; }
 	public void setInstitution(Institution institution) {
 		this.institution = institution;
 	}
+	public byte getTechLevel() {
+		return techLevel;
+	}
+	public void setTechLevel(byte techLevel) {
+		this.techLevel = techLevel;
+	}
+	@Override
+	public boolean isCanDonate() { return true; }
+	
 	@Override
 	public void init( PlanetDataDto dto ) {
 		super.init(dto);
 		setInstitution(Institution.REPUBLIC);
 	}
-	
-	@Override
-	public boolean isCanDonate() { return true; }
 	
 	@Override
 	public List<Child> getAllGenrs() { 
@@ -91,7 +100,9 @@ public class HomePlanet extends IPlanet {
 		super.wrap(dto);
 		wrapPlayer( dto.getPlayers() );
 		wrapOustPlayer( dto.getExpelGenr() );
-		techs.fromBytes( dto.getTechs() );
+		techControl.fromBytes( dto.getTechs() );
+		// 根据科技获取最大星球科技等级
+		updateTechLevel();
 		// 先排个序
 		updateChildSequence();
 		// 从数据库 获取数据后 更新体制
@@ -153,9 +164,9 @@ public class HomePlanet extends IPlanet {
 		// 已建筑数据 and 建筑中数据
 		getBuildingControl().putBuilding(buffer);
 		// 所有科技数据
-		techs.putTechs(buffer);
+		techControl.putTechs(buffer);
 		// 研究中
-		techs.putUnTech(buffer);
+		techControl.putUnTech(buffer);
 	}
 	
 	@Override
@@ -163,7 +174,7 @@ public class HomePlanet extends IPlanet {
 		// 投票中建筑
 		getBuildingControl().putVoBuilding(response);
 		// 投票中科技
-		techs.putVoTech(response);
+		techControl.putVoTech(response);
 		// 投票中驱逐元老
 		response.writeByte( oustChilds.size() );
 		for( OustChild o : oustChilds ){
@@ -183,7 +194,7 @@ public class HomePlanet extends IPlanet {
 		dto.setBuildings( getBuildingControl().toBytes() );
 		dto.setDepots( getDepotControl().toBytes() );
 		dto.setSpecialtys( getSpecialtyControl().toBytes() );
-		dto.setTechs( techs.toBytes() );
+		dto.setTechs( techControl.toBytes() );
 		dto.setPlayers( toPlayers() );
 		dto.setExpelGenr( toOustPlayers() );
 		dao.commit(dto);
@@ -231,11 +242,23 @@ public class HomePlanet extends IPlanet {
 	public void donateResource( Player player, IProp prop ) {
 		
 		// 添加资源
-		getDepotControl().appendProp(prop);
+		List<IProp> update = getDepotControl().appendProp(prop);
 
 		// 这里检查  建筑中列表 里面是否有材料不足而暂停的建筑中建筑
-		// TODO
-		
+		List<UnBuildings> waitBuild = buildingControl.getWaitBuild();
+		for( UnBuildings unBuild : waitBuild ){
+			if( getDepotControl().deductProp( unBuild.templet().needres ) ){
+				unBuild.setrTime( (int) (System.currentTimeMillis()/1000) );
+			}
+		}
+		// 检测科技
+		List<UnTechs> waitTech = techControl.getWaitTech();
+		for( UnTechs unTech : waitTech ){
+			if( getDepotControl().deductProp( unTech.templet().needStuff ) ){
+				unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
+			}
+		}
+			
 		// 添加玩家的贡献度
 		Child child = getChild( player.getUID() );
 		child.addContribution( prop.getContributions() );
@@ -245,6 +268,9 @@ public class HomePlanet extends IPlanet {
 		int allcont = updateAllContribution();
 		short privilege = (short) (((float)child.getContribution() / (float)allcont) * 10000f);
 		child.setPrivilege( privilege );
+		
+		// 捐献成功后 同步消息
+		Syn.res( childs, update );
 	}
 	
 	
@@ -293,7 +319,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
 		
 		// 判断该建筑能不能建
-		if( buildingControl.isCanBuild( nid ) )
+		if( !buildingControl.isCanBuild( nid ) )
 			throw new Exception( ErrorCode.YET_ATLIST.name() );
 		
 		// 添加到投票中
@@ -303,7 +329,7 @@ public class HomePlanet extends IPlanet {
 		child.addSponsors( 1 );
 		
 		// 下面同步消息给玩家
-		Syn.buiVote( childs, 1, voteBuild );
+		Syn.build( childs, 1, voteBuild );
 	}
 	
 	@Override
@@ -332,7 +358,7 @@ public class HomePlanet extends IPlanet {
 			buildingControl.removeVoteBuild( unBuild );
 			
 			// 同步
-			Syn.buiVote( childs, 0, unBuild );
+			Syn.build( childs, status+2, unBuild );
 		}
 	}
 	
@@ -346,7 +372,7 @@ public class HomePlanet extends IPlanet {
 			unBuild.setrTime( -1 );
 		
 		// 放入建筑中 列表
-		getBuildingControl().appendUnBuild( unBuild );
+		buildingControl.appendUnBuild( unBuild );
 		
 		// 设置发起人的通过数
 		Child sponsor = getChild( unBuild.getVote().getSponsorUid() );
@@ -355,7 +381,73 @@ public class HomePlanet extends IPlanet {
 	
 	/////////////////// =================科技====================
 	@Override
-	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { }
+	public void sponsorTechVote( Player player, int nid, int time ) throws Exception { 
+		// 判断 有没有权限
+		Child child = getChild( player.getUID() );
+		if( child == null || !child.isSenator() )
+			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+		
+		// 判断是否能研究
+		if( !techControl.isCanStudy( nid, techLevel ) )
+			throw new Exception( ErrorCode.CON_DISSATISFY.name() );
+		
+		// 添加到投票列表
+		UnTechs unTechs = techControl.appendVote( player, nid, time );
+		
+		// 记录玩家发起数
+		child.addSponsors( 1 );
+		
+		// 下面同步消息给玩家
+		Syn.tech( childs, 1, unTechs );
+	}
+	
+	@Override
+	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { 
+		// 判断是否有权限投票 只要有话语权都可以投票
+		Child child = getChild( player.getUID() );
+		if( child == null || child.getPrivilege() == 0 )
+			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+
+		// 判断是否已经参与投票了
+		UnTechs unTech = techControl.getVoTech( nid );
+		if( unTech == null || unTech.getVote().isParticipateVote( player.getUID() ) )
+			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
+		
+		// 设置投票
+		byte status = unTech.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
+		// 说明投票完成
+		if( status != -1 ){
+			if( status == 1 ) // 同意建筑
+				startStudy( unTech );
+			if( status == 0 ){ // 反对建筑
+				//...暂时没有处理
+			}
+			// 最后不管怎样都要删掉的
+			techControl.removeVoTech( unTech );
+			
+			// 同步
+			Syn.tech( childs, status+2, unTech );
+		}
+	}
+	// 开始研究科技
+	private void startStudy(UnTechs unTech) {
+		
+		// 判断资源是否够 - 开始扣资源
+		if( getDepotControl().deductProp( unTech.templet().needStuff ) )
+			unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
+		else
+			unTech.setrTime( -1 );
+		// 放入建筑中 列表
+		techControl.appendUnTech( unTech );
+		// 设置发起人的通过数
+		Child sponsor = getChild( unTech.getVote().getSponsorUid() );
+		sponsor.addPasss( 1 );
+	}
+	
+	// 刷新科技等级
+	private void updateTechLevel() {
+		techLevel = techControl.getMaxTechLevel();
+	}
 	
 	/////////////////// =================元老====================
 	@Override
@@ -438,7 +530,19 @@ public class HomePlanet extends IPlanet {
 	}
 
 
-	
+	/**
+	 * 研发 线程 - 包括科技研究 建筑建造
+	 */
+	public void runDevelopment(){
+		// 建筑
+		UnBuildings build = buildingControl.runDevelopment();
+		if( build != null )// 同步玩家
+			Syn.build( childs, 4, build );
+		// 科技
+		UnTechs tech = techControl.runDevelopment();
+		if( tech != null )
+			Syn.tech( childs, 4, tech );
+	}
 	
 	
 }

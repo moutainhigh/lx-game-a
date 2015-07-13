@@ -34,7 +34,7 @@ import cn.xgame.net.event.all.pl.update.Update_2201;
 import cn.xgame.net.event.all.pl.update.Update_2211;
 import cn.xgame.net.event.all.pl.update.Update_2221;
 import cn.xgame.net.event.all.pl.update.Update_2231;
-import cn.xgame.net.event.all.pl.update.Update_2242;
+import cn.xgame.net.event.all.pl.update.Update_2241;
 import cn.xgame.net.event.all.pl.update.Update_2252;
 
 /**
@@ -85,7 +85,7 @@ public enum Events {
 	UPDATE_2211						( 2211, 				new Update_2211() ),
 	UPDATE_2221						( 2221, 				new Update_2221() ),
 	UPDATE_2231						( 2231, 				new Update_2231() ),
-	UPDATE_2242						( 2242, 				new Update_2242() ),
+	UPDATE_2241						( 2241, 				new Update_2241() ),
 	UPDATE_2252						( 2252, 				new Update_2252() ),
 	
 

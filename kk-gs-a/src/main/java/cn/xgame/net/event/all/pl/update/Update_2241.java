@@ -15,21 +15,23 @@ import cn.xgame.utils.Logs;
  * @author deng		
  * @date 2015-7-10 下午4:47:13
  */
-public class Update_2242 extends IEvent{
+public class Update_2241 extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 	}
 
-	public void run(Player player, int isAdd, UnBuildings voteBuild) {
+	public void run(Player player, int status, UnBuildings voteBuild) {
 		
 		try {
 			ByteBuf response = buildEmptyPackage( player.getCtx(), 15 );
-			response.writeByte( isAdd );
+			response.writeByte( status );
 			response.writeInt( voteBuild.templet().id );
 			response.writeByte( voteBuild.getIndex() );
-			if( isAdd == 1 )
+			if( status == 1 )
 				RW.writeString( response, voteBuild.getVote().getSponsorName() );
+			if( status == 3 )
+				response.writeInt( voteBuild.getPastTime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
 			Logs.error( player, "Update_2242 " + e.getMessage() );

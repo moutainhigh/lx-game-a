@@ -5,21 +5,22 @@ import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
 /**
- * 每两分钟 执行 一次
+ * 200毫秒 执行一次
  * @author deng		
- * @date 2015-6-16 上午10:50:38
+ * @date 2015-7-13 下午5:01:55
  */
-public class TwoMinuteHandleImp extends IThread{
+public class TwohundredMilliscondHandleImp extends IThread{
 
 	@Override
 	public void run() {
+		
 		try {
 			
-			// 每个母星的 特产 
-			WorldManager.o.run();
+			WorldManager.o.runDevelopment();
+			
 			
 		} catch (Exception e) {
-			Logs.error( "TwoMinuteHandleImp:" , e );
+			Logs.error( "TwohundredMilliscondHandleImp:" , e );
 		}
 	}
 

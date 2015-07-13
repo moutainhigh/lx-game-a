@@ -10,6 +10,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.VoteTimeChange;
 
 /**
  * 发起建筑投票 
@@ -28,7 +29,7 @@ public class SponsorBuildVoEvent extends IEvent{
 		
 		try {
 			// 先将时间转换
-			int time = conversionTime( type );
+			int time = VoteTimeChange.conversionTime( type );
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
 			IPlanet planet = WorldManager.o.getHPlanetInPlayer(player);
@@ -46,15 +47,5 @@ public class SponsorBuildVoEvent extends IEvent{
 		sendPackage( player.getCtx(), response );
 	}
 
-	private int conversionTime(byte type) {
-		if( type == 1 ){
-			return 43200;
-		}else if( type == 2 ){
-			return 86400;
-		}else if( type == 3 ){
-			return 172800;
-		}
-		return 300;
-	}
 
 }
