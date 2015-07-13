@@ -23,7 +23,7 @@ public class DonateStuffEvent extends IEvent{
 	@Override
 	public void run( Player player, ByteBuf data ) throws IOException {
 		
-		short id		= data.readShort();
+		int id			= data.readInt();
 		PropType type 	= PropType.fromNumber( data.readByte() );
 		int uid 		= data.readInt();
 		int count		= data.readInt();

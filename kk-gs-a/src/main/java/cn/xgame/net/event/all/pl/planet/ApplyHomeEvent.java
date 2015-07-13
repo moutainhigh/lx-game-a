@@ -21,7 +21,7 @@ public class ApplyHomeEvent extends IEvent {
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		short nid = data.readShort();
+		int nid = data.readInt();
 		
 		HomePlanet home = WorldManager.o.getHomePlanet( nid );
 		ErrorCode code = null;

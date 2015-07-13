@@ -7,6 +7,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
+import cn.xgame.a.world.planet.data.ectype.EctypeControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
@@ -35,6 +36,8 @@ public abstract class IPlanet implements ITransformStream{
 	// 星球建筑
 	protected BuildingControl buildingControl = new BuildingControl();
 	
+	// 副本列表
+	protected EctypeControl ectypeControl = new EctypeControl();
 	
 	public IPlanet( Stars clone ){
 		templet = clone;
@@ -48,11 +51,13 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
+		ectypeControl.fromTemplet( templet.ectypes );
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
 		dto.setBuildings( buildingControl.toBytes() );
 		dto.setSpecialtys( specialtyControl.toBytes() );
+		
 	}
 	
 	/**
@@ -64,6 +69,7 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromBytes( dto.getSpecialtys() );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
+		ectypeControl.fromTemplet( templet.ectypes );
 	}
 	
 	@Override
@@ -93,38 +99,23 @@ public abstract class IPlanet implements ITransformStream{
 	public List<Child> getAllGenrs() { return null; }
 	/** 捐献资源 */
 	public void donateResource( Player player, IProp prop ){}
+	
+	
 	/** 是否可以捐献 */
 	public abstract boolean isCanDonate();
 	/** 保存数据库 */
 	public abstract void updateDB();
+	
+	
+	
 	public Stars templet(){ return templet; }
 	public int getId() { return templet.id; }
-	public short getMaxSpace() {
-		return maxSpace;
-	}
-	public void setMaxSpace(short maxSpace) {
-		this.maxSpace = maxSpace;
-	}
-	public SpecialtyControl getSpecialtyControl() {
-		return specialtyControl;
-	}
-	public void setSpecialtyControl(SpecialtyControl specialtys) {
-		this.specialtyControl = specialtys;
-	}
-	public ResourceControl getDepotControl() {
-		return depotControl;
-	}
-	public void setDepotControl(ResourceControl depots) {
-		this.depotControl = depots;
-	}
-	public BuildingControl getBuildingControl() {
-		return buildingControl;
-	}
-	public void setBuildingControl(BuildingControl buildingControl) {
-		this.buildingControl = buildingControl;
-	}
-
-
+	public short getMaxSpace() { return maxSpace; }
+	public void setMaxSpace(short maxSpace) { this.maxSpace = maxSpace; }
+	public SpecialtyControl getSpecialtyControl() { return specialtyControl; }
+	public ResourceControl getDepotControl() { return depotControl; }
+	public BuildingControl getBuildingControl() { return buildingControl; }
+	public EctypeControl getEctypeControl() { return ectypeControl; }
 
 
 

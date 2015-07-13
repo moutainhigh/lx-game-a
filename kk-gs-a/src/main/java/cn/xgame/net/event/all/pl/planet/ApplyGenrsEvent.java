@@ -21,7 +21,7 @@ public class ApplyGenrsEvent extends IEvent {
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		short nid = data.readShort();
+		int nid = data.readInt();
 		
 		List<Child> ls = null;
 		IPlanet planet = WorldManager.o.getPlanet( nid );

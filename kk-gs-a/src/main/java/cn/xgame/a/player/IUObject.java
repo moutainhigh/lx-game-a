@@ -1,11 +1,11 @@
 package cn.xgame.a.player;
 
 /**
- * 所有对象 基类
+ * 所有玩家对象 基类
  * @author deng		
  * @date 2015-7-9 下午3:02:06
  */
-public class IObject {
+public class IUObject {
 
 	// 唯一ID
 	private int uId;

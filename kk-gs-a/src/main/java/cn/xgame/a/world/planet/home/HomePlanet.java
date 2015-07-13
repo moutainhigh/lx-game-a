@@ -34,6 +34,7 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 一个母星
@@ -536,12 +537,16 @@ public class HomePlanet extends IPlanet {
 	public void runDevelopment(){
 		// 建筑
 		UnBuildings build = buildingControl.runDevelopment();
-		if( build != null )// 同步玩家
+		if( build != null ){// 同步玩家
 			Syn.build( childs, 4, build );
+			Logs.debug( templet().name + " 建筑(" + build.templet().name + "," + build.templet().id + ") 修建完毕!" );
+		}
 		// 科技
 		UnTechs tech = techControl.runDevelopment();
-		if( tech != null )
+		if( tech != null ){
 			Syn.tech( childs, 4, tech );
+			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 研究完毕!" );
+		}
 	}
 	
 	

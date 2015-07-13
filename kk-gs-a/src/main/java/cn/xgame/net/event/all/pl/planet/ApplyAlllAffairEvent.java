@@ -21,7 +21,7 @@ public class ApplyAlllAffairEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		short nid = data.readShort();
+		int nid = data.readInt();
 		
 		IPlanet planet = WorldManager.o.getPlanet( nid );
 		ErrorCode code = null;

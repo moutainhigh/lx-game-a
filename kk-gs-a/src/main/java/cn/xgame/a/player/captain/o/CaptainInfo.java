@@ -2,7 +2,7 @@ package cn.xgame.a.player.captain.o;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.IObject;
+import cn.xgame.a.player.IUObject;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
 
 /**
@@ -10,7 +10,7 @@ import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
  * @author deng		
  * @date 2015-7-9 下午12:28:55
  */
-public class CaptainInfo extends IObject implements ITransformStream{
+public class CaptainInfo extends IUObject implements ITransformStream{
 
 	public CaptainInfo(int uid, int nid) {
 		setuId(uid);

@@ -2,7 +2,7 @@ package cn.xgame.a.player.ship.o;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.IObject;
+import cn.xgame.a.player.IUObject;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 
 /**
@@ -10,7 +10,7 @@ import cn.xgame.gen.dto.MysqlGen.ShipsDto;
  * @author deng		
  * @date 2015-7-9 下午12:22:54
  */
-public class ShipInfo extends IObject implements ITransformStream{
+public class ShipInfo extends IUObject implements ITransformStream{
 
 	// 舰长唯一ID
 	private int captainUID;
