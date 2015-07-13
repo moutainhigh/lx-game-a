@@ -147,7 +147,7 @@ public class WorldManager {
 	 * @param nid
 	 * @return
 	 */
-	public EntrepotPlanet getEntrepotPlanet( short nid ) {
+	public EntrepotPlanet getEntrepotPlanet( int nid ) {
 		for( EntrepotPlanet entrepot : entrepots ){
 			if( entrepot.getId() == nid )
 				return entrepot;
@@ -160,7 +160,7 @@ public class WorldManager {
 	 * @param nid
 	 * @return
 	 */
-	public EctypePlanet getEctypePlanet( short nid ) {
+	public EctypePlanet getEctypePlanet( int nid ) {
 		for( EctypePlanet ectype : ectypes ){
 			if( ectype.getId() == nid )
 				return ectype;
@@ -173,7 +173,7 @@ public class WorldManager {
 	 * @param nid
 	 * @return
 	 */
-	public IPlanet getPlanet( short nid ) {
+	public IPlanet getPlanet( int nid ) {
 		Stars star = CsvGen.getStars( nid );
 		if( star == null )
 			return null;
@@ -195,7 +195,7 @@ public class WorldManager {
 	 * @return 
 	 * @throws Exception 
 	 */
-	public void donateResource( Player player, short id, IProp prop ) throws Exception {
+	public void donateResource( Player player, int id, IProp prop ) throws Exception {
 		IPlanet planet = getPlanet( id );
 		if( planet == null )
 			throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );

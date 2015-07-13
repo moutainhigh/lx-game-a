@@ -11,6 +11,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 
 /**
  * 捐献资源 - 材料
@@ -22,26 +23,31 @@ public class DonateStuffEvent extends IEvent{
 	@Override
 	public void run( Player player, ByteBuf data ) throws IOException {
 		
-		short id	= data.readShort();
-		PropType type = PropType.fromNumber( data.readByte() );
-		int uid 	= data.readInt();
-		int count	= data.readInt();
+		short id		= data.readShort();
+		PropType type 	= PropType.fromNumber( data.readByte() );
+		int uid 		= data.readInt();
+		int count		= data.readInt();
 		
 		ErrorCode code = null;
 		
+		Logs.debug( player, "捐献资源  星球ID="+id+",type="+type+",uid="+uid+",count="+count );
+		
 		try {
 			// 判断是否有足够的材料
-			IProp prop = player.getProps().getProp( type, uid );
+			IProp prop = player.getProps().getProp( type, uid ).clone();
 			if( prop == null )
 				throw new Exception( ErrorCode.STUFF_NOTEXIST.name() );
 			if( prop.getCount() < count )
 				throw new Exception( ErrorCode.STUFF_LAZYWEIGHT.name() );
 			
+			// 设置数量
+			prop.setCount( count );
+			
+			// 扣除 玩家身上的道具  注：这里要先扣除玩家身上的道具 因为下面捐献后 会把UID换掉
+			player.getProps().deductProp( prop );
+			
 			// 找到对应星球捐献资源
 			WorldManager.o.donateResource( player, id, prop );
-			
-			// 扣除 玩家身上的道具
-			player.getProps().remove(prop);
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

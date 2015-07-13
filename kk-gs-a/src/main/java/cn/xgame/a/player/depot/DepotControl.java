@@ -113,6 +113,29 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			createProp( type, nid, count - prop.getCount() );
 	}
 	
+
+	/**
+	 * 扣除道具
+	 * @param prop
+	 */
+	public void deductProp( IProp clone ) {
+		
+		IProp prop = getProp(clone);
+		if( prop == null ) {
+			Logs.error( root, "prop == null at DepotControl.deductProp" );
+			return;
+		}
+		
+		if( clone.isEmpty() ){
+			remove( prop );
+		}else{
+			prop.deductCount( clone.getCount() );
+			prop.updateDB(root);
+		}
+		
+		Logs.debug( root, "扣除道具 (" + clone + "), 扣除后 (" + prop + ")" );
+	}
+	
 	public boolean remove( IProp prop ){
 		// 从数据库删除
 		prop.deleteDB(root);
@@ -136,6 +159,8 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 //		}
 		
 	}
+
+
 
 
 

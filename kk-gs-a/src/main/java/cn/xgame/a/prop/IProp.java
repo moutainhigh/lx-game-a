@@ -143,6 +143,14 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	/**
+	 * 是否一个空的道具
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return count <= 0;
+	}
+	
+	/**
 	 * 添加数量 
 	 * @param num
 	 * @return 多出的
@@ -169,10 +177,6 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
-
-	
-	
-	
 
 
 

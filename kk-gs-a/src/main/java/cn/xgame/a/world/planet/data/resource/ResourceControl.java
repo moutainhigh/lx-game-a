@@ -126,7 +126,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		}
 		// 这里代表 道具全部扣完  把临时记录的拿来 真真扣除
 		for( IProp prop : temp ){
-			if( prop.getCount() == 0 )
+			if( prop.isEmpty() )
 				remove( prop );
 			else
 				getProp( prop ).setCount( prop.getCount() );
