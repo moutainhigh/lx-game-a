@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
-encoding//resources/db.properties=ISO-8859-1
+encoding//resources/db.properties=UTF-8
+encoding//resources/log4j.properties=UTF-8
+encoding//resources/system.properties=UTF-8
 encoding//src/main/java/cn/xgame/a/Launch.java=UTF-8
 encoding/<project>=UTF-8
