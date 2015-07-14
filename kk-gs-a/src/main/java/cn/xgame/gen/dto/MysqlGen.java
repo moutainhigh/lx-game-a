@@ -58,15 +58,15 @@
 			this.uid = src.uid;
 			this.nid = src.nid;
 
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
+		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
+		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
+		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
+		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
 
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
+		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
@@ -97,23 +97,23 @@
 			this.specialtys = src.specialtys;
 			this.techs = src.techs;
 
-		}		/** 星球ID */		public Integer getId(){			return this.id;		}
-		/** 星球总空间 */		public Short getMaxSpace(){			return this.maxSpace;		}
-		/** 玩家列表 */		public byte[] getPlayers(){			return this.players;		}
-		/** 驱逐元老列表 */		public byte[] getExpelGenr(){			return this.expelGenr;		}
-		/** 星球建筑 */		public byte[] getBuildings(){			return this.buildings;		}
-		/** 星球仓库 */		public byte[] getDepots(){			return this.depots;		}
-		/** 星球特产 */		public byte[] getSpecialtys(){			return this.specialtys;		}
-		/** 星球科技 */		public byte[] getTechs(){			return this.techs;		}
+		}		/**  星球ID  */		public Integer getId(){			return this.id;		}
+		/**  星球总空间  */		public Short getMaxSpace(){			return this.maxSpace;		}
+		/**  玩家列表  */		public byte[] getPlayers(){			return this.players;		}
+		/**  驱逐元老列表  */		public byte[] getExpelGenr(){			return this.expelGenr;		}
+		/**  星球建筑  */		public byte[] getBuildings(){			return this.buildings;		}
+		/**  星球仓库  */		public byte[] getDepots(){			return this.depots;		}
+		/**  星球特产  */		public byte[] getSpecialtys(){			return this.specialtys;		}
+		/**  星球科技  */		public byte[] getTechs(){			return this.techs;		}
 
-		/** 星球ID */		public void setId( Integer id ){			this.id = id;		}
-		/** 星球总空间 */		public void setMaxSpace( Short maxSpace ){			this.maxSpace = maxSpace;		}
-		/** 玩家列表 */		public void setPlayers( byte[] players ){			this.players = players;		}
-		/** 驱逐元老列表 */		public void setExpelGenr( byte[] expelGenr ){			this.expelGenr = expelGenr;		}
-		/** 星球建筑 */		public void setBuildings( byte[] buildings ){			this.buildings = buildings;		}
-		/** 星球仓库 */		public void setDepots( byte[] depots ){			this.depots = depots;		}
-		/** 星球特产 */		public void setSpecialtys( byte[] specialtys ){			this.specialtys = specialtys;		}
-		/** 星球科技 */		public void setTechs( byte[] techs ){			this.techs = techs;		}
+		/**  星球ID  */		public void setId( Integer id ){			this.id = id;		}
+		/**  星球总空间  */		public void setMaxSpace( Short maxSpace ){			this.maxSpace = maxSpace;		}
+		/**  玩家列表  */		public void setPlayers( byte[] players ){			this.players = players;		}
+		/**  驱逐元老列表  */		public void setExpelGenr( byte[] expelGenr ){			this.expelGenr = expelGenr;		}
+		/**  星球建筑  */		public void setBuildings( byte[] buildings ){			this.buildings = buildings;		}
+		/**  星球仓库  */		public void setDepots( byte[] depots ){			this.depots = depots;		}
+		/**  星球特产  */		public void setSpecialtys( byte[] specialtys ){			this.specialtys = specialtys;		}
+		/**  星球科技  */		public void setTechs( byte[] techs ){			this.techs = techs;		}
 
 		public static String idChangeSql( Integer x) {			return "id=" + x;		}
 		public static String maxSpaceChangeSql( Short x) {			return "maxSpace=" + x;		}
@@ -158,29 +158,29 @@
 			this.gold = src.gold;
 			this.manors = src.manors;
 
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 唯一ID */		public String getUid(){			return this.uid;		}
-		/** 创建时间 */		public Long getCreateTime(){			return this.createTime;		}
-		/** 上次下线时间 */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
-		/** 名字 */		public String getNickname(){			return this.nickname;		}
-		/** 头像图标ID */		public Integer getHeadIco(){			return this.headIco;		}
-		/** 副官ID */		public Integer getAdjutantId(){			return this.adjutantId;		}
-		/** 区域 */		public Integer getCountryId(){			return this.countryId;		}
-		/** 游戏币 */		public Integer getCurrency(){			return this.currency;		}
-		/** 充值币 */		public Integer getGold(){			return this.gold;		}
-		/** 领地 */		public byte[] getManors(){			return this.manors;		}
+		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
+		/**  唯一ID  */		public String getUid(){			return this.uid;		}
+		/**  创建时间  */		public Long getCreateTime(){			return this.createTime;		}
+		/**  上次下线时间  */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
+		/**  名字  */		public String getNickname(){			return this.nickname;		}
+		/**  头像图标ID  */		public Integer getHeadIco(){			return this.headIco;		}
+		/**  副官ID  */		public Integer getAdjutantId(){			return this.adjutantId;		}
+		/**  区域  */		public Integer getCountryId(){			return this.countryId;		}
+		/**  游戏币  */		public Integer getCurrency(){			return this.currency;		}
+		/**  充值币  */		public Integer getGold(){			return this.gold;		}
+		/**  领地  */		public byte[] getManors(){			return this.manors;		}
 
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 唯一ID */		public void setUid( String uid ){			this.uid = uid;		}
-		/** 创建时间 */		public void setCreateTime( Long createTime ){			this.createTime = createTime;		}
-		/** 上次下线时间 */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
-		/** 名字 */		public void setNickname( String nickname ){			this.nickname = nickname;		}
-		/** 头像图标ID */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
-		/** 副官ID */		public void setAdjutantId( Integer adjutantId ){			this.adjutantId = adjutantId;		}
-		/** 区域 */		public void setCountryId( Integer countryId ){			this.countryId = countryId;		}
-		/** 游戏币 */		public void setCurrency( Integer currency ){			this.currency = currency;		}
-		/** 充值币 */		public void setGold( Integer gold ){			this.gold = gold;		}
-		/** 领地 */		public void setManors( byte[] manors ){			this.manors = manors;		}
+		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
+		/**  创建时间  */		public void setCreateTime( Long createTime ){			this.createTime = createTime;		}
+		/**  上次下线时间  */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
+		/**  名字  */		public void setNickname( String nickname ){			this.nickname = nickname;		}
+		/**  头像图标ID  */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
+		/**  副官ID  */		public void setAdjutantId( Integer adjutantId ){			this.adjutantId = adjutantId;		}
+		/**  区域  */		public void setCountryId( Integer countryId ){			this.countryId = countryId;		}
+		/**  游戏币  */		public void setCurrency( Integer currency ){			this.currency = currency;		}
+		/**  充值币  */		public void setGold( Integer gold ){			this.gold = gold;		}
+		/**  领地  */		public void setManors( byte[] manors ){			this.manors = manors;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
@@ -221,19 +221,19 @@
 			this.count = src.count;
 			this.attach = src.attach;
 
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
-		/** 数量 */		public Integer getCount(){			return this.count;		}
-		/** 附加数据 */		public byte[] getAttach(){			return this.attach;		}
+		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
+		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
+		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
+		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
+		/**  数量  */		public Integer getCount(){			return this.count;		}
+		/**  附加数据  */		public byte[] getAttach(){			return this.attach;		}
 
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
-		/** 数量 */		public void setCount( Integer count ){			this.count = count;		}
-		/** 附加数据 */		public void setAttach( byte[] attach ){			this.attach = attach;		}
+		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
+		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  数量  */		public void setCount( Integer count ){			this.count = count;		}
+		/**  附加数据  */		public void setAttach( byte[] attach ){			this.attach = attach;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
@@ -260,15 +260,15 @@
 			this.uid = src.uid;
 			this.nid = src.nid;
 
-		}		/** 服务器ID */		public Short getGsid(){			return this.gsid;		}
-		/** 玩家唯一ID */		public String getUname(){			return this.uname;		}
-		/** 唯一ID */		public Integer getUid(){			return this.uid;		}
-		/** 表格ID */		public Integer getNid(){			return this.nid;		}
+		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
+		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
+		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
+		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
 
-		/** 服务器ID */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
-		/** 玩家唯一ID */		public void setUname( String uname ){			this.uname = uname;		}
-		/** 唯一ID */		public void setUid( Integer uid ){			this.uid = uid;		}
-		/** 表格ID */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
+		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}

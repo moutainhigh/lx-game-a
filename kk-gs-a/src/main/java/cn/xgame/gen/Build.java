@@ -18,7 +18,7 @@ public class Build {
 		String[] ags = new String[] { 
 				"-dtoPath", "src/main/java/cn/xgame/gen/o",
 				"-dstPath", "src/main/java/cn/xgame/gen/dto",
-				"-packageName", "cn.xgame.gen.dto", "asdsad" };
+				"-packageName", "cn.xgame.gen.dto" };
 		App.generateMysqlGen( ags );
 	}
 	

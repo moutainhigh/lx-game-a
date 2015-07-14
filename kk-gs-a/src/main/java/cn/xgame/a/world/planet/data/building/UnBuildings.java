@@ -38,7 +38,9 @@ public class UnBuildings extends Buildings{
 	 * @return
 	 */
 	public int getPastTime() {
-		return 10;
+		if( templet().needtime == 0 ) 
+			return 0;
+		return (int) (System.currentTimeMillis()/1000 - rTime);
 	}
 
 	/**
@@ -46,8 +48,10 @@ public class UnBuildings extends Buildings{
 	 * @return
 	 */
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		if( templet().needtime == 0 ) 
+			return true;
+		int past = getPastTime();
+		return past >= templet().needtime;
 	}
 	
 	

@@ -2,7 +2,7 @@
 <config>
 	<debug>true</debug><!--是否DEBUG-->
 	<platform>LOCAL</platform><!--属于平台-->
-	<file_name>D:/eog/Program/server/configs</file_name><!--配置表路径-->
+	<file_name>D:/eog/Program/server/</file_name><!--配置表路径-->
 	
 	<gsId>1</gsId>
 	<gsName>校长的爱</gsName>

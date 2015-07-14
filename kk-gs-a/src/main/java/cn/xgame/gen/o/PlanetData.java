@@ -5,29 +5,29 @@ package cn.xgame.gen.o;
  * @author deng		
  * @date 2015-6-26 上午10:02:40
  */
-public class PlanetData {
+public interface PlanetData {
 	
 	/** 星球ID */
-	int id;
+	int id();
 	
 	/** 星球总空间 */
-	short maxSpace;
+	short maxSpace();
 	
 	/** 玩家列表 */
-	byte[] players;
+	byte[] players();
 	
 	/** 驱逐元老列表 */
-	byte[] expelGenr;
+	byte[] expelGenr();
 	
 	/** 星球建筑 */
-	byte[] buildings;
+	byte[] buildings();
 	
 	/** 星球仓库 */
-	byte[] depots;
+	byte[] depots();
 	
 	/** 星球特产 */
-	byte[] specialtys;
+	byte[] specialtys();
 	
 	/** 星球科技 */
-	byte[] techs;
+	byte[] techs();
 }

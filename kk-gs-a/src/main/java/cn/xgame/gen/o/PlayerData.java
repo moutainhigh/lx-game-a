@@ -6,40 +6,40 @@ package cn.xgame.gen.o;
  * @author deng		
  * @date 2015-6-15 下午4:33:36
  */
-public class PlayerData {
+public interface PlayerData {
 	
 	/** 服务器ID */
-	short gsid;
+	short gsid();
 	
 	/** 唯一ID */
-	String uid;
+	String uid();
 	
 	/** 创建时间 */
-	long createTime;
+	long createTime();
 	
 	/** 上次下线时间 */
-	long lastLogoutTime;
+	long lastLogoutTime();
 	
 	/** 名字 */
-	String nickname;
+	String nickname();
 	
 	/** 头像图标ID */
-	int headIco;
+	int headIco();
 	
 	/** 副官ID */
-	int adjutantId;
+	int adjutantId();
 	
 	/** 区域 */
-	int countryId;
+	int countryId();
 	
 	/** 游戏币 */
-	int currency;
+	int currency();
 	
 	/** 充值币 */
-	int gold;
+	int gold();
 	
 	
 	/** 领地 */
-	byte[] manors;
+	byte[] manors();
 	
 }
