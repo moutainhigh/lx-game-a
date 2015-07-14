@@ -20,6 +20,7 @@ import x.javaplus.ip.IPSeeker;
 import x.javaplus.mysql.App;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
+import x.javaplus.util.lua.Lua;
 
 
 
@@ -118,6 +119,9 @@ public class Launch {
 		
 		// 初始化 ip数据库
 		IPSeeker.I.init( Resources.getResource( "qqwry.dat" ) );
+		
+		// lua日志初始
+		Lua.setLogClass( Logs.class );
 		
 		Logs.debug( "系统配置加载完成" );
 	}

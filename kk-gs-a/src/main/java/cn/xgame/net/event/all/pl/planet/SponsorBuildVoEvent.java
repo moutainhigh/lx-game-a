@@ -5,12 +5,14 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.system.SystemCfg;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.utils.VoteTimeChange;
 
 /**
  * 发起建筑投票 
@@ -29,7 +31,9 @@ public class SponsorBuildVoEvent extends IEvent{
 		
 		try {
 			// 先将时间转换
-			int time = VoteTimeChange.conversionTime( type );
+			Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
+			LuaValue[] ret = lua.getField( "getVoteTime" ).call( 1, type );
+			int time = ret[0].getInt();
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
 			IPlanet planet = WorldManager.o.getHPlanetInPlayer(player);
