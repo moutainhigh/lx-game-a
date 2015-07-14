@@ -1,5 +1,6 @@
 package cn.xgame.a.world.planet.data.vote;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -28,6 +29,7 @@ public class Vote implements ITransformStream {
 	
 	// 时间限制 单位-秒
 	private int timeRestrict;
+	private int rTime;
 	
 	// 临时变量
 	private short agreePrivileges = 0; // 不同意的所有 话语权总和
@@ -37,6 +39,7 @@ public class Vote implements ITransformStream {
 		this.sponsorUid = player.getUID();
 		this.sponsorName = player.getNickname();
 		this.timeRestrict = time;
+		this.rTime = (int) (System.currentTimeMillis()/1000);
 		agrees = Lists.newArrayList();
 		disagrees = Lists.newArrayList();
 	}
@@ -49,6 +52,7 @@ public class Vote implements ITransformStream {
 		sponsorUid = RW.readString(buf);
 		sponsorName = RW.readString(buf);
 		timeRestrict = buf.readInt();
+		rTime = buf.readInt();
 		agrees = Lists.newArrayList();
 		disagrees = Lists.newArrayList();
 		short size = buf.readShort();
@@ -69,6 +73,7 @@ public class Vote implements ITransformStream {
 		RW.writeString( buf, sponsorUid );
 		RW.writeString( buf, sponsorName );
 		buf.writeInt( timeRestrict );
+		buf.writeInt( rTime );
 		buf.writeShort( agrees.size() );
 		for( VotePlayer vote : agrees ){
 			vote.putBuffer( buf );
@@ -82,8 +87,8 @@ public class Vote implements ITransformStream {
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		RW.writeString( buffer, sponsorName );
-		buffer.writeByte( agreePrivileges );
-		buffer.writeByte( disagreePrivileges );
+		buffer.writeByte( agreePrivileges/100 );
+		buffer.writeByte( disagreePrivileges/100 );
 	}
 
 	/**
@@ -112,18 +117,37 @@ public class Vote implements ITransformStream {
 	 * @param uid
 	 * @return
 	 */
-	public boolean isParticipateVote( String uid ) {
+	public byte isParticipateVote( String uid ) {
 		for( VotePlayer v : agrees ){
 			if( v.getUID().equals(uid) )
-				return true;
+				return 1;
 		}
 		for( VotePlayer v : disagrees ){
 			if( v.getUID().equals(uid) )
-				return true;
+				return 0;
 		}
-		return false;
+		return -1;
 	}
 	
+	/**
+	 * 清除玩家的投票
+	 * @param uid
+	 */
+	public void purgeVote( String uid ) {
+		Iterator<VotePlayer> iter = agrees.iterator();
+		purge( iter, uid  );
+		iter = disagrees.iterator();
+		purge( iter, uid  );
+	}
+	private void purge( Iterator<VotePlayer> iter, String uid) {
+		while( iter.hasNext() ){
+			VotePlayer o = iter.next();
+			if( o.getUID().equals(uid) ){
+				iter.remove();
+				return;
+			}
+		}
+	}
 
 	public int getTimeRestrict() {
 		return timeRestrict;
@@ -134,5 +158,22 @@ public class Vote implements ITransformStream {
 	public String getSponsorName() {
 		return sponsorName;
 	}
+	public short getAgreePrivileges(){
+		return agreePrivileges;
+	}
+	public short getDisagreePrivileges(){
+		return disagreePrivileges;
+	}
+	
+	/**
+	 * 时间是否到
+	 * @return
+	 */
+	public boolean isComplete() {
+		int t = (int) (System.currentTimeMillis()/1000 - rTime);
+		return t >= timeRestrict;
+	}
+
+
 
 }

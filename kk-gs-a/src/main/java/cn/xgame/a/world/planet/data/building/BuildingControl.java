@@ -117,12 +117,14 @@ public class BuildingControl implements IArrayStream{
 			buffer.writeInt( o.getPastTime() );
 		}
 	}
-	/** 塞入 投票建筑 */
-	public void putVoBuilding( ByteBuf buffer ) {
+	/** 塞入 投票建筑 
+	 * @param player */
+	public void putVoBuilding( Player player, ByteBuf buffer ) {
 		buffer.writeByte( voBuildings.size() );
 		for( UnBuildings o : voBuildings ){
 			o.buildTransformStream( buffer );
 			o.getVote().buildTransformStream(buffer);
+			buffer.writeByte( o.getVote().isParticipateVote( player.getUID() ) );
 		}
 	}
 	/** 塞入 建筑中 */
@@ -235,9 +237,7 @@ public class BuildingControl implements IArrayStream{
 		unBuildings.add(unBuild);
 	}
 
-	/**
-	 * 建造 线程
-	 */
+	/**  建造 线程 */
 	public UnBuildings runDevelopment() {
 		Iterator<UnBuildings> iter = unBuildings.iterator();
 		while( iter.hasNext() ){
@@ -253,6 +253,21 @@ public class BuildingControl implements IArrayStream{
 		}
 		return null;
 	}
-
+	
+	/** 投票线程 */
+	public UnBuildings runVote(  ) {
+		Iterator<UnBuildings> iter = voBuildings.iterator();
+		while( iter.hasNext() ){
+			UnBuildings o = iter.next();
+			if( o.getVote().isComplete() ){
+				// 放入到 建造列表中
+				appendUnBuild( o );
+				// 然后从列表中删除
+				iter.remove();
+				return o;
+			}
+		}
+		return null;
+	}
 
 }

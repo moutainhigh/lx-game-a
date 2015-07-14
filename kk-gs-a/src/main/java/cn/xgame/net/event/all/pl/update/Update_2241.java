@@ -11,7 +11,7 @@ import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 
 /**
- * 2242 星球建筑投票中列表更新包
+ * 2242 星球建筑更新包
  * @author deng		
  * @date 2015-7-10 下午4:47:13
  */
@@ -21,17 +21,21 @@ public class Update_2241 extends IEvent{
 	public void run(Player player, ByteBuf data) throws IOException {
 	}
 
-	public void run(Player player, int status, UnBuildings voteBuild) {
+	public void run(Player player, int status, UnBuildings build ) {
 		
 		try {
 			ByteBuf response = buildEmptyPackage( player.getCtx(), 15 );
 			response.writeByte( status );
-			response.writeInt( voteBuild.templet().id );
-			response.writeByte( voteBuild.getIndex() );
+			response.writeInt( build.templet().id );
+			response.writeByte( build.getIndex() );
 			if( status == 1 )
-				RW.writeString( response, voteBuild.getVote().getSponsorName() );
+				RW.writeString( response, build.getVote().getSponsorName() );
+			if( status == 2 ){
+				response.writeByte( build.getVote().getAgreePrivileges()/100 );
+				response.writeByte( build.getVote().getDisagreePrivileges()/100 );
+			}
 			if( status == 3 )
-				response.writeInt( voteBuild.getPastTime() );
+				response.writeInt( build.getPastTime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
 			Logs.error( player, "Update_2242 " + e.getMessage() );

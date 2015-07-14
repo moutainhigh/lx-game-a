@@ -10,6 +10,8 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 
 
 import cn.xgame.a.player.PlayerManager;
@@ -35,6 +37,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 一个母星
@@ -106,10 +109,8 @@ public class HomePlanet extends IPlanet {
 		updateTechLevel();
 		// 先排个序
 		updateChildSequence();
-		// 从数据库 获取数据后 更新体制
+		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
 		updateInstitution();
-		// 对玩家进行排序 和标记是否可以投票
-		updateAllContribution();
 	}
 
 	private void wrapPlayer( byte[] data ) {
@@ -171,11 +172,11 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	@Override
-	public void putAlllAffair( ByteBuf response ) { 
+	public void putAlllAffair( Player player, ByteBuf response ) { 
 		// 投票中建筑
-		getBuildingControl().putVoBuilding(response);
+		getBuildingControl().putVoBuilding( player, response);
 		// 投票中科技
-		techControl.putVoTech(response);
+		techControl.putVoTech( player, response);
 		// 投票中驱逐元老
 		response.writeByte( oustChilds.size() );
 		for( OustChild o : oustChilds ){
@@ -183,6 +184,7 @@ public class HomePlanet extends IPlanet {
 			child.buildTransformStream(response);
 			RW.writeString( response, o.getExplain() );
 			o.getVote().buildTransformStream(response);
+			response.writeByte( o.getVote().isParticipateVote( player.getUID() ) );
 		}
 	}
 
@@ -224,21 +226,6 @@ public class HomePlanet extends IPlanet {
 		return null;
 	}
 	
-	/** 线程 */
-	public void run() {
-		// 这里处理 特产
-		List<Specialty> ls = getSpecialtyControl().getSpecialtys();
-		for( Specialty spe : ls ){
-			if( spe.run() )
-				Syn.specialty( childs, spe );
-		}
-	}
-	
-	/** 更新体制 */
-	public void updateInstitution() {
-		setInstitution(Institution.REPUBLIC);
-	}
-	
 	@Override
 	public void donateResource( Player player, IProp prop ) {
 		
@@ -269,7 +256,8 @@ public class HomePlanet extends IPlanet {
 		int allcont = updateAllContribution();
 		short privilege = (short) (((float)child.getContribution() / (float)allcont) * 10000f);
 		child.setPrivilege( privilege );
-		
+		// 更新一下是否元老
+		updateIsSenator();
 		// 捐献成功后 同步消息
 		Syn.res( childs, update );
 	}
@@ -282,14 +270,21 @@ public class HomePlanet extends IPlanet {
 	public int updateAllContribution() {
 		// 下面标记是否可以发起投票
 		int ret = 0;
-		int privilege = 0;
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
 			ret += child.getContribution();
-			privilege += child.getPrivilege();
-			child.setSenator( institution.isSenator( i , privilege ) );
 		}
 		return ret;
+	}
+	
+	// 更新是否元老
+	private void updateIsSenator(){
+		int privilege = 0;
+		for( int i = 0; i < childs.size(); i++ ){
+			Child child = childs.get(i);
+			privilege += child.getPrivilege();
+			child.setSenator( institution.isSenator( i, privilege) );
+		}
 	}
 	
 	// 根据玩家的贡献度 排序
@@ -343,8 +338,11 @@ public class HomePlanet extends IPlanet {
 		
 		// 判断是否已经参与投票了
 		UnBuildings unBuild = buildingControl.getVoteBuild( nid );
-		if( unBuild == null || unBuild.getVote().isParticipateVote( player.getUID() ) )
-			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
+		if( unBuild == null )
+			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
+		
+		// 这里先将玩家已经投过的票清除
+		unBuild.getVote().purgeVote( player.getUID() );
 		
 		// 设置投票
 		byte status = unBuild.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
@@ -359,7 +357,9 @@ public class HomePlanet extends IPlanet {
 			buildingControl.removeVoteBuild( unBuild );
 			
 			// 同步
-			Syn.build( childs, status+2, unBuild );
+			Syn.build( childs, status+3, unBuild );
+		}else{
+			Syn.build( childs, 2, unBuild );
 		}
 	}
 	
@@ -411,8 +411,11 @@ public class HomePlanet extends IPlanet {
 
 		// 判断是否已经参与投票了
 		UnTechs unTech = techControl.getVoTech( nid );
-		if( unTech == null || unTech.getVote().isParticipateVote( player.getUID() ) )
-			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
+		if( unTech == null )
+			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
+		
+		// 这里先将玩家已经投过的票清除
+		unTech.getVote().purgeVote( player.getUID() );
 		
 		// 设置投票
 		byte status = unTech.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
@@ -427,7 +430,9 @@ public class HomePlanet extends IPlanet {
 			techControl.removeVoTech( unTech );
 			
 			// 同步
-			Syn.tech( childs, status+2, unTech );
+			Syn.tech( childs, status+3, unTech );
+		}else{
+			Syn.tech( childs, 2, unTech );
 		}
 	}
 	// 开始研究科技
@@ -509,19 +514,17 @@ public class HomePlanet extends IPlanet {
 		
 		// 判断是否已经参与投票了
 		OustChild oust = getOustChild( uid );
-		if( oust == null || oust.getVote().isParticipateVote( player.getUID() ) )
-			throw new Exception( ErrorCode.ALREADY_VOTE.name() );
+		if( oust == null )
+			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
+		
+		// 这里先将玩家已经投过的票清除
+		oust.getVote().purgeVote( player.getUID() );
 		
 		// 设置投票
 		byte status = oust.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
 		// 说明投票完成
 		if( status != -1 ){
-			if( status == 1 ) { // 同意
-	
-			}
-			if( status == 0 ){ // 反对
-				//...暂时没有处理
-			}
+			child.setExpel( status == 1 ? true : false );
 			// 最后不管怎样都要删掉的
 			removeVoteGenr( oust );
 			// 同步
@@ -529,23 +532,77 @@ public class HomePlanet extends IPlanet {
 		}
 		
 	}
+	
+	/////////////////// =================线程====================
 
+	/** 线程 */
+	public void run() {
+		// 这里处理 特产
+		List<Specialty> ls = getSpecialtyControl().getSpecialtys();
+		for( Specialty spe : ls ){
+			if( spe.run() )
+				Syn.specialty( childs, spe );
+		}
+	}
+	
+	/** 更新体制 */
+	public void updateInstitution() {
+		// 先排个序
+		updateChildSequence();
+		
+		// 算出体制
+		int status = 0;
+		int privilege = 0;
+		for( int i = 0; i < childs.size(); i++ ){
+			Child child = childs.get(i);
+			privilege += child.getPrivilege();
+			
+			if( status == 0 ){
+				Lua lua = LuaUtil.getGameData();
+				LuaValue[] ret = lua.getField( "updateInstitution" ).call( 1, child, i, privilege );
+				status = ret[0].getInt();
+			}
+			
+			child.setExpel( false );
+		}
+		// 设置体制
+		setInstitution( Institution.fromNumber( status == 0 ? 3 : status ) );
+		// 更新一下是否元老
+		updateIsSenator();
+		
+		Logs.debug( templet().name + " 更新体制 Institution=" + institution );
+	}
+	
 
 	/**
-	 * 研发 线程 - 包括科技研究 建筑建造
+	 * 研发-投票 线程 - 包括科技研究 建筑建造
 	 */
 	public void runDevelopment(){
-		// 建筑
+		// ---------建筑
+		// 建造完毕
 		UnBuildings build = buildingControl.runDevelopment();
 		if( build != null ){// 同步玩家
-			Syn.build( childs, 4, build );
+			Syn.build( childs, 5, build );
 			Logs.debug( templet().name + " 建筑(" + build.templet().name + "," + build.templet().id + ") 修建完毕!" );
 		}
-		// 科技
+		// 投票完毕
+		build = buildingControl.runVote( );
+		if( build != null ){
+			Syn.build( childs, 3, build );
+			Logs.debug( templet().name + " 建筑(" + build.templet().name + "," + build.templet().id + ") 投票完毕! - 不同意" );
+		}
+		// ---------科技
+		// 研究完毕
 		UnTechs tech = techControl.runDevelopment();
 		if( tech != null ){
-			Syn.tech( childs, 4, tech );
+			Syn.tech( childs, 5, tech );
 			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 研究完毕!" );
+		}
+		// 投票完毕
+		tech = techControl.runVote();
+		if( tech != null ){
+			Syn.tech( childs, 3, tech );
+			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 投票完毕! - 不同意" );
 		}
 	}
 	

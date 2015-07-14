@@ -93,8 +93,9 @@ public abstract class IPlanet implements ITransformStream{
 	/** 参与 驱逐元老 投票 */
 	public void participateGenrVote( Player player, String uid,byte isAgree ) throws Exception { }
 	
-	/** 申请所有政务数据 */
-	public void putAlllAffair(ByteBuf response) { }
+	/** 申请所有政务数据 
+	 * @param player */
+	public void putAlllAffair( Player player, ByteBuf response) { }
 	/** 申请所有元老数据 */
 	public List<Child> getAllGenrs() { return null; }
 	/** 捐献资源 */

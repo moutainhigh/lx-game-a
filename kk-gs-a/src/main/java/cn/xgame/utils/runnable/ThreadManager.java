@@ -37,19 +37,19 @@ public class ThreadManager {
 
 		// 每1分钟  1*60*1000
 		oneMinuteHandleImp = new OneMinuteHandleImp();
-		oneMinuteHandleImp.start( 60000l );
+		oneMinuteHandleImp.start( 60000l, 60000l );
 
 		// 每2分钟  2*60*1000
 		twoMinuteHandleImp = new TwoMinuteHandleImp();
-		twoMinuteHandleImp.start( 120000l );
+		twoMinuteHandleImp.start( 120000l, 120000l );
 		
 		// 每5分钟 5*60*1000
 		fiveMinuteHandleImp = new FiveMinuteHandleImp();
-		fiveMinuteHandleImp.start( 300000l );
+		fiveMinuteHandleImp.start( 300000l, 300000l );
 		
 		// 每200毫秒
 		twohundredMilliscondHandleImp = new TwohundredMilliscondHandleImp();
-		twohundredMilliscondHandleImp.start( 200l );
+		twohundredMilliscondHandleImp.start( 200l, 200l );
 	}
 	
 	/** 关闭所有 线程 */

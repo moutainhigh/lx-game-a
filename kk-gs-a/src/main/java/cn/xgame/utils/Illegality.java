@@ -7,7 +7,9 @@ package cn.xgame.utils;
  */
 public class Illegality {
 
-	public static boolean own(String name) {
+	public static boolean own( String name ) {
+		if( name == null || name.isEmpty() )
+			return true;
 		return false;
 	}
 

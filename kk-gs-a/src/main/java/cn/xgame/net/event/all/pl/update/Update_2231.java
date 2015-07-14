@@ -20,16 +20,20 @@ public class Update_2231 extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 	}
-	public void run(Player player, int status, UnTechs voTech ) {
+	public void run(Player player, int status, UnTechs tech ) {
 		
 		try {
 			ByteBuf response = buildEmptyPackage( player.getCtx(), 15 );
 			response.writeByte( status );
-			response.writeInt( voTech.templet().id );
+			response.writeInt( tech.templet().id );
 			if( status == 1 )
-				RW.writeString( response, voTech.getVote().getSponsorName() );
+				RW.writeString( response, tech.getVote().getSponsorName() );
+			if( status == 2 ){
+				response.writeByte( tech.getVote().getAgreePrivileges()/100 );
+				response.writeByte( tech.getVote().getDisagreePrivileges()/100 );
+			}
 			if( status == 3 )
-				response.writeInt( voTech.getPastTime() );
+				response.writeInt( tech.getPastTime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
 			Logs.error( player, "Update_2231.run at " + e.getMessage() );

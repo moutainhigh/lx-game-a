@@ -37,7 +37,7 @@ public class ApplyAlllAffairEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 512 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			planet.putAlllAffair(response);
+			planet.putAlllAffair( player, response );
 		}
 		sendPackage( player.getCtx(), response );
 	}

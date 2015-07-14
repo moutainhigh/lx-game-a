@@ -26,6 +26,9 @@ public class Child implements IBufferStream, ITransformStream{
 	private int sponsors = 0;
 	// 通过数
 	private int passs = 0;
+	// 是否被驱逐
+	private boolean isExpel = false;
+
 	
 	// 是否元老
 	private boolean isSenator = false;
@@ -42,6 +45,7 @@ public class Child implements IBufferStream, ITransformStream{
 		buf.writeInt( contribution );
 		buf.writeInt( sponsors );
 		buf.writeInt( passs );
+		buf.writeBoolean( isExpel );
 	}
 
 	@Override
@@ -51,6 +55,7 @@ public class Child implements IBufferStream, ITransformStream{
 		contribution 	= buf.readInt();
 		sponsors 		= buf.readInt();
 		passs 			= buf.readInt();
+		isExpel			= buf.readBoolean();
 	}
 
 	@Override
@@ -105,16 +110,22 @@ public class Child implements IBufferStream, ITransformStream{
 		this.passs += passs;
 	}
 	public boolean isSenator() {
-		return isSenator;
+		return isExpel ? false : isSenator;
 	}
 	public void setSenator(boolean isSenator) {
-		this.isSenator = isSenator;
+		this.isSenator = isExpel ? false : isSenator;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public boolean isExpel() {
+		return isExpel;
+	}
+	public void setExpel(boolean isExpel) {
+		this.isExpel = isExpel;
 	}
 
 

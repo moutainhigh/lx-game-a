@@ -102,11 +102,12 @@ public class TechControl implements IArrayStream{
 		}
 	}
 	
-	public void putVoTech(ByteBuf buffer){
+	public void putVoTech( Player player, ByteBuf buffer){
 		buffer.writeByte( voTechs.size() );
 		for( UnTechs o : unTechs ){
 			o.buildTransformStream(buffer);
 			o.getVote().buildTransformStream(buffer);
+			buffer.writeByte( o.getVote().isParticipateVote( player.getUID() ) );
 		}
 	}
 
@@ -244,9 +245,28 @@ public class TechControl implements IArrayStream{
 		while( iter.hasNext() ){
 			UnTechs o = iter.next();
 			if( o.isComplete() ){
-				// 放入建筑列表
+				// 放入已研究列表
 				Techs tech = new Techs(o);
 				techs.add(tech);
+				// 然后才从列表中删除
+				iter.remove();
+				return o;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 投票中 线程
+	 * @return
+	 */
+	public UnTechs runVote() {
+		Iterator<UnTechs> iter = voTechs.iterator();
+		while( iter.hasNext() ){
+			UnTechs o = iter.next();
+			if( o.getVote().isComplete() ){
+				// 放入研究列表
+				appendUnTech( o );
 				// 然后才从列表中删除
 				iter.remove();
 				return o;

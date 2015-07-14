@@ -9,10 +9,10 @@ import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 发起建筑投票 
@@ -31,7 +31,7 @@ public class SponsorBuildVoEvent extends IEvent{
 		
 		try {
 			// 先将时间转换
-			Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
+			Lua lua = LuaUtil.getGameData();
 			LuaValue[] ret = lua.getField( "getVoteTime" ).call( 1, type );
 			int time = ret[0].getInt();
 			

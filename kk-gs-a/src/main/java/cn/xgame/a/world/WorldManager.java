@@ -203,6 +203,15 @@ public class WorldManager {
 	}
 	
 	/**
+	 * 体制更新 线程
+	 */
+	public void runUpdateInstitution(){
+		for( HomePlanet home : homes ){
+			home.updateInstitution();
+		}
+	}
+	
+	/**
 	 * 给某个星球捐献资源
 	 * @param player 
 	 * @param id
