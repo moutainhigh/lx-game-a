@@ -1,5 +1,7 @@
 package cn.xgame.a.world;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
 
@@ -171,6 +173,29 @@ public class WorldManager {
 		return null;
 	}
 
+	public List<IPlanet> getAllPlanet(){
+		List<IPlanet> ret = Lists.newArrayList();
+		ret.addAll(homes);
+		ret.addAll(entrepots);
+		ret.addAll(ectypes);
+		return ret;
+	}
+
+	/**
+	 * 塞入星图
+	 * @param response
+	 */
+	public void putStaratlas( ByteBuf response ) {
+		List<IPlanet> ls = getAllPlanet();
+		response.writeByte( ls.size() );
+		for( IPlanet planet : ls ){
+			response.writeInt( planet.getId() );
+			response.writeByte( planet.getInstitution() == null ? 0 : planet.getInstitution().toNumber() );
+			response.writeInt( planet.getPeople() );
+			response.writeByte( planet.getTechLevel() );
+		}
+	}
+	
 	/** 线程 */
 	public void run() {
 		for( HomePlanet home : homes ){
@@ -212,6 +237,15 @@ public class WorldManager {
 	}
 	
 	/**
+	 * 酒馆更新
+	 */
+	public void runTavern() {
+		for( HomePlanet home : homes ){
+			home.updateTavern();
+		}
+	}
+	
+	/**
 	 * 给某个星球捐献资源
 	 * @param player 
 	 * @param id
@@ -229,6 +263,4 @@ public class WorldManager {
 		planet.donateResource( player, prop );
 	}
 
-
-	
 }

@@ -14,8 +14,11 @@ public class ShipInfo extends IUObject implements ITransformStream{
 
 	// 舰长唯一ID
 	private int captainUID;
+	// 停靠在的星球
+	private int starId;
 	
-	
+	// 组队信息
+	// TODO
 	
 	public ShipInfo( int uid, int nid ) {
 		setuId(uid);
@@ -33,11 +36,28 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( getnId() );
 	}
 
+	
+	/**
+	 * 获取到某个星球的航行时间 单位秒
+	 * @param starId
+	 * @return
+	 */
+	public int getSailingTime( int starId ) {
+		return 100;
+	}
+	
+	
 	public int getCaptainUID() {
 		return captainUID;
 	}
 	public void setCaptainUID(int captainUID) {
 		this.captainUID = captainUID;
+	}
+	public int getStarId() {
+		return starId;
+	}
+	public void setStarId(int starId) {
+		this.starId = starId;
 	}
 	
 }

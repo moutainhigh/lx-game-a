@@ -1,5 +1,6 @@
 package cn.xgame.utils.runnable.task;
 
+import cn.xgame.a.world.WorldManager;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
@@ -16,6 +17,8 @@ public class OneMinuteHandleImp extends IThread {
 			
 			// 这里测试打印 数据库 使用情况
 //			Dbcp.print();
+			
+			WorldManager.o.runTavern();
 		
 		
 		} catch (Exception e) {

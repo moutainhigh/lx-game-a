@@ -75,10 +75,23 @@ public class DockControl implements ITransformStream,IFromDB{
 
 
 	private void append( ShipInfo ship ) {
+		// 默认设置停靠在自己母星上
+		ship.setStarId( root.getCountryId() );
 		ships.add(ship);
 	}
 
-	
+	/**
+	 * 根据唯一ID 获取舰船
+	 * @param suid
+	 * @return
+	 */
+	public ShipInfo getShip( int suid ) {
+		for( ShipInfo o : ships ){
+			if( o.getuId() == suid )
+				return o;
+		}
+		return null;
+	}
 	
 	//TODO---------数据库相关
 	
@@ -91,6 +104,10 @@ public class DockControl implements ITransformStream,IFromDB{
 		dto.setNid( ship.getnId() );
 		dao.commit(dto);
 	}
+
+	//
+	
+
 	
 	
 	

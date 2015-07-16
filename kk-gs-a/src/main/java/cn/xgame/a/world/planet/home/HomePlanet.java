@@ -20,6 +20,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
+import cn.xgame.a.world.planet.data.tavern.TavernControl;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.tech.UnTechs;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
@@ -57,6 +58,10 @@ public class HomePlanet extends IPlanet {
 	// 科技等级
 	private byte techLevel = 0;
 	
+	// 酒馆
+	private TavernControl tavernControl = new TavernControl();
+	
+	
 	//////////////////////////////数据库相关
 	// 玩家列表
 	private List<Child> childs = Lists.newArrayList();
@@ -67,26 +72,29 @@ public class HomePlanet extends IPlanet {
 	private TechControl techControl = new TechControl();
 
 	
-	
-	
-	
+	@Override
 	public Institution getInstitution() { return institution; }
 	public void setInstitution(Institution institution) {
 		this.institution = institution;
 	}
-	public byte getTechLevel() {
-		return techLevel;
-	}
+	@Override
+	public byte getTechLevel() { return techLevel; }
 	public void setTechLevel(byte techLevel) {
 		this.techLevel = techLevel;
 	}
 	@Override
 	public boolean isCanDonate() { return true; }
 	
+	public TavernControl getTavernControl() { return tavernControl; }
+	
+	@Override
+	public int getPeople() { return childs.size(); }
+	
 	@Override
 	public void init( PlanetDataDto dto ) {
 		super.init(dto);
 		setInstitution(Institution.REPUBLIC);
+		updateTavern();
 	}
 	
 	@Override
@@ -111,6 +119,10 @@ public class HomePlanet extends IPlanet {
 		updateChildSequence();
 		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
 		updateInstitution();
+		// 更新一下酒馆
+		updateTavern();
+		// 根据瞭望科技 更新副本信息
+		updateEctype();
 	}
 
 	private void wrapPlayer( byte[] data ) {
@@ -163,6 +175,10 @@ public class HomePlanet extends IPlanet {
 	public void buildTransformStream( ByteBuf buffer ) {
 		// 基础数据
 		super.buildTransformStream(buffer);
+		// 体制
+		buffer.writeByte( institution.toNumber() );
+		// 科技等级
+		buffer.writeByte( techLevel );
 		// 已建筑数据 and 建筑中数据
 		getBuildingControl().putBuilding(buffer);
 		// 所有科技数据
@@ -225,6 +241,15 @@ public class HomePlanet extends IPlanet {
 		}
 		return null;
 	}
+	
+
+	/**
+	 * 刷新酒馆数据
+	 */
+	public void updateTavernCaptains(){
+		
+	}
+	
 	
 	@Override
 	public void donateResource( Player player, IProp prop ) {
@@ -605,6 +630,21 @@ public class HomePlanet extends IPlanet {
 			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 投票完毕! - 不同意" );
 		}
 	}
+	
+	/**
+	 * 更新酒馆
+	 */
+	public void updateTavern(){
+		tavernControl.updateTavern( templet().tavernCapTimes );
+	}
+	
+	////////////------------------------------副本
+	
+	// 根据瞭望科技 更新副本信息
+	private void updateEctype() {
+		
+	}
+	
 	
 	
 }

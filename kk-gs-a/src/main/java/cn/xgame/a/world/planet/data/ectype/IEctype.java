@@ -17,6 +17,7 @@ public class IEctype {
 	}
 
 	public Ectype template(){ return template; }
+	public int getNid() { return template.id; }
 	
 	
 }

@@ -33,6 +33,8 @@ public class DonateStuffEvent extends IEvent{
 		Logs.debug( player, "捐献资源  星球ID="+id+",type="+type+",uid="+uid+",count="+count );
 		
 		try {
+			if( count <= 0 )
+				throw new Exception( ErrorCode.STUFF_LAZYWEIGHT.name() );
 			// 判断是否有足够的材料
 			IProp prop = player.getProps().getProp( type, uid ).clone();
 			if( prop == null )

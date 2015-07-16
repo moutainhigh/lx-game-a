@@ -2,42 +2,73 @@ package cn.xgame.a.world.planet.data.ectype;
 
 import java.util.List;
 
-import x.javaplus.collections.Lists;
 
-import io.netty.buffer.ByteBuf;
-import cn.xgame.a.ITransformStream;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ectypelist;
+import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Random;
+
 
 /**
  * 一个副本列表
  * @author deng		
  * @date 2015-7-13 下午6:16:09
  */
-public class EctypeLists implements ITransformStream {
+public class EctypeLists {
 
-	private final Ectypelist template;
-	
+	// 所属星球ID
+	private int starId;
+	// 副本
 	private List<IEctype> ectypes = Lists.newArrayList();
 	
 	
-	public EctypeLists( int id ){
-		template = CsvGen.getEctypelist(id);
-		if( template.list == null || template.list.isEmpty() )
-			return;
-		String[] content = template.list.split(";");
-		for( String x : content ){
-			if( x.isEmpty() ) continue;
-			IEctype e = new IEctype( Integer.parseInt(x) );
-			ectypes.add( e );
+	/**
+	 * 根据配置表  生成一个常规副本列表
+	 * @param content
+	 * @return
+	 */
+	public static EctypeLists generateGeneral( String content ) {
+		if( content.isEmpty() )
+			return null;
+		EctypeLists ret = new EctypeLists();
+		String[] v 		= content.split(";");
+		for( int i = 0; i < v.length; i++ ){
+			int nid = Integer.parseInt(v[i]);
+			ret.ectypes.add( new GeneralEctype( nid ) );
 		}
+		return ret;
 	}
 
-	public Ectypelist template(){ return template; }
-	
-	@Override
-	public void buildTransformStream( ByteBuf buffer ) {
-		buffer.writeInt( template.id );
+	/**
+	 * 根据配置表  生成一个非常规副本列表
+	 * @param content
+	 * @return
+	 */
+	public static EctypeLists generateNotGeneral( String content ) {
+		if( content.isEmpty() )
+			return null;
+		String[] v 	= content.split(";");
+		int rand 	= Integer.parseInt(v[1]);
+		// 这里随机
+		if( Random.get( 0, 10000 ) > rand )
+			return null;
+		
+		EctypeLists ret = new EctypeLists();
+		int nid 		= Integer.parseInt(v[0]);
+		
+		// 这里还要做一下 定时副本的 时间的计算
+		// TODO
+		NotGeneralEctype o = new NotGeneralEctype(nid);
+		ret.ectypes.add( o );
+		return ret;
+	}
+
+	public int getStarId() {
+		return starId;
+	}
+	public void setStarId(int starId) {
+		this.starId = starId;
+	}
+	public List<IEctype> getEctypes(){
+		return ectypes;
 	}
 
 }

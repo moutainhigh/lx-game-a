@@ -10,6 +10,6 @@ public class Constants {
 	/** 协商公钥 用于登录验证 */
 	public static final String PUBLICKEY = "longxun-kuake";
 	
-	
-	
+	/** 酒馆刷新时间 单位秒 */
+	public static final int TAVERN_UPDATE_TIME = 60;
 }

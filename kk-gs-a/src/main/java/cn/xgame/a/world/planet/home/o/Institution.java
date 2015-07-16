@@ -6,6 +6,11 @@ import java.util.Map;
 
 
 public enum Institution {
+	
+	/**
+	 *  无体制
+	 */
+	
 	/**
 	 * 独裁体制
 	 */

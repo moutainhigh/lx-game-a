@@ -116,7 +116,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 
 	/**
 	 * 扣除道具
-	 * @param prop
+	 * @param clone
 	 */
 	public void deductProp( IProp clone ) {
 		
@@ -126,12 +126,12 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 			return;
 		}
 		
-		if( clone.isEmpty() ){
+		// 执行扣除
+		prop.deductCount( clone.getCount() );
+		if( prop.isEmpty() )
 			remove( prop );
-		}else{
-			prop.deductCount( clone.getCount() );
+		else
 			prop.updateDB(root);
-		}
 		
 		Logs.debug( root, "扣除道具 (" + clone + "), 扣除后 (" + prop + ")" );
 	}

@@ -14,6 +14,7 @@ import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.net.event.all.pl.ApplyBagEvent;
 import cn.xgame.net.event.all.pl.ApplyCaptainEvent;
 import cn.xgame.net.event.all.pl.ApplyDockEvent;
+import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeListEvent;
@@ -23,6 +24,7 @@ import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateExpelEvent;
@@ -59,6 +61,7 @@ public enum Events {
 	APPLY_BAGS						( 1011, 				new ApplyBagEvent() ),
 	APPLY_DOCKS						( 1012, 				new ApplyDockEvent() ),
 	APPLY_CAPTAINS					( 1013, 				new ApplyCaptainEvent() ),
+	APPLY_STARATLAS					( 1014, 				new ApplyStaratlasEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
@@ -66,6 +69,7 @@ public enum Events {
 	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
 	APPLY_ALLLAFFAIR				( 1113, 				new ApplyAlllAffairEvent() ),
 	APPLY_GENRS						( 1114, 				new ApplyGenrsEvent() ),
+	APPLY_TAVERN					( 1115, 				new ApplyTavernEvent() ),
 	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
 	
 	// 建筑
