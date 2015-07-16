@@ -1,6 +1,8 @@
-package cn.xgame.a.world.planet.data.ectype;
+package cn.xgame.a.world.planet.data.ectype.o;
 
 import java.util.List;
+
+import cn.xgame.a.world.planet.data.ectype.IEctype;
 
 
 import x.javaplus.collections.Lists;

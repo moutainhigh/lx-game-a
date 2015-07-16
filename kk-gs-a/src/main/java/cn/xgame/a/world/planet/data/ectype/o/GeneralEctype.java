@@ -1,4 +1,6 @@
-package cn.xgame.a.world.planet.data.ectype;
+package cn.xgame.a.world.planet.data.ectype.o;
+
+import cn.xgame.a.world.planet.data.ectype.IEctype;
 
 /**
  * 常规副本

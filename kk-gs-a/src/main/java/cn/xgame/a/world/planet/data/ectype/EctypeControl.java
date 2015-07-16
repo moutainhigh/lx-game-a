@@ -2,6 +2,7 @@ package cn.xgame.a.world.planet.data.ectype;
 
 import java.util.List;
 
+import cn.xgame.a.world.planet.data.ectype.o.EctypeLists;
 import cn.xgame.config.o.Stars;
 
 import x.javaplus.collections.Lists;
