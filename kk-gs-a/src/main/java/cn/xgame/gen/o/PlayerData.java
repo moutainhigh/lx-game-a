@@ -38,6 +38,8 @@ public interface PlayerData {
 	/** 充值币 */
 	int gold();
 	
+	/** 偶发副本 */
+	byte[] accEctypes();
 	
 	/** 领地 */
 	byte[] manors();

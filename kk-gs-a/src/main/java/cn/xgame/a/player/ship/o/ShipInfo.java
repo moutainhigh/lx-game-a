@@ -1,9 +1,15 @@
 package cn.xgame.a.player.ship.o;
 
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.IUObject;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
+import cn.xgame.utils.Logs;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 一个舰船 的信息
@@ -39,13 +45,17 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	
 	/**
 	 * 获取到某个星球的航行时间 单位秒
-	 * @param starId
+	 * @param sId
 	 * @return
 	 */
-	public int getSailingTime( int starId ) {
-		return 100;
+	public int getSailingTime( int sId ) {
+		Stars cur = CsvGen.getStars(starId);
+		Stars to = CsvGen.getStars(sId);
+		Lua lua = LuaUtil.getGameData();
+		LuaValue[] ret = lua.getField( "sailingTime" ).call( 1, cur, to, this );
+		Logs.debug( "航行时间：" + ret[0].getInt() );
+		return ret[0].getInt();
 	}
-	
 	
 	public int getCaptainUID() {
 		return captainUID;
@@ -59,5 +69,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void setStarId(int starId) {
 		this.starId = starId;
 	}
+
+
 	
 }

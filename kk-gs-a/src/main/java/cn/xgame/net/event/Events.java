@@ -17,7 +17,6 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
-import cn.xgame.net.event.all.pl.ectype.ApplyEctypeListEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
@@ -82,8 +81,7 @@ public enum Events {
 	SPONSOR_EXPEL					( 1151, 				new SponsorExpelEvent() ),
 	PARTICIPATE_EXPEL				( 1152, 				new ParticipateExpelEvent() ),
 	//-----------------副本
-	APPLY_ECTYPELIST				( 1201, 				new ApplyEctypeListEvent() ),
-	START_ATTACK					( 1202, 				new StartAttackEvent() ),
+	START_ATTACK					( 1201, 				new StartAttackEvent() ),
 	
 	
 	

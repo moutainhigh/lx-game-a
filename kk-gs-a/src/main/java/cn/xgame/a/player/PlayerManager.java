@@ -95,8 +95,8 @@ public class PlayerManager {
 	 */
 	private void dailyHandle( Player player, int day ) {
 		
-		
-		
+		// 更新一下偶发副本
+		player.updateAccEctype();
 		
 	}
 

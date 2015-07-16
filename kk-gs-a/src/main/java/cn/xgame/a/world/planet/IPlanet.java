@@ -2,16 +2,21 @@ package cn.xgame.a.world.planet;
 
 import java.util.List;
 
+import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Random;
+
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
-import cn.xgame.a.world.planet.data.ectype.EctypeControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Ectype;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 
@@ -38,11 +43,6 @@ public abstract class IPlanet implements ITransformStream{
 	protected BuildingControl buildingControl = new BuildingControl();
 	
 	
-	
-	// 副本列表 - 暂时不用保存数据库的信息
-	protected EctypeControl ectypeControl = new EctypeControl();
-	
-	
 	public IPlanet( Stars clone ){
 		templet = clone;
 	}
@@ -55,8 +55,6 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
-		// 初始副本
-		initEctype();
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
@@ -74,7 +72,6 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromBytes( dto.getSpecialtys() );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
-		initEctype();
 	}
 	
 	@Override
@@ -83,11 +80,6 @@ public abstract class IPlanet implements ITransformStream{
 		buffer.writeShort( maxSpace );
 	}
 
-	/** 初始化副本信息 */
-	public void initEctype(){
-		ectypeControl.init( templet );
-	}
-	
 	/** 发起 建筑 投票 */
 	public void sponsorBuivote( Player player, int nid, byte index, int time ) throws Exception { }
 	/** 参与 建筑 投票*/
@@ -130,7 +122,27 @@ public abstract class IPlanet implements ITransformStream{
 	public SpecialtyControl getSpecialtyControl() { return specialtyControl; }
 	public ResourceControl getDepotControl() { return depotControl; }
 	public BuildingControl getBuildingControl() { return buildingControl; }
-	public EctypeControl getEctypeControl() { return ectypeControl; }
+
+	/**
+	 * 获取偶发副本
+	 * @return
+	 */
+	public List<AccEctype> getAccEctype() {
+		if( templet.elietectypes.isEmpty() )
+			return null;
+		String[] content = templet.elietectypes.split("\\|");
+		List<AccEctype> ret = Lists.newArrayList();
+		for( String v : content ){
+			String[] x = v.split(";");
+			int rand = Integer.parseInt( x[1] );
+			if( Random.get( 0, 10000 ) > rand )
+				continue;
+			
+			Ectype e = CsvGen.getEctype( Integer.parseInt(x[0]) );
+			ret.add( new AccEctype(e) );
+		}
+		return ret;
+	}
 
 
 	

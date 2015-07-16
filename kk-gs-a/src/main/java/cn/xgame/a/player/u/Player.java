@@ -1,14 +1,20 @@
 package cn.xgame.a.player.u;
 
+import java.util.List;
+
 import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.depot.DepotControl;
+import cn.xgame.a.player.ectype.AccEctypeControl;
+import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
 import cn.xgame.a.system.SystemCfg;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -44,6 +50,9 @@ public class Player extends IPlayer implements ITransformStream{
 	// 舰长室
 	private CaptainsControl captains = new CaptainsControl( this );
 	
+	// 副本信息
+	private AccEctypeControl accEctypes = new AccEctypeControl( this );
+	
 	/**
 	 * 创建一个
 	 * @param uID
@@ -57,6 +66,8 @@ public class Player extends IPlayer implements ITransformStream{
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		setManors( new ManorControl() );
+		// 获取偶发副本
+		updateAccEctype();
 	}
 	
 	/**
@@ -65,6 +76,11 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
+		// 取出偶发副本信息
+		if( dto.getAccEctypes() == null )
+			updateAccEctype();
+		else
+			accEctypes.fromBytes( dto.getAccEctypes() );
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
@@ -75,6 +91,13 @@ public class Player extends IPlayer implements ITransformStream{
 		captains.fromDB();
 	}
 
+	@Override
+	public void update( PlayerDataDto dto ) {
+		super.update(dto);
+		// 偶发副本
+		dto.setAccEctypes( accEctypes.toBytes() );
+	}
+	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		
@@ -105,6 +128,19 @@ public class Player extends IPlayer implements ITransformStream{
 		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
 	}
 
+	
+	/** 更新一下偶发副本 */
+	public void updateAccEctype(){
+		accEctypes.clear();
+		List<IPlanet> ls = WorldManager.o.getAllPlanet();
+		for( IPlanet o : ls ){
+			List<AccEctype> v = o.getAccEctype();
+			if( v == null ) continue;
+			accEctypes.append( v );
+		}
+	}
+	
+	
 	public int generatorPropUID() {
 		return propBaseUid.generatorPropUID();
 	}
@@ -158,6 +194,9 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 	public CaptainsControl getCaptains() {
 		return captains;
+	}
+	public AccEctypeControl getAccEctypes() {
+		return accEctypes;
 	}
 
 
