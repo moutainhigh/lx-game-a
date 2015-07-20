@@ -74,6 +74,16 @@ public abstract class IPlayer {
 		dto.setManors(manors.toBytes());
 	}
 	
+	/**
+	 * 改变货币
+	 * @param value 添加用正号  减少用负号
+	 */
+	public int changeCurrency( int value ) {
+		if( currency + value < 0  )
+			return -1;
+		currency += value;
+		return currency;
+	}
 	
 	public String getUID() {
 		return UID;

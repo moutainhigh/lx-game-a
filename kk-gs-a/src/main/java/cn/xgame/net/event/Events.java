@@ -17,12 +17,13 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.ectype.ApplyAccEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
-import cn.xgame.net.event.all.pl.planet.ApplySpeEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyShopEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
@@ -31,6 +32,8 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
+import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
+import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
 import cn.xgame.net.event.all.pl.update.Update_2201;
@@ -65,7 +68,7 @@ public enum Events {
 	//-----------------星球
 	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
 	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
-	APPLY_PLANET_SPE				( 1112, 				new ApplySpeEvent() ),
+	APPLY_PLANET_SPE				( 1112, 				new ApplyShopEvent() ),
 	APPLY_ALLLAFFAIR				( 1113, 				new ApplyAlllAffairEvent() ),
 	APPLY_GENRS						( 1114, 				new ApplyGenrsEvent() ),
 	APPLY_TAVERN					( 1115, 				new ApplyTavernEvent() ),
@@ -81,8 +84,11 @@ public enum Events {
 	SPONSOR_EXPEL					( 1151, 				new SponsorExpelEvent() ),
 	PARTICIPATE_EXPEL				( 1152, 				new ParticipateExpelEvent() ),
 	//-----------------副本
-	START_ATTACK					( 1201, 				new StartAttackEvent() ),
-	
+	APPLY_ACCECTYPE					( 1201, 				new ApplyAccEctypeEvent() ),
+	START_ATTACK					( 1202, 				new StartAttackEvent() ),
+	//-----------------交易
+	SHOP_BUY						( 1301, 				new ShopBuyEvent() ),
+	TAVERN_BUY						( 1311, 				new TavernBuyEvent() ),
 	
 	
 	//-----------------更新包

@@ -3,12 +3,14 @@ package cn.xgame.net.event.all.pl.planet;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
-import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -16,14 +18,14 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-6-30 下午4:47:08
  */
-public class ApplySpeEvent extends IEvent{
+public class ApplyShopEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
 		int nid = data.readInt();
 		
-		IPlanet planet = WorldManager.o.getPlanet( nid );
+		HomePlanet planet = WorldManager.o.getHomePlanet(nid);
 		ErrorCode code = null;
 		try {
 			if( planet == null )
@@ -37,7 +39,11 @@ public class ApplySpeEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 512 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			planet.getSpecialtyControl().buildTransformStream(response);
+			List<IProp> ls = planet.getShopList();
+			for( IProp prop : ls ){
+				response.writeInt( prop.getnId() );
+				response.writeInt( prop.getCount() );
+			}
 		}
 		sendPackage( player.getCtx(), response );
 	}

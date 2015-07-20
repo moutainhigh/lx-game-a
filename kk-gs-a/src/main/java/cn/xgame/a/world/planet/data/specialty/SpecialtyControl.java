@@ -9,6 +9,7 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.prop.IProp;
 
 /**
  * 特产 操作中心
@@ -78,6 +79,14 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 	}
 	public void setSpecialtys(List<Specialty> specialtys) {
 		this.specialtys = specialtys;
+	}
+
+	public List<IProp> toProps() {
+		List<IProp> ret = Lists.newArrayList();
+		for( Specialty spe : specialtys ){
+			ret.add( spe.toProp() );
+		}
+		return ret;
 	}
 
 	

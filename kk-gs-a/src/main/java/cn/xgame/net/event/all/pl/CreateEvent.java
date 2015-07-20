@@ -60,8 +60,6 @@ public class CreateEvent extends IEvent {
 		if( code == ErrorCode.SUCCEED ){
 			// 基本数据
 			player.buildTransformStream( response );
-			// 偶发副本数据
-//			player.getAccEctypes().buildTransformStream( response );
 			// 发送自己母星数据
 			home.buildTransformStream( response );
 		}

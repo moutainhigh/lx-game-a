@@ -18,6 +18,7 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.utils.Logs;
 
+import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
 
 /**
@@ -70,28 +71,31 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param count 数量
 	 * @return
 	 */
-	public void appendProp( int nid, int count) {
+	public List<IProp> appendProp( int nid, int count) {
 		
+		List<IProp> ret = Lists.newArrayList();
 		Item item 		= CsvGen.getItem(nid);
 		if( item == null ){
 			Logs.error( root, "创建道具出错 nid="+nid+" 没找到！" );
-			return;
+			return ret;
 		}
 		
 		PropType type 	= PropType.fromNumber( item.bagtype );
 		
 		IProp prop 		= getCanAccProp( type, nid );
 		if( prop == null ){
-			createProp( type, nid, count );
+			ret.add( createProp( type, nid, count ) );
 		}else{
 			// 算出差值
 			int surplus = prop.addCount( count );
 			// 保存数据库
 			prop.updateDB(root);
+			ret.add( prop );
 			// 如果有多余的 就在创建一个 
 			if( surplus > 0 )
-				createProp( type, nid, surplus );
+				ret.add( createProp( type, nid, surplus ) );
 		}
+		return ret;
 	}
 	
 	/**
@@ -101,7 +105,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param count
 	 * @return
 	 */
-	private void createProp( PropType type, int nid, int count){
+	private IProp createProp( PropType type, int nid, int count){
 		// 创建一个道具出来
 		IProp prop = type.create( root.generatorPropUID(), nid, count );
 		// 放入背包
@@ -111,6 +115,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// 这里看数量是否超过累加数
 		if( prop.getCount() < count )
 			createProp( type, nid, count - prop.getCount() );
+		return prop;
 	}
 	
 

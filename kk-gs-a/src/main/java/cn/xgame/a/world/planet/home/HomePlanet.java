@@ -20,6 +20,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
+import cn.xgame.a.world.planet.data.tavern.TCaptain;
 import cn.xgame.a.world.planet.data.tavern.TavernControl;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.tech.UnTechs;
@@ -29,6 +30,7 @@ import cn.xgame.a.world.planet.home.o.Institution;
 import cn.xgame.a.world.planet.home.o.OustChild;
 import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Item;
 import cn.xgame.config.o.Sbuilding;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
@@ -49,6 +51,7 @@ public class HomePlanet extends IPlanet {
 
 	public HomePlanet(Stars clone) {
 		super(clone);
+		qutlook = 100;
 	}
 
 	//////////////////////////////临时数据
@@ -58,9 +61,14 @@ public class HomePlanet extends IPlanet {
 	// 科技等级
 	private byte techLevel = 0;
 	
+	// 瞭望距离 
+	private int qutlook = 0;
+	
 	// 酒馆
 	private TavernControl tavernControl = new TavernControl();
 	
+	// 商店
+	private List<IProp> shops = Lists.newArrayList();
 	
 	//////////////////////////////数据库相关
 	// 玩家列表
@@ -82,6 +90,11 @@ public class HomePlanet extends IPlanet {
 	public void setTechLevel(byte techLevel) {
 		this.techLevel = techLevel;
 	}
+	public int getQutlook() { return qutlook; }
+	public void setQutlook(int qutlook) {
+		this.qutlook = qutlook;
+	}
+	
 	@Override
 	public boolean isCanDonate() { return true; }
 	
@@ -645,6 +658,110 @@ public class HomePlanet extends IPlanet {
 		
 	}
 	
+	
+	////////////------------------------------交易
+	
+	/**
+	 * 获取商店列表
+	 * @return
+	 */
+	public List<IProp> getShopList() {
+		List<IProp> ret = Lists.newArrayList();
+		// 先加入特产
+		ret.addAll( specialtyControl.toProps() );
+		// 加入表格数据
+		ret.addAll( shops );
+		return ret;
+	}
+	
+	/**
+	 * 根据道具表格ID 获取道具
+	 * @param nid
+	 * @return
+	 */
+	public IProp getShopProp( int nid ){
+		List<IProp> ls = getShopList();
+		for( IProp o : ls ){
+			if( o.getnId() == nid )
+				return o;
+		}
+		return null;
+	}
+	
+	/**
+	 * 玩家购买商店道具
+	 * @param player 
+	 * @param nid 
+	 * @param count  
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<IProp> runShopBuy( Player player, int nid, int count ) throws Exception {
+		// 道具是否存在
+		IProp prop = getShopProp( nid );
+		if( prop == null )
+			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
+		
+		// 数量是否足够
+		if( prop.getCount() < count )
+			throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
+		
+		Item item = CsvGen.getItem( prop.getnId() );
+		int needGold = item.buygold;
+		//先判断 玩家是否该星球的
+		if( getChild( player.getUID() ) == null ){
+			needGold += 1;
+		}
+	
+		// 加入玩家背包
+		List<IProp> ret = player.getProps().appendProp( nid, count );
+		if( ret.isEmpty() )
+			throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			
+		// 看金币是否足够
+		if( player.changeCurrency( -needGold ) == -1 )
+			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+		
+		// 及时更新数据库
+		PlayerManager.o.update(player);
+		
+		return ret;
+	}
+	
+	/**
+	 * 玩家购买酒馆舰长
+	 * @param player
+	 * @param nid
+	 * @return
+	 * @throws Exception 
+	 */
+	public IProp runTavernBuy( Player player, int nid ) throws Exception {
+		// 舰长是否存在
+		TCaptain tcap = tavernControl.getTCaptain(nid);
+		if( tcap == null )
+			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
+		
+		Item item = CsvGen.getItem( nid );
+		int needGold = item.buygold;
+		//先判断 玩家是否该星球的
+		if( getChild( player.getUID() ) == null ){
+			needGold += 1;
+		}
+		
+		// 加入玩家背包
+		List<IProp> ret = player.getProps().appendProp( nid, 1 );
+		if( ret.isEmpty() )
+			throw new Exception( ErrorCode.OTHER_ERROR.name() );
+		
+		// 看金币是否足够
+		if( player.changeCurrency( -needGold ) == -1 )
+			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+		
+		// 及时更新数据库
+		PlayerManager.o.update(player);
+		
+		return ret.get(0);
+	}
 	
 	
 }

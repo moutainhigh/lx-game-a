@@ -140,7 +140,6 @@ public class Player extends IPlayer implements ITransformStream{
 		}
 	}
 	
-	
 	public int generatorPropUID() {
 		return propBaseUid.generatorPropUID();
 	}
@@ -198,6 +197,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public AccEctypeControl getAccEctypes() {
 		return accEctypes;
 	}
+
+
 
 
 }

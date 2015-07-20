@@ -47,6 +47,10 @@ public class PlayerManager {
 		event.run( player, data );
 	}
 	
+	public Map<String, Player> getOnlinePlayer(){
+		return players;
+	}
+	
 	/**
 	 * 获取在线人数
 	 * @return

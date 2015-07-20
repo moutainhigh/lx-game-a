@@ -3,6 +3,8 @@ package cn.xgame.a.world.planet.data.specialty;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Item;
 import cn.xgame.utils.Logs;
@@ -104,6 +106,11 @@ public class Specialty implements IBufferStream,ITransformStream{
 	}
 	public void setMaxYieldNum(int maxYieldNum) {
 		this.maxYieldNum = maxYieldNum;
+	}
+
+	public IProp toProp() {
+		PropType type = PropType.fromNumber( templet.bagtype );
+		return type.create( 1, templet.id, yieldCount );
 	}
 
 

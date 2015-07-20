@@ -101,7 +101,7 @@ public class IDepot {
 	 * 添加一个道具
 	 * @param prop
 	 */
-	public void append( IProp prop ) {
+	protected void append( IProp prop ) {
 		List<IProp> temp = props.get( prop.type() );
 		if( temp == null ){
 			temp = Lists.newArrayList();
