@@ -3,7 +3,8 @@ package cn.xgame.a.world.planet;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.Util.Random;
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
@@ -19,6 +20,7 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ectype;
 import cn.xgame.config.o.Stars;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 星球基类
@@ -70,6 +72,7 @@ public abstract class IPlanet implements ITransformStream{
 	public void wrap( PlanetDataDto dto ){
 		maxSpace = dto.getMaxSpace();
 		specialtyControl.fromBytes( dto.getSpecialtys() );
+		specialtyControl.fromTemplet( templet.goods );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
 	}
@@ -128,20 +131,18 @@ public abstract class IPlanet implements ITransformStream{
 	 * @return
 	 */
 	public List<AccEctype> getAccEctype() {
-		if( templet.elietectypes.isEmpty() )
-			return null;
-		String[] content = templet.elietectypes.split("\\|");
-		List<AccEctype> ret = Lists.newArrayList();
+		
+		Lua lua = LuaUtil.getEctype();
+		LuaValue[] ret = lua.getField( "getStarAccEctype" ).call( 1, templet.id );
+		String[] content = ret[0].getString().split(",");
+		
+		List<AccEctype> retAcc = Lists.newArrayList();
 		for( String v : content ){
-			String[] x = v.split(";");
-			int rand = Integer.parseInt( x[1] );
-			if( Random.get( 0, 10000 ) > rand )
-				continue;
-			
-			Ectype e = CsvGen.getEctype( Integer.parseInt(x[0]) );
-			ret.add( new AccEctype(templet.id,e) );
+			if( v.isEmpty() ) continue;
+			Ectype e = CsvGen.getEctype( Integer.parseInt(v) );
+			retAcc.add( new AccEctype(templet.id,e) );
 		}
-		return ret;
+		return retAcc;
 	}
 
 

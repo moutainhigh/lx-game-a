@@ -23,6 +23,8 @@ public class FiveMinuteHandleImp extends IThread{
 			// 
 			WorldManager.o.runUpdateInstitution();
 			
+			WorldManager.o.runTavern();
+			
 		} catch (Exception e) {
 			Logs.error( "FiveMinuteHandleImp:" , e );
 		}

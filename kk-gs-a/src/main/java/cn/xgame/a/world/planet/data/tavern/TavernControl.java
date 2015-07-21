@@ -35,7 +35,7 @@ public class TavernControl implements ITransformStream{
 		}
 	}
 
-	// 一分钟
+	// 五分钟
 	private int getRtime() {
 		int t = Constants.TAVERN_UPDATE_TIME - (int) (System.currentTimeMillis()/1000 - rTime);
 		return t <= 0 ? 1 : t;

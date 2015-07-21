@@ -32,10 +32,11 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 		for( int i = 0; i < ls.length; i++ ){
 			if( ls[i].isEmpty() ) continue;
 			String[] x 	= ls[i].split( ";" );
-			Specialty o = new Specialty( Integer.parseInt( x[0] ) );
+			int id = Integer.parseInt( x[0] );
+			if( getSpecialty( id ) != null ) continue;
+			Specialty o = new Specialty( id );
 			o.setYieldTime( Integer.parseInt( x[1] ) );
 			o.setYieldNum( Integer.parseInt( x[2] ) );
-			o.setMaxYieldNum( Integer.parseInt( x[3] ) );
 			specialtys.add(o);
 		}
 	}

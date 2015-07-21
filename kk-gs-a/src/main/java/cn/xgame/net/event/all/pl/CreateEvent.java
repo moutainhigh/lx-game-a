@@ -71,6 +71,9 @@ public class CreateEvent extends IEvent {
 			// 记录最后一次登录的服务器ID
 			player.rLastGsid();
 			
+			// 开始记录登录计时副本
+			player.getAccEctypes().startRLoginTime();
+			
 			// 保存数据库一次
 			PlayerManager.o.update(player);
 		}

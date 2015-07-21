@@ -1,6 +1,9 @@
 package cn.xgame.utils.runnable.task;
 
-import cn.xgame.a.world.WorldManager;
+import java.util.Collection;
+
+import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
@@ -18,8 +21,10 @@ public class OneMinuteHandleImp extends IThread {
 			// 这里测试打印 数据库 使用情况
 //			Dbcp.print();
 			
-			WorldManager.o.runTavern();
-		
+			Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
+			for( Player player : values ){
+				player.getAccEctypes().run();
+			}
 		
 		} catch (Exception e) {
 			Logs.error( "OneMinuteHandleImp:", e );

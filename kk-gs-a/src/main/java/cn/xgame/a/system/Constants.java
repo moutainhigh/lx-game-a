@@ -11,5 +11,5 @@ public class Constants {
 	public static final String PUBLICKEY = "longxun-kuake";
 	
 	/** 酒馆刷新时间 单位秒 */
-	public static final int TAVERN_UPDATE_TIME = 60;
+	public static final int TAVERN_UPDATE_TIME = 300;
 }

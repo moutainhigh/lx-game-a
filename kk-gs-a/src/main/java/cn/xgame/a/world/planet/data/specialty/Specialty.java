@@ -22,8 +22,6 @@ public class Specialty implements IBufferStream,ITransformStream{
 	volatile private int yieldTime;
 	// 产量
 	volatile private int yieldNum;
-	// 最高产出量
-	volatile private int maxYieldNum;
 	// 当前产出数量
 	volatile private int yieldCount;
 	
@@ -39,7 +37,6 @@ public class Specialty implements IBufferStream,ITransformStream{
 	public void putBuffer(ByteBuf buf) {
 		buf.writeInt( yieldTime );
 		buf.writeInt( yieldNum );
-		buf.writeInt( maxYieldNum );
 		buf.writeInt( yieldCount );
 	}
 
@@ -47,7 +44,6 @@ public class Specialty implements IBufferStream,ITransformStream{
 	public void wrapBuffer(ByteBuf buf) {
 		yieldTime 	= buf.readInt();
 		yieldNum 	= buf.readInt();
-		maxYieldNum = buf.readInt();
 		yieldCount 	= buf.readInt();
 	}
 	
@@ -63,7 +59,7 @@ public class Specialty implements IBufferStream,ITransformStream{
 	 */
 	public boolean run(){
 		
-		if( yieldCount >= maxYieldNum )
+		if( yieldCount >= templet.manymax )
 			return false;
 		
 		int gobyTime = (int) (System.currentTimeMillis()/1000) - rtime;
@@ -71,10 +67,10 @@ public class Specialty implements IBufferStream,ITransformStream{
 			rtime = (int) (System.currentTimeMillis()/1000);
 			
 			yieldCount += yieldNum;
-			if( yieldCount > maxYieldNum )
-				yieldCount = maxYieldNum;
+			if( yieldCount > templet.manymax )
+				yieldCount = templet.manymax;
 			
-			Logs.debug( "星球特产线程 yieldCount=" + yieldCount );
+			Logs.debug( "星球特产"+templet.id+" 生产 " + yieldCount + "个" );
 			return true;
 		}
 		return false;
@@ -100,12 +96,6 @@ public class Specialty implements IBufferStream,ITransformStream{
 	}
 	public void setYieldCount(int yieldCount) {
 		this.yieldCount = yieldCount;
-	}
-	public int getMaxYieldNum() {
-		return maxYieldNum;
-	}
-	public void setMaxYieldNum(int maxYieldNum) {
-		this.maxYieldNum = maxYieldNum;
 	}
 
 	public IProp toProp() {

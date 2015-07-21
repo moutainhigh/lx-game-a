@@ -9,4 +9,8 @@ public class LuaUtil {
 		return new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
 	}
 
+	public static Lua getEctype() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/ectype.lua" );
+	}
+
 }
