@@ -15,6 +15,7 @@ import x.javaplus.util.lua.LuaValue;
 
 
 import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
@@ -702,25 +703,29 @@ public class HomePlanet extends IPlanet {
 		if( prop == null )
 			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 		
-		// 数量是否足够
-		if( prop.getCount() < count )
+		// 数量是否足够 只有特产 才做这个判断
+		if( prop.getCount() < count && prop.getuId() == 1 )
 			throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
 		
 		Item item = CsvGen.getItem( prop.getnId() );
-		int needGold = item.buygold;
+		int needGold = item.buygold <= 0 ? 1 : item.buygold;
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){
 			needGold += 1;
 		}
 	
+		// 看金币是否足够
+		if( player.changeCurrency( -needGold ) == -1 )
+			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+		
 		// 加入玩家背包
 		List<IProp> ret = player.getProps().appendProp( nid, count );
 		if( ret.isEmpty() )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			
-		// 看金币是否足够
-		if( player.changeCurrency( -needGold ) == -1 )
-			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+		
+		// 如果是特产 那么就要对应扣除数量
+		if( prop.getuId() == 1 )
+			specialtyControl.deduct( nid, count );
 		
 		// 及时更新数据库
 		PlayerManager.o.update(player);
@@ -735,33 +740,33 @@ public class HomePlanet extends IPlanet {
 	 * @return
 	 * @throws Exception 
 	 */
-	public IProp runTavernBuy( Player player, int nid ) throws Exception {
+	public CaptainInfo runTavernBuy( Player player, int nid ) throws Exception {
 		// 舰长是否存在
 		TCaptain tcap = tavernControl.getTCaptain(nid);
 		if( tcap == null )
 			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 		
 		Item item = CsvGen.getItem( nid );
-		int needGold = item.buygold;
+		int needGold = item.buygold <= 0 ? 1 : item.buygold;
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){
 			needGold += 1;
 		}
 		
-		// 加入玩家背包
-		List<IProp> ret = player.getProps().appendProp( nid, 1 );
-		if( ret.isEmpty() )
-			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		
 		// 看金币是否足够
 		if( player.changeCurrency( -needGold ) == -1 )
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		
+		// 放入舰长室
+		CaptainInfo ret = player.getCaptains().createCaptain(nid);
+		
+		// 将舰长从酒馆里面删除掉
+		tavernControl.remove( tcap );
+		
 		// 及时更新数据库
 		PlayerManager.o.update(player);
 		
-		return ret.get(0);
+		return ret;
 	}
-	
 	
 }

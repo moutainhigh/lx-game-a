@@ -1,5 +1,6 @@
 package cn.xgame.a.world.planet.data.tavern;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -49,6 +50,21 @@ public class TavernControl implements ITransformStream{
 	}
 	
 	/**
+	 * 删除
+	 * @param tcap
+	 */
+	public void remove( TCaptain tcap ) {
+		Iterator<TCaptain> iter = datas.iterator();
+		while( iter.hasNext() ){
+			TCaptain o = iter.next();
+			if( o.getNid() == tcap.getNid() ){
+				iter.remove();
+				break;
+			}
+		}
+	}
+	
+	/**
 	 * 刷新酒馆数据
 	 * @param times 刷新个数
 	 */
@@ -89,5 +105,7 @@ public class TavernControl implements ITransformStream{
 		
 		return null;
 	}
+
+
 	
 }

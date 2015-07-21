@@ -139,7 +139,7 @@ public abstract class IPlanet implements ITransformStream{
 				continue;
 			
 			Ectype e = CsvGen.getEctype( Integer.parseInt(x[0]) );
-			ret.add( new AccEctype(e) );
+			ret.add( new AccEctype(templet.id,e) );
 		}
 		return ret;
 	}

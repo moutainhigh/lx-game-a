@@ -89,6 +89,29 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 		return ret;
 	}
 
+	public Specialty getSpecialty( int nid ) {
+		for( Specialty o : specialtys ){
+			if( o.templet().id == nid )
+				return o;
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * 扣除对应特产数量
+	 * @param nid
+	 * @param count
+	 */
+	public void deduct( int nid, int count ) {
+		Specialty o = getSpecialty( nid );
+		if( o == null ) return;
+		int rcount = o.getYieldCount() - count;
+		o.setYieldCount( rcount );
+	}
+
+
+
 	
 
 }

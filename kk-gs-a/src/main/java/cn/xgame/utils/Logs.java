@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import cn.xgame.a.player.u.Player;
+import cn.xgame.a.player.u.IPlayer;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.net.netty.Netty.IP;
 
@@ -22,16 +22,16 @@ public class Logs {
 	 * 错误 日志*/
 	public static void error( Object log ) { logger.error( "[ systen ]: "+log ); }
 	public static void error( Object log, Exception e ) { logger.error( "[ systen ]: "+log, e ); }
-	public static void error( Player player, Object log ) { logger.error( buildPrefixStr( player ) + log ); }
-	public static void error( Player player, Object log, Exception e ) { logger.error( buildPrefixStr( player ) + log , e ); }
+	public static void error( IPlayer player, Object log ) { logger.error( buildPrefixStr( player ) + log ); }
+	public static void error( IPlayer player, Object log, Exception e ) { logger.error( buildPrefixStr( player ) + log , e ); }
 	
 	/** debug输出 */
 	public static void debug( Object log ) { if( SystemCfg.DEBUG ) logger.debug( "[ systen ]: "+log ); }
-	public static void debug( Player player, Object log ) { if( SystemCfg.DEBUG ) logger.debug( buildPrefixStr( player ) + log ); }
+	public static void debug( IPlayer player, Object log ) { if( SystemCfg.DEBUG ) logger.debug( buildPrefixStr( player ) + log ); }
 	public static void debug( ChannelHandlerContext ctx, Object log ) { if( SystemCfg.DEBUG ) logger.debug( "[ "+IP.formAddress(ctx)+" ]: "+log ); }
 	
 	//针对此类 做一个前缀包装
-	private static String buildPrefixStr( Player player ) {
+	private static String buildPrefixStr( IPlayer player ) {
 		if( player == null ) return "[ null ]: ";
 		return "[ " + player.getNickname() + " ]: ";
 	}

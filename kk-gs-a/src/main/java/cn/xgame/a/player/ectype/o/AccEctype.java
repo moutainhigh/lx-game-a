@@ -14,6 +14,8 @@ public class AccEctype implements ITransformStream{
 	
 	private final Ectype template;
 	
+	// 所属星球ID
+	private final int snid ;
 	// 剩余次数
 	private int times = -1;
 	// 剩余时间
@@ -21,9 +23,11 @@ public class AccEctype implements ITransformStream{
 	
 	/**
 	 * 从配置表获取
+	 * @param id 所属星球ID
 	 * @param src
 	 */
-	public AccEctype( Ectype src ) {
+	public AccEctype( int id, Ectype src ) {
+		snid = id;
 		template = src;
 	}
 	
@@ -32,6 +36,7 @@ public class AccEctype implements ITransformStream{
 	 * @param buf
 	 */
 	public AccEctype(ByteBuf buf) {
+		snid = buf.readInt();
 		template = CsvGen.getEctype( buf.readInt() );
 		times = buf.readInt();
 		rtime = buf.readInt();
@@ -51,6 +56,7 @@ public class AccEctype implements ITransformStream{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeInt( snid );
 		buffer.writeInt( template.id );
 		buffer.writeInt( times );
 		buffer.writeInt( rtime );

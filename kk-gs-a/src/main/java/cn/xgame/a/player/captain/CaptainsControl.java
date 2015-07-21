@@ -56,7 +56,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 	 * 创建一个 舰长
 	 * @param nid
 	 */
-	public void createCaptain( int nid ) {
+	public CaptainInfo createCaptain( int nid ) {
 		
 		CaptainInfo cap = new CaptainInfo( root.generatorCaptainUID(), nid );
 		
@@ -64,6 +64,8 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		
 		// 在数据库创建数据
 		createDB( cap );
+		
+		return cap;
 	}
 
 	private void append( CaptainInfo captain ) {
@@ -81,6 +83,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		dto.setNid( cap.getnId() );
 		dao.commit(dto);
 	}
+
 	
 //	private void updateDB( CaptainInfo cap ) {
 //	}

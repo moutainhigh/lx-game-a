@@ -40,6 +40,7 @@ public class ApplyShopEvent extends IEvent{
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			List<IProp> ls = planet.getShopList();
+			response.writeByte( ls.size() );
 			for( IProp prop : ls ){
 				response.writeInt( prop.getnId() );
 				response.writeInt( prop.getCount() );

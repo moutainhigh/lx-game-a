@@ -12,6 +12,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 
 /**
  * 商店 购买 
@@ -36,6 +37,7 @@ public class ShopBuyEvent extends IEvent{
 			
 			ret = planet.runShopBuy( player, nid, count );
 			
+			Logs.debug( player, "在商店购买道具 nid=" + nid );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -47,8 +49,10 @@ public class ShopBuyEvent extends IEvent{
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				response.writeInt( prop.getuId() );
+				response.writeInt( prop.getnId() );
 				response.writeInt( prop.getCount() );
 			}
+			response.writeInt( player.getCurrency() );
 		}
 		sendPackage( player.getCtx(), response );
 		

@@ -11,6 +11,7 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.utils.Logs;
 
 /**
  * 偶发副本信息
@@ -53,6 +54,7 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 		for( AccEctype acc : ectypes ){
 			acc.buildTransformStream(buffer);
 		}
+//		Logs.debug( root, "偶发副本个数 size=" + ectypes.size() );
 	}
 	
 	

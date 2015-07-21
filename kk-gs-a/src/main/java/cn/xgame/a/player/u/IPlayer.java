@@ -2,6 +2,7 @@ package cn.xgame.a.player.u;
 
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
+import cn.xgame.utils.Logs;
 
 /**
  * 玩家 基础 数据结构 （数据库相关）
@@ -82,6 +83,8 @@ public abstract class IPlayer {
 		if( currency + value < 0  )
 			return -1;
 		currency += value;
+		
+		Logs.debug( this, "货币改变 " + (currency - value) + (value>=0?" + ":" - ") + Math.abs(value) + " = " + currency );
 		return currency;
 	}
 	
