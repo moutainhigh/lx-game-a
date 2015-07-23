@@ -54,6 +54,18 @@ public class Ships extends IProp{
 	@Override
 	public PropType type() { return PropType.SHIP; }
 
+	@Override
+	public void putAttachBuffer(ByteBuf buf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void wrapAttach(ByteBuf buf) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

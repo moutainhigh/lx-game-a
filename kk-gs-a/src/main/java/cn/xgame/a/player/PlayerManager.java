@@ -89,6 +89,7 @@ public class PlayerManager {
 	public void allDailyHandle(){
 		for( Player player : players.values() ){
 			dailyHandle( player, 0 );
+			PlayerManager.o.update(player);
 		}
 	}
 	
@@ -127,7 +128,7 @@ public class PlayerManager {
 		
 		// 判断是否过天
 		int day = ret.strideDay();
-		if( day > 0 ) dailyHandle( ret, day );
+		if( day >= 0 ) dailyHandle( ret, day );
 		
 		return ret;
 	}

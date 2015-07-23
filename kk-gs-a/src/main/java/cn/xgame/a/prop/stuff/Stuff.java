@@ -52,5 +52,15 @@ public class Stuff extends IProp{
 		super.update(player, null);
 	}
 
+	@Override
+	public void putAttachBuffer(ByteBuf buf) {
+		
+	}
+
+	@Override
+	public void wrapAttach(ByteBuf buf) {
+		
+	}
+
 	
 }

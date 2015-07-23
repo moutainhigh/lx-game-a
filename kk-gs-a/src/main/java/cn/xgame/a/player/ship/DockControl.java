@@ -6,11 +6,14 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
+import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
@@ -50,6 +53,12 @@ public class DockControl implements ITransformStream,IFromDB{
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships ){
 			ship.buildTransformStream( buffer );
+			CaptainInfo cap = root.getCaptains().getCaptain( ship.getCaptainUID() );
+			buffer.writeInt( cap == null ? -1 : cap.getnId() );
+			buffer.writeInt( ship.getStarId() );
+			ship.getHolds().buildTransformStream(buffer);
+			ship.getWeapons().buildTransformStream(buffer);
+			ship.getAssists().buildTransformStream(buffer);
 		}
 	}
 
@@ -70,7 +79,7 @@ public class DockControl implements ITransformStream,IFromDB{
 		append( ship );
 		
 		// 最后在数据库 创建数据
-		createDB( ship );
+		ship.createDB( root );
 	}
 
 
@@ -92,23 +101,56 @@ public class DockControl implements ITransformStream,IFromDB{
 		}
 		return null;
 	}
-	
-	//TODO---------数据库相关
-	
-	private void createDB( ShipInfo ship ) {
-		ShipsDao dao = SqlUtil.getShipsDao();
-		ShipsDto dto = dao.create();
-		dto.setGsid( root.getGsid() );
-		dto.setUname( root.getUID() );
-		dto.setUid( ship.getuId() );
-		dto.setNid( ship.getnId() );
-		dao.commit(dto);
+
+	//TODO-------------其他函数
+
+	/**
+	 * 放一个道具到 舰船货仓
+	 * @param suid 
+	 * @param clone
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<IProp> putinHold( int suid, IProp clone ) throws Exception {
+		// 检查舰船是否存在
+		ShipInfo ship = getShip(suid);
+		if( ship == null )
+			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+		
+		// 看货仓是否 还有空间
+		if( ship.getHolds().roomIsEnough( clone ) )
+			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+		
+		// 放入货仓
+		List<IProp> ret = ship.getHolds().appendProp( clone );
+		
+		// 最后保存数据库
+		ship.updateDB(root);
+		
+		return ret;
 	}
 
-	//
-	
-
-	
+	/**
+	 * 在舰船货仓里面卸下一个道具
+	 * @param suid
+	 * @param uid
+	 * @param count
+	 * @return
+	 * @throws Exception 
+	 */
+	public IProp unloadHoldProp( int suid, int uid, int count ) throws Exception {
+		// 检查舰船是否存在
+		ShipInfo ship = getShip(suid);
+		if( ship == null )
+			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+		// 执行扣除
+		IProp ret = ship.getHolds().deductProp( uid, count );
+		if( ret == null )
+			throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+		// 最后保存一下数据库
+		ship.updateDB(root);
+		return ret;
+	}
 	
 	
 }

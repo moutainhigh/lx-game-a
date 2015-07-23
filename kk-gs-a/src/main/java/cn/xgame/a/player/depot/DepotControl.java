@@ -73,6 +73,8 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 */
 	public List<IProp> appendProp( int nid, int count) {
 		
+		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
+		
 		List<IProp> ret = Lists.newArrayList();
 		Item item 		= CsvGen.getItem(nid);
 		if( item == null ){
@@ -82,7 +84,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		
 		PropType type 	= PropType.fromNumber( item.bagtype );
 		
-		IProp prop 		= getCanAccProp( type, nid );
+		IProp prop 		= getCanCumsumProp( nid );
 		if( prop == null ){
 			ret.add( createProp( type, nid, count ) );
 		}else{
@@ -96,6 +98,10 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 				ret.add( createProp( type, nid, surplus ) );
 		}
 		return ret;
+	}
+	public List<IProp> appendProp( IProp prop ) {
+		// TODO 以后要加有成长属性的物品   那么就在这里做
+		return appendProp( prop.getnId(), prop.getCount() );
 	}
 	
 	/**
@@ -124,21 +130,24 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param clone
 	 */
 	public void deductProp( IProp clone ) {
+		deductProp( clone.getuId(), clone.getCount() );
+	}
+	public void deductProp( int uid, int count ) {
 		
-		IProp prop = getProp(clone);
+		IProp prop = getProp(uid);
 		if( prop == null ) {
-			Logs.error( root, "prop == null at DepotControl.deductProp" );
+			Logs.error( root, "prop == null at DepotControl.deductProp( int uid, int count )" );
 			return;
 		}
 		
 		// 执行扣除
-		prop.deductCount( clone.getCount() );
+		prop.deductCount( count );
 		if( prop.isEmpty() )
 			remove( prop );
 		else
 			prop.updateDB(root);
 		
-		Logs.debug( root, "扣除道具 (" + clone + "), 扣除后 (" + prop + ")" );
+		Logs.debug( root, "扣除道具 ("+uid+","+count+"), 扣除后 (" + prop + ")" );
 	}
 	
 	public boolean remove( IProp prop ){
@@ -147,30 +156,6 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// 然后在从内存中删除
 		return super.remove(prop);
 	}
-	
-	
-
-	public static void main(String[] args) {
-		
-		CsvGen.load();
-//		
-//		Player p = PlayerManager.o.getPlayer( "217902094", SystemCfg.ID );
-//		
-//		p.getProps().appendProp( 10030, 189 );
-////		p.getProps().addProp( 12001, 1 );
-//		
-//		for( IProp b : p.getProps().getAll() ){
-//			System.out.println( b.toString() );
-//		}
-		
-	}
-
-
-
-
-
-
-
 
 
 

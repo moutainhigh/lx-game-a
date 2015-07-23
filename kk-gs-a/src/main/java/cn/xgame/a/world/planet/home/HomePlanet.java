@@ -281,7 +281,7 @@ public class HomePlanet extends IPlanet {
 		// 检测科技
 		List<UnTechs> waitTech = techControl.getWaitTech();
 		for( UnTechs unTech : waitTech ){
-			if( getDepotControl().deductProp( unTech.templet().needStuff ) ){
+			if( getDepotControl().deductProp( unTech.templet().needres ) ){
 				unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
 			}
 		}
@@ -478,7 +478,7 @@ public class HomePlanet extends IPlanet {
 	private void startStudy(UnTechs unTech) {
 		
 		// 判断资源是否够 - 开始扣资源
-		if( getDepotControl().deductProp( unTech.templet().needStuff ) )
+		if( getDepotControl().deductProp( unTech.templet().needres ) )
 			unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
 		else
 			unTech.setrTime( -1 );
@@ -719,7 +719,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		
 		// 加入玩家背包
-		List<IProp> ret = player.getProps().appendProp( nid, count );
+		List<IProp> ret = player.getDepots().appendProp( nid, count );
 		if( ret.isEmpty() )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		

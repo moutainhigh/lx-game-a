@@ -73,6 +73,18 @@ public abstract class IProp implements ITransformStream{
 	public abstract PropType type();
 	
 	/**
+	 * 把附加属性塞入
+	 * @param buf
+	 */
+	public abstract void putAttachBuffer( ByteBuf buf );
+
+	/**
+	 * 获取 附加属性
+	 * @param buf
+	 */
+	public abstract void wrapAttach( ByteBuf buf ) ;
+	
+	/**
 	 * 在数据库创建数据
 	 * @param player
 	 */
@@ -138,8 +150,16 @@ public abstract class IProp implements ITransformStream{
 	 * 是否可以累加
 	 * @return
 	 */
-	public boolean isCanAcc() {
+	public boolean isCanCumsum() {
 		return count < item.manymax;
+	}
+	
+	/**
+	 * 道具占用空间
+	 * @return
+	 */
+	public short occupyRoom() {
+		return item.usegrid;
 	}
 	
 	/**
@@ -177,6 +197,9 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
+
+
+
 
 
 

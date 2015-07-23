@@ -98,14 +98,14 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 		for( AccEctype o : ectypes ){
 			if( o.type() != AccType.LOGINTIME )
 				continue;
-			if( o.getRTime() != -1 )
+			if( o.getEndTime() != -1 )
 				continue;
-			o.setRTime( (int) (System.currentTimeMillis()/1000) );
+			o.setEndTime();
 		}
 	}
 
 	/**
-	 * 线程 这里检测副本是否开启 和 关闭的 删除掉
+	 * 线程 这里检测副本是否关闭 然后删除掉
 	 */
 	public void run(){
 		
@@ -113,13 +113,7 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 			if( o.isClose() ){
 				removes.add( o.getNid() );
 				Logs.debug( root, "副本" + o.getNid() + " 已加入删除列表" );
-				continue;
 			}
-			
-			if( o.type() != AccType.SERVERTIME )
-				continue;
-			
-			o.detectionStart();
 		}
 		
 		while( !removes.isEmpty() )

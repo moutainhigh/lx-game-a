@@ -13,8 +13,10 @@ public class IUObject {
 	private int nId;
 	
 	
-	
-	
+	public IUObject( int uid, int nid ){
+		this.uId = uid;
+		this.nId = nid;
+	}
 	
 	public int getuId() {
 		return uId;

@@ -37,9 +37,11 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 			int nid 		= buf.readInt();
 			int count 		= buf.readInt();
 			IProp prop 		= type.create( uid, nid, count );
+			prop.wrapAttach(buf);
 			super.append( prop );
 			
-			resUID			= uid;
+			// 得出最大的唯一ID
+			if( uid > resUID ) resUID = uid;
 		}
 	}
 
@@ -52,9 +54,8 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		buf.writeByte( ls.size() );
 		for( IProp prop : ls ){
 			buf.writeByte( prop.type().toNumber() );
-			buf.writeInt( prop.getuId() );
-			buf.writeInt( prop.getnId() );
-			buf.writeInt( prop.getCount() );
+			prop.putBaseBuffer(buf);
+			prop.putAttachBuffer(buf);
 		}
 		return buf.array();
 	}
@@ -76,7 +77,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	 */
 	public List<IProp> appendProp( IProp param ){
 		List<IProp> ret = Lists.newArrayList();
-		IProp prop = getCanAccProp( param );
+		IProp prop = getCanCumsumProp( param );
 		if( prop == null ){
 			append( param );
 			ret.add( param );

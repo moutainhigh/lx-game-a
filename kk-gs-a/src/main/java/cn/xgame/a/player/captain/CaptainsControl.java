@@ -51,6 +51,24 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 			captain.buildTransformStream(buffer);
 		}
 	}
+	
+
+	private void append( CaptainInfo captain ) {
+		captains.add(captain);
+	}
+	
+	/**
+	 * 根据唯一ID 获取舰长
+	 * @param uid
+	 * @return
+	 */
+	public CaptainInfo getCaptain( int uid ) {
+		for( CaptainInfo captain : captains ){
+			if( captain.getuId() == uid )
+				return captain;
+		}
+		return null;
+	}
 
 	/**
 	 * 创建一个 舰长
@@ -63,26 +81,12 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		append(cap);
 		
 		// 在数据库创建数据
-		createDB( cap );
+		cap.createDB( root );
 		
 		return cap;
 	}
 
-	private void append( CaptainInfo captain ) {
-		captains.add(captain);
-	}
 
-	//TODO------------数据库相关
-	
-	private void createDB( CaptainInfo cap ) {
-		CaptainsDao dao = SqlUtil.getCaptainsDao();
-		CaptainsDto dto = dao.create();
-		dto.setGsid( root.getGsid() );
-		dto.setUname( root.getUID() );
-		dto.setUid( cap.getuId() );
-		dto.setNid( cap.getnId() );
-		dao.commit(dto);
-	}
 
 	
 //	private void updateDB( CaptainInfo cap ) {

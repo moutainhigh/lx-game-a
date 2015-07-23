@@ -42,7 +42,7 @@ public class Player extends IPlayer implements ITransformStream{
 	private DBBaseUID propBaseUid = new DBBaseUID( this );
 
 	// 背包
-	private DepotControl props = new DepotControl( this );
+	private DepotControl depots = new DepotControl( this );
 	
 	// 船坞
 	private DockControl docks = new DockControl( this );
@@ -84,7 +84,7 @@ public class Player extends IPlayer implements ITransformStream{
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
-		props.fromDB();
+		depots.fromDB();
 		// 在数据库取出 玩家舰船数据
 		docks.fromDB();
 		// 在数据库取出 玩家舰长数据
@@ -117,10 +117,13 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 
 
-	/** 获取 跨天 天数 */
+	/**
+	 * 获取 跨天 天数 
+	 * @return -1.表示 没有过天   >=0.表示已经过的天数
+	 */
 	public int strideDay() {
 		long t = System.currentTimeMillis() - Time.refTimeInMillis( getLastLogoutTime(), 24, 0, 0 );
-		return (int) (t / 86400000l);
+		return t >= 0 ? (int) (t / 86400000l) : -1;
 	}
 	
 	/** 记录 最后一次登录的服务器ID */
@@ -185,8 +188,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public DBBaseUID getPropBaseUid() {
 		return propBaseUid;
 	}
-	public DepotControl getProps() {
-		return props;
+	public DepotControl getDepots() {
+		return depots;
 	}
 	public DockControl getDocks() {
 		return docks;

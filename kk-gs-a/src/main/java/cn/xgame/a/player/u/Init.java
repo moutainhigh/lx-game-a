@@ -46,7 +46,7 @@ public class Init {
 		for( String x : items ){
 			if( x.isEmpty() ) continue;
 			String[] v = x.split(";");
-			ret.getProps().appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+			ret.getDepots().appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
 		}
 	}
 	

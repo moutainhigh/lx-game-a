@@ -18,4 +18,20 @@ public interface Ships {
 	
 	/** 表格ID */
 	int nid();
+	
+	/** 舰长唯一ID */
+	int captainUid();
+	
+	/** 停靠的星球ID */
+	int starId();
+	
+	/** 货仓 */
+	byte[] holds();
+	
+	/** 武器 */
+	byte[] weapons();
+	
+	/** 辅助 */
+	byte[] assists();
+	
 }

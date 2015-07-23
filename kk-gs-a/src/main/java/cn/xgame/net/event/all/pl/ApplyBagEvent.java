@@ -18,7 +18,7 @@ public class ApplyBagEvent extends IEvent{
 	public void run(Player player, ByteBuf data) throws IOException {
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-		player.getProps().buildTransformStream(response);
+		player.getDepots().buildTransformStream(response);
 		sendPackage( player.getCtx(), response );
 	}
 

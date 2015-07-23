@@ -183,7 +183,7 @@ public class TechControl implements IArrayStream{
 	public boolean isCanStudy( int nid, byte techLevel ) {
 		Tech t = CsvGen.getTech(nid);
 		if( t == null ) return false;
-		return getVoTech( nid ) == null && isHavePre( t.pre ) && !isHaveMutex( t.mutex ) && t.needLevel <= techLevel;
+		return getVoTech( nid ) == null && isHavePre( t.prevtech ) && !isHaveMutex( t.Mutualtech ) && t.needlevel <= techLevel;
 	}
 
 	/**

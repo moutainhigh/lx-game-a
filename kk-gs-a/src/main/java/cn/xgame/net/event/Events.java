@@ -32,6 +32,8 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
+import cn.xgame.net.event.all.pl.ship.PutinHoldEvent;
+import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
@@ -64,6 +66,8 @@ public enum Events {
 	APPLY_DOCKS						( 1012, 				new ApplyDockEvent() ),
 	APPLY_CAPTAINS					( 1013, 				new ApplyCaptainEvent() ),
 	APPLY_STARATLAS					( 1014, 				new ApplyStaratlasEvent() ),
+	PUTIN_HOLD						( 1021, 				new PutinHoldEvent() ),
+	UNLOAD_HOLD						( 1022, 				new UnloadHoldEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),

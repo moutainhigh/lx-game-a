@@ -1,13 +1,21 @@
 package cn.xgame.a.player.ship.o;
 
+import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.IUObject;
+import cn.xgame.a.player.ship.o.v.AssistControl;
+import cn.xgame.a.player.ship.o.v.HoldControl;
+import cn.xgame.a.player.ship.o.v.WeaponControl;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Ship;
 import cn.xgame.config.o.Stars;
+import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
+import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
@@ -18,22 +26,52 @@ import cn.xgame.utils.LuaUtil;
  */
 public class ShipInfo extends IUObject implements ITransformStream{
 
+	private final Ship template;
+	
 	// 舰长唯一ID
-	private int captainUID;
+	private int captainUID = -1;
 	// 停靠在的星球
 	private int starId;
+	
+	
+	// 货仓
+	private HoldControl holds = new HoldControl();
+	
+	// 武器
+	private WeaponControl weapons = new WeaponControl();
+	
+	// 辅助
+	private AssistControl assists = new AssistControl();
+
 	
 	// 组队信息
 	// TODO
 	
+	/**
+	 * 通过配置表创建一个
+	 * @param uid
+	 * @param nid
+	 */
 	public ShipInfo( int uid, int nid ) {
-		setuId(uid);
-		setnId(nid);
+		super( uid, nid );
+		template 	= CsvGen.getShip(nid);
+		holds.setRoom( template.groom );
+		weapons.setRoom( template.wroom );
+		assists.setRoom( template.eroom );
 	}
 
+	/**
+	 * 通过数据库获取
+	 * @param dto
+	 */
 	public ShipInfo( ShipsDto dto ) {
-		setuId(dto.getUid());
-		setnId(dto.getNid());
+		super( dto.getUid(), dto.getNid() );
+		template = CsvGen.getShip( dto.getNid() );
+		captainUID = dto.getCaptainUid();
+		starId = dto.getStarId();
+		holds.fromBytes( dto.getHolds() );
+		weapons.fromBytes( dto.getWeapons() );
+		assists.fromBytes( dto.getAssists() );
 	}
 
 	@Override
@@ -42,6 +80,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( getnId() );
 	}
 
+	
 	
 	/**
 	 * 获取到某个星球的航行时间 单位秒
@@ -57,6 +96,37 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		return ret[0].getInt();
 	}
 	
+	
+	//TODO---------数据库相关
+	public void createDB( Player player ) {
+		ShipsDao dao = SqlUtil.getShipsDao();
+		ShipsDto dto = dao.create();
+		dto.setGsid( player.getGsid() );
+		dto.setUname( player.getUID() );
+		dto.setUid( getuId() );
+		setDBData(dto);
+		dao.commit(dto);
+	}
+
+	public void updateDB(Player player) {
+		ShipsDao dao = SqlUtil.getShipsDao();
+		String sql 	= new Condition( ShipsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( ShipsDto.unameChangeSql( player.getUID() ) ).AND( ShipsDto.uidChangeSql( getuId() ) ).toString();
+		ShipsDto dto = dao.updateByExact( sql );
+		setDBData(dto);
+		dao.commit(dto);
+	}
+	private void setDBData(ShipsDto dto) {
+		dto.setNid( getnId() );
+		dto.setCaptainUid( captainUID );
+		dto.setStarId( starId );
+		dto.setHolds( holds.toBytes() );
+		dto.setWeapons( weapons.toBytes() );
+		dto.setAssists( assists.toBytes() );
+	}
+	
+	
+	public Ship template(){ return template; }
 	public int getCaptainUID() {
 		return captainUID;
 	}
@@ -69,7 +139,9 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void setStarId(int starId) {
 		this.starId = starId;
 	}
-
-
+	public HoldControl getHolds() { return holds; }
+	public WeaponControl getWeapons() { return weapons; }
+	public AssistControl getAssists() { return assists; }
+	
 	
 }

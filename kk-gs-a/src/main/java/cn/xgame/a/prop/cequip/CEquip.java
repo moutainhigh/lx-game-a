@@ -44,12 +44,20 @@ public class CEquip extends IProp{
 
 	@Override
 	public void createDB(Player player) {
-		// TODO Auto-generated method stub
-		
+		super.create(player, null);
 	}
 
 	@Override
 	public void updateDB(Player player) {
+		super.update(player, null);
+	}
+	@Override
+	public void putAttachBuffer(ByteBuf buf) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void wrapAttach(ByteBuf buf) {
 		// TODO Auto-generated method stub
 		
 	}
