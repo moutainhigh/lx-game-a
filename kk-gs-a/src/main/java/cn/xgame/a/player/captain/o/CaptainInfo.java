@@ -1,5 +1,6 @@
 package cn.xgame.a.player.captain.o;
 
+import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.IUObject;
@@ -46,8 +47,18 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 		dto.setGsid( root.getGsid() );
 		dto.setUname( root.getUID() );
 		dto.setUid( getuId() );
-		dto.setNid( getnId() );
+		setDBData( dto );
 		dao.commit(dto);
 	}
-	
+	public void updateDB( Player player ) {
+		CaptainsDao dao = SqlUtil.getCaptainsDao();
+		String sql 	= new Condition( CaptainsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( CaptainsDto.unameChangeSql( player.getUID() ) ).AND( CaptainsDto.uidChangeSql( getuId() ) ).toString();
+		CaptainsDto dto = dao.updateByExact( sql );
+		setDBData(dto);
+		dao.commit(dto);
+	}
+	private void setDBData(CaptainsDto dto) {
+		dto.setNid(getnId());
+	}
 }

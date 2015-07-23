@@ -44,6 +44,12 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		}
 	}
 	
+	/** 保存所有数据 到数据库 */
+	public void update() {
+		for( CaptainInfo captain : captains )
+			captain.updateDB( root );
+	}
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( captains.size() );
@@ -87,9 +93,4 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 	}
 
 
-
-	
-//	private void updateDB( CaptainInfo cap ) {
-//	}
-//	
 }

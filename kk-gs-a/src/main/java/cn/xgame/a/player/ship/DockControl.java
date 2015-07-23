@@ -48,6 +48,12 @@ public class DockControl implements ITransformStream,IFromDB{
 		}
 	}
 	
+	/** 保存所有数据到数据库 */
+	public void update() {
+		for( ShipInfo ship : ships )
+			ship.updateDB(root);
+	}
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( ships.size() );
@@ -62,6 +68,10 @@ public class DockControl implements ITransformStream,IFromDB{
 		}
 	}
 
+	public List<ShipInfo> getAllShip() {
+		return ships;
+	}
+	
 	/**
 	 * 装备一个舰船
 	 * @param ship
@@ -81,8 +91,6 @@ public class DockControl implements ITransformStream,IFromDB{
 		// 最后在数据库 创建数据
 		ship.createDB( root );
 	}
-
-
 	private void append( ShipInfo ship ) {
 		// 默认设置停靠在自己母星上
 		ship.setStarId( root.getCountryId() );
@@ -151,6 +159,9 @@ public class DockControl implements ITransformStream,IFromDB{
 		ship.updateDB(root);
 		return ret;
 	}
+
+
+
 	
 	
 }

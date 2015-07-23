@@ -114,6 +114,13 @@ public class Player extends IPlayer implements ITransformStream{
 	/**  退出处理 */
 	public void exit() {
 		setLastLogoutTime( System.currentTimeMillis() );
+		
+		// 保存所有道具 信息
+		depots.update();
+		// 保存所有舰船 信息
+		docks.update();
+		// 保存所有舰长 信息
+		captains.update();
 	}
 
 

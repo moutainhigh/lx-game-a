@@ -157,6 +157,11 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		return super.remove(prop);
 	}
 
+	/** 保存数据库 */
+	public void update() {
+		for( IProp prop : props )
+			prop.updateDB(root);
+	}
 
 
 	

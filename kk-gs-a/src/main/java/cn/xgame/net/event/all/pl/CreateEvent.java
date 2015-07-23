@@ -4,11 +4,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
 
 import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.Constants;
 import cn.xgame.a.world.WorldManager;
@@ -49,6 +51,13 @@ public class CreateEvent extends IEvent {
 			
 			// 分配母星
 			home 	= WorldManager.o.allotHomePlanet( player );
+			
+			// 这里给所有舰船 设置停靠星球
+			List<ShipInfo> allShip = player.getDocks().getAllShip();
+			for( ShipInfo ship : allShip ){
+				ship.setStarId( home.getId() );
+				ship.updateDB(player);
+			}
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
