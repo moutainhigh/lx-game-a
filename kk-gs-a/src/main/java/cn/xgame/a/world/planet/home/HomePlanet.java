@@ -68,8 +68,11 @@ public class HomePlanet extends IPlanet {
 	// 酒馆
 	private TavernControl tavernControl = new TavernControl();
 	
-	// 商店
+	// 商店列表
 	private List<IProp> shops = Lists.newArrayList();
+	
+	// 能看到的副本列表
+	
 	
 	//////////////////////////////数据库相关
 	// 玩家列表
@@ -103,6 +106,7 @@ public class HomePlanet extends IPlanet {
 	
 	@Override
 	public int getPeople() { return childs.size(); }
+	public List<Child> getPeoples() { return childs; }
 	
 	@Override
 	public void init( PlanetDataDto dto ) {

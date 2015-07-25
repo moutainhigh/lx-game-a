@@ -11,63 +11,72 @@ import x.javaplus.collections.Lists;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.o.AccEctype;
-import cn.xgame.a.player.ectype.o.AccType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.utils.Logs;
 
 /**
- * 偶发副本信息
+ * 副本信息
  * @author deng		
  * @date 2015-7-17 上午3:23:52
  */
-public class AccEctypeControl implements IArrayStream,ITransformStream{
+public class EctypeControl implements IArrayStream,ITransformStream{
 
 	private Player root;
 	
-	private List<AccEctype> ectypes = Lists.newArrayList();
+	// 常驻副本
+	private List<AccEctype> preEctypes = Lists.newArrayList();
+	
+	// 偶发副本
+	private List<AccEctype> accEctypes = Lists.newArrayList();
+	
 	
 	// 需要删除的列表
 	private List<Integer> removes = Lists.newArrayList();
 	
-	public AccEctypeControl(Player player) {
+	public EctypeControl(Player player) {
 		root = player;
 	}
 
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
-		ectypes.clear();
+		accEctypes.clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			AccEctype acc = new AccEctype( buf );
 			if( !acc.isClose() )
-				ectypes.add( acc );
+				accEctypes.add( acc );
 		}
 	}
 
 	@Override
 	public byte[] toBytes() {
-		if( ectypes.isEmpty() ) return null;
+		if( accEctypes.isEmpty() ) return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeByte( ectypes.size() );
-		for( AccEctype acc : ectypes )
+		buf.writeByte( accEctypes.size() );
+		for( AccEctype acc : accEctypes )
 			acc.putBuffer(buf);
 		return buf.array();
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeByte( ectypes.size() );
-		for( AccEctype acc : ectypes ){
+		buffer.writeByte( preEctypes.size() );
+		for( AccEctype pre : preEctypes ){
+			pre.buildTransformStream(buffer);
+		}
+		buffer.writeByte( accEctypes.size() );
+		for( AccEctype acc : accEctypes ){
 			acc.buildTransformStream(buffer);
 		}
-		Logs.debug( root, "申请副本 " + ectypes );
+		Logs.debug( root, "常驻副本 " + preEctypes );
+		Logs.debug( root, "偶发副本 " + accEctypes );
 	}
 	
 	
 	public AccEctype getEctyper( int nid ) {
-		for( AccEctype o : ectypes ){
+		for( AccEctype o : accEctypes ){
 			if( o.getNid() == nid )
 				return o;
 		}
@@ -75,7 +84,7 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 	}
 	
 	public void remove( int nid ){
-		Iterator<AccEctype> iter = ectypes.iterator();
+		Iterator<AccEctype> iter = accEctypes.iterator();
 		while( iter.hasNext() ){
 			AccEctype o = iter.next();
 			if( o.getNid() == nid ){
@@ -85,18 +94,22 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 		}
 	}
 	
-	public void append( List<AccEctype> v ) {
-		ectypes.addAll(v);
+	public void appendPre( List<AccEctype> v ) {
+		preEctypes.addAll(v);
 	}
-
+	public void appendAcc(List<AccEctype> v) {
+		accEctypes.addAll(v);
+	}
+	
 	public void clear() {
-		ectypes.clear();
+		accEctypes.clear();
+		preEctypes.clear();
 	}
 
 	/** 玩家登录 记录登录计时副本 */
 	public void startRLoginTime() {
-		for( AccEctype o : ectypes ){
-			if( o.type() != AccType.LOGINTIME )
+		for( AccEctype o : accEctypes ){
+			if( o.type() != EctypeType.LOGINTIME )
 				continue;
 			if( o.getEndTime() != -1 )
 				continue;
@@ -109,7 +122,7 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 	 */
 	public void run(){
 		
-		for( AccEctype o : ectypes ){
+		for( AccEctype o : accEctypes ){
 			if( o.isClose() ){
 				removes.add( o.getNid() );
 				Logs.debug( root, "副本" + o.getNid() + " 已加入删除列表" );
@@ -119,5 +132,7 @@ public class AccEctypeControl implements IArrayStream,ITransformStream{
 		while( !removes.isEmpty() )
 			remove( removes.remove(0) );
 	}
+
+
 	
 }

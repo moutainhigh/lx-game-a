@@ -81,7 +81,7 @@ public class CreateEvent extends IEvent {
 			player.rLastGsid();
 			
 			// 开始记录登录计时副本
-			player.getAccEctypes().startRLoginTime();
+			player.getEctypes().startRLoginTime();
 			
 			// 保存数据库一次
 			PlayerManager.o.update(player);

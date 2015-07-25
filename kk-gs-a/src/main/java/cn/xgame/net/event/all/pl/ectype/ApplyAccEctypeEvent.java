@@ -19,7 +19,7 @@ public class ApplyAccEctypeEvent extends IEvent{
 	public void run(Player player, ByteBuf data) throws IOException {
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-		player.getAccEctypes().buildTransformStream( response );
+		player.getEctypes().buildTransformStream( response );
 		sendPackage( player.getCtx(), response );
 	}
 

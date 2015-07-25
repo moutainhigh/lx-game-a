@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.depot.DepotControl;
-import cn.xgame.a.player.ectype.AccEctypeControl;
+import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
@@ -50,8 +50,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 舰长室
 	private CaptainsControl captains = new CaptainsControl( this );
 	
-	// 副本信息
-	private AccEctypeControl accEctypes = new AccEctypeControl( this );
+	// 偶发副本信息
+	private EctypeControl ectypes = new EctypeControl( this );
 	
 	/**
 	 * 创建一个
@@ -67,7 +67,7 @@ public class Player extends IPlayer implements ITransformStream{
 		setCreateTime( System.currentTimeMillis() );
 		setManors( new ManorControl() );
 		// 获取偶发副本
-		updateAccEctype();
+		updateEctype();
 	}
 	
 	/**
@@ -78,9 +78,9 @@ public class Player extends IPlayer implements ITransformStream{
 		wrap( dto );
 		// 取出偶发副本信息
 		if( dto.getAccEctypes() == null )
-			updateAccEctype();
+			updateEctype();
 		else
-			accEctypes.fromBytes( dto.getAccEctypes() );
+			ectypes.fromBytes( dto.getAccEctypes() );
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
@@ -95,7 +95,7 @@ public class Player extends IPlayer implements ITransformStream{
 	public void update( PlayerDataDto dto ) {
 		super.update(dto);
 		// 偶发副本
-		dto.setAccEctypes( accEctypes.toBytes() );
+		dto.setAccEctypes( ectypes.toBytes() );
 	}
 	
 	@Override
@@ -139,14 +139,18 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 
 	
-	/** 更新一下偶发副本 */
-	public void updateAccEctype(){
-		accEctypes.clear();
+	/** 更新一下副本 */
+	public void updateEctype(){
+		ectypes.clear();
+		// 获取常驻副本
+		
+		
+		// 获取偶发副本
 		List<IPlanet> ls = WorldManager.o.getAllPlanet();
 		for( IPlanet o : ls ){
 			List<AccEctype> v = o.getAccEctype();
 			if( v == null ) continue;
-			accEctypes.append( v );
+			ectypes.appendAcc( v );
 		}
 	}
 	
@@ -204,8 +208,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public CaptainsControl getCaptains() {
 		return captains;
 	}
-	public AccEctypeControl getAccEctypes() {
-		return accEctypes;
+	public EctypeControl getEctypes() {
+		return ectypes;
 	}
 
 

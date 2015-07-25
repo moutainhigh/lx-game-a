@@ -29,8 +29,7 @@ public class IHold extends IDepot implements ITransformStream{
 		buffer.writeShort( room );
 		buffer.writeByte( props.size() );
 		for( IProp o : props ){
-			buffer.writeInt( o.getnId() );
-			buffer.writeInt( o.getCount() );
+			o.putBaseBuffer(buffer);
 		}
 	}
 	

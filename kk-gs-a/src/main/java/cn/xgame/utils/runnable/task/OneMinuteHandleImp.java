@@ -23,7 +23,7 @@ public class OneMinuteHandleImp extends IThread {
 			
 			Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
 			for( Player player : values ){
-				player.getAccEctypes().run();
+				player.getEctypes().run();
 			}
 		
 		} catch (Exception e) {

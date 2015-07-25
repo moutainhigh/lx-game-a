@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ectype.o;
+package cn.xgame.a.player.ectype;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author deng		
  * @date 2015-7-21 下午2:06:22
  */
-public enum AccType {
+public enum EctypeType {
 
 	/**
 	 * 常规
@@ -29,17 +29,17 @@ public enum AccType {
 	
 	
 	private final byte			number;
-	AccType( int value ) {
+	EctypeType( int value ) {
 		if( value >= Byte.MAX_VALUE || value < 0 ){
 			throw new IllegalArgumentException( "不符合规范：" + value );
 		}
 		this.number 		= (byte) value;
 	}
 	
-	private static final Map<Byte, AccType> numToEnum = new HashMap<Byte, AccType>();
+	private static final Map<Byte, EctypeType> numToEnum = new HashMap<Byte, EctypeType>();
 	static{
-		for( AccType a : values() ){
-			AccType p = numToEnum.put( a.number, a );
+		for( EctypeType a : values() ){
+			EctypeType p = numToEnum.put( a.number, a );
 			if( p != null ){
 				throw new RuntimeException( a.number + "重复了" );
 			}
@@ -49,7 +49,7 @@ public enum AccType {
 	public byte toNumber() {
 		return number;
 	}
-	public static AccType fromNumber( int n ){
+	public static EctypeType fromNumber( int n ){
 		return numToEnum.get( (byte)n );
 	}
 }

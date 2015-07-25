@@ -17,6 +17,8 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
+import cn.xgame.net.event.all.pl.chat.SponsorPmChatEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyAccEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
@@ -44,6 +46,7 @@ import cn.xgame.net.event.all.pl.update.Update_2221;
 import cn.xgame.net.event.all.pl.update.Update_2231;
 import cn.xgame.net.event.all.pl.update.Update_2241;
 import cn.xgame.net.event.all.pl.update.Update_2252;
+import cn.xgame.net.event.all.pl.update.Update_3000;
 
 /**
  * 通信 消息
@@ -94,6 +97,10 @@ public enum Events {
 	SHOP_BUY						( 1301, 				new ShopBuyEvent() ),
 	TAVERN_BUY						( 1311, 				new TavernBuyEvent() ),
 	
+	//-----------------聊天
+	SPONSOR_CHAT					( 3001, 				new SponsorChatEvent() ),
+	SPONSOR_PMCHAT					( 3002, 				new SponsorPmChatEvent() ),
+	
 	
 	//-----------------更新包
 	UPDATE_2101						( 2101, 				new Update_2101() ),
@@ -105,6 +112,8 @@ public enum Events {
 	UPDATE_2231						( 2231, 				new Update_2231() ),
 	UPDATE_2241						( 2241, 				new Update_2241() ),
 	UPDATE_2252						( 2252, 				new Update_2252() ),
+	// 聊天
+	UPDATE_3000						( 3000, 				new Update_3000() ),
 	
 
 	
