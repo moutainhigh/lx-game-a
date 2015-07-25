@@ -28,6 +28,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 
 	private final Ship template;
 	
+	
 	// 舰长唯一ID
 	private int captainUID = -1;
 	// 停靠在的星球

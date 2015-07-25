@@ -259,10 +259,8 @@ public class BuildingControl implements IArrayStream{
 		Iterator<UnBuildings> iter = voBuildings.iterator();
 		while( iter.hasNext() ){
 			UnBuildings o = iter.next();
+			// 这里时间完了 默认不同意 直接删除
 			if( o.getVote().isComplete() ){
-				// 放入到 建造列表中
-				appendUnBuild( o );
-				// 然后从列表中删除
 				iter.remove();
 				return o;
 			}

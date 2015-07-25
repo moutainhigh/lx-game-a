@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ship.o;
+package cn.xgame.a.player;
 
 
 import io.netty.buffer.ByteBuf;
@@ -29,7 +29,8 @@ public class IHold extends IDepot implements ITransformStream{
 		buffer.writeShort( room );
 		buffer.writeByte( props.size() );
 		for( IProp o : props ){
-			o.putBaseBuffer(buffer);
+			buffer.writeInt( o.getnId() );
+			buffer.writeInt( o.getCount() );
 		}
 	}
 	

@@ -6,7 +6,7 @@ import io.netty.buffer.Unpooled;
 
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.player.ship.o.IHold;
+import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 

@@ -724,8 +724,11 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		
 		// 如果是特产 那么就要对应扣除数量
-		if( prop.getuId() == 1 )
+		if( prop.getuId() == 1 ){
 			specialtyControl.deduct( nid, count );
+			// 同步给其他玩家
+			
+		}
 		
 		// 及时更新数据库
 		PlayerManager.o.update(player);

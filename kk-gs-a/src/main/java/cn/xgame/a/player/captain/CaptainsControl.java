@@ -31,6 +31,10 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		this.root = player;
 	}
 
+	public List<CaptainInfo> getAll() {
+		return captains;
+	}
+	
 	@Override
 	public void fromDB() {
 		captains.clear();
@@ -91,6 +95,7 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		
 		return cap;
 	}
+
 
 
 }

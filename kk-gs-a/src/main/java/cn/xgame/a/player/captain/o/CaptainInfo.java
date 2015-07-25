@@ -1,5 +1,6 @@
 package cn.xgame.a.player.captain.o;
 
+
 import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
@@ -18,7 +19,9 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
  */
 public class CaptainInfo extends IUObject implements ITransformStream{
 
-	private final Captain template; 
+	private final Captain template;
+	
+	private EquipControl equips = new EquipControl();
 	
 	public CaptainInfo(int uid, int nid) {
 		super( uid, nid );
@@ -31,7 +34,7 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 	}
 
 	public Captain template(){ return template; }
-	
+	public EquipControl getEquips() { return equips; }
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
@@ -61,4 +64,7 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 	private void setDBData(CaptainsDto dto) {
 		dto.setNid(getnId());
 	}
+
+	//TODO------------其他函数
+
 }

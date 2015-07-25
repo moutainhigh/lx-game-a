@@ -108,6 +108,7 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 		Specialty o = getSpecialty( nid );
 		if( o == null ) return;
 		int rcount = o.getYieldCount() - count;
+		if( rcount < 0 ) rcount = 0;
 		o.setYieldCount( rcount );
 	}
 

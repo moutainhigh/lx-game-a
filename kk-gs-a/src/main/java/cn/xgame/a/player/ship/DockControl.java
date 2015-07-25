@@ -30,11 +30,17 @@ public class DockControl implements ITransformStream,IFromDB{
 	
 	// 舰船 列表
 	private List<ShipInfo> ships = Lists.newArrayList();
+	// 舰船最大个数
+	private byte maxShipNum = 4 ;
 	
 	public DockControl( Player player ){
 		this.root = player;
 	}
 
+	public List<ShipInfo> getAll(){
+		return ships;
+	}
+	
 	@Override
 	public void fromDB() {
 		ships.clear();
@@ -72,20 +78,18 @@ public class DockControl implements ITransformStream,IFromDB{
 		return ships;
 	}
 	
-	/**
-	 * 装备一个舰船
-	 * @param ship
-	 */
-	public void equipShip( ShipInfo ship ) {
-		append( ship );
-	}
 
 	/**
 	 * 创建一个 舰船 并装备上
 	 * @param nid
 	 */
 	public void createShip( int nid ) {
+		
+		if( ships.size() >= maxShipNum )
+			return;
+		
 		ShipInfo ship = new ShipInfo( root.generatorShipUID(), nid );
+		
 		append( ship );
 		
 		// 最后在数据库 创建数据

@@ -126,7 +126,7 @@ public class Vote implements ITransformStream {
 			if( v.getUID().equals(uid) )
 				return 0;
 		}
-		return -1;
+		return 2;
 	}
 	
 	/**
