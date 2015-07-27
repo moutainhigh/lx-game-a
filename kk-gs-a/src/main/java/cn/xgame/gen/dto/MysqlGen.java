@@ -30,7 +30,7 @@
 			setObject( "countryId", dto.getCountryId() );
 			setObject( "currency", dto.getCurrency() );
 			setObject( "gold", dto.getGold() );
-			setObject( "accEctypes", dto.getAccEctypes() );
+			setObject( "ectypes", dto.getEctypes() );
 			setObject( "manors", dto.getManors() );
 
 			super.commit( true );		}	}
@@ -150,7 +150,7 @@
 		private Integer countryId = null;
 		private Integer currency = null;
 		private Integer gold = null;
-		private byte[] accEctypes = null;
+		private byte[] ectypes = null;
 		private byte[] manors = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
@@ -163,7 +163,7 @@
 			this.countryId = src.countryId;
 			this.currency = src.currency;
 			this.gold = src.gold;
-			this.accEctypes = src.accEctypes;
+			this.ectypes = src.ectypes;
 			this.manors = src.manors;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
@@ -176,7 +176,7 @@
 		/**  区域  */		public Integer getCountryId(){			return this.countryId;		}
 		/**  游戏币  */		public Integer getCurrency(){			return this.currency;		}
 		/**  充值币  */		public Integer getGold(){			return this.gold;		}
-		/**  偶发副本  */		public byte[] getAccEctypes(){			return this.accEctypes;		}
+		/**  副本(常驻副本-额外副本-偶发副本)  */		public byte[] getEctypes(){			return this.ectypes;		}
 		/**  领地  */		public byte[] getManors(){			return this.manors;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
@@ -189,7 +189,7 @@
 		/**  区域  */		public void setCountryId( Integer countryId ){			this.countryId = countryId;		}
 		/**  游戏币  */		public void setCurrency( Integer currency ){			this.currency = currency;		}
 		/**  充值币  */		public void setGold( Integer gold ){			this.gold = gold;		}
-		/**  偶发副本  */		public void setAccEctypes( byte[] accEctypes ){			this.accEctypes = accEctypes;		}
+		/**  副本(常驻副本-额外副本-偶发副本)  */		public void setEctypes( byte[] ectypes ){			this.ectypes = ectypes;		}
 		/**  领地  */		public void setManors( byte[] manors ){			this.manors = manors;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
@@ -202,7 +202,7 @@
 		public static String countryIdChangeSql( Integer x) {			return "countryId=" + x;		}
 		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
-		public static String accEctypesChangeSql( byte[] x) {			return "accEctypes=" + x;		}
+		public static String ectypesChangeSql( byte[] x) {			return "ectypes=" + x;		}
 		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
@@ -215,10 +215,10 @@
 			countryId = o.getInt( "countryId" );
 			currency = o.getInt( "currency" );
 			gold = o.getInt( "gold" );
-			accEctypes = o.getBytes( "accEctypes" );
+			ectypes = o.getBytes( "ectypes" );
 			manors = o.getBytes( "manors" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"accEctypes="+accEctypes+","+"manors="+manors;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

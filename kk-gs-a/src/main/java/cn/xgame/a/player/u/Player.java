@@ -80,10 +80,10 @@ public class Player extends IPlayer implements ITransformStream{
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
 		// 取出偶发副本信息
-		if( dto.getAccEctypes() == null )
+		if( dto.getEctypes() == null )
 			updateEctype();
 		else
-			ectypes.fromBytes( dto.getAccEctypes() );
+			ectypes.fromBytes( dto.getEctypes() );
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
@@ -97,8 +97,8 @@ public class Player extends IPlayer implements ITransformStream{
 	@Override
 	public void update( PlayerDataDto dto ) {
 		super.update(dto);
-		// 偶发副本
-		dto.setAccEctypes( ectypes.toBytes() );
+		// 副本
+		dto.setEctypes( ectypes.toBytes() );
 	}
 	
 	@Override
