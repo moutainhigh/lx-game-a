@@ -155,6 +155,7 @@ public class PlayerManager {
 		
 		Player ret = null;
 		try {
+			// 初始化数据
 			ret = Init.run( uID, headIco, adjutantId, name );
 			// 设置socket
 			ret.setCtx( ctx );

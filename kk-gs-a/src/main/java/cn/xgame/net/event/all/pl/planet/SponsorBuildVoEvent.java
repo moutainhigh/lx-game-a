@@ -12,6 +12,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -41,6 +42,7 @@ public class SponsorBuildVoEvent extends IEvent{
 			// 开始发起投票
 			planet.sponsorBuivote( player, nid, index, time );
 			
+			Logs.debug( player, " 发起建筑投票 nid=" + nid + ", index=" + index + ", time=" + time );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

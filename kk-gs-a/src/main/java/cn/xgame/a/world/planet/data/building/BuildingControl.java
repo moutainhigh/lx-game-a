@@ -20,13 +20,13 @@ import cn.xgame.a.world.planet.data.vote.Vote;
 public class BuildingControl implements IArrayStream{
 
 	// 已建筑的建筑列表
-	private List<Buildings> buildings = Lists.newArrayList();
+	private volatile List<Buildings> buildings = Lists.newArrayList();
 	
 	// 投票建筑列表
-	private List<UnBuildings> voBuildings = Lists.newArrayList();
+	private volatile List<UnBuildings> voBuildings = Lists.newArrayList();
 	
 	// 建筑中列表
-	private List<UnBuildings> unBuildings = Lists.newArrayList();
+	private volatile List<UnBuildings> unBuildings = Lists.newArrayList();
 	
 	
 	public void fromTemplet( String content ) {
@@ -233,7 +233,6 @@ public class BuildingControl implements IArrayStream{
 	 * @param unBuild
 	 */
 	public void appendUnBuild( UnBuildings unBuild ) {
-		unBuild.setVote(null);
 		unBuildings.add(unBuild);
 	}
 
@@ -260,7 +259,7 @@ public class BuildingControl implements IArrayStream{
 		while( iter.hasNext() ){
 			UnBuildings o = iter.next();
 			// 这里时间完了 默认不同意 直接删除
-			if( o.getVote().isComplete() ){
+			if( o.getVote() == null || o.getVote().isComplete() ){
 				iter.remove();
 				return o;
 			}

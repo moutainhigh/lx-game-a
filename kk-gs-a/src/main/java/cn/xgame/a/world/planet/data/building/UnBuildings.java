@@ -1,6 +1,7 @@
 package cn.xgame.a.world.planet.data.building;
 
 import cn.xgame.a.world.planet.data.vote.Vote;
+import cn.xgame.config.o.Sbuilding;
 
 /**
  * 未建筑 的建筑 - 先投票 然后经过时间 建筑<br>
@@ -14,10 +15,14 @@ public class UnBuildings extends Buildings{
 	private int rTime;
 	
 	// 投票器 - 用于投票的
-	private Vote vote;
+	private Vote vote = null;
 	
 	public UnBuildings( int id ) {
 		super(id);
+	}
+
+	public UnBuildings(Sbuilding templet, byte index) {
+		super( templet, index );
 	}
 
 	public int getrTime() {
@@ -38,6 +43,8 @@ public class UnBuildings extends Buildings{
 	 * @return
 	 */
 	public int getPastTime() {
+		if( rTime == -1 )
+			return -1;
 		if( templet().needtime == 0 ) 
 			return 0;
 		return (int) (System.currentTimeMillis()/1000 - rTime);
@@ -48,10 +55,7 @@ public class UnBuildings extends Buildings{
 	 * @return
 	 */
 	public boolean isComplete() {
-		if( templet().needtime == 0 ) 
-			return true;
-		int past = getPastTime();
-		return past >= templet().needtime;
+		return getPastTime() >= templet().needtime || templet().needtime == 0;
 	}
 	
 	

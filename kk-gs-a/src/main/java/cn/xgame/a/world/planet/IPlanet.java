@@ -12,6 +12,7 @@ import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
+import cn.xgame.a.world.planet.data.ectype.SEctypeControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
@@ -44,6 +45,10 @@ public abstract class IPlanet implements ITransformStream{
 	// 星球建筑
 	protected BuildingControl buildingControl = new BuildingControl();
 	
+	// ------临时数据
+	// 星球副本 - 这个不需要保存数据库 每次根据表格生成出来
+	protected SEctypeControl ectypeControl = new SEctypeControl();
+	
 	
 	public IPlanet( Stars clone ){
 		templet = clone;
@@ -57,6 +62,7 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
+		ectypeControl.fromTemplet( templet );
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
@@ -75,6 +81,7 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromTemplet( templet.goods );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
+		ectypeControl.fromTemplet( templet );
 	}
 	
 	@Override
@@ -125,6 +132,7 @@ public abstract class IPlanet implements ITransformStream{
 	public SpecialtyControl getSpecialtyControl() { return specialtyControl; }
 	public ResourceControl getDepotControl() { return depotControl; }
 	public BuildingControl getBuildingControl() { return buildingControl; }
+	public SEctypeControl getEctypeControl() { return ectypeControl; }
 
 	/**
 	 * 获取偶发副本
@@ -141,8 +149,9 @@ public abstract class IPlanet implements ITransformStream{
 			if( v.isEmpty() ) continue;
 			Ectype e = CsvGen.getEctype( Integer.parseInt(v) );
 			AccEctype acc = new AccEctype(templet.id,e);
-			if( !acc.isClose() )
+			if( !acc.isClose() ){
 				retAcc.add( acc );
+			}
 		}
 		return retAcc;
 	}

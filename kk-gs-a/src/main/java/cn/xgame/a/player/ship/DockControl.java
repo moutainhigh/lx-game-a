@@ -10,7 +10,6 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -65,8 +64,7 @@ public class DockControl implements ITransformStream,IFromDB{
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships ){
 			ship.buildTransformStream( buffer );
-			CaptainInfo cap = root.getCaptains().getCaptain( ship.getCaptainUID() );
-			buffer.writeInt( cap == null ? -1 : cap.getnId() );
+			buffer.writeInt( ship.getCaptainUID() );
 			buffer.writeInt( ship.getStarId() );
 			ship.getHolds().buildTransformStream(buffer);
 			ship.getWeapons().buildTransformStream(buffer);

@@ -21,13 +21,13 @@ import cn.xgame.config.o.Tech;
 public class TechControl implements IArrayStream{
 
 	// 已研究的科技列表
-	private List<Techs> techs = Lists.newArrayList();
+	private volatile List<Techs> techs = Lists.newArrayList();
 	
 	// 投票中的科技列表
-	private List<UnTechs> voTechs = Lists.newArrayList();
+	private volatile List<UnTechs> voTechs = Lists.newArrayList();
 	
 	// 研究中的科技列表
-	private List<UnTechs> unTechs = Lists.newArrayList();
+	private volatile List<UnTechs> unTechs = Lists.newArrayList();
 	
 	
 	@Override
@@ -264,7 +264,7 @@ public class TechControl implements IArrayStream{
 		Iterator<UnTechs> iter = voTechs.iterator();
 		while( iter.hasNext() ){
 			UnTechs o = iter.next();
-			if( o.getVote().isComplete() ){
+			if( o.getVote() == null || o.getVote().isComplete() ){
 				// 放入研究列表
 				appendUnTech( o );
 				// 然后才从列表中删除

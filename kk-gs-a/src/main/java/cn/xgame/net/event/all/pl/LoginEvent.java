@@ -10,7 +10,7 @@ import x.javaplus.util.Util.Key;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.Constants;
+import cn.xgame.a.system.LXConstants;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
@@ -38,7 +38,7 @@ public class LoginEvent extends IEvent{
 		try {
 			
 			// 验证key是否正确
-			if( !Key.verify( key, UID+Constants.PUBLICKEY ) )
+			if( !Key.verify( key, UID+LXConstants.PUBLICKEY ) )
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
 			// 获取玩家信息

@@ -4,6 +4,7 @@ import x.javaplus.util.Util.Time;
 import cn.xgame.utils.runnable.task.DailyHandleImp;
 import cn.xgame.utils.runnable.task.FiveMinuteHandleImp;
 import cn.xgame.utils.runnable.task.OneMinuteHandleImp;
+import cn.xgame.utils.runnable.task.OneSecondHandleImp;
 import cn.xgame.utils.runnable.task.TwoMinuteHandleImp;
 import cn.xgame.utils.runnable.task.TwohundredMilliscondHandleImp;
 
@@ -27,6 +28,8 @@ public class ThreadManager {
 	private static FiveMinuteHandleImp  fiveMinuteHandleImp = null;
 	// 每两百毫秒
 	private static TwohundredMilliscondHandleImp twohundredMilliscondHandleImp = null;
+	// 每一秒
+	private static OneSecondHandleImp oneSecondHandleImp = null;
 	
 	/** 开启所有 线程 */
 	public static void start(){
@@ -50,6 +53,10 @@ public class ThreadManager {
 		// 每200毫秒
 		twohundredMilliscondHandleImp = new TwohundredMilliscondHandleImp();
 		twohundredMilliscondHandleImp.start( 200l, 200l );
+		
+		// 每1秒
+		oneSecondHandleImp = new OneSecondHandleImp();
+		oneSecondHandleImp.start( 1000l, 1000l );
 	}
 	
 	/** 关闭所有 线程 */
@@ -65,6 +72,8 @@ public class ThreadManager {
 		fiveMinuteHandleImp = null;
 		twohundredMilliscondHandleImp.stop();
 		twohundredMilliscondHandleImp = null;
+		oneSecondHandleImp.stop();
+		oneSecondHandleImp = null;
 		
 	}
 		

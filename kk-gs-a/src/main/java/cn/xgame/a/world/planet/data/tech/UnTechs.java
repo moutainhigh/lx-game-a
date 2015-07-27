@@ -1,6 +1,7 @@
 package cn.xgame.a.world.planet.data.tech;
 
 import cn.xgame.a.world.planet.data.vote.Vote;
+import cn.xgame.config.o.Tech;
 
 /**
  * 还没学习的科技<br>
@@ -14,12 +15,16 @@ public class UnTechs extends Techs{
 	private int rTime;
 	
 	// 投票器 - 用于投票的
-	private Vote vote;
+	private Vote vote = null;
 	
 	public UnTechs(int id) {
 		super(id);
 	}
 	
+	public UnTechs(Tech templet) {
+		super(templet);
+	}
+
 	public int getrTime() {
 		return rTime;
 	}
@@ -38,7 +43,11 @@ public class UnTechs extends Techs{
 	 * @return
 	 */
 	public int getPastTime() {
-		return 10;
+		if( rTime == -1 )
+			return -1;
+		if( templet().needtime == 0 ) 
+			return 0;
+		return (int) (System.currentTimeMillis()/1000 - rTime);
 	}
 
 	/**
@@ -46,7 +55,6 @@ public class UnTechs extends Techs{
 	 * @return
 	 */
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return getPastTime() >= templet().needtime || templet().needtime == 0;
 	}
 }

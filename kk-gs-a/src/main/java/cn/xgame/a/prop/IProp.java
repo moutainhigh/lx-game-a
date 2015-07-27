@@ -3,6 +3,7 @@ package cn.xgame.a.prop;
 import x.javaplus.mysql.db.Condition;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.system.LXConstants;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Item;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
@@ -171,6 +172,14 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	/**
+	 * 是否货币
+	 * @return
+	 */
+	public boolean isCurrency() {
+		return item.itemtype == 0 && nId == LXConstants.CURRENCY_NID;
+	}
+	
+	/**
 	 * 添加数量 
 	 * @param num
 	 * @return 多出的
@@ -197,6 +206,8 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
+
+
 
 
 

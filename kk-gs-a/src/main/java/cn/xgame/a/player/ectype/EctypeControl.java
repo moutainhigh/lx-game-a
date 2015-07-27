@@ -11,6 +11,7 @@ import x.javaplus.collections.Lists;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.o.AccEctype;
+import cn.xgame.a.player.ectype.o.PreEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.utils.Logs;
 
@@ -23,12 +24,14 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 
 	private Player root;
 	
-	// 常驻副本
-	private List<AccEctype> preEctypes = Lists.newArrayList();
-	
 	// 偶发副本
 	private List<AccEctype> accEctypes = Lists.newArrayList();
+
+	// 本星球常驻副本（这里包括瞭望的）
+	private List<PreEctype> preEctypes = Lists.newArrayList();
 	
+	// 瞭望范围外的副本 （就是根据某舰船停靠获得）
+	private List<PreEctype> ourEctypes = Lists.newArrayList();
 	
 	// 需要删除的列表
 	private List<Integer> removes = Lists.newArrayList();
@@ -40,20 +43,43 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
-		accEctypes.clear();
+		clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
+		// 常驻副本
 		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			preEctypes.add( new PreEctype(buf) );
+		}
+		// 额外副本
+		size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			ourEctypes.add( new PreEctype(buf) );
+		}
+		// 偶发副本
+		size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			AccEctype acc = new AccEctype( buf );
 			if( !acc.isClose() )
 				accEctypes.add( acc );
 		}
+		
 	}
 
 	@Override
 	public byte[] toBytes() {
 		if( accEctypes.isEmpty() ) return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
+		// 常驻副本
+		buf.writeByte( preEctypes.size() );
+		for( PreEctype pre : preEctypes ){
+			pre.putBuffer(buf);
+		}
+		// 额外副本
+		buf.writeByte( ourEctypes.size() );
+		for( PreEctype pre : ourEctypes ){
+			pre.putBuffer(buf);
+		}
+		// 偶发副本
 		buf.writeByte( accEctypes.size() );
 		for( AccEctype acc : accEctypes )
 			acc.putBuffer(buf);
@@ -62,16 +88,24 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeByte( preEctypes.size() );
-		for( AccEctype pre : preEctypes ){
-			pre.buildTransformStream(buffer);
-		}
+		// 偶发副本个数 
 		buffer.writeByte( accEctypes.size() );
 		for( AccEctype acc : accEctypes ){
 			acc.buildTransformStream(buffer);
 		}
-		Logs.debug( root, "常驻副本 " + preEctypes );
+		// 常驻-本星球副本个数（包括瞭望的）
+		buffer.writeByte( preEctypes.size() );
+		for( PreEctype pre : preEctypes ){
+			pre.buildTransformStream(buffer);
+		}
+		// 常驻-不在瞭望范围内的副本个数
+		buffer.writeByte( ourEctypes.size() );
+		for( PreEctype pre : ourEctypes ){
+			pre.buildTransformStream(buffer);
+		}
 		Logs.debug( root, "偶发副本 " + accEctypes );
+		Logs.debug( root, "常驻副本 " + preEctypes );
+		Logs.debug( root, "额外副本 " + ourEctypes );
 	}
 	
 	
@@ -94,16 +128,17 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 		}
 	}
 	
-	public void appendPre( List<AccEctype> v ) {
-		preEctypes.addAll(v);
+	public void appendPre( PreEctype ectype ) {
+		preEctypes.add(ectype);
 	}
-	public void appendAcc(List<AccEctype> v) {
+	public void appendAcc( List<AccEctype> v ) {
 		accEctypes.addAll(v);
 	}
 	
 	public void clear() {
 		accEctypes.clear();
 		preEctypes.clear();
+		ourEctypes.clear();
 	}
 
 	/** 玩家登录 记录登录计时副本 */

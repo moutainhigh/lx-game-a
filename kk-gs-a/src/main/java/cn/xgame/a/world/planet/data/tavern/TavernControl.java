@@ -8,7 +8,7 @@ import x.javaplus.util.Util.Random;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.system.Constants;
+import cn.xgame.a.system.LXConstants;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Taverndata;
 import cn.xgame.utils.Logs;
@@ -37,7 +37,7 @@ public class TavernControl implements ITransformStream{
 
 	// 五分钟
 	private int getRtime() {
-		int t = Constants.TAVERN_UPDATE_TIME - (int) (System.currentTimeMillis()/1000 - rTime);
+		int t = LXConstants.TAVERN_UPDATE_TIME - (int) (System.currentTimeMillis()/1000 - rTime);
 		return t <= 0 ? 1 : t;
 	}
 

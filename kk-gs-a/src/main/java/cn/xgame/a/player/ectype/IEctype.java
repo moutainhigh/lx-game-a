@@ -1,7 +1,15 @@
 package cn.xgame.a.player.ectype;
 
+import java.util.List;
+
+import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Random;
+
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.answering.Questions;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ectype;
+import cn.xgame.config.o.Question;
 
 /**
  * 副本基类
@@ -18,6 +26,8 @@ public abstract class IEctype {
 	// 副本类型
 	protected EctypeType type;
 	
+	// 随机应答 - 提问
+	protected List<Questions> questions = Lists.newArrayList();
 	
 	/**
 	 * 从配置表获取
@@ -28,6 +38,22 @@ public abstract class IEctype {
 		snid 		= id;
 		template 	= src;
 		type		= EctypeType.fromNumber( template.type );
+		randomQuestions();
+	}
+	
+	/**
+	 * 从数据库 获取
+	 * @param buffer
+	 */
+	public IEctype( ByteBuf buffer ){
+		snid 		= buffer.readInt();
+		template 	= CsvGen.getEctype( buffer.readInt() );
+		type		= EctypeType.fromNumber( template.type );
+		byte size 	= buffer.readByte();
+		for( int i = 0; i < size; i++ ){
+			Questions o = new Questions( buffer.readInt() );
+			questions.add(o);
+		}
 	}
 
 	/**
@@ -37,8 +63,23 @@ public abstract class IEctype {
 	public void putBuffer(ByteBuf buffer) {
 		buffer.writeInt( snid );
 		buffer.writeInt( template.id );
+		buffer.writeByte( questions.size() );
+		for( Questions o : questions ){
+			buffer.writeInt( o.getNid() );
+		}
 	}
 
+	/** 随机应答出来 */
+	public void randomQuestions() {
+		// 随机一个出来
+		List<Question> ls = CsvGen.questions;
+		int idx = Random.get( 0, ls.size() -1 );
+		int id = ls.get(idx).id;
+		// 放入应答列表
+		Questions o = new Questions( id );
+		questions.add( o );
+	}
+	
 	/**
 	 * 该副本是否关闭
 	 * @return

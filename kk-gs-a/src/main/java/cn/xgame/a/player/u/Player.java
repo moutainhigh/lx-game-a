@@ -10,11 +10,16 @@ import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.depot.DepotControl;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.AccEctype;
+import cn.xgame.a.player.ectype.o.PreEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.data.ectype.SEctype;
+import cn.xgame.a.world.planet.home.HomePlanet;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Ectype;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -66,8 +71,6 @@ public class Player extends IPlayer implements ITransformStream{
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		setManors( new ManorControl() );
-		// 获取偶发副本
-		updateEctype();
 	}
 	
 	/**
@@ -142,7 +145,16 @@ public class Player extends IPlayer implements ITransformStream{
 	/** 更新一下副本 */
 	public void updateEctype(){
 		ectypes.clear();
-		// 获取常驻副本
+		// 获取常驻副本 包括瞭望的副本
+		HomePlanet home = WorldManager.o.getHomePlanet(getCountryId());
+		if( home == null )
+			return;
+		List<SEctype> sectypes = home.getEctypeControl().getAll();
+		for( SEctype o : sectypes ){
+			Ectype templet = CsvGen.getEctype( o.getEnid() );
+			ectypes.appendPre( new PreEctype( o.getSnid(), templet ) );
+		}
+		// 获取额外副本 ( 就是)
 		
 		
 		// 获取偶发副本

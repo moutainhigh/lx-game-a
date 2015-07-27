@@ -17,9 +17,8 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
  */
 public enum PropType {
 	
-	
 	/** 其他 */
-	other( 1 ) {
+	OTHER( 1 ) {
 		@Override
 		public IProp create( int uid, int nid, int count ) {
 			return null;

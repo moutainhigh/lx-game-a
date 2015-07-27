@@ -12,7 +12,7 @@ import x.javaplus.util.Util.Key;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.Constants;
+import cn.xgame.a.system.LXConstants;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
@@ -43,7 +43,7 @@ public class CreateEvent extends IEvent {
 		try {
 			
 			// 验证key是否正确
-			if( !Key.verify( key, UID+Constants.PUBLICKEY ) )
+			if( !Key.verify( key, UID+LXConstants.PUBLICKEY ) )
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
 			// 获取玩家信息
@@ -58,6 +58,9 @@ public class CreateEvent extends IEvent {
 				ship.setStarId( home.getId() );
 				ship.updateDB(player);
 			}
+			
+			// 获取副本信息
+			player.updateEctype();
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {

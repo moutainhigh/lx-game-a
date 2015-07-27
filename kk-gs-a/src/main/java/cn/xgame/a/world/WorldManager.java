@@ -6,10 +6,8 @@ import java.util.List;
 
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.ectype.EctypePlanet;
 import cn.xgame.a.world.planet.entrepot.EntrepotPlanet;
@@ -243,24 +241,6 @@ public class WorldManager {
 		for( HomePlanet home : homes ){
 			home.updateTavern();
 		}
-	}
-	
-	/**
-	 * 给某个星球捐献资源
-	 * @param player 
-	 * @param id
-	 * @param prop
-	 * @return 
-	 * @throws Exception 
-	 */
-	public void donateResource( Player player, int id, IProp prop ) throws Exception {
-		IPlanet planet = getPlanet( id );
-		if( planet == null )
-			throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
-		if( !planet.isCanDonate() )
-			throw new Exception( ErrorCode.CANNOT_DONATE.name() );
-		// 开捐赠
-		planet.donateResource( player, prop );
 	}
 
 }

@@ -1,8 +1,8 @@
 package cn.xgame.a.player.ectype.o;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.IEctype;
-import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ectype;
 
 /**
@@ -10,7 +10,7 @@ import cn.xgame.config.o.Ectype;
  * @author deng		
  * @date 2015-7-25 下午1:05:03
  */
-public class PreEctype extends IEctype{
+public class PreEctype extends IEctype implements ITransformStream{
 
 	/**
 	 * 从配置表获取
@@ -26,13 +26,17 @@ public class PreEctype extends IEctype{
 	 * @param buf
 	 */
 	public PreEctype( ByteBuf buf ) {
-		super( buf.readInt(), CsvGen.getEctype( buf.readInt() ) );
+		super( buf );
 	}
-	
 	
 	@Override
 	public boolean isClose() {
 		return false;
+	}
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		putBuffer(buffer);
 	}
 
 }

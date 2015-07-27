@@ -1,7 +1,6 @@
 package cn.xgame.a.chat;
 
 
-import java.util.Collection;
 import java.util.List;
 
 import cn.xgame.a.player.PlayerManager;
@@ -33,7 +32,7 @@ public class ChatManager {
 	public void synchronizeMsg( ChatType type, Player sponsor, String content ) {
 		switch( type ){
 		case WORLD:
-			synWorldMsg( sponsor, content );
+//			synWorldMsg( sponsor, content );
 			break;
 		case PLANET:
 			synPlanetMsg( sponsor, content );
@@ -59,14 +58,14 @@ public class ChatManager {
 	 * @param sponsor 发起人
 	 * @param content
 	 */
-	private void synWorldMsg( Player sponsor, String content ) {
-		
-		Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
-		for( Player o : values ){
-			
-			synMsg( ChatType.WORLD, o, sponsor, content );
-		}
-	}
+//	private void synWorldMsg( Player sponsor, String content ) {
+//		
+//		Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
+//		for( Player o : values ){
+//			
+//			synMsg( ChatType.WORLD, o, sponsor, content );
+//		}
+//	}
 
 	/**
 	 * 同步母星消息

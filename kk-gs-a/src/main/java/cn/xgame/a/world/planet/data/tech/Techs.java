@@ -21,7 +21,10 @@ public class Techs implements ITransformStream {
 	public Techs( Techs src ){
 		templet = src.templet;
 	}
-	
+	public Techs(Tech templet) {
+		this.templet = templet;
+	}
+
 	public Tech templet() { return templet; }
 
 	@Override

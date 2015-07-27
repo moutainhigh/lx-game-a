@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.EctypeType;
 import cn.xgame.a.player.ectype.IEctype;
-import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ectype;
 
 /**
@@ -43,7 +42,7 @@ public class AccEctype extends IEctype implements ITransformStream{
 	 * @param buf
 	 */
 	public AccEctype( ByteBuf buf ) {
-		super( buf.readInt(), CsvGen.getEctype( buf.readInt() ) );
+		super( buf );
 		times 	= buf.readInt();
 		endTime = buf.readInt();
 		init();
@@ -93,5 +92,6 @@ public class AccEctype extends IEctype implements ITransformStream{
 	public void setEndTime() {
 		endTime = (int) (System.currentTimeMillis()/1000 + persistTime);
 	}
+
 
 }

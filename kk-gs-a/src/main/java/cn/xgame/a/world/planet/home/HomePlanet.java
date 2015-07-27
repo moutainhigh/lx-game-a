@@ -34,6 +34,7 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Item;
 import cn.xgame.config.o.Sbuilding;
 import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.Tech;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -70,9 +71,6 @@ public class HomePlanet extends IPlanet {
 	
 	// 商店列表
 	private List<IProp> shops = Lists.newArrayList();
-	
-	// 能看到的副本列表
-	
 	
 	//////////////////////////////数据库相关
 	// 玩家列表
@@ -112,7 +110,10 @@ public class HomePlanet extends IPlanet {
 	public void init( PlanetDataDto dto ) {
 		super.init(dto);
 		setInstitution(Institution.REPUBLIC);
+		// 酒馆
 		updateTavern();
+		// 副本
+		updateEctypeInOutlook();
 	}
 	
 	@Override
@@ -140,7 +141,7 @@ public class HomePlanet extends IPlanet {
 		// 更新一下酒馆
 		updateTavern();
 		// 根据瞭望科技 更新副本信息
-		updateEctype();
+		updateEctypeInOutlook();
 	}
 
 	private void wrapPlayer( byte[] data ) {
@@ -392,10 +393,11 @@ public class HomePlanet extends IPlanet {
 		// 说明投票完成
 		if( status != -1 ){
 			if( status == 1 ) // 同意建筑
-				startBuild( unBuild );
+				startBuild( unBuild.templet(), unBuild.getIndex(), unBuild.getVote().getSponsorUid() );
 			if( status == 0 ){ // 反对建筑
 				//...暂时没有处理
 			}
+			
 			// 最后不管怎样都要删掉的
 			buildingControl.removeVoteBuild( unBuild );
 			
@@ -407,20 +409,26 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	// 开始建筑
-	private void startBuild( UnBuildings unBuild )  {
+	private void startBuild( Sbuilding templet, byte index, String sprUid )  {
+		
+		if( templet == null )
+			return;
+		
+		int time = -1;
 		
 		// 判断资源是否够 - 开始扣资源
-		if( getDepotControl().deductProp( unBuild.templet().needres ) )
-			unBuild.setrTime( (int) (System.currentTimeMillis()/1000) );
-		else
-			unBuild.setrTime( -1 );
+		if( getDepotControl().deductProp( templet.needres ) )
+			time = (int) (System.currentTimeMillis()/1000);
 		
+		UnBuildings unBuild = new UnBuildings( templet, index );
+		unBuild.setrTime(time);
 		// 放入建筑中 列表
 		buildingControl.appendUnBuild( unBuild );
 		
 		// 设置发起人的通过数
-		Child sponsor = getChild( unBuild.getVote().getSponsorUid() );
-		sponsor.addPasss( 1 );
+		Child sponsor = getChild( sprUid );
+		if( sponsor != null )
+			sponsor.addPasss( 1 );
 	}
 	
 	/////////////////// =================科技====================
@@ -465,7 +473,7 @@ public class HomePlanet extends IPlanet {
 		// 说明投票完成
 		if( status != -1 ){
 			if( status == 1 ) // 同意建筑
-				startStudy( unTech );
+				startStudy( unTech.templet(), unTech.getVote().getSponsorUid() );
 			if( status == 0 ){ // 反对建筑
 				//...暂时没有处理
 			}
@@ -479,18 +487,25 @@ public class HomePlanet extends IPlanet {
 		}
 	}
 	// 开始研究科技
-	private void startStudy(UnTechs unTech) {
+	private void startStudy( Tech templet, String sprUid ) {
+		if( templet == null )
+			return;
+		
+		int time = -1;
 		
 		// 判断资源是否够 - 开始扣资源
-		if( getDepotControl().deductProp( unTech.templet().needres ) )
-			unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
-		else
-			unTech.setrTime( -1 );
+		if( getDepotControl().deductProp( templet.needres ) )
+			time = (int) (System.currentTimeMillis()/1000);
+		
+		UnTechs unTech = new UnTechs( templet );
+		unTech.setrTime(time);
+		
 		// 放入建筑中 列表
 		techControl.appendUnTech( unTech );
 		// 设置发起人的通过数
-		Child sponsor = getChild( unTech.getVote().getSponsorUid() );
-		sponsor.addPasss( 1 );
+		Child sponsor = getChild( sprUid );
+		if( sponsor != null )
+			sponsor.addPasss( 1 );
 	}
 	
 	// 刷新科技等级
@@ -659,7 +674,7 @@ public class HomePlanet extends IPlanet {
 	////////////------------------------------副本
 	
 	// 根据瞭望科技 更新副本信息
-	private void updateEctype() {
+	private void updateEctypeInOutlook() {
 		
 	}
 	

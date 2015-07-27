@@ -115,7 +115,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		String[] content = needres.split("\\|");
 		for( String x : content ){
 			if( x.isEmpty() ) continue;
-			String[] o 	= x.split(",");
+			String[] o 	= x.split(";");
 			int nid 	= Integer.parseInt( o[0] );
 			int count	= Integer.parseInt( o[1] );
 			// 获取 对应ID的 所有道具列表
