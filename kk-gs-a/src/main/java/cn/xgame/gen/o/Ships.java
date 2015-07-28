@@ -28,10 +28,7 @@ public interface Ships {
 	/** 货仓 */
 	byte[] holds();
 	
-	/** 武器 */
-	byte[] weapons();
-	
-	/** 辅助 */
-	byte[] assists();
+	/** 装备 */
+	byte[] equips();
 	
 }

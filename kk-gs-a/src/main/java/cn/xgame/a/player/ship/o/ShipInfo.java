@@ -6,9 +6,8 @@ import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.IUObject;
-import cn.xgame.a.player.ship.o.v.AssistControl;
 import cn.xgame.a.player.ship.o.v.HoldControl;
-import cn.xgame.a.player.ship.o.v.WeaponControl;
+import cn.xgame.a.player.ship.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ship;
@@ -38,11 +37,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	// 货仓
 	private HoldControl holds = new HoldControl();
 	
-	// 武器
-	private WeaponControl weapons = new WeaponControl();
-	
-	// 辅助
-	private AssistControl assists = new AssistControl();
+	// 装备 武器-辅助
+	private EquipControl equips = new EquipControl();
 
 	
 	// 组队信息
@@ -57,8 +53,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		super( uid, nid );
 		template 	= CsvGen.getShip(nid);
 		holds.setRoom( template.groom );
-		weapons.setRoom( template.wroom );
-		assists.setRoom( template.eroom );
+		equips.setRoom( template.wroom );
 	}
 
 	/**
@@ -71,8 +66,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		captainUID = dto.getCaptainUid();
 		starId = dto.getStarId();
 		holds.fromBytes( dto.getHolds() );
-		weapons.fromBytes( dto.getWeapons() );
-		assists.fromBytes( dto.getAssists() );
+		equips.fromBytes( dto.getWeapons() );
 	}
 
 	@Override
@@ -122,8 +116,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		dto.setCaptainUid( captainUID );
 		dto.setStarId( starId );
 		dto.setHolds( holds.toBytes() );
-		dto.setWeapons( weapons.toBytes() );
-		dto.setAssists( assists.toBytes() );
+		dto.setWeapons( equips.toBytes() );
 	}
 	
 	
@@ -141,8 +134,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		this.starId = starId;
 	}
 	public HoldControl getHolds() { return holds; }
-	public WeaponControl getWeapons() { return weapons; }
-	public AssistControl getAssists() { return assists; }
+	public EquipControl getEquips() { return equips; }
 	
 	
 }

@@ -29,6 +29,10 @@ public class PreEctype extends IEctype implements ITransformStream{
 		super( buf );
 	}
 	
+	public String toString(){
+		return "{" + template.id + "-" + snid + "}";
+	}
+	
 	@Override
 	public boolean isClose() {
 		return false;

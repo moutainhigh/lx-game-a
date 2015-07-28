@@ -67,8 +67,7 @@ public class DockControl implements ITransformStream,IFromDB{
 			buffer.writeInt( ship.getCaptainUID() );
 			buffer.writeInt( ship.getStarId() );
 			ship.getHolds().buildTransformStream(buffer);
-			ship.getWeapons().buildTransformStream(buffer);
-			ship.getAssists().buildTransformStream(buffer);
+			ship.getEquips().buildTransformStream(buffer);
 		}
 	}
 
@@ -112,6 +111,30 @@ public class DockControl implements ITransformStream,IFromDB{
 		return null;
 	}
 
+	/**
+	 * 从某艘船获取装备
+	 * @param suid
+	 * @param puid
+	 * @return
+	 */
+	public IProp getEquipAtShip( int suid, int puid ) {
+		ShipInfo ship = getShip(suid);
+		if( ship == null ) return null;
+		return ship.getEquips().getProp(puid);
+	}
+	
+	/**
+	 * 从某艘船删除道具
+	 * @param atsuid
+	 * @param prop
+	 */
+	public void removeEquipAtShip( int suid, IProp prop ) {
+		ShipInfo ship = getShip(suid);
+		if( ship == null ) return;
+		ship.getEquips().remove(prop);
+		ship.updateDB(root);
+	}
+	
 	//TODO-------------其他函数
 
 	/**
@@ -162,8 +185,31 @@ public class DockControl implements ITransformStream,IFromDB{
 		return ret;
 	}
 
+	/**
+	 * 装上一个装备
+	 * @param suid
+	 * @param clone
+	 * @return
+	 * @throws Exception 
+	 */
+	public IProp mountEquip( int suid, IProp clone ) throws Exception {
+		// 检查舰船是否存在
+		ShipInfo ship = getShip(suid);
+		if( ship == null )
+			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+		// 看货仓是否 还有空间
+		if( ship.getEquips().roomIsEnough( clone ) )
+			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+		// 直接放入
+		IProp ret = ship.getEquips().put(clone);
+		
+		ship.updateDB( root );
+		return ret;
+	}
 
 
+	
+	
 	
 	
 }

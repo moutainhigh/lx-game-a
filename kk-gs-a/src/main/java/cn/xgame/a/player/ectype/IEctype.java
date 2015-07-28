@@ -71,6 +71,18 @@ public abstract class IEctype {
 
 	/** 随机应答出来 */
 	public void randomQuestions() {
+//		if( template.ranswers.isEmpty() )
+//			return;
+//		String[] content = template.ranswers.split("\\|");
+//		for( String x : content ){
+//			if( x.isEmpty() ) continue;
+//			String[] v = x.split(";");
+//			int rand = Random.get( 0, 10000 );
+//			if( rand > Integer.parseInt( v[1] ) ) 
+//				continue;
+//			Questions o = new Questions( Integer.parseInt( v[0] ) );
+//			questions.add( o );
+//		}
 		// 随机一个出来
 		List<Question> ls = CsvGen.questions;
 		int idx = Random.get( 0, ls.size() -1 );

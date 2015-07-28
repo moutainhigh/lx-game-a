@@ -43,14 +43,14 @@ public class IHold extends IDepot implements ITransformStream{
 		// 获取一个可累加道具
 		IProp temp 	= getCanCumsumProp( prop.getnId() );
 		if( temp == null ){
-			ret.add( create( prop ) );
+			ret.add( put( prop ) );
 		}else{
 			// 算出差值
 			int surplus = temp.addCount( prop.getCount() );
 			ret.add(temp);
 			if( surplus > 0 ){
 				prop.setCount(surplus);
-				ret.add( create( prop ) );
+				ret.add( put( prop ) );
 			}
 		}
 		return ret;
@@ -61,7 +61,7 @@ public class IHold extends IDepot implements ITransformStream{
 	 * @param prop
 	 * @return
 	 */
-	public IProp create( IProp prop ){
+	public IProp put( IProp prop ){
 		prop.setuId( getResUID() );
 		append(prop);
 		return prop;

@@ -180,6 +180,22 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	/**
+	 * 是否舰船装备
+	 * @return
+	 */
+	public boolean isShipEquip() {
+		return type() == PropType.SEQUIP;
+	}
+	
+	/**
+	 * 是否舰长装备
+	 * @return
+	 */
+	public boolean isCaptainEquip() {
+		return type() == PropType.CEQUIP;
+	}
+	
+	/**
 	 * 添加数量 
 	 * @param num
 	 * @return 多出的
@@ -206,10 +222,6 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
-
-
-
-
 
 
 

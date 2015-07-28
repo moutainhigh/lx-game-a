@@ -12,7 +12,7 @@ import cn.xgame.a.prop.PropType;
  * @author deng		
  * @date 2015-7-23 下午4:43:38
  */
-public class WeaponControl extends IHold implements IArrayStream{
+public class EquipControl extends IHold implements IArrayStream{
 
 
 	@Override

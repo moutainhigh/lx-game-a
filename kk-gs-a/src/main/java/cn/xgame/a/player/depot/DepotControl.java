@@ -57,7 +57,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		dao.commit();
 		for( PropsDto dto : dtos ){
 			IProp prop = wrapInDB( dto );
-			append( prop );
+			super.append( prop );
 		}
 	}
 	private IProp wrapInDB( PropsDto dto ) {
@@ -103,6 +103,19 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// TODO 以后要加有成长属性的物品   那么就在这里做
 		return appendProp( prop.getnId(), prop.getCount() );
 	}
+	/**
+	 * 添加一个原样道具
+	 * @param prop
+	 * @return
+	 */
+	public void append( IProp prop ){
+		// 设置唯一ID
+		prop.setuId( root.generatorPropUID() );
+		// 放入背包
+		super.append( prop );
+		// 在数据库 创建数据
+		prop.createDB( root );
+	}
 	
 	/**
 	 * 创建一个道具
@@ -115,7 +128,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// 创建一个道具出来
 		IProp prop = type.create( root.generatorPropUID(), nid, count );
 		// 放入背包
-		append( prop );
+		super.append( prop );
 		// 在数据库 创建数据
 		prop.createDB( root );
 		// 这里看数量是否超过累加数

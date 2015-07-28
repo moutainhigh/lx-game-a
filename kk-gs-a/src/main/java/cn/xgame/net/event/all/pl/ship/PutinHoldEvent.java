@@ -43,7 +43,7 @@ public class PutinHoldEvent extends IEvent{
 			// 开始放入舰船货仓
 			ret = player.getDocks().putinHold( suid, clone );
 			
-			// 成功后 就把道具从玩家仓库移除
+			// 成功后 就把道具从玩家仓库扣除相应道具
 			player.getDepots().deductProp( puid, count );
 			
 			code = ErrorCode.SUCCEED;

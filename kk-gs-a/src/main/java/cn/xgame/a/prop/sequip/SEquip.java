@@ -65,6 +65,15 @@ public class SEquip extends IProp{
 		
 	}
 
+	/** 是否武器 */
+	public boolean isWeapon() {
+		return item().itemtype == 1;
+	}
+	/** 是否辅助装备 */
+	public boolean isAssistEquip() {
+		return item().itemtype == 2;
+	}
+
 
 	
 }
