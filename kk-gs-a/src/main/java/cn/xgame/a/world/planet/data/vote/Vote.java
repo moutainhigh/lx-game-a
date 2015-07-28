@@ -32,9 +32,13 @@ public class Vote implements ITransformStream {
 	private int rTime;
 	
 	// 临时变量
-	private short agreePrivileges = 0; // 不同意的所有 话语权总和
-	private short disagreePrivileges = 0;// 同意的所有 话语权总和
+	private short agreePrivileges = 0; // 同意的所有 话语权总和
+	private short disagreePrivileges = 0;// 不同意的所有 话语权总和
 
+	public String toString(){
+		return agreePrivileges + "/" + disagreePrivileges + " " + sponsorName;
+	}
+	
 	public Vote( Player player, int time ) {
 		this.sponsorUid = player.getUID();
 		this.sponsorName = player.getNickname();

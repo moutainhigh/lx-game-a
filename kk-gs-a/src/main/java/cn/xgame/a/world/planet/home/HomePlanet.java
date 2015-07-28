@@ -406,6 +406,8 @@ public class HomePlanet extends IPlanet {
 		}else{
 			Syn.build( childs, 2, unBuild );
 		}
+		
+		Logs.debug( player, "参与建筑投票 当前票数 " + unBuild.getVote() );
 	}
 	
 	// 开始建筑
@@ -429,6 +431,8 @@ public class HomePlanet extends IPlanet {
 		Child sponsor = getChild( sprUid );
 		if( sponsor != null )
 			sponsor.addPasss( 1 );
+		
+		Logs.debug( "开始修建建筑 " + templet.id + "-" + index );
 	}
 	
 	/////////////////// =================科技====================
@@ -485,6 +489,8 @@ public class HomePlanet extends IPlanet {
 		}else{
 			Syn.tech( childs, 2, unTech );
 		}
+		
+		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() );
 	}
 	// 开始研究科技
 	private void startStudy( Tech templet, String sprUid ) {
@@ -506,6 +512,8 @@ public class HomePlanet extends IPlanet {
 		Child sponsor = getChild( sprUid );
 		if( sponsor != null )
 			sponsor.addPasss( 1 );
+		
+		Logs.debug( "开始研究科技 " + templet.id );
 	}
 	
 	// 刷新科技等级
@@ -589,6 +597,7 @@ public class HomePlanet extends IPlanet {
 			synchronizeGenrVote( childs, 0, oust );
 		}
 		
+		Logs.debug( player, "参与元老投票 当前票数 " + oust.getVote() );
 	}
 	
 	/////////////////// =================线程====================

@@ -66,7 +66,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		captainUID = dto.getCaptainUid();
 		starId = dto.getStarId();
 		holds.fromBytes( dto.getHolds() );
-		equips.fromBytes( dto.getWeapons() );
+		equips.fromBytes( dto.getEquips() );
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		dto.setCaptainUid( captainUID );
 		dto.setStarId( starId );
 		dto.setHolds( holds.toBytes() );
-		dto.setWeapons( equips.toBytes() );
+		dto.setEquips( equips.toBytes() );
 	}
 	
 	

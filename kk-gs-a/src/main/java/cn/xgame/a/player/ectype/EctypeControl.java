@@ -88,11 +88,6 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// 偶发副本个数 
-		buffer.writeByte( accEctypes.size() );
-		for( AccEctype acc : accEctypes ){
-			acc.buildTransformStream(buffer);
-		}
 		// 常驻-本星球副本个数（包括瞭望的）
 		buffer.writeByte( preEctypes.size() );
 		for( PreEctype pre : preEctypes ){
@@ -103,9 +98,14 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 		for( PreEctype pre : ourEctypes ){
 			pre.buildTransformStream(buffer);
 		}
-		Logs.debug( root, "偶发副本 " + accEctypes );
+		// 偶发副本个数 
+		buffer.writeByte( accEctypes.size() );
+		for( AccEctype acc : accEctypes ){
+			acc.buildTransformStream(buffer);
+		}
 		Logs.debug( root, "常驻副本 " + preEctypes );
 		Logs.debug( root, "额外副本 " + ourEctypes );
+		Logs.debug( root, "偶发副本 " + accEctypes );
 	}
 	
 	

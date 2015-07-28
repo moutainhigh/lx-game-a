@@ -197,9 +197,15 @@ public class DockControl implements ITransformStream,IFromDB{
 		ShipInfo ship = getShip(suid);
 		if( ship == null )
 			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+		// 检查是否有舰长 如果没有舰长那么就不能装备
+		// TODO
+		
 		// 看货仓是否 还有空间
 		if( ship.getEquips().roomIsEnough( clone ) )
 			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+		// 检测复杂度是否足够
+		// TODO
+		
 		// 直接放入
 		IProp ret = ship.getEquips().put(clone);
 		

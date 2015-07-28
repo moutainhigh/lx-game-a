@@ -49,8 +49,7 @@
 			setObject( "captainUid", dto.getCaptainUid() );
 			setObject( "starId", dto.getStarId() );
 			setObject( "holds", dto.getHolds() );
-			setObject( "weapons", dto.getWeapons() );
-			setObject( "assists", dto.getAssists() );
+			setObject( "equips", dto.getEquips() );
 
 			super.commit( true );		}	}
 
@@ -269,8 +268,7 @@
 		private Integer captainUid = null;
 		private Integer starId = null;
 		private byte[] holds = null;
-		private byte[] weapons = null;
-		private byte[] assists = null;
+		private byte[] equips = null;
 
 		public ShipsDto() {		}				/**		 * Copy new one		 */		public ShipsDto(ShipsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
@@ -279,8 +277,7 @@
 			this.captainUid = src.captainUid;
 			this.starId = src.starId;
 			this.holds = src.holds;
-			this.weapons = src.weapons;
-			this.assists = src.assists;
+			this.equips = src.equips;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
@@ -289,8 +286,7 @@
 		/**  舰长唯一ID  */		public Integer getCaptainUid(){			return this.captainUid;		}
 		/**  停靠的星球ID  */		public Integer getStarId(){			return this.starId;		}
 		/**  货仓  */		public byte[] getHolds(){			return this.holds;		}
-		/**  武器  */		public byte[] getWeapons(){			return this.weapons;		}
-		/**  辅助  */		public byte[] getAssists(){			return this.assists;		}
+		/**  装备  */		public byte[] getEquips(){			return this.equips;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
@@ -299,8 +295,7 @@
 		/**  舰长唯一ID  */		public void setCaptainUid( Integer captainUid ){			this.captainUid = captainUid;		}
 		/**  停靠的星球ID  */		public void setStarId( Integer starId ){			this.starId = starId;		}
 		/**  货仓  */		public void setHolds( byte[] holds ){			this.holds = holds;		}
-		/**  武器  */		public void setWeapons( byte[] weapons ){			this.weapons = weapons;		}
-		/**  辅助  */		public void setAssists( byte[] assists ){			this.assists = assists;		}
+		/**  装备  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
@@ -309,8 +304,7 @@
 		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
 		public static String starIdChangeSql( Integer x) {			return "starId=" + x;		}
 		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
-		public static String weaponsChangeSql( byte[] x) {			return "weapons=" + x;		}
-		public static String assistsChangeSql( byte[] x) {			return "assists=" + x;		}
+		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
@@ -319,9 +313,8 @@
 			captainUid = o.getInt( "captainUid" );
 			starId = o.getInt( "starId" );
 			holds = o.getBytes( "holds" );
-			weapons = o.getBytes( "weapons" );
-			assists = o.getBytes( "assists" );
+			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"starId="+starId+","+"holds="+holds+","+"weapons="+weapons+","+"assists="+assists;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"starId="+starId+","+"holds="+holds+","+"equips="+equips;		}	}
 
 }

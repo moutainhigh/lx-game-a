@@ -58,67 +58,67 @@ import cn.xgame.net.event.all.pl.update.Update_3000;
 public enum Events {
 
 	//-----------------登录服务器
-	GS_CONNECT						( 201, 					new ConnectEvent() ),
-	UPDATA_PEOPLE					( 210, 					new UpdatePeopleEvent() ),
-	RLAST_GSID						( 220, 					new RLastGsidEvent() ),
+	GS_CONNECT					( 201, 		new ConnectEvent() ),
+	UPDATA_PEOPLE				( 210, 		new UpdatePeopleEvent() ),
+	RLAST_GSID					( 220, 		new RLastGsidEvent() ),
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//-----------------玩家
-	PLAYER_LOGIN					( 1001, 				new LoginEvent() ),
-	PLAYER_CREATE					( 1002, 				new CreateEvent() ),
-	APPLY_BAGS						( 1011, 				new ApplyBagEvent() ),
-	APPLY_DOCKS						( 1012, 				new ApplyDockEvent() ),
-	APPLY_CAPTAINS					( 1013, 				new ApplyCaptainEvent() ),
-	APPLY_STARATLAS					( 1014, 				new ApplyStaratlasEvent() ),
+	PLAYER_LOGIN				( 1001,		new LoginEvent() ),
+	PLAYER_CREATE				( 1002, 	new CreateEvent() ),
+	APPLY_BAGS					( 1011, 	new ApplyBagEvent() ),
+	APPLY_DOCKS					( 1012, 	new ApplyDockEvent() ),
+	APPLY_CAPTAINS				( 1013, 	new ApplyCaptainEvent() ),
+	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
 	
-	SHIP_PUTIN_HOLD					( 1021, 				new PutinHoldEvent() ),
-	SHIP_UNLOAD_HOLD				( 1022, 				new UnloadHoldEvent() ),
-	SHIP_MOUNT_EQUIP				( 1023, 				new MountEquipEvent() ),
-	SHIP_DOWN_EQUIP					( 1024, 				new DownEquipEvent() ),
+	SHIP_PUTIN_HOLD				( 1021, 	new PutinHoldEvent() ),
+	SHIP_UNLOAD_HOLD			( 1022, 	new UnloadHoldEvent() ),
+	SHIP_MOUNT_EQUIP			( 1023, 	new MountEquipEvent() ),
+	SHIP_DOWN_EQUIP				( 1024, 	new DownEquipEvent() ),
 	
 	//-----------------星球
-	APPLY_PLANET					( 1101, 				new ApplyHomeEvent() ),
-	APPLY_PLANET_RES				( 1111, 				new ApplyResEvent() ),
-	APPLY_PLANET_SPE				( 1112, 				new ApplyShopEvent() ),
-	APPLY_ALLLAFFAIR				( 1113, 				new ApplyAlllAffairEvent() ),
-	APPLY_GENRS						( 1114, 				new ApplyGenrsEvent() ),
-	APPLY_TAVERN					( 1115, 				new ApplyTavernEvent() ),
-	DONATE_STUFF					( 1121, 				new DonateStuffEvent() ),
+	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),
+	APPLY_PLANET_RES			( 1111, 	new ApplyResEvent() ),
+	APPLY_PLANET_SPE			( 1112, 	new ApplyShopEvent() ),
+	APPLY_ALLLAFFAIR			( 1113, 	new ApplyAlllAffairEvent() ),
+	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent() ),
+	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent() ),
+	DONATE_STUFF				( 1121, 	new DonateStuffEvent() ),
 	
 	// 建筑
-	SPONSOR_BUILDVOTE				( 1131, 				new SponsorBuildVoEvent() ),
-	PARTICIPATE_BUILDVOTE			( 1132, 				new ParticipateBuildVoEvent() ),
+	SPONSOR_BUILDVOTE			( 1131, 	new SponsorBuildVoEvent() ),
+	PARTICIPATE_BUILDVOTE		( 1132, 	new ParticipateBuildVoEvent() ),
 	// 科技
-	SPONSOR_TECHVOTE				( 1141, 				new SponsorTechVoEvent() ),
-	PARTICIPATE_TECHVOTE			( 1142, 				new ParticipateTechVoEvent() ),
+	SPONSOR_TECHVOTE			( 1141, 	new SponsorTechVoEvent() ),
+	PARTICIPATE_TECHVOTE		( 1142, 	new ParticipateTechVoEvent() ),
 	// 元老
-	SPONSOR_EXPEL					( 1151, 				new SponsorExpelEvent() ),
-	PARTICIPATE_EXPEL				( 1152, 				new ParticipateExpelEvent() ),
+	SPONSOR_EXPEL				( 1151, 	new SponsorExpelEvent() ),
+	PARTICIPATE_EXPEL			( 1152, 	new ParticipateExpelEvent() ),
 	//-----------------副本
-	APPLY_ACCECTYPE					( 1201, 				new ApplyAccEctypeEvent() ),
-	START_ATTACK					( 1202, 				new StartAttackEvent() ),
+	APPLY_ACCECTYPE				( 1201, 	new ApplyAccEctypeEvent() ),
+	START_ATTACK				( 1202, 	new StartAttackEvent() ),
 	//-----------------交易
-	SHOP_BUY						( 1301, 				new ShopBuyEvent() ),
-	TAVERN_BUY						( 1311, 				new TavernBuyEvent() ),
+	SHOP_BUY					( 1301, 	new ShopBuyEvent() ),
+	TAVERN_BUY					( 1311, 	new TavernBuyEvent() ),
 	
 	//-----------------聊天
-	SPONSOR_CHAT					( 3001, 				new SponsorChatEvent() ),
-	SPONSOR_PMCHAT					( 3002, 				new SponsorPmChatEvent() ),
+	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent() ),
+	SPONSOR_PMCHAT				( 3002, 	new SponsorPmChatEvent() ),
 	
 	
 	//-----------------更新包
-	UPDATE_2101						( 2101, 				new Update_2101() ),
-	UPDATE_2111						( 2111, 				new Update_2111() ),
+	UPDATE_2101					( 2101, 	new Update_2101() ),
+	UPDATE_2111					( 2111, 	new Update_2111() ),
 	
-	UPDATE_2201						( 2201, 				new Update_2201() ),
-	UPDATE_2211						( 2211, 				new Update_2211() ),
-	UPDATE_2221						( 2221, 				new Update_2221() ),
-	UPDATE_2231						( 2231, 				new Update_2231() ),
-	UPDATE_2241						( 2241, 				new Update_2241() ),
-	UPDATE_2252						( 2252, 				new Update_2252() ),
+	UPDATE_2201					( 2201, 	new Update_2201() ),
+	UPDATE_2211					( 2211, 	new Update_2211() ),
+	UPDATE_2221					( 2221, 	new Update_2221() ),
+	UPDATE_2231					( 2231, 	new Update_2231() ),
+	UPDATE_2241					( 2241, 	new Update_2241() ),
+	UPDATE_2252					( 2252, 	new Update_2252() ),
 	// 聊天
-	UPDATE_3000						( 3000, 				new Update_3000() ),
+	UPDATE_3000					( 3000, 	new Update_3000() ),
 	
 
 	
@@ -126,7 +126,7 @@ public enum Events {
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	TEST							( Short.MAX_VALUE-1, 	new TestEevet() );
+	TEST						( Short.MAX_VALUE-1, 	new TestEevet() );
 	
 	
 	private final short			number;
