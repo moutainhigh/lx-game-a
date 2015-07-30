@@ -51,36 +51,36 @@ import cn.xgame.utils.LuaUtil;
  */
 public class HomePlanet extends IPlanet {
 
-	public HomePlanet(Stars clone) {
-		super(clone);
-		qutlook = 100;
-	}
-
 	//////////////////////////////临时数据
 	// 体制
-	private Institution institution;
+	private Institution 	institution;
 	
 	// 科技等级
-	private byte techLevel = 0;
+	private byte 			techLevel 	= 0;
 	
 	// 瞭望距离 
-	private int qutlook = 0;
+	private int 			qutlook 	= 0;
 	
 	// 酒馆
-	private TavernControl tavernControl = new TavernControl();
+	private TavernControl 	tavernControl ;
 	
 	// 商店列表
-	private List<IProp> shops = Lists.newArrayList();
+	private List<IProp> 	shops 		= Lists.newArrayList();
 	
 	//////////////////////////////数据库相关
 	// 玩家列表
-	private List<Child> childs = Lists.newArrayList();
+	private List<Child> 	childs 		= Lists.newArrayList();
 	// 被驱逐投票中的元老列表
-	private List<OustChild> oustChilds = Lists.newArrayList();
+	private List<OustChild> oustChilds 	= Lists.newArrayList();
 	
 	// 科技列表
-	private TechControl techControl = new TechControl();
+	private TechControl techControl ;
 
+	public HomePlanet(Stars clone) {
+		super(clone);
+		tavernControl 	= new TavernControl( getId() );
+		techControl 	= new TechControl( getId() );
+	}
 	
 	@Override
 	public Institution getInstitution() { return institution; }
@@ -109,7 +109,10 @@ public class HomePlanet extends IPlanet {
 	@Override
 	public void init( PlanetDataDto dto ) {
 		super.init(dto);
+		// 初始体制
 		setInstitution(Institution.REPUBLIC);
+		// 初始瞭望
+		qutlook = 100;
 		// 酒馆
 		updateTavern();
 		// 副本
@@ -202,7 +205,7 @@ public class HomePlanet extends IPlanet {
 		getBuildingControl().putBuilding(buffer);
 		// 所有科技数据
 		techControl.putTechs(buffer);
-		// 研究中
+		// 研究中科技
 		techControl.putUnTech(buffer);
 	}
 	
@@ -407,7 +410,7 @@ public class HomePlanet extends IPlanet {
 			Syn.build( childs, 2, unBuild );
 		}
 		
-		Logs.debug( player, "参与建筑投票 当前票数 " + unBuild.getVote() );
+		Logs.debug( player, "参与建筑投票 当前票数 " + unBuild.getVote() + " at=" + nid );
 	}
 	
 	// 开始建筑
@@ -490,7 +493,7 @@ public class HomePlanet extends IPlanet {
 			Syn.tech( childs, 2, unTech );
 		}
 		
-		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() );
+		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
 	}
 	// 开始研究科技
 	private void startStudy( Tech templet, String sprUid ) {
@@ -597,7 +600,7 @@ public class HomePlanet extends IPlanet {
 			synchronizeGenrVote( childs, 0, oust );
 		}
 		
-		Logs.debug( player, "参与元老投票 当前票数 " + oust.getVote() );
+		Logs.debug( player, "参与元老投票 当前票数 " + oust.getVote() + " at=" + uid );
 	}
 	
 	/////////////////// =================线程====================
@@ -637,7 +640,7 @@ public class HomePlanet extends IPlanet {
 		// 更新一下是否元老
 		updateIsSenator();
 		
-		Logs.debug( templet().name + " 更新体制 Institution=" + institution );
+		Logs.debug( "星球" + getId() + " 更新体制 " + institution );
 	}
 	
 
@@ -662,6 +665,7 @@ public class HomePlanet extends IPlanet {
 		// 研究完毕
 		UnTechs tech = techControl.runDevelopment();
 		if( tech != null ){
+			updateTechLevel();
 			Syn.tech( childs, 5, tech );
 			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 研究完毕!" );
 		}

@@ -24,7 +24,7 @@ public class AccEctype extends IEctype implements ITransformStream{
 	private int persistTime = -1;
 	
 	public String toString(){
-		return "{" + template.id + "-" + snid + ", times:" + times + ", endTime:" + Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "}";
+		return "{" + template.id + "-" + SNID + ", times:" + times + ", endTime:" + Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "}";
 	}
 	
 	/**

@@ -17,13 +17,23 @@ import cn.xgame.a.prop.PropType;
  */
 public class HoldControl extends IHold implements IArrayStream{
 	
+	// 空间
+	private short room;
+	
+	public short getRoom() {
+		return room;
+	}
+	public void setRoom(short room) {
+		this.room = room;
+	}
+	
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
 		props.clear();
 		propUID 	= 0;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		room 		= buf.readShort();
+		setRoom(buf.readShort());
 		short size 	= buf.readShort();
 		for( int i = 0; i < size; i++ ){
 			PropType type 	= PropType.fromNumber( buf.readByte() );
@@ -42,7 +52,7 @@ public class HoldControl extends IHold implements IArrayStream{
 	@Override
 	public byte[] toBytes() {
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeShort( room );
+		buf.writeShort( getRoom() );
 		buf.writeShort( props.size() );
 		for( IProp o : props ){
 			buf.writeByte( o.type().toNumber() );
@@ -50,6 +60,31 @@ public class HoldControl extends IHold implements IArrayStream{
 			o.putAttachBuffer(buf);
 		}
 		return buf.array();
+	}
+
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeShort( room );
+		super.buildTransformStream(buffer);
+	}
+	
+	/**
+	 * 放入该道具后 空间是否足够
+	 * @param prop
+	 * @return
+	 */
+	public boolean roomIsEnough( IProp prop ) {
+		short sum = getAllOccupyRoom();
+		//先判断是否可以累加 
+		IProp temp = getCanCumsumProp( prop.getnId() );
+		if( temp == null ){
+			sum += prop.occupyRoom();
+		}else{
+			// 这里如果可以累加 那么看 是不是 会超出
+			if( (temp.getCount() + prop.getCount()) > temp.item().manymax ){
+				sum += prop.occupyRoom();
+			}
+		}
+		return sum <= room;
 	}
 
 

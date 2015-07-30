@@ -20,7 +20,7 @@ public class ParticipateTechVoEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		int nid 		= data.readShort();
+		int nid 		= data.readInt();
 		byte isAgree 	= data.readByte();
 		
 		ErrorCode code = null;

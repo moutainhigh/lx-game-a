@@ -24,7 +24,7 @@ public class TCaptain implements ITransformStream{
 	}
 
 	public String toString(){
-		return "nid=" + nid;
+		return "" + nid;
 	}
 
 	public int getNid() {

@@ -38,7 +38,7 @@ public class Update_2241 extends IEvent{
 				response.writeInt( build.getPastTime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
-			Logs.error( player, "Update_2242 " + e.getMessage() );
+			Logs.error( player, "Update_2241 " + e.getMessage() );
 		}
 	}
 

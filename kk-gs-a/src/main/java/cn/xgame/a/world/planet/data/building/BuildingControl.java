@@ -19,6 +19,8 @@ import cn.xgame.a.world.planet.data.vote.Vote;
  */
 public class BuildingControl implements IArrayStream{
 
+	public final int SNID;
+	
 	// 已建筑的建筑列表
 	private volatile List<Buildings> buildings = Lists.newArrayList();
 	
@@ -29,6 +31,10 @@ public class BuildingControl implements IArrayStream{
 	private volatile List<UnBuildings> unBuildings = Lists.newArrayList();
 	
 	
+	public BuildingControl(int id) {
+		SNID = id;
+	}
+
 	public void fromTemplet( String content ) {
 		if( content.isEmpty() ) return;
 		String[] ls = content.split("\\|");

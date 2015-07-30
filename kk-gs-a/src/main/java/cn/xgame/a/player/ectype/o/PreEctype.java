@@ -30,7 +30,7 @@ public class PreEctype extends IEctype implements ITransformStream{
 	}
 	
 	public String toString(){
-		return "{" + template.id + "-" + snid + "}";
+		return "{" + template.id + "-" + SNID + "}";
 	}
 	
 	@Override

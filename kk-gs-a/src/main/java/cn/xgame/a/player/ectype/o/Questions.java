@@ -1,4 +1,4 @@
-package cn.xgame.a.answering;
+package cn.xgame.a.player.ectype.o;
 
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Question;

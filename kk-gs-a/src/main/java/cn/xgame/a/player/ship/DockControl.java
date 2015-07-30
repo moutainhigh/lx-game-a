@@ -151,7 +151,7 @@ public class DockControl implements ITransformStream,IFromDB{
 			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
 		
 		// 看货仓是否 还有空间
-		if( ship.getHolds().roomIsEnough( clone ) )
+		if( !ship.getHolds().roomIsEnough( clone ) )
 			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
 		
 		// 放入货仓
@@ -201,7 +201,7 @@ public class DockControl implements ITransformStream,IFromDB{
 		// TODO
 		
 		// 看货仓是否 还有空间
-		if( ship.getEquips().roomIsEnough( clone ) )
+		if( !ship.getEquips().roomIsEnough( clone ) )
 			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
 		// 检测复杂度是否足够
 		// TODO

@@ -13,12 +13,18 @@ import x.javaplus.collections.Lists;
  */
 public class SEctypeControl {
 
+	public final int SNID;
+	
 	// 副本本身自带副本
 	private List<SEctype> itself = Lists.newArrayList();
 	
 	// 根据瞭望科技 找到的
 	private List<SEctype> outlook = Lists.newArrayList();
 	
+	public SEctypeControl(int id) {
+		SNID = id;
+	}
+
 	/**
 	 * 根据表格 初始化 副本列表
 	 * @param templet
@@ -27,15 +33,11 @@ public class SEctypeControl {
 		if( templet.ectypes.isEmpty() )
 			return;
 		
-		String[] content = templet.ectypes.split("\\|");
-		for( String x : content ){
-			if( x.isEmpty() ) continue;
-			String[] v = x.split(";");
-			for( String o : v ){
-				if( o.isEmpty() ) continue;
-				SEctype e = new SEctype( templet.id, Integer.parseInt( o ) );
-				itself.add( e );
-			}
+		String[] content = templet.ectypes.split(";");
+		for( String o : content ){
+			if( o.isEmpty() ) continue;
+			SEctype e = new SEctype( templet.id, Integer.parseInt( o ) );
+			itself.add( e );
 		}
 		
 	}

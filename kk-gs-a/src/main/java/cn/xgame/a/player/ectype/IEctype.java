@@ -6,7 +6,7 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.answering.Questions;
+import cn.xgame.a.player.ectype.o.Questions;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.Ectype;
 import cn.xgame.config.o.Question;
@@ -21,7 +21,7 @@ public abstract class IEctype {
 	protected final Ectype template;
 	
 	// 所属星球ID
-	protected final int snid ;
+	public final int SNID ;
 	
 	// 副本类型
 	protected EctypeType type;
@@ -35,7 +35,7 @@ public abstract class IEctype {
 	 * @param src
 	 */
 	public IEctype( int id, Ectype src ) {
-		snid 		= id;
+		SNID 		= id;
 		template 	= src;
 		type		= EctypeType.fromNumber( template.type );
 		randomQuestions();
@@ -46,7 +46,7 @@ public abstract class IEctype {
 	 * @param buffer
 	 */
 	public IEctype( ByteBuf buffer ){
-		snid 		= buffer.readInt();
+		SNID 		= buffer.readInt();
 		template 	= CsvGen.getEctype( buffer.readInt() );
 		type		= EctypeType.fromNumber( template.type );
 		byte size 	= buffer.readByte();
@@ -61,7 +61,7 @@ public abstract class IEctype {
 	 * @param buffer
 	 */
 	public void putBuffer(ByteBuf buffer) {
-		buffer.writeInt( snid );
+		buffer.writeInt( SNID );
 		buffer.writeInt( template.id );
 		buffer.writeByte( questions.size() );
 		for( Questions o : questions ){

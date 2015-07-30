@@ -18,10 +18,16 @@ import cn.xgame.a.prop.IProp;
  */
 public class SpecialtyControl implements IArrayStream,ITransformStream{
 
+	public final int SNID;
+	
 	// 特产列表
 	private List<Specialty> specialtys = Lists.newArrayList();
 	
 	
+	public SpecialtyControl(int id) {
+		SNID = id;
+	}
+
 	/**
 	 * 通过配置表 初始化
 	 * @param content

@@ -11,6 +11,7 @@ import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 发起驱逐元老
@@ -33,6 +34,8 @@ public class SponsorExpelEvent extends IEvent{
 			
 			// 开始发起 投票
 			planet.sponsorGenrVote( player, uid, explain );
+			
+			Logs.debug( player, " 发起驱逐元老 uid=" + uid + ", explain=" + explain );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

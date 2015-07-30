@@ -11,6 +11,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.utils.Logs;
 
 /**
  * 星球资源 操作中心
@@ -19,7 +20,15 @@ import cn.xgame.a.prop.PropType;
  */
 public class ResourceControl extends IDepot implements IArrayStream,ITransformStream{
 
+	public final int SNID;
+	
+	// 资源唯一ID
 	private int resUID = 0;
+	
+	public ResourceControl(int id) {
+		SNID = id;
+	}
+
 	private int getResUID(){ return ++resUID; }
 	
 	@Override
@@ -91,6 +100,8 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 				ret.add( param );
 			}
 		}
+		
+		Logs.debug( "星球" + SNID + " 添加资源 " + param );
 		return ret;
 	}
 
@@ -98,6 +109,8 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	public void append( IProp prop ){
 		prop.setuId( getResUID() );
 		super.append( prop );
+		
+		Logs.debug( "星球" + SNID + " 添加资源 " + prop );
 	}
 	
 	/**
@@ -136,6 +149,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 				remove( prop );
 			else
 				getProp( prop ).setCount( prop.getCount() );
+			Logs.debug( "星球" + SNID + " 扣除资源 " + prop );
 		}
 		return true;
 	}

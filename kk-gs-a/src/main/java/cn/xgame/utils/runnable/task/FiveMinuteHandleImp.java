@@ -1,6 +1,9 @@
 package cn.xgame.utils.runnable.task;
 
+import java.util.List;
+
 import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.utils.Logs;
@@ -24,6 +27,13 @@ public class FiveMinuteHandleImp extends IThread{
 			WorldManager.o.runUpdateInstitution();
 			
 			WorldManager.o.runTavern();
+			
+			
+			// 这里测试用于打印星球仓库信息
+			List<IPlanet> ls = WorldManager.o.getAllPlanet();
+			for( IPlanet p : ls ){
+				Logs.debug( "星球" + p.getId() + " 仓库信息" + p.getDepotControl().toMessage() );
+			}
 			
 		} catch (Exception e) {
 			Logs.error( "FiveMinuteHandleImp:" , e );

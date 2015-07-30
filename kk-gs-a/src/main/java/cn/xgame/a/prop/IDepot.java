@@ -15,6 +15,10 @@ public class IDepot {
 	// 所有道具列表
 	protected List<IProp> props = Lists.newArrayList();
 
+	public String toMessage(){
+		return props + "";
+	}
+	
 	/**
 	 * 获取背包所有道具
 	 * @return

@@ -19,13 +19,19 @@ import cn.xgame.utils.Logs;
  * @date 2015-7-16 上午10:08:14
  */
 public class TavernControl implements ITransformStream{
-
+	
+	public final int SNID;
+	
 	private final List<Taverndata> csv = CsvGen.taverndatas;
 	
 	
 	private int rTime = 0;
 	private List<TCaptain> datas = Lists.newArrayList();
 	
+	public TavernControl(int id) {
+		SNID = id;
+	}
+
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeInt( getRtime() );
@@ -81,7 +87,7 @@ public class TavernControl implements ITransformStream{
 				datas.add( x );
 		}
 		
-		Logs.debug( "更新酒馆 " + datas );
+		Logs.debug( "星球" + SNID + " 更新酒馆 " + datas );
 	}
 	
 

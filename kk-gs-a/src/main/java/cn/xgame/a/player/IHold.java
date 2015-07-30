@@ -15,18 +15,14 @@ import cn.xgame.a.prop.IProp;
  * @author deng		
  * @date 2015-7-23 下午5:28:34
  */
-public class IHold extends IDepot implements ITransformStream{
+public abstract class IHold extends IDepot implements ITransformStream{
 
 	// 货仓里面的唯一ID
 	protected int propUID = 0;
 	private int getResUID(){ return ++propUID; }
 	
-	// 货仓空间
-	protected short room ;
-	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeShort( room );
 		buffer.writeByte( props.size() );
 		for( IProp o : props ){
 			o.putBaseBuffer(buffer);
@@ -88,33 +84,6 @@ public class IHold extends IDepot implements ITransformStream{
 	}
 	
 	/**
-	 * 放入该道具后 空间是否足够
-	 * @param prop
-	 * @return
-	 */
-	public boolean roomIsEnough( IProp prop ) {
-		short sum = getAllOccupyRoom();
-		//先判断是否可以累加 
-		IProp temp = getCanCumsumProp( prop.getnId() );
-		if( temp == null ){
-			sum += prop.occupyRoom();
-		}else{
-			// 这里如果可以累加 那么看 是不是 会超出
-			if( (temp.getCount() + prop.getCount()) > temp.item().manymax ){
-				sum += prop.occupyRoom();
-			}
-		}
-		return sum > room;
-	}
-	
-	public short getRoom() {
-		return room;
-	}
-	public void setRoom(short hroom) {
-		this.room = hroom;
-	}
-	
-	/**
 	 * 货仓里面道具个数
 	 * @return
 	 */
@@ -122,6 +91,25 @@ public class IHold extends IDepot implements ITransformStream{
 		return (short) props.size();
 	}
 
+	
+	/**
+	 * 放入该道具后 空间是否足够
+	 * @param prop
+	 * @return
+	 */
+	public abstract boolean roomIsEnough( IProp prop ) ;
 
+	/**
+	 * 根据itemtype来区分获取部分道具的占用空间
+	 * @return
+	 */
+	public short getAllOccupyRoomInType( byte itemtype ){
+		short ret = 0;
+		for( IProp o : props ){
+			if( o.item().itemtype == itemtype )
+				ret += o.occupyRoom();
+		}
+		return ret;
+	}
 	
 }

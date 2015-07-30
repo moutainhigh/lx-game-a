@@ -34,24 +34,28 @@ public abstract class IPlanet implements ITransformStream{
 	protected final Stars templet;
 	
 	// 星球总空间
-	protected short maxSpace;
+	protected short 				maxSpace;
 	
 	// 星球特产
-	protected SpecialtyControl specialtyControl = new SpecialtyControl();
+	protected SpecialtyControl 		specialtyControl ;
 	
 	// 星球资源
-	protected ResourceControl depotControl = new ResourceControl();
+	protected ResourceControl 		depotControl ;
 	
 	// 星球建筑
-	protected BuildingControl buildingControl = new BuildingControl();
+	protected BuildingControl 		buildingControl ;
 	
 	// ------临时数据
 	// 星球副本 - 这个不需要保存数据库 每次根据表格生成出来
-	protected SEctypeControl ectypeControl = new SEctypeControl();
+	protected SEctypeControl 		ectypeControl ;
 	
 	
 	public IPlanet( Stars clone ){
 		templet = clone;
+		specialtyControl 	= new SpecialtyControl( getId() );
+		depotControl 		= new ResourceControl( getId() );
+		buildingControl 	= new BuildingControl( getId() );
+		ectypeControl 		= new SEctypeControl( getId() );
 	}
 	
 	/**

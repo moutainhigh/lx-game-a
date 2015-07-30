@@ -108,16 +108,39 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 		Logs.debug( root, "偶发副本 " + accEctypes );
 	}
 	
+	/**
+	 * 获取所有副本
+	 * @return
+	 */
+	public List<IEctype> getAll() {
+		List<IEctype> ret = Lists.newArrayList();
+		ret.addAll( preEctypes );
+		ret.addAll( ourEctypes );
+		ret.addAll( accEctypes );
+		return ret;
+	}
 	
-	public AccEctype getEctyper( int nid ) {
-		for( AccEctype o : accEctypes ){
-			if( o.getNid() == nid )
-				return o;
+	/**
+	 * 根据星球ID和副本ID获取 对应副本
+	 * @param snid
+	 * @param enid
+	 * @return
+	 */
+	public IEctype getEctype(int snid, int enid) {
+		List<IEctype> ls = getAll();
+		for( IEctype ie : ls ){
+			if( ie.SNID == snid && ie.getNid() == enid )
+				return ie;
 		}
 		return null;
 	}
-	
-	public void remove( int nid ){
+
+
+	/**
+	 * 删除偶发副本
+	 * @param nid
+	 */
+	public void removeAcc( int nid ){
 		Iterator<AccEctype> iter = accEctypes.iterator();
 		while( iter.hasNext() ){
 			AccEctype o = iter.next();
@@ -165,8 +188,9 @@ public class EctypeControl implements IArrayStream,ITransformStream{
 		}
 		
 		while( !removes.isEmpty() )
-			remove( removes.remove(0) );
+			removeAcc( removes.remove(0) );
 	}
+
 
 
 	

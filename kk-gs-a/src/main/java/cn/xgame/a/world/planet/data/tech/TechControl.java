@@ -20,6 +20,8 @@ import cn.xgame.config.o.Tech;
  */
 public class TechControl implements IArrayStream{
 
+	public final int SNID;
+	
 	// 已研究的科技列表
 	private volatile List<Techs> techs = Lists.newArrayList();
 	
@@ -29,7 +31,10 @@ public class TechControl implements IArrayStream{
 	// 研究中的科技列表
 	private volatile List<UnTechs> unTechs = Lists.newArrayList();
 	
-	
+	public TechControl(int id) {
+		SNID = id;
+	}
+
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return ;
@@ -104,7 +109,7 @@ public class TechControl implements IArrayStream{
 	
 	public void putVoTech( Player player, ByteBuf buffer){
 		buffer.writeByte( voTechs.size() );
-		for( UnTechs o : unTechs ){
+		for( UnTechs o : voTechs ){
 			o.buildTransformStream(buffer);
 			o.getVote().buildTransformStream(buffer);
 			buffer.writeByte( o.getVote().isParticipateVote( player.getUID() ) );
@@ -147,7 +152,19 @@ public class TechControl implements IArrayStream{
 		return null;
 	}
 	/**
-	 * 获取投票列表科技 根据表格ID
+	 * 获取研究中科技 根据表格ID
+	 * @param nid
+	 * @return
+	 */
+	public Techs getUnTech( int nid ) {
+		for( UnTechs o : unTechs ){
+			if( o.templet().id == nid )
+				return o;
+		}
+		return null;
+	}
+	/**
+	 * 获取投票中科技 根据表格ID
 	 * @param nid
 	 * @return
 	 */
@@ -183,7 +200,12 @@ public class TechControl implements IArrayStream{
 	public boolean isCanStudy( int nid, byte techLevel ) {
 		Tech t = CsvGen.getTech(nid);
 		if( t == null ) return false;
-		return getVoTech( nid ) == null && isHavePre( t.prevtech ) && !isHaveMutex( t.Mutualtech ) && t.needlevel <= techLevel;
+		return getVoTech( nid ) == null 
+				&& getTech( nid ) == null
+				&& getUnTech( nid ) == null
+				&& isHavePre( t.prevtech ) 
+				&& !isHaveMutex( t.Mutualtech ) 
+				&& t.needlevel <= techLevel;
 	}
 
 	/**
@@ -233,7 +255,6 @@ public class TechControl implements IArrayStream{
 	
 	
 	public void appendUnTech(UnTechs unTech) {
-		unTech.setVote(null);
 		unTechs.add(unTech);
 	}
 
@@ -264,10 +285,8 @@ public class TechControl implements IArrayStream{
 		Iterator<UnTechs> iter = voTechs.iterator();
 		while( iter.hasNext() ){
 			UnTechs o = iter.next();
+			// 时间到了默认为不同意 直接从列表中删除
 			if( o.getVote() == null || o.getVote().isComplete() ){
-				// 放入研究列表
-				appendUnTech( o );
-				// 然后才从列表中删除
 				iter.remove();
 				return o;
 			}

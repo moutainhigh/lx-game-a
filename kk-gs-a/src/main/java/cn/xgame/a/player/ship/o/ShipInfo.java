@@ -53,7 +53,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		super( uid, nid );
 		template 	= CsvGen.getShip(nid);
 		holds.setRoom( template.groom );
-		equips.setRoom( template.wroom );
+		equips.setWroom( template.wroom );
+		equips.setEroom( template.eroom );
 	}
 
 	/**
