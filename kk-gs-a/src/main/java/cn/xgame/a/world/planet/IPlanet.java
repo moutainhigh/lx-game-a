@@ -18,8 +18,8 @@ import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ectype;
-import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.EctypePo;
+import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.utils.LuaUtil;
 
@@ -31,7 +31,7 @@ import cn.xgame.utils.LuaUtil;
 public abstract class IPlanet implements ITransformStream{
 
 	// 星球配置表
-	protected final Stars templet;
+	protected final StarsPo templet;
 	
 	// 星球总空间
 	protected short 				maxSpace;
@@ -50,8 +50,8 @@ public abstract class IPlanet implements ITransformStream{
 	protected SEctypeControl 		ectypeControl ;
 	
 	
-	public IPlanet( Stars clone ){
-		templet = clone;
+	public IPlanet( StarsPo clone ){
+		templet 			= clone;
 		specialtyControl 	= new SpecialtyControl( getId() );
 		depotControl 		= new ResourceControl( getId() );
 		buildingControl 	= new BuildingControl( getId() );
@@ -129,7 +129,7 @@ public abstract class IPlanet implements ITransformStream{
 	/** 获得该星科技等级 */
 	public byte getTechLevel() { return 0; }
 	
-	public Stars templet(){ return templet; }
+	public StarsPo templet(){ return templet; }
 	public int getId() { return templet.id; }
 	public short getMaxSpace() { return maxSpace; }
 	public void setMaxSpace(short maxSpace) { this.maxSpace = maxSpace; }
@@ -151,7 +151,8 @@ public abstract class IPlanet implements ITransformStream{
 		List<AccEctype> retAcc = Lists.newArrayList();
 		for( String v : content ){
 			if( v.isEmpty() ) continue;
-			Ectype e = CsvGen.getEctype( Integer.parseInt(v) );
+			EctypePo e = CsvGen.getEctypePo( Integer.parseInt(v) );
+			if( e == null ) continue;
 			AccEctype acc = new AccEctype(templet.id,e);
 			if( !acc.isClose() ){
 				retAcc.add( acc );

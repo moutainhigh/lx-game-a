@@ -1,7 +1,7 @@
 package cn.xgame.a.player.u;
 
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.PlayerInit;
+import cn.xgame.config.o.PlayerInitPo;
 
 /**
  * 玩家初始化
@@ -10,7 +10,7 @@ import cn.xgame.config.o.PlayerInit;
  */
 public class Init {
 
-	private static final PlayerInit o = CsvGen.playerinits.get(0);
+	private static final PlayerInitPo o = CsvGen.playerinitpos.get(0);
 	
 	/**
 	 * 玩家初始化

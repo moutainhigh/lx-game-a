@@ -31,10 +31,10 @@ import cn.xgame.a.world.planet.home.o.Institution;
 import cn.xgame.a.world.planet.home.o.OustChild;
 import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Item;
-import cn.xgame.config.o.Sbuilding;
-import cn.xgame.config.o.Stars;
-import cn.xgame.config.o.Tech;
+import cn.xgame.config.o.ItemPo;
+import cn.xgame.config.o.SbuildingPo;
+import cn.xgame.config.o.StarsPo;
+import cn.xgame.config.o.TechPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -76,7 +76,7 @@ public class HomePlanet extends IPlanet {
 	// 科技列表
 	private TechControl techControl ;
 
-	public HomePlanet(Stars clone) {
+	public HomePlanet(StarsPo clone) {
 		super(clone);
 		tavernControl 	= new TavernControl( getId() );
 		techControl 	= new TechControl( getId() );
@@ -357,7 +357,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
 		// 判断位置是否占用
-		Sbuilding templet = CsvGen.getSbuilding(nid);
+		SbuildingPo templet = CsvGen.getSbuildingPo(nid);
 		if( buildingControl.isOccupyInIndex( index, templet.usegrid ) )
 			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
 		
@@ -414,7 +414,7 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	// 开始建筑
-	private void startBuild( Sbuilding templet, byte index, String sprUid )  {
+	private void startBuild( SbuildingPo templet, byte index, String sprUid )  {
 		
 		if( templet == null )
 			return;
@@ -496,7 +496,7 @@ public class HomePlanet extends IPlanet {
 		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
 	}
 	// 开始研究科技
-	private void startStudy( Tech templet, String sprUid ) {
+	private void startStudy( TechPo templet, String sprUid ) {
 		if( templet == null )
 			return;
 		
@@ -739,7 +739,7 @@ public class HomePlanet extends IPlanet {
 		if( prop.getCount() < count && prop.getuId() == 1 )
 			throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
 		
-		Item item = CsvGen.getItem( prop.getnId() );
+		ItemPo item = CsvGen.getItemPo( prop.getnId() );
 		int needGold = item.buygold <= 0 ? 1 : item.buygold;
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){
@@ -781,7 +781,7 @@ public class HomePlanet extends IPlanet {
 		if( tcap == null )
 			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 		
-		Item item = CsvGen.getItem( nid );
+		ItemPo item = CsvGen.getItemPo( nid );
 		int needGold = item.buygold <= 0 ? 1 : item.buygold;
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){

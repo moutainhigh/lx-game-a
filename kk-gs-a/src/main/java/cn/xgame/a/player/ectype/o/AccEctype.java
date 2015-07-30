@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.EctypeType;
 import cn.xgame.a.player.ectype.IEctype;
-import cn.xgame.config.o.Ectype;
+import cn.xgame.config.o.EctypePo;
 
 /**
  * 一个偶发副本
@@ -32,7 +32,7 @@ public class AccEctype extends IEctype implements ITransformStream{
 	 * @param id 所属星球ID
 	 * @param src
 	 */
-	public AccEctype( int id, Ectype src ) {
+	public AccEctype( int id, EctypePo src ) {
 		super( id, src );
 		init();
 	}

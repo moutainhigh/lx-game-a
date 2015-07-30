@@ -11,7 +11,7 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.data.vote.Vote;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Tech;
+import cn.xgame.config.o.TechPo;
 
 /**
  * 科技 操作中心
@@ -198,7 +198,7 @@ public class TechControl implements IArrayStream{
 	 * @return
 	 */
 	public boolean isCanStudy( int nid, byte techLevel ) {
-		Tech t = CsvGen.getTech(nid);
+		TechPo t = CsvGen.getTechPo(nid);
 		if( t == null ) return false;
 		return getVoTech( nid ) == null 
 				&& getTech( nid ) == null

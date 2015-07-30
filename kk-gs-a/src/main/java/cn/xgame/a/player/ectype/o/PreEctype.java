@@ -3,7 +3,7 @@ package cn.xgame.a.player.ectype.o;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ectype.IEctype;
-import cn.xgame.config.o.Ectype;
+import cn.xgame.config.o.EctypePo;
 
 /**
  * 一个常驻副本
@@ -17,7 +17,7 @@ public class PreEctype extends IEctype implements ITransformStream{
 	 * @param id 所属星球ID
 	 * @param src
 	 */
-	public PreEctype( int id, Ectype src ) {
+	public PreEctype( int id, EctypePo src ) {
 		super( id, src );
 	}
 	

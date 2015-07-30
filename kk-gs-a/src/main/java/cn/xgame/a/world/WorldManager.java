@@ -13,7 +13,7 @@ import cn.xgame.a.world.planet.ectype.EctypePlanet;
 import cn.xgame.a.world.planet.entrepot.EntrepotPlanet;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -41,7 +41,7 @@ public class WorldManager {
 	/** 初始化 星图 */
 	public void initialize(){
 		
-		for( Stars star : CsvGen.starss ){
+		for( StarsPo star : CsvGen.starspos ){
 			
 			try {
 				if( star.type == 1 ){
@@ -158,7 +158,7 @@ public class WorldManager {
 	 * @return
 	 */
 	public IPlanet getPlanet( int nid ) {
-		Stars star = CsvGen.getStars( nid );
+		StarsPo star = CsvGen.getStarsPo( nid );
 		if( star == null )
 			return null;
 		if( star.type == 1 ){

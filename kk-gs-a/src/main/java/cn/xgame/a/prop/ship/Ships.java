@@ -5,7 +5,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ship;
+import cn.xgame.config.o.ShipPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -15,17 +15,17 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
  */
 public class Ships extends IProp{
 
-	private final Ship templet;
+	private final ShipPo templet;
 	
 	public Ships(int uid, int nid, int count) {
 		super(uid, nid, count);
-		templet = CsvGen.getShip(nid);
+		templet = CsvGen.getShipPo(nid);
 	}
 
 	public Ships( PropsDto o ){
 		super(o);
+		templet = CsvGen.getShipPo( getnId() );
 		// 下面加自己的属性 o.getAttach();
-		templet = CsvGen.getShip( getnId() );
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class Ships extends IProp{
 		
 	}
 	
-	public Ship templet(){ return templet; }
+	public ShipPo templet(){ return templet; }
 	@Override
 	public PropType type() { return PropType.SHIP; }
 

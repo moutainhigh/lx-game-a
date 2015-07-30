@@ -3,12 +3,12 @@ package cn.xgame.a.world.planet.entrepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
-import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 
 public class EntrepotPlanet extends IPlanet{
 
-	public EntrepotPlanet(Stars clone) {
+	public EntrepotPlanet(StarsPo clone) {
 		super(clone);
 	}
 

@@ -44,14 +44,19 @@ public class StartAttackEvent extends IEvent{
 			
 			// 检测检测是否在该星球
 			// TODO
-			ShipInfo ship = player.getDocks().getShip(suid);
 			
-			Fighter att = new Fighter( ship );// 攻击者
+			// 判断该船是否可以战斗
+			ShipInfo ship = player.getDocks().getShip(suid);
+			if( !ship.isCanCombat() )
+				throw new Exception( ErrorCode.SHIP_CANNOT_FIGHT.name() );
+			
+			Fighter att = new Fighter( player, ship );// 攻击者
 			Fighter def = new Fighter( ectype );// 防御者
 			try {
 				
 				Lua lua = LuaUtil.getEctypeCombat();
-				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def );
+				// 攻击者 防御者 基础战斗时间 胜率上限
+				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.template().btime, 10000 );
 				int winRate = ret[1].getInt();
 				
 				int rand = Random.get( 0, 10000 );

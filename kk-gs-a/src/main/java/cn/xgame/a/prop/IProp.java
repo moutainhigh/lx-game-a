@@ -5,7 +5,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.system.LXConstants;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Item;
+import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -19,7 +19,7 @@ import io.netty.buffer.ByteBuf;
 public abstract class IProp implements ITransformStream{
 	
 	// 基础物品表
-	private final Item item;
+	private final ItemPo item;
 	
 	// 唯一ID
 	private int uId;
@@ -37,7 +37,7 @@ public abstract class IProp implements ITransformStream{
 	public IProp( int uid, int nid, int count ){
 		this.uId 	= uid;
 		this.nId 	= nid;
-		this.item 	= CsvGen.getItem(nid);
+		this.item 	= CsvGen.getItemPo(nid);
 		addCount( count );
 	}
 	
@@ -48,7 +48,7 @@ public abstract class IProp implements ITransformStream{
 	public IProp( PropsDto o ){
 		this.uId 	= o.getUid();
 		this.nId 	= o.getNid();
-		this.item 	= CsvGen.getItem(nId);
+		this.item 	= CsvGen.getItemPo(nId);
 		addCount( o.getCount() );
 	}
 	
@@ -130,7 +130,7 @@ public abstract class IProp implements ITransformStream{
 		dao.commit();
 	}
 	
-	public Item item(){ return item; }
+	public ItemPo item(){ return item; }
 	public int getuId() { return uId; }
 	public void setuId(int uId) { this.uId = uId; }
 	public int getnId() { return nId; }

@@ -2,7 +2,7 @@ package cn.xgame.a.world.planet.data.ectype;
 
 import java.util.List;
 
-import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.StarsPo;
 
 import x.javaplus.collections.Lists;
 
@@ -29,7 +29,7 @@ public class SEctypeControl {
 	 * 根据表格 初始化 副本列表
 	 * @param templet
 	 */
-	public void fromTemplet( Stars templet ) {
+	public void fromTemplet( StarsPo templet ) {
 		if( templet.ectypes.isEmpty() )
 			return;
 		

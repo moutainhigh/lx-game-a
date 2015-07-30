@@ -5,12 +5,15 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.combat.o.Answers;
+import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.combat.o.CombatUtil;
 import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Weapon;
+import cn.xgame.a.prop.sequip.SEquip;
+import cn.xgame.utils.Logs;
 
 /**
  * 所有装备 武器 and 辅助
@@ -84,8 +87,11 @@ public class EquipControl extends IHold implements IArrayStream{
 	
 	@Override
 	public boolean roomIsEnough( IProp prop ) {
-		short sum = getAllOccupyRoomInType( prop.item().itemtype );
-		short room = prop.item().itemtype == 1 ? wroom : eroom;
+		if( !prop.isShipEquip() )
+			return false;
+		SEquip equip	= (SEquip)prop;
+		short sum 		= getAllOccupyRoomInType( equip.item().itemtype );
+		short room 		= equip.isWeapon() ? wroom : eroom;
 		return sum + prop.occupyRoom() <= room;
 	}
 	
@@ -94,25 +100,72 @@ public class EquipControl extends IHold implements IArrayStream{
 	 * 包装战斗属性
 	 * @param attacks
 	 * @param defends
+	 * @param answers 
+	 * @param askings 
 	 */
-	public void warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends) {
+	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
+			List<Askings> askings, List<Answers> answers) {
+		
+		int hp = 0;
+		
 		List<IProp> all = getAll();
 		for( IProp prop : all ){
-			Weapon weapon = CsvGen.getWeapon( prop.getnId() );
-			AtkAndDef o = new AtkAndDef(  );
-//			String
-//			o.type = weapon.type;
-//			o.type = 1;
-//			
-//			if( weapon.latk )
-//			o.value = 
-////				
+			try {
+				SEquip equip = (SEquip)prop;
+				// 累加血量
+				hp += equip.templet().hp;
+				// 攻击属性
+				warpAADProperty( attacks, defends, equip );
+				// 问答
+				warpAAAProperty( askings, answers, equip );
+				
+			} catch (Exception e) {
+				Logs.error( "EquipControl.warpFightProperty ", e );
+			}
+		}
+		
+		return hp;
+	}
+	
+	// 包装攻击属性
+	private void warpAADProperty( List<AtkAndDef> attacks, List<AtkAndDef> defends, SEquip equip ) {
+		try {
 			
+			String[] types 	= equip.templet().type.split(";");
+			String[] values = equip.templet().value.split(";");
+			if( types.length != values.length ){
+				Logs.error( "types.length != values.length at EquipControl.warpFightProperty" );
+				return;
+			}
 			
+			for( int i = 0; i < types.length; i++ ){
+				AtkAndDef o = new AtkAndDef(  );
+				o.type 		= Integer.parseInt( types[i] );
+				o.value 	= Integer.parseInt( values[i] );
+				if( o.type < 100 ) // 代表攻击
+					attacks.add(o);
+				else if( o.type >= 100 && o.type < 200 ) // 代表防御
+					defends.add(o);
+			}
+			
+		} catch (Exception e) {
+			Logs.error( "EquipControl.warpAADProperty ", e );
 		}
 	}
 
-
+	// 包装应答属性
+	private void warpAAAProperty(List<Askings> askings, List<Answers> answers, SEquip equip ) {
+		try {
+			// 答
+			CombatUtil.putAnswer( equip.templet().answers, answers );
+			
+			// 问
+			
+			
+		} catch (Exception e) {
+			Logs.error( "EquipControl.warpAAAProperty ", e );
+		}
+	}
 
 
 	

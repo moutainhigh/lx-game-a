@@ -1,33 +1,34 @@
-package cn.xgame.a.player.captain.o;
+package cn.xgame.a.player.ectype.enemy;
 
 import java.util.List;
 
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
-import cn.xgame.a.combat.o.CombatUtil;
-import cn.xgame.a.prop.cequip.CEquip;
-
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.MeetPo;
 
 /**
- * 装备库
+ * 敌人集合
  * @author deng		
- * @date 2015-7-24 下午6:16:37
+ * @date 2015-7-30 下午10:26:40
  */
-public class EquipControl{
+public class EnemyMeet {
 
-	private CEquip equip = null;
+	private final MeetPo templet;
 	
-	public CEquip getEquip() {
-		return equip;
+	// 敌人列表
+	
+	
+	
+	public EnemyMeet( int id ){
+		templet = CsvGen.getMeetPo(id);
 	}
-	public void setEquip(CEquip equip) {
-		this.equip = equip;
-	}
 	
-	
+	public MeetPo templet(){ return templet; }
+
 	/**
-	 * 包装 战斗数据
+	 * 包装战斗数据
 	 * @param attacks
 	 * @param defends
 	 * @param askings
@@ -37,12 +38,11 @@ public class EquipControl{
 	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
 			List<Askings> askings, List<Answers> answers) {
 		
-		CombatUtil.putAnswer( equip.templet().answer, answers );
+		
+		
+		
 		
 		return 0;
 	}
-
-
-
-
+	
 }

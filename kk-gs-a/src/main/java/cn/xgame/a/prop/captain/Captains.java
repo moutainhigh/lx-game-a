@@ -5,7 +5,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Captain;
+import cn.xgame.config.o.CaptainPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -15,16 +15,16 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
  */
 public class Captains extends IProp {
 
-	private final Captain templet;
+	private final CaptainPo templet;
 
 	public Captains( int uid, int nid, int count ) {
 		super( uid, nid, count );
-		templet = CsvGen.getCaptain(nid);
+		templet = CsvGen.getCaptainPo(nid);
 	}
 
 	public Captains( PropsDto o ) {
 		super( o );
-		templet = CsvGen.getCaptain( getnId() );
+		templet = CsvGen.getCaptainPo( getnId() );
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class Captains extends IProp {
 		
 	}
 
-	public Captain templet(){ return templet; }
+	public CaptainPo templet(){ return templet; }
 	
 	@Override
 	public PropType type() { return PropType.CAPTAIN; }

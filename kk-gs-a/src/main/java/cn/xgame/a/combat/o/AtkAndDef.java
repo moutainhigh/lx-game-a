@@ -9,7 +9,7 @@ package cn.xgame.a.combat.o;
 public class AtkAndDef {
 
 	// 类型
-	public byte type;
+	public int type;
 	
 	// 数值
 	public float value;

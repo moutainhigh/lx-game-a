@@ -10,7 +10,7 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.system.LXConstants;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Taverndata;
+import cn.xgame.config.o.TaverndataPo;
 import cn.xgame.utils.Logs;
 
 /**
@@ -22,7 +22,7 @@ public class TavernControl implements ITransformStream{
 	
 	public final int SNID;
 	
-	private final List<Taverndata> csv = CsvGen.taverndatas;
+	private final List<TaverndataPo> csv = CsvGen.taverndatapos;
 	
 	
 	private int rTime = 0;
@@ -94,13 +94,13 @@ public class TavernControl implements ITransformStream{
 	private TCaptain getRandomCap(  ){
 		
 		int max = 0;
-		for( Taverndata tavern : csv ){
+		for( TaverndataPo tavern : csv ){
 			if( getTCaptain( tavern.id ) != null )
 				continue;
 			max += tavern.rand;
 		}
 		int rand = Random.get( 0, max );
-		for( Taverndata tavern : csv ){
+		for( TaverndataPo tavern : csv ){
 			if( getTCaptain( tavern.id ) != null )
 				continue;
 			if( tavern.rand >= rand ){

@@ -6,7 +6,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Item;
+import cn.xgame.config.o.ItemPo;
 import cn.xgame.utils.Logs;
 
 /**
@@ -16,7 +16,7 @@ import cn.xgame.utils.Logs;
  */
 public class Specialty implements IBufferStream,ITransformStream{
 
-	private final Item templet;
+	private final ItemPo templet;
 	
 	// 产出时间
 	volatile private int yieldTime;
@@ -29,7 +29,7 @@ public class Specialty implements IBufferStream,ITransformStream{
 	volatile private int rtime;
 	
 	public Specialty( int id ) {
-		templet = CsvGen.getItem(id);
+		templet = CsvGen.getItemPo(id);
 		rtime	= (int) (System.currentTimeMillis()/1000);
 	}
 
@@ -76,7 +76,7 @@ public class Specialty implements IBufferStream,ITransformStream{
 		return false;
 	}
 	
-	public Item templet() {
+	public ItemPo templet() {
 		return templet;
 	}
 	public int getYieldTime() {

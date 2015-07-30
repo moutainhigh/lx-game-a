@@ -19,7 +19,7 @@ import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.ectype.SEctype;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ectype;
+import cn.xgame.config.o.EctypePo;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -151,10 +151,11 @@ public class Player extends IPlayer implements ITransformStream{
 			return;
 		List<SEctype> sectypes = home.getEctypeControl().getAll();
 		for( SEctype o : sectypes ){
-			Ectype templet = CsvGen.getEctype( o.getEnid() );
+			EctypePo templet = CsvGen.getEctypePo( o.getEnid() );
+			if( templet == null ) continue;
 			ectypes.appendPre( new PreEctype( o.getSnid(), templet ) );
 		}
-		// 获取额外副本 ( 就是)
+		// 获取额外副本 ( 就是船没有停靠在瞭望范围内的 )
 		
 		
 		// 获取偶发副本

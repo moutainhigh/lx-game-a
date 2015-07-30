@@ -12,7 +12,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.a.system.SystemCfg;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Item;
+import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -61,7 +61,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		}
 	}
 	private IProp wrapInDB( PropsDto dto ) {
-		Item item = CsvGen.getItem( dto.getNid() );
+		ItemPo item = CsvGen.getItemPo( dto.getNid() );
 		return PropType.fromNumber( item.bagtype ).wrapDB( dto );
 	}
 
@@ -76,7 +76,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
 		
 		List<IProp> ret = Lists.newArrayList();
-		Item item 		= CsvGen.getItem(nid);
+		ItemPo item 		= CsvGen.getItemPo(nid);
 		if( item == null ){
 			Logs.error( root, "创建道具出错 nid="+nid+" 没找到！" );
 			return ret;

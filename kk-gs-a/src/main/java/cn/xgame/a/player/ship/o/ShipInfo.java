@@ -1,17 +1,22 @@
 package cn.xgame.a.player.ship.o;
 
+import java.util.List;
+
 import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.combat.o.Answers;
+import cn.xgame.a.combat.o.Askings;
+import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IUObject;
 import cn.xgame.a.player.ship.o.v.HoldControl;
 import cn.xgame.a.player.ship.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ship;
-import cn.xgame.config.o.Stars;
+import cn.xgame.config.o.ShipPo;
+import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -25,7 +30,7 @@ import cn.xgame.utils.LuaUtil;
  */
 public class ShipInfo extends IUObject implements ITransformStream{
 
-	private final Ship template;
+	private final ShipPo template;
 	
 	
 	// 舰长唯一ID
@@ -51,7 +56,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public ShipInfo( int uid, int nid ) {
 		super( uid, nid );
-		template 	= CsvGen.getShip(nid);
+		template 	= CsvGen.getShipPo(nid);
 		holds.setRoom( template.groom );
 		equips.setWroom( template.wroom );
 		equips.setEroom( template.eroom );
@@ -63,7 +68,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public ShipInfo( ShipsDto dto ) {
 		super( dto.getUid(), dto.getNid() );
-		template = CsvGen.getShip( dto.getNid() );
+		template = CsvGen.getShipPo( dto.getNid() );
 		captainUID = dto.getCaptainUid();
 		starId = dto.getStarId();
 		holds.fromBytes( dto.getHolds() );
@@ -76,22 +81,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( getnId() );
 	}
 
-	
-	
-	/**
-	 * 获取到某个星球的航行时间 单位秒
-	 * @param sId
-	 * @return
-	 */
-	public int getSailingTime( int sId ) {
-		Stars cur = CsvGen.getStars(starId);
-		Stars to = CsvGen.getStars(sId);
-		Lua lua = LuaUtil.getGameData();
-		LuaValue[] ret = lua.getField( "sailingTime" ).call( 1, cur, to, this );
-		Logs.debug( "航行时间：" + ret[0].getInt() );
-		return ret[0].getInt();
-	}
-	
 	
 	//TODO---------数据库相关
 	public void createDB( Player player ) {
@@ -121,7 +110,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	}
 	
 	
-	public Ship template(){ return template; }
+	public ShipPo template(){ return template; }
 	public int getCaptainUID() {
 		return captainUID;
 	}
@@ -136,6 +125,49 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	}
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
+
+	/**
+	 * 是否可以战斗
+	 * @return
+	 */
+	public boolean isCanCombat() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	/**
+	 * 获取到某个星球的航行时间 单位秒
+	 * @param sId
+	 * @return
+	 */
+	public int getSailingTime( int sId ) {
+		StarsPo cur = CsvGen.getStarsPo(starId);
+		StarsPo to 	= CsvGen.getStarsPo(sId);
+		Lua lua = LuaUtil.getGameData();
+		LuaValue[] ret = lua.getField( "sailingTime" ).call( 1, cur, to, this );
+		Logs.debug( "航行时间：" + ret[0].getInt() );
+		return ret[0].getInt();
+	}
+	
+	/**
+	 * 塞入战斗属性
+	 * @param attacks
+	 * @param defends
+	 * @param askings
+	 * @param answers
+	 * @return 血量
+	 */
+	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
+			List<Askings> askings, List<Answers> answers) {
+		// 血量
+		int ret = template.hp;
+		// 塞入装备的属性
+		ret	+= equips.warpFightProperty(attacks, defends, askings, answers);
+		return ret;
+	}
+
+
+
 	
 	
 }

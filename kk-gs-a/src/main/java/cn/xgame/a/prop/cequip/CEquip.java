@@ -5,7 +5,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Weapon;
+import cn.xgame.config.o.TreasurePo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -15,15 +15,15 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
  */
 public class CEquip extends IProp{
 
-	private final Weapon templet;
+	private final TreasurePo templet;
 	
 	public CEquip(int uid, int nid, int count) {
 		super(uid, nid, count);
-		templet = CsvGen.getWeapon(nid);
+		templet = CsvGen.getTreasurePo(nid);
 	}
 	public CEquip( PropsDto o ) {
 		super(o);
-		templet = CsvGen.getWeapon( getnId() );
+		templet = CsvGen.getTreasurePo( getnId() );
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class CEquip extends IProp{
 		
 	}
 	
-	public Weapon templet() { return templet; }
+	public TreasurePo templet() { return templet; }
 	@Override
 	public PropType type() { return PropType.CEQUIP; }
 

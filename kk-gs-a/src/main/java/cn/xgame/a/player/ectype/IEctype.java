@@ -6,10 +6,10 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.ectype.o.Questions;
+import cn.xgame.a.combat.o.Askings;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.Ectype;
-import cn.xgame.config.o.Question;
+import cn.xgame.config.o.AskingPo;
+import cn.xgame.config.o.EctypePo;
 
 /**
  * 副本基类
@@ -18,7 +18,7 @@ import cn.xgame.config.o.Question;
  */
 public abstract class IEctype {
 	
-	protected final Ectype template;
+	protected final EctypePo template;
 	
 	// 所属星球ID
 	public final int SNID ;
@@ -26,34 +26,38 @@ public abstract class IEctype {
 	// 副本类型
 	protected EctypeType type;
 	
-	// 随机应答 - 提问
-	protected List<Questions> questions = Lists.newArrayList();
+	// 基础应答 - 问
+	protected List<AskingPo> basisAskings = Lists.newArrayList();
+	// 随机应答 - 问
+	protected List<AskingPo> randomAskings = Lists.newArrayList();
 	
 	/**
 	 * 从配置表获取
 	 * @param id 所属星球ID
 	 * @param src
 	 */
-	public IEctype( int id, Ectype src ) {
+	public IEctype( int id, EctypePo src ) {
 		SNID 		= id;
 		template 	= src;
 		type		= EctypeType.fromNumber( template.type );
-		randomQuestions();
+		randomAsking();
+		initBasisAsking();
 	}
-	
+
 	/**
 	 * 从数据库 获取
 	 * @param buffer
 	 */
 	public IEctype( ByteBuf buffer ){
 		SNID 		= buffer.readInt();
-		template 	= CsvGen.getEctype( buffer.readInt() );
+		template 	= CsvGen.getEctypePo( buffer.readInt() );
 		type		= EctypeType.fromNumber( template.type );
 		byte size 	= buffer.readByte();
 		for( int i = 0; i < size; i++ ){
-			Questions o = new Questions( buffer.readInt() );
-			questions.add(o);
+			AskingPo o = CsvGen.getAskingPo( buffer.readInt() );
+			randomAskings.add(o);
 		}
+		initBasisAsking();
 	}
 
 	/**
@@ -63,42 +67,67 @@ public abstract class IEctype {
 	public void putBuffer(ByteBuf buffer) {
 		buffer.writeInt( SNID );
 		buffer.writeInt( template.id );
-		buffer.writeByte( questions.size() );
-		for( Questions o : questions ){
-			buffer.writeInt( o.getNid() );
+		buffer.writeByte( randomAskings.size() );
+		for( AskingPo o : randomAskings ){
+			buffer.writeInt( o.id );
 		}
 	}
 
 	/** 随机应答出来 */
-	public void randomQuestions() {
-//		if( template.ranswers.isEmpty() )
-//			return;
-//		String[] content = template.ranswers.split("\\|");
-//		for( String x : content ){
-//			if( x.isEmpty() ) continue;
-//			String[] v = x.split(";");
-//			int rand = Random.get( 0, 10000 );
-//			if( rand > Integer.parseInt( v[1] ) ) 
-//				continue;
-//			Questions o = new Questions( Integer.parseInt( v[0] ) );
-//			questions.add( o );
-//		}
-		// 随机一个出来
-		List<Question> ls = CsvGen.questions;
-		int idx = Random.get( 0, ls.size() -1 );
-		int id = ls.get(idx).id;
-		// 放入应答列表
-		Questions o = new Questions( id );
-		questions.add( o );
+	public void randomAsking() {
+		randomAsking( template.ranswers );
+		randomAsking( template.ianswers );
 	}
+
+	// 初始副本基础应答
+	private void initBasisAsking() {
+		if( template.eanswers.isEmpty() )
+			return;
+		String[] content = template.eanswers.split(";");
+		for( String v : content ){
+			AskingPo o = CsvGen.getAskingPo( Integer.parseInt( v ) );
+			basisAskings.add( o );
+		}
+	}
+	
+	private void randomAsking( String answers ) {
+		if( answers.isEmpty() )
+			return;
+		String[] content = answers.split("\\|");
+		for( String x : content ){
+			if( x.isEmpty() ) continue;
+			String[] v = x.split(";");
+			int rand = Random.get( 0, 10000 );
+			if( rand > Integer.parseInt( v[1] ) ) 
+				continue;
+			AskingPo o = CsvGen.getAskingPo( Integer.parseInt( v[0] ) );
+			randomAskings.add( o );
+		}
+	}
+	
+	/**
+	 * 包装战斗 应答
+	 * @param askings
+	 */
+	public void wrapAsking(List<Askings> askings) {
+		List<AskingPo> all = Lists.newArrayList();
+		all.addAll( basisAskings );
+		all.addAll( randomAskings );
+		for( AskingPo ask : all ){
+			Askings o = new Askings(ask);
+			askings.add(o);
+		}
+	}
+
 	
 	/**
 	 * 该副本是否关闭
 	 * @return
 	 */
 	public abstract boolean isClose();
-	public Ectype template(){ return template; }
+	public EctypePo template(){ return template; }
 	public int getNid() { return template.id; }
 	public EctypeType type(){ return type ; }
+
 	
 }

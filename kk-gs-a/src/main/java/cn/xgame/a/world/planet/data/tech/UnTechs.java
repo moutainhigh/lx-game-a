@@ -1,7 +1,7 @@
 package cn.xgame.a.world.planet.data.tech;
 
 import cn.xgame.a.world.planet.data.vote.Vote;
-import cn.xgame.config.o.Tech;
+import cn.xgame.config.o.TechPo;
 
 /**
  * 还没学习的科技<br>
@@ -21,7 +21,7 @@ public class UnTechs extends Techs{
 		super(id);
 	}
 	
-	public UnTechs(Tech templet) {
+	public UnTechs(TechPo templet) {
 		super(templet);
 	}
 

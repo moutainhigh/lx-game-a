@@ -1,17 +1,17 @@
 package cn.xgame.a.combat.o;
 
+import cn.xgame.config.o.AskingPo;
+
+
 /**
  * 问结构
  * @author deng		
  * @date 2015-7-30 上午10:41:29
  */
-public class Asking {
+public class Askings {
 
 	// 表格ID
 	public int id;
-	
-	// 结算类型 1.战斗前 2.战斗中 3.战斗后
-	public byte settype;
 	
 	// 类型 
 	public byte type;
@@ -25,6 +25,14 @@ public class Asking {
 	// 对应值
 	public float pctvalue;
 	
+	public Askings(AskingPo asking) {
+		id 			= asking.id;
+		type 		= asking.type;
+		atttype 	= asking.atttype;
+		intvalue 	= asking.intvalue;
+		pctvalue 	= asking.pctvalue;
+	}
+
 	/**
 	 * 改变值
 	 * @param value
