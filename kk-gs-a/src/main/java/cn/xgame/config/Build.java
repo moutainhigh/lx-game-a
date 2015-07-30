@@ -1,6 +1,6 @@
 package cn.xgame.config;
 
-import cn.xgame.a.system.SystemCfg;
+import cn.xgame.system.SystemCfg;
 import x.javaplus.csv.App;
 
 public class Build {

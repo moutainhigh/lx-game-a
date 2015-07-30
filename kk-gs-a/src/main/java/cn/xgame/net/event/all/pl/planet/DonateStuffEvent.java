@@ -9,10 +9,10 @@ import x.javaplus.util.ErrorCode;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.a.system.LXConstants;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
 
 /**

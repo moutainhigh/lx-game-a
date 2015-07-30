@@ -1,4 +1,4 @@
-package cn.xgame.config.gen;import java.util.List;import java.util.Map;import x.javaplus.collections.Lists;import x.javaplus.csv.util.Csv;import cn.xgame.a.system.SystemCfg;import cn.xgame.config.o.AnswerPo;
+package cn.xgame.config.gen;import java.util.List;import java.util.Map;import x.javaplus.collections.Lists;import x.javaplus.csv.util.Csv;import cn.xgame.system.SystemCfg;import cn.xgame.config.o.AnswerPo;
 import cn.xgame.config.o.AskingPo;
 import cn.xgame.config.o.BbuildingPo;
 import cn.xgame.config.o.CaptainPo;

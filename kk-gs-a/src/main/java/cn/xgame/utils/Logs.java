@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import cn.xgame.a.player.u.IPlayer;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.net.netty.Netty.IP;
+import cn.xgame.system.SystemCfg;
 
 /**
  * 日志类 包括控制台输出

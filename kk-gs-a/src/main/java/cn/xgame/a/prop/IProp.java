@@ -3,12 +3,12 @@ package cn.xgame.a.prop;
 import x.javaplus.mysql.db.Condition;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.LXConstants;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.LXConstants;
 import io.netty.buffer.ByteBuf;
 
 /**

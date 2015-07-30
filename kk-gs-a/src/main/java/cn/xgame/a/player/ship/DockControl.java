@@ -13,10 +13,10 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.SystemCfg;
 
 /**
  * 船坞 操作类

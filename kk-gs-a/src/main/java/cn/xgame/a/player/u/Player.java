@@ -13,7 +13,6 @@ import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.ectype.o.PreEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.ectype.SEctype;
@@ -26,6 +25,7 @@ import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.netty.Netty.Attr;
 import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.PackageCheck;
 
 public class Player extends IPlayer implements ITransformStream{

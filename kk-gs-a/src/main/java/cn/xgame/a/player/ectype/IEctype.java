@@ -106,7 +106,7 @@ public abstract class IEctype {
 	}
 	
 	/**
-	 * 包装战斗 应答
+	 * 包装战斗 问
 	 * @param askings
 	 */
 	public void wrapAsking(List<Askings> askings) {

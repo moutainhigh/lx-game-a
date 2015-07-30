@@ -10,9 +10,9 @@ import x.javaplus.util.ErrorCode;
 import cn.xgame.a.Launch;
 import cn.xgame.a.Launch.LSClientAgency;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.system.SystemCfg;
 
 public class ConnectEvent extends IEvent {
 

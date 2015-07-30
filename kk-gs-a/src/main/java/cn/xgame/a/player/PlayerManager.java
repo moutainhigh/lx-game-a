@@ -12,11 +12,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.player.u.Init;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.event.Events;
+import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.Illegality;
 
 public class PlayerManager {

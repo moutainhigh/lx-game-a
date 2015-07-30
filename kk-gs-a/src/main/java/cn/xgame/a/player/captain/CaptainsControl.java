@@ -10,10 +10,10 @@ import cn.xgame.a.IFromDB;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.SystemCfg;
 
 /**
  * 舰长室 操作类

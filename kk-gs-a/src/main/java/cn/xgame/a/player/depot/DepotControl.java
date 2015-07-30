@@ -10,12 +10,12 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.Logs;
 
 import x.javaplus.collections.Lists;

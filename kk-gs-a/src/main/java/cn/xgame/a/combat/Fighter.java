@@ -42,6 +42,7 @@ public class Fighter {
 	 * @param ship
 	 */
 	public Fighter( Player player, ShipInfo ship ) {
+		// 
 		hp = ship.warpFightProperty( attacks, defends, askings, answers );
 		// 如果有舰长 那么还要塞入舰长的数据
 		if( ship.getCaptainUID() != -1 ){
@@ -56,12 +57,12 @@ public class Fighter {
 	 */
 	public Fighter( IEctype ectype ) {
 		hp = 100;
-		// 副本应答
+		// 副本应答 - 问
 		ectype.wrapAsking( askings );
 		// 怪物数据
 //		EnemyMeet enemyMeet = new EnemyMeet( ectype.template().meet );
 		EnemyMeet enemyMeet = new EnemyMeet( 1000 );
-		hp = enemyMeet.warpFightProperty( attacks, defends, askings, answers );
+		hp = enemyMeet.wrapFightProperty( attacks, defends, askings, answers );
 	}
 	
 }

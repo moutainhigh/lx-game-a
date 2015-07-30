@@ -115,9 +115,10 @@ public class EquipControl extends IHold implements IArrayStream{
 				// 累加血量
 				hp += equip.templet().hp;
 				// 攻击属性
-				warpAADProperty( attacks, defends, equip );
-				// 问答
-				warpAAAProperty( askings, answers, equip );
+				CombatUtil.putBasisProperty( attacks, defends, equip.templet().type, equip.templet().value );
+				// 答
+				CombatUtil.putAnswer( equip.templet().answers, answers );
+				// 问
 				
 			} catch (Exception e) {
 				Logs.error( "EquipControl.warpFightProperty ", e );
@@ -127,46 +128,5 @@ public class EquipControl extends IHold implements IArrayStream{
 		return hp;
 	}
 	
-	// 包装攻击属性
-	private void warpAADProperty( List<AtkAndDef> attacks, List<AtkAndDef> defends, SEquip equip ) {
-		try {
-			
-			String[] types 	= equip.templet().type.split(";");
-			String[] values = equip.templet().value.split(";");
-			if( types.length != values.length ){
-				Logs.error( "types.length != values.length at EquipControl.warpFightProperty" );
-				return;
-			}
-			
-			for( int i = 0; i < types.length; i++ ){
-				AtkAndDef o = new AtkAndDef(  );
-				o.type 		= Integer.parseInt( types[i] );
-				o.value 	= Integer.parseInt( values[i] );
-				if( o.type < 100 ) // 代表攻击
-					attacks.add(o);
-				else if( o.type >= 100 && o.type < 200 ) // 代表防御
-					defends.add(o);
-			}
-			
-		} catch (Exception e) {
-			Logs.error( "EquipControl.warpAADProperty ", e );
-		}
-	}
-
-	// 包装应答属性
-	private void warpAAAProperty(List<Askings> askings, List<Answers> answers, SEquip equip ) {
-		try {
-			// 答
-			CombatUtil.putAnswer( equip.templet().answers, answers );
-			
-			// 问
-			
-			
-		} catch (Exception e) {
-			Logs.error( "EquipControl.warpAAAProperty ", e );
-		}
-	}
-
-
 	
 }

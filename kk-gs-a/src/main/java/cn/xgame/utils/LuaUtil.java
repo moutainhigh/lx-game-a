@@ -1,6 +1,6 @@
 package cn.xgame.utils;
 
-import cn.xgame.a.system.SystemCfg;
+import cn.xgame.system.SystemCfg;
 import x.javaplus.util.lua.Lua;
 
 /**
