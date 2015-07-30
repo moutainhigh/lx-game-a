@@ -2,10 +2,10 @@ package cn.xgame.a.player.captain.o;
 
 import java.util.List;
 
+import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
-import cn.xgame.a.combat.o.CombatUtil;
 import cn.xgame.a.prop.cequip.CEquip;
 
 

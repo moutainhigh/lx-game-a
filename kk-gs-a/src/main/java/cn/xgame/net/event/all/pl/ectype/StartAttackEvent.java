@@ -9,7 +9,7 @@ import x.javaplus.util.Util.Random;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
-import cn.xgame.a.combat.o.Fighter;
+import cn.xgame.a.combat.Fighter;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;

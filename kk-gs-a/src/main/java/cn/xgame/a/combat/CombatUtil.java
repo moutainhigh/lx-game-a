@@ -1,7 +1,9 @@
-package cn.xgame.a.combat.o;
+package cn.xgame.a.combat;
 
 import java.util.List;
 
+import cn.xgame.a.combat.o.Answers;
+import cn.xgame.a.combat.o.Respond;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AnswerPo;
 import cn.xgame.config.o.AskingPo;

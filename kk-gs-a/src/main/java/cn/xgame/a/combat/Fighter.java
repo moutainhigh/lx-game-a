@@ -1,8 +1,11 @@
-package cn.xgame.a.combat.o;
+package cn.xgame.a.combat;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.xgame.a.combat.o.Answers;
+import cn.xgame.a.combat.o.Askings;
+import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ectype.enemy.EnemyMeet;
