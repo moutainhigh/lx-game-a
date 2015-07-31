@@ -4,13 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
-import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
 
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
@@ -46,18 +44,14 @@ public class CreateEvent extends IEvent {
 			if( !Key.verify( key, UID+LXConstants.PUBLICKEY ) )
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
-			// 获取玩家信息
-			player	= PlayerManager.o.create( ctx, UID, headIco, adjutantId, name );
-			
 			// 分配母星
-			home 	= WorldManager.o.allotHomePlanet( player );
+			home 	= WorldManager.o.allotHomePlanet( ctx );
 			
-			// 这里给所有舰船 设置停靠星球
-			List<ShipInfo> allShip = player.getDocks().getAllShip();
-			for( ShipInfo ship : allShip ){
-				ship.setStarId( home.getId() );
-				ship.updateDB(player);
-			}
+			// 获取玩家信息
+			player	= PlayerManager.o.create( ctx, UID, headIco, adjutantId, name, home.getId() );
+			
+			// 加入星球
+			home.appendPlayer(player);
 			
 			// 获取副本信息
 			player.updateEctype();
@@ -87,7 +81,7 @@ public class CreateEvent extends IEvent {
 			player.getEctypes().startRLoginTime();
 			
 			// 保存数据库一次
-			PlayerManager.o.update(player);
+//			PlayerManager.o.update(player);
 		}
 	}
 

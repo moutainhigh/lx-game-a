@@ -47,7 +47,8 @@
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
 			setObject( "captainUid", dto.getCaptainUid() );
-			setObject( "starId", dto.getStarId() );
+			setObject( "statuss", dto.getStatuss() );
+			setObject( "keepinfos", dto.getKeepinfos() );
 			setObject( "holds", dto.getHolds() );
 			setObject( "equips", dto.getEquips() );
 
@@ -266,7 +267,8 @@
 		private Integer uid = null;
 		private Integer nid = null;
 		private Integer captainUid = null;
-		private Integer starId = null;
+		private byte[] statuss = null;
+		private byte[] keepinfos = null;
 		private byte[] holds = null;
 		private byte[] equips = null;
 
@@ -275,7 +277,8 @@
 			this.uid = src.uid;
 			this.nid = src.nid;
 			this.captainUid = src.captainUid;
-			this.starId = src.starId;
+			this.statuss = src.statuss;
+			this.keepinfos = src.keepinfos;
 			this.holds = src.holds;
 			this.equips = src.equips;
 
@@ -284,7 +287,8 @@
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
 		/**  舰长唯一ID  */		public Integer getCaptainUid(){			return this.captainUid;		}
-		/**  停靠的星球ID  */		public Integer getStarId(){			return this.starId;		}
+		/**  状态  */		public byte[] getStatuss(){			return this.statuss;		}
+		/**  副本留存信息  */		public byte[] getKeepinfos(){			return this.keepinfos;		}
 		/**  货仓  */		public byte[] getHolds(){			return this.holds;		}
 		/**  装备  */		public byte[] getEquips(){			return this.equips;		}
 
@@ -293,7 +297,8 @@
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
 		/**  舰长唯一ID  */		public void setCaptainUid( Integer captainUid ){			this.captainUid = captainUid;		}
-		/**  停靠的星球ID  */		public void setStarId( Integer starId ){			this.starId = starId;		}
+		/**  状态  */		public void setStatuss( byte[] statuss ){			this.statuss = statuss;		}
+		/**  副本留存信息  */		public void setKeepinfos( byte[] keepinfos ){			this.keepinfos = keepinfos;		}
 		/**  货仓  */		public void setHolds( byte[] holds ){			this.holds = holds;		}
 		/**  装备  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
@@ -302,7 +307,8 @@
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
 		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
-		public static String starIdChangeSql( Integer x) {			return "starId=" + x;		}
+		public static String statussChangeSql( byte[] x) {			return "statuss=" + x;		}
+		public static String keepinfosChangeSql( byte[] x) {			return "keepinfos=" + x;		}
 		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
 		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
 
@@ -311,10 +317,11 @@
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
 			captainUid = o.getInt( "captainUid" );
-			starId = o.getInt( "starId" );
+			statuss = o.getBytes( "statuss" );
+			keepinfos = o.getBytes( "keepinfos" );
 			holds = o.getBytes( "holds" );
 			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"starId="+starId+","+"holds="+holds+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
 
 }

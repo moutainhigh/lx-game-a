@@ -4,7 +4,6 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
@@ -26,7 +25,7 @@ public class EnemyMeet {
 	private List<Enemy> enemys = Lists.newArrayList();
 	
 	// 奖励列表
-	private List<AwardInfo> awards = Lists.newArrayList();
+	private List<DropAward> drop = Lists.newArrayList();
 	
 	public EnemyMeet( int id ){
 		templet = CsvGen.getMeetPo(id);
@@ -35,7 +34,7 @@ public class EnemyMeet {
 	}
 	public MeetPo templet(){ return templet; }
 	public List<Enemy> getEnemys(){ return enemys; }
-	public List<AwardInfo> getAwards(){ return awards; }
+	public List<DropAward> getAwards(){ return drop; }
 	
 	
 	// 初始化 怪物
@@ -73,8 +72,8 @@ public class EnemyMeet {
 			int id 		= Integer.parseInt( v[0] );
 			int count 	= Integer.parseInt( v[1] );
 			int rand 	= v.length >= 3 ? Integer.parseInt( v[2] ) : 10000;
-			AwardInfo o = new AwardInfo( id, count, rand );
-			awards.add(o);
+			DropAward o = new DropAward( id, count, rand );
+			drop.add(o);
 		}
 	}
 	
@@ -96,7 +95,7 @@ public class EnemyMeet {
 			// 基础属性
 			CombatUtil.putBasisProperty( attacks, defends, enemy.templet().type, enemy.templet().value );
 			// 问
-			CombatUtil.putAsking( enemy.templet().asking, askings );
+			CombatUtil.putAsking( enemy.templet().askings, askings );
 			// 答
 		}
 		

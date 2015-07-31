@@ -7,12 +7,17 @@ import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IUObject;
 import cn.xgame.a.player.ship.o.v.HoldControl;
 import cn.xgame.a.player.ship.o.v.EquipControl;
+import cn.xgame.a.player.ship.o.v.EctypeCombatInfo;
+import cn.xgame.a.player.ship.o.v.SailPurpose;
+import cn.xgame.a.player.ship.o.v.ShipStatus;
+import cn.xgame.a.player.ship.o.v.StatusControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ShipPo;
@@ -35,16 +40,19 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	
 	// 舰长唯一ID
 	private int captainUID = -1;
-	// 停靠在的星球
-	private int starId;
-	
 	
 	// 货仓
 	private HoldControl holds = new HoldControl();
 	
 	// 装备 武器-辅助
 	private EquipControl equips = new EquipControl();
-
+	
+	// 状态
+	private StatusControl status = new StatusControl();
+	
+	// 副本信息   (这里只有是战斗航行和战斗状态 才有)
+	private EctypeCombatInfo keepInfo = new EctypeCombatInfo(); 
+	
 	
 	// 组队信息
 	// TODO
@@ -56,7 +64,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public ShipInfo( int uid, int nid ) {
 		super( uid, nid );
-		template 	= CsvGen.getShipPo(nid);
+		template = CsvGen.getShipPo(nid);
 		holds.setRoom( template.groom );
 		equips.setWroom( template.wroom );
 		equips.setEroom( template.eroom );
@@ -70,7 +78,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		super( dto.getUid(), dto.getNid() );
 		template = CsvGen.getShipPo( dto.getNid() );
 		captainUID = dto.getCaptainUid();
-		starId = dto.getStarId();
+		status.fromBytes( dto.getStatuss() );
+		keepInfo.fromBytes( dto.getKeepinfos() );
 		holds.fromBytes( dto.getHolds() );
 		equips.fromBytes( dto.getEquips() );
 	}
@@ -79,6 +88,22 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( getuId() );
 		buffer.writeInt( getnId() );
+		buffer.writeInt( captainUID );
+		status.buildTransformStream(buffer);
+		if( status.getStatus() == ShipStatus.SAILING ){
+			buffer.writeInt( status.getSurplusTime() );
+			buffer.writeInt( status.getTargetSnid() );
+			buffer.writeByte( status.getSailPurpose().toNumber() );
+			if( status.getSailPurpose() == SailPurpose.ATTACKECTYPE )
+				buffer.writeInt( keepInfo.getEnid() );
+		}
+		if( status.getStatus() == ShipStatus.COMBAT ){
+			buffer.writeInt( status.getSurplusTime() );
+			buffer.writeInt( keepInfo.getEnid() );
+			buffer.writeInt( keepInfo.isWin() );
+		}
+		holds.buildTransformStream(buffer);
+		equips.buildTransformStream(buffer);
 	}
 
 	
@@ -104,12 +129,13 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	private void setDBData(ShipsDto dto) {
 		dto.setNid( getnId() );
 		dto.setCaptainUid( captainUID );
-		dto.setStarId( starId );
+		dto.setStatuss( status.toBytes() );
+		dto.setKeepinfos( keepInfo.toBytes() );
 		dto.setHolds( holds.toBytes() );
 		dto.setEquips( equips.toBytes() );
 	}
 	
-	
+
 	public ShipPo template(){ return template; }
 	public int getCaptainUID() {
 		return captainUID;
@@ -117,36 +143,51 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void setCaptainUID(int captainUID) {
 		this.captainUID = captainUID;
 	}
-	public int getStarId() {
-		return starId;
-	}
-	public void setStarId(int starId) {
-		this.starId = starId;
+	public void setStatus( ShipStatus shipStatus ) {
+		status.setStatus(shipStatus);
 	}
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
+	public StatusControl getStatus() { return status; }
+	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
 
 	/**
 	 * 是否可以战斗
 	 * @return
 	 */
 	public boolean isCanCombat() {
-		// TODO Auto-generated method stub
-		return true;
+		return status.isCanCombat();
 	}
 	
 	/**
-	 * 获取到某个星球的航行时间 单位秒
-	 * @param sId
-	 * @return
+	 * 获取航行到目标星球
+	 * @param snid 目标星球
+	 * @return 需要的航行时间 
 	 */
-	public int getSailingTime( int sId ) {
-		StarsPo cur = CsvGen.getStarsPo(starId);
-		StarsPo to 	= CsvGen.getStarsPo(sId);
-		Lua lua = LuaUtil.getGameData();
-		LuaValue[] ret = lua.getField( "sailingTime" ).call( 1, cur, to, this );
-		Logs.debug( "航行时间：" + ret[0].getInt() );
-		return ret[0].getInt();
+	public int getSailingTime( int snid ) {
+		if( status.getTargetSnid() == snid )
+			return 0;
+		StarsPo cur	 	= CsvGen.getStarsPo( status.getTargetSnid() );
+		StarsPo to 		= CsvGen.getStarsPo( snid );
+		Lua lua 		= LuaUtil.getGameData();
+		LuaValue[] ret 	= lua.getField( "sailingTime" ).call( 1, cur, to );
+		int sailTime 	= ret[0].getInt();
+		Logs.debug( "获取航行时间  " +status.getTargetSnid()+ " -> " +snid+ "  时间：" + sailTime );
+		return sailTime;
+	}
+	
+	/**
+	 * 记录 副本战斗信息
+	 * @param enid
+	 * @param combatTime
+	 * @param isWin
+	 * @param awards
+	 */
+	public void recordEctypeCombatInfo(int enid, byte isWin, List<AwardInfo> awards) {
+		keepInfo.setEnid( enid );
+		keepInfo.setWin( isWin );
+		if( awards != null )
+			keepInfo.addAwards( awards );
 	}
 	
 	/**

@@ -64,10 +64,6 @@ public class DockControl implements ITransformStream,IFromDB{
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships ){
 			ship.buildTransformStream( buffer );
-			buffer.writeInt( ship.getCaptainUID() );
-			buffer.writeInt( ship.getStarId() );
-			ship.getHolds().buildTransformStream(buffer);
-			ship.getEquips().buildTransformStream(buffer);
 		}
 	}
 
@@ -94,7 +90,7 @@ public class DockControl implements ITransformStream,IFromDB{
 	}
 	private void append( ShipInfo ship ) {
 		// 默认设置停靠在自己母星上
-		ship.setStarId( root.getCountryId() );
+		ship.getStatus().init( root.getCountryId() );
 		ships.add(ship);
 	}
 

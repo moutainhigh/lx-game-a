@@ -22,8 +22,11 @@ public interface Ships {
 	/** 舰长唯一ID */
 	int captainUid();
 	
-	/** 停靠的星球ID */
-	int starId();
+	/** 状态 */
+	byte[] statuss();
+	
+	/** 副本留存信息 */
+	byte[] keepinfos();
 	
 	/** 货仓 */
 	byte[] holds();

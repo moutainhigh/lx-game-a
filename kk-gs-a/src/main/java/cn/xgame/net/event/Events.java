@@ -20,6 +20,7 @@ import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorPmChatEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyAccEctypeEvent;
+import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
@@ -98,6 +99,7 @@ public enum Events {
 	//-----------------副本
 	APPLY_ACCECTYPE				( 1201, 	new ApplyAccEctypeEvent() ),
 	START_ATTACK				( 1202, 	new StartAttackEvent() ),
+	OVER_ATTACK					( 1211, 	new OverAttackEvent() ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent() ),
 	TAVERN_BUY					( 1311, 	new TavernBuyEvent() ),

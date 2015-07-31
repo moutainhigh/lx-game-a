@@ -60,8 +60,7 @@ public class Fighter {
 		// 副本应答 - 问
 		ectype.wrapAsking( askings );
 		// 怪物数据
-//		EnemyMeet enemyMeet = new EnemyMeet( ectype.template().meet );
-		EnemyMeet enemyMeet = new EnemyMeet( 1000 );
+		EnemyMeet enemyMeet = new EnemyMeet( ectype.template().meetId );
 		hp = enemyMeet.wrapFightProperty( attacks, defends, askings, answers );
 	}
 	

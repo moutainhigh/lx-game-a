@@ -141,9 +141,10 @@ public class PlayerManager {
 	 * @param name 
 	 * @param headIco 
 	 * @param adjutantId 
+	 * @param countryId 
 	 * @return
 	 */
-	public Player create( ChannelHandlerContext ctx, String uID, int headIco, int adjutantId, String name ) throws Exception{
+	public Player create( ChannelHandlerContext ctx, String uID, int headIco, int adjutantId, String name, int countryId ) throws Exception{
 		
 		// 过滤非法字
 		if( Illegality.own( name ) )
@@ -156,7 +157,7 @@ public class PlayerManager {
 		Player ret = null;
 		try {
 			// 初始化数据
-			ret = Init.run( uID, headIco, adjutantId, name );
+			ret = Init.run( uID, headIco, adjutantId, name, countryId );
 			// 设置socket
 			ret.setCtx( ctx );
 			// 放入内存

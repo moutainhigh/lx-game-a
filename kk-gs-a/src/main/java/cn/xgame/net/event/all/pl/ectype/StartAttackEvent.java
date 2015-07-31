@@ -3,15 +3,20 @@ package cn.xgame.net.event.all.pl.ectype;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Random;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.combat.Fighter;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.ship.o.v.SailPurpose;
+import cn.xgame.a.player.ship.o.v.ShipStatus;
+import cn.xgame.a.player.ship.o.v.StatusControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
@@ -34,7 +39,10 @@ public class StartAttackEvent extends IEvent{
 		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
 		
 		ErrorCode code = null;
-		byte isWin = 0;
+		
+		int sailTime	= 0;// 航行时间
+		int combatTime 	= 0;// 战斗时间
+		byte isWin 		= 0;// 是否胜利
 		try {
 			
 			// 判断副本是否可以打
@@ -42,13 +50,39 @@ public class StartAttackEvent extends IEvent{
 			if( ectype == null )
 				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 			
-			// 检测检测是否在该星球
-			// TODO
+			ShipInfo ship 			= player.getDocks().getShip(suid);
+			StatusControl status 	= ship.getStatus();
+			// 这里检测是否还需要航行 
+			if( status.getStatus() == ShipStatus.SAILING ){
+				if( status.getSailPurpose() == SailPurpose.ATTACKECTYPE ){
+					sailTime = status.getSurplusTime();
+					if( sailTime != 0 )
+						throw new Exception( ErrorCode.SHIP_NOTINSTAR.name() );
+				}else{
+					throw new Exception( ErrorCode.OTHER_ERROR.name() );
+				}
+				
+			// 获取航行时间  这里主要检查 是否已经到达该星球 
+			}else if( status.getStatus() == ShipStatus.LEVITATION ){
+				sailTime 	= ship.getSailingTime( snid );
+				if( sailTime != 0 ){
+					status.startSail( snid, sailTime, SailPurpose.ATTACKECTYPE );
+					ship.getKeepInfo().setEnid( enid );
+					throw new Exception( ErrorCode.SHIP_NOTINSTAR.name() );
+				}
+				
+			// 如果在战斗状态
+			}else if( status.getStatus() == ShipStatus.COMBAT ) {
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			}
 			
-			// 判断该船是否可以战斗
-			ShipInfo ship = player.getDocks().getShip(suid);
-			if( !ship.isCanCombat() )
-				throw new Exception( ErrorCode.SHIP_CANNOT_FIGHT.name() );
+			// 航行完了 就悬停
+			if( sailTime == 0 && status.getStatus() == ShipStatus.SAILING ){
+				status.levitation();
+			}
+			
+			// 这里判断组队信息
+			// TODO
 			
 			Fighter att = new Fighter( player, ship );// 攻击者
 			Fighter def = new Fighter( ectype );// 防御者
@@ -56,15 +90,26 @@ public class StartAttackEvent extends IEvent{
 				
 				Lua lua = LuaUtil.getEctypeCombat();
 				// 攻击者 防御者 基础战斗时间 胜率上限
-				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.template().btime, 10000 );
+				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.template().btime, ectype.template().maxran );
 				int winRate = ret[1].getInt();
 				
-				int rand = Random.get( 0, 10000 );
-				isWin = (byte) (rand <= winRate ? 1 : 0);
+				int rand 	= Random.get( 0, 10000 );
+				isWin 		= (byte) (rand <= winRate ? 1 : 0);
+				combatTime	= ret[0].getInt();
+				
+				// 根据胜利 获取算出奖励
+				List<AwardInfo> awards = isWin == 1 ? null : null;
+				
+				// 切换战斗状态
+				status.startAttack( combatTime );
+				
+				// 这里记录战斗 信息
+				ship.recordEctypeCombatInfo( enid, isWin, awards );
 				
 			} catch (Exception e) {
 				Logs.error( player, "副本战斗错误 ", e );
 				isWin = 0;
+				combatTime = 100;
 			}
 			
 			code = ErrorCode.SUCCEED;
@@ -75,9 +120,18 @@ public class StartAttackEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			response.writeInt( combatTime );
 			response.writeByte( isWin );
-			response.writeShort(0);
-			response.writeShort(0);
+			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin );
+		}
+		// 该船不在目标星球  这里叫他航行
+		if( code == ErrorCode.SHIP_NOTINSTAR ){
+			response.writeInt( sailTime );
+			Logs.debug(player, "申请出击副本 不在目标星球 sailTime=" + sailTime );
+		}
+		// 等待其他玩家
+		if( code == ErrorCode.AWAIT_OTHERPLAYER ){
+			response.writeInt( 30 );
 		}
 		sendPackage( player.getCtx(), response );
 	}

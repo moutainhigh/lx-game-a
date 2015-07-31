@@ -18,21 +18,22 @@ public class Init {
 	 * @param headIco 头像ID
 	 * @param adjutantId 副官ID
 	 * @param name 玩家名字
+	 * @param countryId 分配的星球ID
 	 * @return
 	 */
-	public static Player run( String uID, int headIco, int adjutantId, String name ) {
+	public static Player run( String uID, int headIco, int adjutantId, String name, int countryId ) {
 		
 		Player ret = new Player( uID, headIco, name );
 		ret.setAdjutantId( adjutantId );
-		
+		ret.setCountryId( countryId );
 		ret.setCurrency( o.currency );
 		ret.setGold( o.gold );
 		
 		// 添加 初始道具
-		initItem(ret);
+		initItem( ret );
 		
 		// 添加 初始舰船
-		initShip(ret);
+		initShip( ret );
 		
 		// 添加 初始舰长
 		initCaptain( ret );

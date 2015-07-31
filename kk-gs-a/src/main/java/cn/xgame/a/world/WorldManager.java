@@ -1,6 +1,7 @@
 package cn.xgame.a.world;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;
 
 /**
@@ -97,6 +99,14 @@ public class WorldManager {
 		// 这里及时存下
 		home.updateDB();
 		return home;
+	}
+	/**
+	 * 根据IP分配母星
+	 * @param ctx
+	 * @return
+	 */
+	public HomePlanet allotHomePlanet( ChannelHandlerContext ctx ) {
+		return getHomePlanetInIP( IP.formAddress(ctx) );
 	}
 	
 	// 根据ip获取 对应母星
@@ -242,5 +252,6 @@ public class WorldManager {
 			home.updateTavern();
 		}
 	}
+
 
 }
