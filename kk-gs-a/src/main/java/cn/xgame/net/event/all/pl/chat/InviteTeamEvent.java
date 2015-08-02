@@ -40,7 +40,7 @@ public class InviteTeamEvent extends IEvent {
 			if( ship == null )
 				throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
 			// 判断舰船是否可以出战
-			if( ship.isCanFighting() )
+			if( !ship.isCanFighting() )
 				throw new Exception( ErrorCode.SHIP_NOTFIGHTING.name() );
 			if( ship.getTeamId() != 0 ){// 这里证明已经有队伍了
 				AxnInfo axn = chatControl.getAXNInfo( ship.getTeamId() );

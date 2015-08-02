@@ -51,6 +51,9 @@ public class StartAttackEvent extends IEvent{
 				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 			
 			ShipInfo ship 			= player.getDocks().getShip(suid);
+			// 检测舰船是否可以战斗
+			if( !ship.isCanFighting() )
+				throw new Exception( ErrorCode.SHIP_NOTFIGHTING.name() );
 			StatusControl status 	= ship.getStatus();
 			// 这里检测是否还需要航行 
 			if( status.getStatus() == ShipStatus.SAILING ){

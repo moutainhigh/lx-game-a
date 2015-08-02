@@ -58,7 +58,7 @@ public class AnswerTeamEvent extends IEvent{
 			
 			// 判断舰船是否可以出战
 			mship = player.getDocks().getShip(msuid);
-			if( mship.isCanFighting() )
+			if( !mship.isCanFighting() )
 				throw new Exception( ErrorCode.SHIP_NOTFIGHTING.name() );
 			
 			// 将玩家加入频道
