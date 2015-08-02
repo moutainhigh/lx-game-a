@@ -34,6 +34,7 @@
 			setObject( "gold", dto.getGold() );
 			setObject( "ectypes", dto.getEctypes() );
 			setObject( "manors", dto.getManors() );
+			setObject( "chatAxns", dto.getChatAxns() );
 
 			super.commit( true );		}	}
 	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -166,6 +167,7 @@
 		private Integer gold = null;
 		private byte[] ectypes = null;
 		private byte[] manors = null;
+		private byte[] chatAxns = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -179,6 +181,7 @@
 			this.gold = src.gold;
 			this.ectypes = src.ectypes;
 			this.manors = src.manors;
+			this.chatAxns = src.chatAxns;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  唯一ID  */		public String getUid(){			return this.uid;		}
@@ -192,6 +195,7 @@
 		/**  充值币  */		public Integer getGold(){			return this.gold;		}
 		/**  副本(常驻副本-额外副本-偶发副本)  */		public byte[] getEctypes(){			return this.ectypes;		}
 		/**  领地  */		public byte[] getManors(){			return this.manors;		}
+		/**  聊天频道ID列表  */		public byte[] getChatAxns(){			return this.chatAxns;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -205,6 +209,7 @@
 		/**  充值币  */		public void setGold( Integer gold ){			this.gold = gold;		}
 		/**  副本(常驻副本-额外副本-偶发副本)  */		public void setEctypes( byte[] ectypes ){			this.ectypes = ectypes;		}
 		/**  领地  */		public void setManors( byte[] manors ){			this.manors = manors;		}
+		/**  聊天频道ID列表  */		public void setChatAxns( byte[] chatAxns ){			this.chatAxns = chatAxns;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
@@ -218,6 +223,7 @@
 		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
 		public static String ectypesChangeSql( byte[] x) {			return "ectypes=" + x;		}
 		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
+		public static String chatAxnsChangeSql( byte[] x) {			return "chatAxns=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -231,8 +237,9 @@
 			gold = o.getInt( "gold" );
 			ectypes = o.getBytes( "ectypes" );
 			manors = o.getBytes( "manors" );
+			chatAxns = o.getBytes( "chatAxns" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

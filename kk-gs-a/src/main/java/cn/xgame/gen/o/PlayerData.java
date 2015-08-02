@@ -44,4 +44,7 @@ public interface PlayerData {
 	/** 领地 */
 	byte[] manors();
 	
+	/** 聊天频道ID列表 */
+	byte[] chatAxns();
+	
 }

@@ -38,7 +38,6 @@ public class DBBaseUID implements IFromDB{
 		
 		sql			= new Condition( CaptainsDto.unameChangeSql( player.getUID() ) ).AND( CaptainsDto.gsidChangeSql( player.getGsid() ) ).toString();
 		CAPTAIN_UID	= SqlUtil.getMaxId( SqlUtil.getClassName( CaptainsDto.class ), "uid", sql );
-		
 	}
 
 

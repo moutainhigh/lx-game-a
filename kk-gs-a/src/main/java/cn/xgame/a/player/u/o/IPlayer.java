@@ -1,6 +1,5 @@
 package cn.xgame.a.player.u.o;
 
-import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.utils.Logs;
 
@@ -12,53 +11,44 @@ import cn.xgame.utils.Logs;
 public abstract class IPlayer {
 
 	// 唯一ID
-	private String UID;
+	private String			UID;
 	// 服务器ID
-	private short gsid;
+	private short 			gsid;
 	
 	// 玩家昵称
-	private String nickname;
+	private String 			nickname;
 	// 头像图标ID
-	private int headIco;
+	private int 			headIco;
 	// 副官ID
-	private int adjutantId;
+	private int 			adjutantId;
 	
 	// 区域 - 属于星球ID
-	private int countryId;
+	private int 			countryId;
 	
 	// 游戏币
-	private int currency;
+	private int 			currency;
 	// 充值币
-	private int gold;
+	private int 			gold;
 	
 	
 	// 创建时间 (单位：毫秒)
-	private long createTime;
+	private long 			createTime;
 	
 	// 上次下线时间 (单位：毫秒)
-	private long lastLogoutTime;
-	
-	
-	/////////////////////////////////////
-	// 玩家领地
-	private ManorControl manors;
-	
+	private long 			lastLogoutTime;
 	
 	
 	public void wrap( PlayerDataDto dto ){
-		
-		this.UID 		= dto.getUid();
-		this.gsid		= dto.getGsid();
-		this.nickname 	= dto.getNickname();
-		this.headIco	= dto.getHeadIco();
-		this.adjutantId = dto.getAdjutantId();
-		this.countryId	= dto.getCountryId();
-		this.currency	= dto.getCurrency();
-		this.gold		= dto.getGold();
-		this.createTime	= dto.getCreateTime();
+		this.UID 			= dto.getUid();
+		this.gsid			= dto.getGsid();
+		this.nickname 		= dto.getNickname();
+		this.headIco		= dto.getHeadIco();
+		this.adjutantId 	= dto.getAdjutantId();
+		this.countryId		= dto.getCountryId();
+		this.currency		= dto.getCurrency();
+		this.gold			= dto.getGold();
+		this.createTime		= dto.getCreateTime();
 		this.lastLogoutTime = dto.getLastLogoutTime();
-		this.manors		= new ManorControl( );
-		this.manors.fromBytes( dto.getManors() );
 	}
 	
 	public void update( PlayerDataDto dto ) {
@@ -72,7 +62,6 @@ public abstract class IPlayer {
 		dto.setGold(gold);
 		dto.setCreateTime(createTime);
 		dto.setLastLogoutTime(lastLogoutTime);
-		dto.setManors(manors.toBytes());
 	}
 	
 	/**
@@ -141,12 +130,6 @@ public abstract class IPlayer {
 	}
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
-	}
-	public ManorControl getManors() {
-		return manors;
-	}
-	public void setManors(ManorControl manor) {
-		this.manors = manor;
 	}
 	public int getAdjutantId() {
 		return adjutantId;

@@ -34,14 +34,14 @@ public class CreateTempAxnEvent extends IEvent{
 		try {
 			
 			// 判断自己的临时频道是否已经满了
-			if( player.getChats().axnIsMax( ChatType.TEMPAXN ) )
+			if( player.getChatAxns().axnIsMax( ChatType.TEMPAXN ) )
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
 			to	 = PlayerManager.o.getPlayerFmOnline(ruid);
 			if( to == null )
 				throw new Exception( ErrorCode.PLAYER_NOTEXIST.name() );
 			// 判断被邀请者频道是否已经满了
-			if( to.getChats().axnIsMax( ChatType.TEMPAXN ) )
+			if( to.getChatAxns().axnIsMax( ChatType.TEMPAXN ) )
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
 			// 创建一个频道
@@ -50,8 +50,8 @@ public class CreateTempAxnEvent extends IEvent{
 			axn.appendTempCrew(to);
 			
 			// 记录到玩家身上
-			player.getChats().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
-			to.getChats().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
+			player.getChatAxns().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
+			to.getChatAxns().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

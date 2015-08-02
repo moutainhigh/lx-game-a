@@ -3,6 +3,7 @@ package cn.xgame.a.player.manor;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 玩家领地 操作中心
@@ -17,6 +18,9 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	
 	
 	
+	public ManorControl(Player player) {
+	}
+
 	@Override
 	public void fromBytes(byte[] data) {
 		// TODO Auto-generated method stub

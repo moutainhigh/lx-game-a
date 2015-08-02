@@ -7,7 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.CaptainsControl;
-import cn.xgame.a.player.chat.ChatControl;
+import cn.xgame.a.player.chat.ChatAxnControl;
 import cn.xgame.a.player.depot.DepotControl;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.AccEctype;
@@ -47,6 +47,9 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	//////////////////////数据库相关//////////////////////////
 	
+	// 玩家领地
+	private ManorControl 		manors			= new ManorControl( this );
+		
 	// 所有道具唯一ID基础值 
 	private DBBaseUID 			propBaseUid 	= new DBBaseUID( this );
 
@@ -62,8 +65,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 偶发副本信息
 	private EctypeControl 		ectypes 		= new EctypeControl( this );
 	
-	// 玩家聊天信息
-	private ChatControl			chats 			= new ChatControl( this );
+	// 玩家聊天聊天频道列表
+	private ChatAxnControl		chatAxns 		= new ChatAxnControl( this );
 	
 	/**
 	 * 创建一个
@@ -77,7 +80,6 @@ public class Player extends IPlayer implements ITransformStream{
 		setHeadIco( headIco );
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
-		setManors( new ManorControl() );
 	}
 	
 	/**
@@ -86,11 +88,17 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public Player( PlayerDataDto dto ) {
 		wrap( dto );
-		// 取出偶发副本信息
+		// 取出 领地
+		manors.fromBytes( dto.getManors() );
+		// 取出 偶发副本信息
 		if( dto.getEctypes() == null )
 			updateEctype();
 		else
 			ectypes.fromBytes( dto.getEctypes() );
+		// 取出 聊天频道列表
+		chatAxns.fromBytes( dto.getChatAxns() );
+		
+		////-------------------------下面不是玩家数据库的  但是需要在获取玩家的时候一起取出来
 		// 取出所有道具类型的基础UID
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
@@ -104,13 +112,16 @@ public class Player extends IPlayer implements ITransformStream{
 	@Override
 	public void update( PlayerDataDto dto ) {
 		super.update(dto);
+		// 领地
+		dto.setManors( manors.toBytes() );
 		// 副本
 		dto.setEctypes( ectypes.toBytes() );
+		// 聊天
+		dto.setChatAxns( chatAxns.toBytes() );
 	}
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		
 		RW.writeString( buffer, getUID() );
 		RW.writeString( buffer, getNickname() );
 		buffer.writeInt( getHeadIco() );
@@ -231,8 +242,11 @@ public class Player extends IPlayer implements ITransformStream{
 	public EctypeControl getEctypes() {
 		return ectypes;
 	}
-	public ChatControl getChats() {
-		return chats;
+	public ChatAxnControl getChatAxns() {
+		return chatAxns;
+	}
+	public ManorControl getManors() {
+		return manors;
 	}
 	
 

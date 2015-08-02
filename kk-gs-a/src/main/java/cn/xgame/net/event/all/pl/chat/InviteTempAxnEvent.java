@@ -51,14 +51,14 @@ public class InviteTempAxnEvent extends IEvent {
 			if( to == null )
 				throw new Exception( ErrorCode.PLAYER_NOTEXIST.name() );
 			// 判断被邀请者频道是否已经满了
-			if( to.getChats().axnIsMax( ChatType.TEMPAXN ) )
+			if( to.getChatAxns().axnIsMax( ChatType.TEMPAXN ) )
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
 			// 加入频道
 			axn.appendTempCrew( to );
 			
 			// 记录到玩家身上
-			to.getChats().appendAxn( ChatType.TEMPAXN, axnId );
+			to.getChatAxns().appendAxn( ChatType.TEMPAXN, axnId );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
