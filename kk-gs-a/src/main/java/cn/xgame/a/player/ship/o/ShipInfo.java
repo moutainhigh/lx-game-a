@@ -94,7 +94,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 			buffer.writeInt( status.getSurplusTime() );
 			buffer.writeInt( status.getTargetSnid() );
 			buffer.writeByte( status.getSailPurpose().toNumber() );
-			if( status.getSailPurpose() == SailPurpose.ATTACKECTYPE )
+			if( status.getSailPurpose() == SailPurpose.FIGHTING )
 				buffer.writeInt( keepInfo.getEnid() );
 		}
 		if( status.getStatus() == ShipStatus.COMBAT ){
@@ -152,11 +152,19 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
 
 	/**
-	 * 是否可以战斗
+	 * 是否悬停
 	 * @return
 	 */
-	public boolean isCanCombat() {
-		return status.isCanCombat();
+	public boolean isLevitation() {
+		return status.getStatus() == ShipStatus.LEVITATION;
+	}
+	
+	/**
+	 * 是否拥有队伍
+	 * @return
+	 */
+	public boolean isHaveTeam() {
+		return false;
 	}
 	
 	/**
@@ -206,6 +214,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		ret	+= equips.warpFightProperty(attacks, defends, askings, answers);
 		return ret;
 	}
+
 
 
 

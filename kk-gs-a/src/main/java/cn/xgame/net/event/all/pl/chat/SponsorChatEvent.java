@@ -7,10 +7,11 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.ChatType;
+import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.system.LXConstants;
 
 /**
  * 发起聊天
@@ -22,12 +23,15 @@ public class SponsorChatEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		ChatType type 	= ChatType.fromNumber( data.readByte() );
+		short axnId		= data.readShort();
+		ChatType type 	= ChatType.fromNumber( axnId/LXConstants.CHAT_UID );
 		String content 	= RW.readString(data);
 		
 		ErrorCode code 	= null;
 		try {
 			
+			// 这里做一些限制的事情
+			// TODO
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -40,7 +44,7 @@ public class SponsorChatEvent extends IEvent{
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED ){
-			ChatManager.o.synchronizeMsg( type, player, content );
+			ChatManager.o.synchronizeMsg( type, axnId, player, content );
 		}
 		
 	}

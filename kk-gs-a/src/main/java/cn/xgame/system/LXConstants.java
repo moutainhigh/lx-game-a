@@ -10,11 +10,32 @@ public class LXConstants {
 	/** 协商公钥 用于登录验证 */
 	public static final String PUBLICKEY 		= "longxun-kuake";
 	
+	/** 聊天ID位数 */
+	public static final int CHAT_UID 			= 1000000;
+	
+
+	
+	
+	//--------------------------通过配置获取
+	
 	/** 酒馆刷新时间 单位秒 */
-	public static final int TAVERN_UPDATE_TIME 	= 300;
+	public static int TAVERN_UPDATE_TIME 	= 300;
 
 	/** 货币表格ID */
-	public static final int CURRENCY_NID 		= 60000;
+	public static int CURRENCY_NID 			= 60000;
+	
+	/** 临时频道最大拥有个数 */
+	public static int TEMPAXN_MAX 			= 3;
+	/** 临时频道人数上限 */
+	public static int TEMPAXN_MAXMEMBER		= 20;
+	
+	/** 队伍频道最大拥有个数 */
+	public static int TEAMAXN_MAX 			= 4;
+	/** 队伍频道人数上限 */
+	public static int TEAMAXN_MAXMEMBER		= 4;
+	
+	
+	
 	
 	
 }

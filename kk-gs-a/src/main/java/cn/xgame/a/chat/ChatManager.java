@@ -1,8 +1,15 @@
 package cn.xgame.a.chat;
 
 
+import io.netty.channel.ChannelHandlerContext;
+
+import java.util.Collection;
 import java.util.List;
 
+import cn.xgame.a.chat.o.AxnControl;
+import cn.xgame.a.chat.o.AxnCrew;
+import cn.xgame.a.chat.o.AxnInfo;
+import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
@@ -17,37 +24,34 @@ import cn.xgame.net.event.all.pl.update.Update_3000;
  * @author deng		
  * @date 2015-7-6 下午2:57:40
  */
-public class ChatManager {
-
+public class ChatManager{
 	private ChatManager(){}
 	public static ChatManager o = new ChatManager();
 	
-
+	// 聊天频道操作
+	private AxnControl chatControl = new AxnControl();
+	public AxnControl getChatControl() {
+		return chatControl;
+	}
+	
+	
 	/**
 	 * 同步消息
 	 * @param type
+	 * @param axnId 
 	 * @param sponsor 发起人
 	 * @param content
 	 */
-	public void synchronizeMsg( ChatType type, Player sponsor, String content ) {
+	public void synchronizeMsg( ChatType type, int axnId, Player sponsor, String content ) {
 		switch( type ){
 		case WORLD:
-//			synWorldMsg( sponsor, content );
+			synWorldMsg( axnId, sponsor, content );
 			break;
 		case PLANET:
-			synPlanetMsg( sponsor, content );
+			synPlanetMsg( axnId, sponsor, content );
 			break;
-		case TEAM:
-			synTeamMsg( sponsor, content );
-			break;
-		case AXN_1:
-			synAxnMsg( 0, sponsor, content );
-			break;
-		case AXN_2:
-			synAxnMsg( 1, sponsor, content );
-			break;
-		case AXN_3:
-			synAxnMsg( 2, sponsor, content );
+		default:
+			synAxnMsg( axnId, sponsor, content );
 			break;
 		}
 	}
@@ -55,24 +59,27 @@ public class ChatManager {
 
 	/**
 	 * 同步世界消息
+	 * @param axnId 
 	 * @param sponsor 发起人
 	 * @param content
 	 */
-//	private void synWorldMsg( Player sponsor, String content ) {
-//		
-//		Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
-//		for( Player o : values ){
-//			
-//			synMsg( ChatType.WORLD, o, sponsor, content );
-//		}
-//	}
+	private void synWorldMsg( int axnId, Player sponsor, String content ) {
+		
+		Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
+		for( Player o : values ){
+			
+			sendMsg( axnId, o.getCtx(), sponsor, content );
+		}
+	}
+
 
 	/**
 	 * 同步母星消息
+	 * @param axnId 
 	 * @param sponsor
 	 * @param content
 	 */
-	private void synPlanetMsg( Player sponsor, String content ) {
+	private void synPlanetMsg( int axnId, Player sponsor, String content ) {
 		
 		// 获取玩家母星
 		HomePlanet home = WorldManager.o.getHPlanetInPlayer(sponsor);
@@ -81,50 +88,40 @@ public class ChatManager {
 			Player o = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( o == null ) continue;
 			
-			synMsg( ChatType.PLANET, o, sponsor, content );
+			sendMsg( axnId, o.getCtx(), sponsor, content );
 		}
 	}
 	
 	/**
-	 * 同步队伍消息
+	 * 同步其他频道消息
+	 * @param axn 
 	 * @param sponsor
 	 * @param content
 	 */
-	private void synTeamMsg( Player sponsor, String content ) {
+	private void synAxnMsg( int axnId, Player sponsor, String content ) {
 		
+		AxnInfo axnInfo 		= chatControl.getAXNInfo( axnId );
+		List<AxnCrew> peoples 	= axnInfo.getAxnCrews();
+		for( AxnCrew people : peoples ){
+			
+			sendMsg( axnId, people.getSocket(), sponsor, content );
+		}
 	}
 	
 	/**
-	 * 同步频道消息
-	 * @param axnNo 频道号
+	 * 发送消息
+	 * @param axnId
+	 * @param socket
 	 * @param sponsor
 	 * @param content
 	 */
-	private void synAxnMsg( int axnNo, Player sponsor, String content ) {
-		
-	}
-	
-	/**
-	 * 同步私聊
-	 * @param sponsor
-	 * @param to
-	 * @param content
-	 */
-	public void synPrivateMsg( Player sponsor, Player to, String content ) {
-		synMsg( ChatType.PRIVATE, to, sponsor, content );
-	}
-	
-	
-	
-	
-	
-	private void synMsg( ChatType type, Player to, Player sponsor, String content ) {
-		if( !to.isOnline() )
+	private void sendMsg( int axnId, ChannelHandlerContext socket, Player sponsor, String content) {
+		if( content.isEmpty() || socket == null || !socket.channel().isActive() )
 			return;
-		((Update_3000)Events.UPDATE_3000.getEventInstance()).run( ChatType.WORLD, to, sponsor, content );
+		((Update_3000)Events.UPDATE_3000.getEventInstance()).run( axnId, socket, sponsor, content );
 	}
 
 
-	
+
 	
 }

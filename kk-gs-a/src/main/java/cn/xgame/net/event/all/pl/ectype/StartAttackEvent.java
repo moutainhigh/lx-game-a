@@ -54,7 +54,7 @@ public class StartAttackEvent extends IEvent{
 			StatusControl status 	= ship.getStatus();
 			// 这里检测是否还需要航行 
 			if( status.getStatus() == ShipStatus.SAILING ){
-				if( status.getSailPurpose() == SailPurpose.ATTACKECTYPE ){
+				if( status.getSailPurpose() == SailPurpose.FIGHTING ){
 					sailTime = status.getSurplusTime();
 					if( sailTime != 0 )
 						throw new Exception( ErrorCode.SHIP_NOTINSTAR.name() );
@@ -66,7 +66,7 @@ public class StartAttackEvent extends IEvent{
 			}else if( status.getStatus() == ShipStatus.LEVITATION ){
 				sailTime 	= ship.getSailingTime( snid );
 				if( sailTime != 0 ){
-					status.startSail( snid, sailTime, SailPurpose.ATTACKECTYPE );
+					status.startSail( snid, sailTime, SailPurpose.FIGHTING );
 					ship.getKeepInfo().setEnid( enid );
 					throw new Exception( ErrorCode.SHIP_NOTINSTAR.name() );
 				}
@@ -90,7 +90,7 @@ public class StartAttackEvent extends IEvent{
 				
 				Lua lua = LuaUtil.getEctypeCombat();
 				// 攻击者 防御者 基础战斗时间 胜率上限
-				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.template().btime, ectype.template().maxran );
+				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.templet().btime, ectype.templet().maxran );
 				int winRate = ret[1].getInt();
 				
 				int rand 	= Random.get( 0, 10000 );

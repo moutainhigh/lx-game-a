@@ -24,7 +24,7 @@ public class AccEctype extends IEctype implements ITransformStream{
 	private int persistTime = -1;
 	
 	public String toString(){
-		return "{" + template.id + "-" + SNID + ", times:" + times + ", endTime:" + Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "}";
+		return "{" + templet.id + "-" + SNID + ", times:" + times + ", endTime:" + Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "}";
 	}
 	
 	/**
@@ -50,13 +50,13 @@ public class AccEctype extends IEctype implements ITransformStream{
 
 	private void init() {
 		
-		if( template.times != -1 && times == -1 )// 这里说明是需要次数的
+		if( templet.times != -1 && times == -1 )// 这里说明是需要次数的
 			times = 0;
 		
 		if( type == EctypeType.LOGINTIME ){// 登录计时
-			persistTime = Integer.parseInt( template.etime );
+			persistTime = Integer.parseInt( templet.etime );
 		}else if( type == EctypeType.SERVERTIME ){// 服务器计时
-			String[] x 	= template.etime.split(";");
+			String[] x 	= templet.etime.split(";");
 			persistTime = Integer.parseInt( x[1] );
 			if( endTime == -1 )
 				endTime	= (int) (Time.wrapTime( x[0] )/1000 + persistTime);

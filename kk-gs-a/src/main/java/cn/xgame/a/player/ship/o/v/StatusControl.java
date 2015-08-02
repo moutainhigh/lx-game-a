@@ -87,7 +87,19 @@ public class StatusControl implements IArrayStream, ITransformStream{
 		return ret < 0 ? 0 : ret;
 	}
 
-
+	
+	/**
+	 * 悬停
+	 */
+	public void levitation() {
+		status			= ShipStatus.LEVITATION;
+		currentSnid 	= targetSnid != 0 ? targetSnid : currentSnid;
+		rTime 			= -1;
+		durationTime 	= -1;
+		targetSnid		= 0;
+		sailPurpose 	= null;
+	}
+	
 	/**
 	 * 开始航行
 	 * @param snid 目标星球
@@ -111,26 +123,7 @@ public class StatusControl implements IArrayStream, ITransformStream{
 		rTime			= (int) (System.currentTimeMillis()/1000);
 		durationTime	= combatTime;
 	}
-	
-	/**
-	 * 悬停
-	 */
-	public void levitation() {
-		status			= ShipStatus.LEVITATION;
-		currentSnid 	= targetSnid != 0 ? targetSnid : currentSnid;
-		rTime 			= -1;
-		durationTime 	= -1;
-		targetSnid		= 0;
-		sailPurpose 	= null;
-	}
-	
-	/**
-	 * 是否可以战斗
-	 * @return
-	 */
-	public boolean isCanCombat() {
-		return status == ShipStatus.LEVITATION;
-	}
+
 	
 	/**
 	 * 是否战斗相关
@@ -176,6 +169,7 @@ public class StatusControl implements IArrayStream, ITransformStream{
 	public SailPurpose getSailPurpose(){
 		return sailPurpose;
 	}
+
 
 
 

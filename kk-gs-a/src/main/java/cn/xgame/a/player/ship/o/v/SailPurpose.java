@@ -11,14 +11,19 @@ import java.util.Map;
 public enum SailPurpose {
 
 	/**
-	 * 1.闲逛 
+	 * 1.出航
 	 */
 	STROLL( 1 ),
 	
 	/**
-	 * 2.打副本
+	 * 2.返航
 	 */
-	ATTACKECTYPE( 2 );
+	REVERSAL( 2 ),
+	
+	/**
+	 * 3.打副本
+	 */
+	FIGHTING( 3 );
 	
 	
 	private final byte			number;

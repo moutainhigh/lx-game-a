@@ -114,8 +114,9 @@ public class EquipControl extends IHold implements IArrayStream{
 				SEquip equip = (SEquip)prop;
 				// 累加血量
 				hp += equip.templet().hp;
-				// 攻击属性
-				CombatUtil.putBasisProperty( attacks, defends, equip.templet().type, equip.templet().value );
+				// 基础属性
+				List<AtkAndDef> atkdef = prop.itemType() == 1 ? attacks : defends;
+				CombatUtil.putBasisProperty( atkdef, equip.templet().type, equip.templet().value );
 				// 答
 				CombatUtil.putAnswer( equip.templet().answers, answers );
 				// 问

@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.CaptainsControl;
+import cn.xgame.a.player.chat.ChatControl;
 import cn.xgame.a.player.depot.DepotControl;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.AccEctype;
@@ -30,33 +31,37 @@ import cn.xgame.utils.PackageCheck;
 
 public class Player extends IPlayer implements ITransformStream{
 
+	//////////////////////临时数据 不用保存数据库//////////////////////////
+	
 	// 玩家的IP地址
 	private String ip;
 	
 	// 网络通信socket
-	private ChannelHandlerContext ctx = null;
+	private ChannelHandlerContext ctx 	= null;
 	
 	// 包检测
-	private PackageCheck pcheck = new PackageCheck();
+	private PackageCheck pcheck 		= new PackageCheck();
 
-	
 	
 	//////////////////////数据库相关//////////////////////////
 	
 	// 所有道具唯一ID基础值 
-	private DBBaseUID propBaseUid = new DBBaseUID( this );
+	private DBBaseUID 			propBaseUid 	= new DBBaseUID( this );
 
 	// 背包
-	private DepotControl depots = new DepotControl( this );
+	private DepotControl 		depots 			= new DepotControl( this );
 	
 	// 船坞
-	private DockControl docks = new DockControl( this );
+	private DockControl 		docks 			= new DockControl( this );
 	
 	// 舰长室
-	private CaptainsControl captains = new CaptainsControl( this );
+	private CaptainsControl 	captains 		= new CaptainsControl( this );
 	
 	// 偶发副本信息
-	private EctypeControl ectypes = new EctypeControl( this );
+	private EctypeControl 		ectypes 		= new EctypeControl( this );
+	
+	// 玩家聊天信息
+	private ChatControl			chats 			= new ChatControl( this );
 	
 	/**
 	 * 创建一个
@@ -182,7 +187,7 @@ public class Player extends IPlayer implements ITransformStream{
 	 * @return
 	 */
 	public boolean isOnline() {
-		return ctx != null && Attr.getAttachment(ctx) != null;
+		return ctx != null  && ctx.channel().isActive() && Attr.getAttachment(ctx) != null;
 	}
 	
 	
@@ -223,6 +228,9 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 	public EctypeControl getEctypes() {
 		return ectypes;
+	}
+	public ChatControl getChats() {
+		return chats;
 	}
 
 

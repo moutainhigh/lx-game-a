@@ -3,7 +3,6 @@ package cn.xgame.a.prop.ship;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ShipPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
@@ -51,8 +50,6 @@ public class Ships extends IProp{
 	}
 	
 	public ShipPo templet(){ return templet; }
-	@Override
-	public PropType type() { return PropType.SHIP; }
 
 	@Override
 	public void putAttachBuffer(ByteBuf buf) {

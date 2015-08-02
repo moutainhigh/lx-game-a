@@ -1,6 +1,5 @@
 package cn.xgame.a.combat.o;
 
-import cn.xgame.config.o.AskingPo;
 
 
 /**
@@ -8,11 +7,21 @@ import cn.xgame.config.o.AskingPo;
  * @author deng		
  * @date 2015-7-30 上午11:12:04
  */
-public class Respond extends Askings{
+public class Respond {
 
+	// 表格ID
+	public int id;
 	
-	public Respond(AskingPo asking) {
-		super(asking);
+	// 对应值
+	public float intvalue;
+	
+	// 对应值
+	public float pctvalue;
+	
+	public Respond( int id, float intvalue, float pctvalue ) {
+		this.id 		= id;
+		this.intvalue 	= intvalue;
+		this.pctvalue 	= pctvalue;
 	}
 
 	public float getValue( float value ){

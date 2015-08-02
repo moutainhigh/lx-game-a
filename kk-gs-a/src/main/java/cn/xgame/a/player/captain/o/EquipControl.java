@@ -37,7 +37,7 @@ public class EquipControl{
 	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
 			List<Askings> askings, List<Answers> answers) {
 		
-		CombatUtil.putAnswer( equip.templet().answer, answers );
+		CombatUtil.putAnswer( equip.templet().answers, answers );
 		
 		return 0;
 	}

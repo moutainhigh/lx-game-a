@@ -6,7 +6,12 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.combat.CombatUtil;
+import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
+import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.player.ectype.enemy.DropAward;
+import cn.xgame.a.player.ectype.enemy.Enemy;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AskingPo;
 import cn.xgame.config.o.EctypePo;
@@ -18,7 +23,7 @@ import cn.xgame.config.o.EctypePo;
  */
 public abstract class IEctype {
 	
-	protected final EctypePo template;
+	protected final EctypePo templet;
 	
 	// 所属星球ID
 	public final int SNID ;
@@ -27,9 +32,15 @@ public abstract class IEctype {
 	protected EctypeType type;
 	
 	// 基础应答 - 问
-	protected List<AskingPo> basisAskings = Lists.newArrayList();
+	protected List<AskingPo> basisAskings 	= Lists.newArrayList();
 	// 随机应答 - 问
-	protected List<AskingPo> randomAskings = Lists.newArrayList();
+	protected List<AskingPo> randomAskings 	= Lists.newArrayList();
+	
+	// 敌人列表
+	protected List<Enemy> enemys 			= Lists.newArrayList();
+	
+	// 奖励列表
+	private List<DropAward> drops 			= Lists.newArrayList();
 	
 	/**
 	 * 从配置表获取
@@ -38,11 +49,14 @@ public abstract class IEctype {
 	 */
 	public IEctype( int id, EctypePo src ) {
 		SNID 		= id;
-		template 	= src;
-		type		= EctypeType.fromNumber( template.type );
+		templet 	= src;
+		type		= EctypeType.fromNumber( templet.type );
 		randomAsking();
 		initBasisAsking();
+		initDropAward();
+		initEnemy();
 	}
+
 
 	/**
 	 * 从数据库 获取
@@ -50,14 +64,16 @@ public abstract class IEctype {
 	 */
 	public IEctype( ByteBuf buffer ){
 		SNID 		= buffer.readInt();
-		template 	= CsvGen.getEctypePo( buffer.readInt() );
-		type		= EctypeType.fromNumber( template.type );
+		templet 	= CsvGen.getEctypePo( buffer.readInt() );
+		type		= EctypeType.fromNumber( templet.type );
 		byte size 	= buffer.readByte();
 		for( int i = 0; i < size; i++ ){
 			AskingPo o = CsvGen.getAskingPo( buffer.readInt() );
 			randomAskings.add(o);
 		}
 		initBasisAsking();
+		initDropAward();
+		initEnemy();
 	}
 
 	/**
@@ -66,7 +82,7 @@ public abstract class IEctype {
 	 */
 	public void putBuffer(ByteBuf buffer) {
 		buffer.writeInt( SNID );
-		buffer.writeInt( template.id );
+		buffer.writeInt( templet.id );
 		buffer.writeByte( randomAskings.size() );
 		for( AskingPo o : randomAskings ){
 			buffer.writeInt( o.id );
@@ -75,21 +91,20 @@ public abstract class IEctype {
 
 	/** 随机应答出来 */
 	public void randomAsking() {
-		randomAsking( template.ranswers );
-		randomAsking( template.ianswers );
+		randomAsking( templet.ranswers );
+		randomAsking( templet.ianswers );
 	}
 
 	// 初始副本基础应答
 	private void initBasisAsking() {
-		if( template.eanswers.isEmpty() )
+		if( templet.eanswers.isEmpty() )
 			return;
-		String[] content = template.eanswers.split(";");
+		String[] content = templet.eanswers.split(";");
 		for( String v : content ){
 			AskingPo o = CsvGen.getAskingPo( Integer.parseInt( v ) );
 			basisAskings.add( o );
 		}
 	}
-	
 	private void randomAsking( String answers ) {
 		if( answers.isEmpty() )
 			return;
@@ -105,6 +120,46 @@ public abstract class IEctype {
 		}
 	}
 	
+	// 初始化奖励
+	private void initDropAward() {
+		if( templet.reward.isEmpty() )
+			return;
+		String[] content = templet.reward.split("\\|");
+		for( String str : content ){
+			String[] x 		= str.split(";");
+			DropAward drop 	= new DropAward( Integer.parseInt( x[0] ), Integer.parseInt( x[1] ), Integer.parseInt( x[2] ) );
+			drops.add(drop);
+		}
+	}
+	
+	// 初始化敌人
+	private void initEnemy() {
+		if( templet.meetid.isEmpty() )
+			return;
+		String[] content = templet.meetid.split("\\|");
+		for( String str : content ){
+			if( str.isEmpty() ) continue;
+			String[] x 	= str.split(";");
+			Enemy enemy = new Enemy( Integer.parseInt( x[0] ) );
+			enemy.setCount( Integer.parseInt( x[1] ) );
+			enemys.add(enemy);
+		}
+	}
+	
+	
+	/**
+	 * 该副本是否关闭
+	 * @return
+	 */
+	public abstract boolean isClose();
+	public EctypePo templet(){ return templet; }
+	public int getNid() { return templet.id; }
+	public EctypeType type(){ return type ; }
+	public List<DropAward> getDrops() {
+		return drops;
+	}
+
+	///////////////----------------------战斗相关
 	/**
 	 * 包装战斗 问
 	 * @param askings
@@ -118,16 +173,30 @@ public abstract class IEctype {
 			askings.add(o);
 		}
 	}
-
 	
 	/**
-	 * 该副本是否关闭
-	 * @return
+	 * 包装怪物数据
+	 * @param attacks
+	 * @param defends
+	 * @param askings
+	 * @param answers
 	 */
-	public abstract boolean isClose();
-	public EctypePo template(){ return template; }
-	public int getNid() { return template.id; }
-	public EctypeType type(){ return type ; }
+	public int wrapEnemy(List<AtkAndDef> attacks, List<AtkAndDef> defends,
+			List<Askings> askings, List<Answers> answers) {
+		
+		int hp = 0;
+		for( Enemy enemy : enemys ){
+			// 血量
+			hp += enemy.getHP();
+			// 基础属性
+			CombatUtil.putBasisProperty( attacks, enemy.getAtkType(), enemy.getAtkValue() );
+			CombatUtil.putBasisProperty( defends, enemy.getDefType(), enemy.getDefValue() );
+			// 问
+			CombatUtil.putAsking( enemy.templet().askings, askings );
+			// 答
+		}
+		return hp;
+	}
 
 	
 }

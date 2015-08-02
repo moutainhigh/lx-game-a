@@ -17,8 +17,9 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.chat.InviteTempAxnEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
-import cn.xgame.net.event.all.pl.chat.SponsorPmChatEvent;
+import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyAccEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
@@ -50,6 +51,7 @@ import cn.xgame.net.event.all.pl.update.Update_2231;
 import cn.xgame.net.event.all.pl.update.Update_2241;
 import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.event.all.pl.update.Update_3000;
+import cn.xgame.net.event.all.pl.update.Update_3010;
 
 /**
  * 通信 消息
@@ -106,7 +108,8 @@ public enum Events {
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent() ),
-	SPONSOR_PMCHAT				( 3002, 	new SponsorPmChatEvent() ),
+	CREATE_TEMPAXN				( 3011, 	new CreateTempAxnEvent() ),
+	INVITE_TEMPAXN				( 3012, 	new InviteTempAxnEvent() ),
 	
 	
 	//-----------------更新包
@@ -121,6 +124,7 @@ public enum Events {
 	UPDATE_2252					( 2252, 	new Update_2252() ),
 	// 聊天
 	UPDATE_3000					( 3000, 	new Update_3000() ),
+	UPDATE_3010					( 3010, 	new Update_3010() ),
 	
 
 	

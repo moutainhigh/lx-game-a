@@ -101,7 +101,6 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 			}
 		}
 		
-		Logs.debug( "星球" + SNID + " 添加资源 " + param );
 		return ret;
 	}
 
@@ -109,8 +108,6 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	public void append( IProp prop ){
 		prop.setuId( getResUID() );
 		super.append( prop );
-		
-		Logs.debug( "星球" + SNID + " 添加资源 " + prop );
 	}
 	
 	/**

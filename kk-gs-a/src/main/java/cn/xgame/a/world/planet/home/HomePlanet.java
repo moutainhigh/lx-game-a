@@ -278,7 +278,7 @@ public class HomePlanet extends IPlanet {
 		
 		// 添加资源
 		List<IProp> update = getDepotControl().appendProp(prop);
-
+		
 		// 这里检查  建筑中列表 里面是否有材料不足而暂停的建筑中建筑
 		List<UnBuildings> waitBuild = buildingControl.getWaitBuild();
 		for( UnBuildings unBuild : waitBuild ){
@@ -329,6 +329,10 @@ public class HomePlanet extends IPlanet {
 		int privilege = 0;
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
+			if( child.getPrivilege() == 0 ){
+				child.setSenator( false );
+				continue;
+			}
 			privilege += child.getPrivilege();
 			child.setSenator( institution.isSenator( i, privilege) );
 		}

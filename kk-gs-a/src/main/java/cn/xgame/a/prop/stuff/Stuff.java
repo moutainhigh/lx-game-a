@@ -4,7 +4,6 @@ package cn.xgame.a.prop.stuff;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -38,9 +37,6 @@ public class Stuff extends IProp{
 		
 		
 	}
-
-	@Override
-	public PropType type() { return PropType.STUFF; }
 
 	@Override
 	public void createDB(Player player) {

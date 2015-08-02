@@ -31,7 +31,8 @@ public class EctypeCombatInfo implements IArrayStream {
 	
 	@Override
 	public void fromBytes(byte[] data) {
-		if( data == null ) return;
+		if( data == null ) 
+			return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		enid 	= buf.readInt();
 		isWin 	= buf.readByte();
@@ -40,10 +41,11 @@ public class EctypeCombatInfo implements IArrayStream {
 			AwardInfo award = new AwardInfo( buf );
 			awards.add(award);
 		}
-		
 	}
 	@Override
 	public byte[] toBytes() {
+		if( isEmpty() )
+			return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		buf.writeInt( enid );
 		buf.writeByte( isWin );
@@ -51,6 +53,16 @@ public class EctypeCombatInfo implements IArrayStream {
 		for( AwardInfo award : awards )
 			award.buildTransformStream(buf);
 		return buf.array();
+	}
+	
+	public boolean isEmpty(){
+		return enid == -1;
+	}
+	
+	public void clear() {
+		enid = -1;
+		isWin = 0;
+		awards.clear();
 	}
 	
 	public int getEnid() {
@@ -71,6 +83,7 @@ public class EctypeCombatInfo implements IArrayStream {
 	public void addAwards(List<AwardInfo> award) {
 		this.awards.addAll(award);
 	}
+
 
 
 }

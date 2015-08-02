@@ -38,10 +38,7 @@ public class CombatUtil {
 				AskingPo asking	= CsvGen.getAskingPo( Integer.parseInt( a[0] ) );
 				if( asking == null ) continue;
 				
-				Respond respond 	= new Respond( asking );
-				respond.intvalue 	= Float.parseFloat( a[1] );
-				respond.pctvalue 	= Float.parseFloat( a[2] );
-				
+				Respond respond = new Respond( asking.id, Float.parseFloat( a[1] ), Float.parseFloat( a[2] ) );
 				o.responds.add(respond);
 			}
 			answers.add(o);
@@ -71,7 +68,7 @@ public class CombatUtil {
 	 * @param type
 	 * @param value
 	 */
-	public static void putBasisProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, String type, String value) {
+	public static void putBasisProperty(List<AtkAndDef> atkdef, String type, String value) {
 		String[] types 	= type.split(";");
 		String[] values = value.split(";");
 		if( types.length != values.length ){
@@ -83,10 +80,7 @@ public class CombatUtil {
 			AtkAndDef o = new AtkAndDef(  );
 			o.type 		= Integer.parseInt( types[i] );
 			o.value 	= Integer.parseInt( values[i] );
-			if( o.type < 100 ) // 代表攻击
-				attacks.add(o);
-			else if( o.type >= 100 && o.type < 200 ) // 代表防御
-				defends.add(o);
+			atkdef.add(o);
 		}
 	}
 

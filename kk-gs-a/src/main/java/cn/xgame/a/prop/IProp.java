@@ -20,6 +20,7 @@ public abstract class IProp implements ITransformStream{
 	
 	// 基础物品表
 	private final ItemPo item;
+	private final PropType type;
 	
 	// 唯一ID
 	private int uId;
@@ -27,6 +28,7 @@ public abstract class IProp implements ITransformStream{
 	private int nId;
 	// 数量
 	private int count;
+	
 	
 	/**
 	 * 创建一个 并保存到数据库
@@ -38,6 +40,7 @@ public abstract class IProp implements ITransformStream{
 		this.uId 	= uid;
 		this.nId 	= nid;
 		this.item 	= CsvGen.getItemPo(nid);
+		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( count );
 	}
 	
@@ -49,7 +52,12 @@ public abstract class IProp implements ITransformStream{
 		this.uId 	= o.getUid();
 		this.nId 	= o.getNid();
 		this.item 	= CsvGen.getItemPo(nId);
+		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( o.getCount() );
+	}
+	
+	public String toString(){
+		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
 	}
 	
 	/**
@@ -62,16 +70,11 @@ public abstract class IProp implements ITransformStream{
 		buffer.writeInt(count);
 	}
 	
+	
 	/**
 	 * 克隆一个
 	 */
 	public abstract IProp clone();
-	
-	/**
-	 * 道具类型
-	 * @return
-	 */
-	public abstract PropType type();
 	
 	/**
 	 * 把附加属性塞入
@@ -138,8 +141,27 @@ public abstract class IProp implements ITransformStream{
 	public int getCount() { return count; }
 	public void setCount(int count) { this.count = count; }
 	
-	public String toString(){
-		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
+	/**
+	 * 道具类型
+	 * @return
+	 */
+	public PropType type(){ return type; }
+	/**
+	 * 道具小类型
+	 * type == 2 舰船
+	 * 1.
+	 * 
+	 * ------type == 3 舰船装备
+	 * 1.武器(攻击)
+	 * 2.防具(防御)
+	 * 3.推进器
+	 * 4.辅助
+	 * 
+	 * 
+	 * @return
+	 */
+	public int itemType() {
+		return item.itemtype;
 	}
 	
 	/** 获取这个物品的贡献度 */
@@ -159,7 +181,7 @@ public abstract class IProp implements ITransformStream{
 	 * 道具占用空间
 	 * @return
 	 */
-	public short occupyRoom() {
+	public int occupyRoom() {
 		return item.usegrid;
 	}
 	

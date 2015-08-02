@@ -3,7 +3,6 @@ package cn.xgame.a.prop.captain;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.CaptainPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
@@ -40,9 +39,6 @@ public class Captains extends IProp {
 
 	public CaptainPo templet(){ return templet; }
 	
-	@Override
-	public PropType type() { return PropType.CAPTAIN; }
-
 	@Override
 	public void createDB(Player player) {
 		super.create(player, null);
