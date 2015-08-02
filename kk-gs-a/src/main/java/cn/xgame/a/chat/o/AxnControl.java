@@ -4,8 +4,6 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.player.u.Player;
-import cn.xgame.utils.Logs;
 
 /**
  * 聊天操作中心
@@ -61,31 +59,18 @@ public class AxnControl {
 
 
 	/**
-	 * 创建一个频道 必须有两个玩家才能创建
+	 * 创建一个频道
 	 * @param tempaxn
-	 * @param axnId
 	 * @param p1
 	 * @param p2
+	 * @return 
+	 * @throws Exception 
 	 */
-	public void createAxn( ChatType type, int axnId, Player p1, Player p2 ) {
-		if( getAXNInfo(axnId) != null ){
-			Logs.error( "创建频道出错 已经有这个频道了 axnId=" + axnId );
-			return ;
-		}
-		AxnInfo axn = new AxnInfo( type, axnId );
-		axn.appendCrew( p1 );
-		axn.appendCrew( p2 );
+	public AxnInfo createAxn( ChatType type ) throws Exception {
+		AxnInfo axn = new AxnInfo( type, type.generateUID() );
 		axns.add(axn);
+		return axn;
 	}
 
-	/**
-	 * 将玩家添加到频道
-	 * @param axnId
-	 * @param p
-	 */
-	public void appendAxn( int axnId, Player p ) {
-		AxnInfo axn = getAXNInfo(axnId);
-		axn.appendCrew(p);
-	}
 	
 }

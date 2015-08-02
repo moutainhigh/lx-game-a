@@ -4,6 +4,9 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 
+import cn.xgame.a.chat.o.v.TeamAxnCrew;
+import cn.xgame.a.chat.o.v.TempAxnCrew;
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -20,7 +23,7 @@ public class AxnInfo {
 	private ChatType 	type;
 	
 	// 频道对应玩家列表
-	private List<AxnCrew> axnCrews = Lists.newArrayList();
+	private List<IAxnCrew> axnCrews = Lists.newArrayList();
 
 	public AxnInfo(ChatType type, int axnId) {
 		this.type 	= type;
@@ -29,7 +32,7 @@ public class AxnInfo {
 	
 	public int getAxnId() { return axnId; }
 	public ChatType getType() { return type; }
-	public List<AxnCrew> getAxnCrews() { return axnCrews; }
+	public List<IAxnCrew> getAxnCrews() { return axnCrews; }
 
 	/**
 	 * 人数是否已经满了
@@ -53,8 +56,8 @@ public class AxnInfo {
 	 * @param uid
 	 * @return
 	 */
-	public AxnCrew getAxnCrew( String uid ){
-		for( AxnCrew crew : axnCrews ){
+	public IAxnCrew getAxnCrew( String uid ){
+		for( IAxnCrew crew : axnCrews ){
 			if( crew.getUid().equals(uid) )
 				return crew;
 		}
@@ -62,13 +65,13 @@ public class AxnInfo {
 	}
 	
 	/**
-	 * 添加组员
+	 * 添加临时频道 组员
 	 * @param player
 	 */
-	public void appendCrew(Player player) {
+	public void appendTempCrew( Player player ) {
 		if( getAxnCrew( player.getUID() ) != null )
 			return ;
-		AxnCrew crew = new AxnCrew();
+		TempAxnCrew crew = new TempAxnCrew();
 		crew.setUid( player.getUID() );
 		crew.setName( player.getNickname() );
 		crew.setHeadIco( player.getHeadIco() );
@@ -76,7 +79,23 @@ public class AxnInfo {
 		axnCrews.add(crew);
 	}
 
-
+	/**
+	 * 添加组队频道 组员
+	 * @param player
+	 * @param mship
+	 */
+	public void appendTeamCrew(Player player, ShipInfo ship) {
+		if( getAxnCrew( player.getUID() ) != null )
+			return ;
+		TeamAxnCrew crew = new TeamAxnCrew();
+		crew.setUid( player.getUID() );
+		crew.setName( player.getNickname() );
+		crew.setHeadIco( player.getHeadIco() );
+		crew.setSocket( player.getCtx() );
+		crew.setShipUid( ship.getuId() );
+		
+		axnCrews.add(crew);
+	}
 
 	
 }

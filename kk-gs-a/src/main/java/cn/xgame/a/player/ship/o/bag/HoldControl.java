@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ship.o.v;
+package cn.xgame.a.player.ship.o.bag;
 
 
 import io.netty.buffer.ByteBuf;
@@ -64,7 +64,7 @@ public class HoldControl extends IHold implements IArrayStream{
 
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeShort( room );
-		super.buildTransformStream(buffer);
+		putBaseBuffer(buffer);
 	}
 	
 	/**

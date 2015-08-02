@@ -17,9 +17,6 @@ public class ChatControl {
 	// 临时频道
 	private List<Integer> tempaxn = Lists.newArrayList();
 	
-	// 队伍频道
-	private List<Integer> teamaxn = Lists.newArrayList();
-	
 	
 	public ChatControl(Player player) {
 	}
@@ -32,8 +29,6 @@ public class ChatControl {
 	public List<Integer> getAxn( ChatType type ){
 		if( type == ChatType.TEMPAXN )
 			return tempaxn;
-		if( type == ChatType.TEAM )
-			return teamaxn;
 		return null;
 	}
 	

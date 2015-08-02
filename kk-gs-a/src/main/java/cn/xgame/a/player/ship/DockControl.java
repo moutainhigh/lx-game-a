@@ -131,6 +131,19 @@ public class DockControl implements ITransformStream,IFromDB{
 		ship.updateDB(root);
 	}
 	
+	/**
+	 * 是否还有空闲的船
+	 * @return
+	 */
+	public boolean isHaveLeisure() {
+		for( ShipInfo ship : ships ){
+			// 悬停并且还没有队伍
+			if( ship.isLevitation() && ship.getTeamId() == 0 )
+				return true;
+		}
+		return false;
+	}
+	
 	//TODO-------------其他函数
 
 	/**

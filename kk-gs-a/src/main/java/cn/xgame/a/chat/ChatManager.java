@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import cn.xgame.a.chat.o.AxnControl;
-import cn.xgame.a.chat.o.AxnCrew;
+import cn.xgame.a.chat.o.IAxnCrew;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.player.PlayerManager;
@@ -101,8 +101,8 @@ public class ChatManager{
 	private void synAxnMsg( int axnId, Player sponsor, String content ) {
 		
 		AxnInfo axnInfo 		= chatControl.getAXNInfo( axnId );
-		List<AxnCrew> peoples 	= axnInfo.getAxnCrews();
-		for( AxnCrew people : peoples ){
+		List<IAxnCrew> peoples 	= axnInfo.getAxnCrews();
+		for( IAxnCrew people : peoples ){
 			
 			sendMsg( axnId, people.getSocket(), sponsor, content );
 		}

@@ -1,9 +1,10 @@
-package cn.xgame.a.player.u;
+package cn.xgame.a.player.u.o;
 
 
 import x.javaplus.mysql.db.Condition;
 
 import cn.xgame.a.IFromDB;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;

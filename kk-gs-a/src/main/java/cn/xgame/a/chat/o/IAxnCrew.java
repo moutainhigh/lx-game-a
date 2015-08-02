@@ -1,7 +1,10 @@
 package cn.xgame.a.chat.o;
 
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.net.netty.Netty.RW;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -9,7 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author deng		
  * @date 2015-8-2 下午12:55:24
  */
-public class AxnCrew {
+public class IAxnCrew implements ITransformStream{
 
 	// 玩家唯一ID
 	private String 	uid;
@@ -21,6 +24,13 @@ public class AxnCrew {
 	// 玩家socket
 	private ChannelHandlerContext socket = null;
 	
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		RW.writeString( buffer, uid );
+		RW.writeString( buffer, name );
+		buffer.writeInt( headIco );
+	}
 	
 	/**
 	 * 是否在线 随便刷新一下 玩家socket
@@ -61,6 +71,8 @@ public class AxnCrew {
 	public void setHeadIco(int headIco) {
 		this.headIco = headIco;
 	}
+
+
 
 	
 }

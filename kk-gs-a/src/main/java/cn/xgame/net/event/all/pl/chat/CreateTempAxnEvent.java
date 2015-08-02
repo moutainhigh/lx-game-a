@@ -7,6 +7,7 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
@@ -29,7 +30,7 @@ public class CreateTempAxnEvent extends IEvent{
 		
 		ErrorCode code 	= null;
 		Player to 		= null;
-		int axnId 		= 0;
+		AxnInfo axn		= null;
 		try {
 			
 			// 判断自己的临时频道是否已经满了
@@ -43,14 +44,14 @@ public class CreateTempAxnEvent extends IEvent{
 			if( to.getChats().axnIsMax( ChatType.TEMPAXN ) )
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
-			// 生成频道唯一ID
-			axnId = ChatType.TEMPAXN.generateUID();
 			// 创建一个频道
-			ChatManager.o.getChatControl().createAxn( ChatType.TEMPAXN, axnId, player, to );
+			axn = ChatManager.o.getChatControl().createAxn( ChatType.TEMPAXN );
+			axn.appendTempCrew(player);
+			axn.appendTempCrew(to);
 			
 			// 记录到玩家身上
-			player.getChats().appendAxn( ChatType.TEMPAXN, axnId );
-			to.getChats().appendAxn( ChatType.TEMPAXN, axnId );
+			player.getChats().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
+			to.getChats().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -60,13 +61,13 @@ public class CreateTempAxnEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 125 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			response.writeInt(axnId);
+			response.writeInt(axn.getAxnId());
 		}
 		sendPackage( player.getCtx(), response );
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED && to != null ){
-			((Update_3010)Events.UPDATE_3010.getEventInstance()).run( to, axnId );
+			((Update_3010)Events.UPDATE_3010.getEventInstance()).run( to, axn.getAxnId() );
 		}
 		
 	}

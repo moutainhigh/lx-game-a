@@ -6,12 +6,14 @@ import io.netty.channel.AbstractChannel;
 
 import org.apache.log4j.PropertyConfigurator;
 
+import cn.xgame.a.chat.o.ChatAxnUID;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.netty.client.NettyClient;
 import cn.xgame.net.netty.server.NettyServer;
+import cn.xgame.system.LXConstants;
 import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.ThreadManager;
@@ -122,6 +124,12 @@ public class Launch {
 		
 		// lua日志初始
 		Lua.setLogClass( Logs.class );
+		
+		// 加载游戏基础配置文件
+		LXConstants.load();
+		
+		// 读取游戏存储的二进制文件
+		ChatAxnUID.readFile();
 		
 		Logs.debug( "系统配置加载完成" );
 	}

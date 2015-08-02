@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.o.AxnCrew;
+import cn.xgame.a.chat.o.IAxnCrew;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 
 /**
@@ -37,12 +36,12 @@ public class Update_3010 extends IEvent{
 			response.writeInt( axnId );
 			
 			AxnInfo axn 		= ChatManager.o.getChatControl().getAXNInfo(axnId);
-			List<AxnCrew> crews = axn.getAxnCrews();
-			response.writeByte( crews.size() );
-			for( AxnCrew crew : crews ){
-				RW.writeString( response, crew.getUid() );
-				RW.writeString( response, crew.getName() );
-				response.writeInt( crew.getHeadIco() );
+			List<IAxnCrew> crews = axn.getAxnCrews();
+			response.writeByte( crews.size()-1 );// 这里要减去自己
+			for( IAxnCrew crew : crews ){
+				if( crew.getUid().equals( to.getUID() ) )
+					continue;
+				crew.buildTransformStream(response);
 			}
 			
 			sendPackage( to.getCtx(), response );

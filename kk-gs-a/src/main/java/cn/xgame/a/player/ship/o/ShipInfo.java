@@ -12,12 +12,13 @@ import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IUObject;
-import cn.xgame.a.player.ship.o.v.HoldControl;
-import cn.xgame.a.player.ship.o.v.EquipControl;
+import cn.xgame.a.player.ship.o.bag.EquipControl;
+import cn.xgame.a.player.ship.o.bag.HoldControl;
 import cn.xgame.a.player.ship.o.v.EctypeCombatInfo;
 import cn.xgame.a.player.ship.o.v.SailPurpose;
 import cn.xgame.a.player.ship.o.v.ShipStatus;
 import cn.xgame.a.player.ship.o.v.StatusControl;
+import cn.xgame.a.player.ship.o.v.TempRecordInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ShipPo;
@@ -42,20 +43,25 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	private int captainUID = -1;
 	
 	// 货仓
-	private HoldControl holds = new HoldControl();
+	private HoldControl holds 			= new HoldControl();
 	
 	// 装备 武器-辅助
-	private EquipControl equips = new EquipControl();
+	private EquipControl equips 		= new EquipControl();
 	
 	// 状态
-	private StatusControl status = new StatusControl();
+	private StatusControl status 		= new StatusControl();
 	
 	// 副本信息   (这里只有是战斗航行和战斗状态 才有)
-	private EctypeCombatInfo keepInfo = new EctypeCombatInfo(); 
+	private EctypeCombatInfo keepInfo 	= new EctypeCombatInfo(); 
+	
+	// 组队 id
+	private int teamId = 0;
 	
 	
-	// 组队信息
-	// TODO
+	
+	// 临时记录信息  该数据不用保存数据库
+	private TempRecordInfo temprecord 	= new TempRecordInfo();
+	
 	
 	/**
 	 * 通过配置表创建一个
@@ -137,20 +143,17 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	
 
 	public ShipPo template(){ return template; }
-	public int getCaptainUID() {
-		return captainUID;
-	}
-	public void setCaptainUID(int captainUID) {
-		this.captainUID = captainUID;
-	}
-	public void setStatus( ShipStatus shipStatus ) {
-		status.setStatus(shipStatus);
-	}
+	public int getCaptainUID() { return captainUID; }
+	public void setCaptainUID(int captainUID) { this.captainUID = captainUID; }
+	public void setStatus( ShipStatus shipStatus ) { status.setStatus(shipStatus); }
+	public int getTeamId() { return teamId; }
+	public void setTeamId(int teamId) { this.teamId = teamId; }
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
 	public StatusControl getStatus() { return status; }
 	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
-
+	public TempRecordInfo getTemprecord() { return temprecord; }
+	
 	/**
 	 * 是否悬停
 	 * @return
@@ -160,11 +163,11 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	}
 	
 	/**
-	 * 是否拥有队伍
+	 * 是否可以战斗
 	 * @return
 	 */
-	public boolean isHaveTeam() {
-		return false;
+	public boolean isCanFighting() {
+		return captainUID != -1;
 	}
 	
 	/**

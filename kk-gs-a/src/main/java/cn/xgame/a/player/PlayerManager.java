@@ -10,8 +10,8 @@ import x.javaplus.util.ErrorCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import cn.xgame.a.player.u.Init;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.player.u.o.Init;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;

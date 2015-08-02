@@ -36,6 +36,16 @@ public class LXConstants {
 	
 	
 	
+	/**
+	 * 加载配置文件
+	 */
+	public static void load() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 	
 	
 }

@@ -16,8 +16,11 @@ public class ChatAxnUID {
 	// 组队频道唯一ID
 	private static int TEAMAXN_UID = 0;
 	
+	
+	
+	
 	/** 
-	 * 获取临时频道唯一ID  s
+	 * 获取临时频道唯一ID
 	 * @throws Exception 
 	 * */
 	public static int getTempaxnUid() throws Exception{ 
@@ -32,5 +35,10 @@ public class ChatAxnUID {
 		return TEAMAXN_UID; 
 	}
 	
+	/** 读取文件 */
+	public static void readFile(){
+		
+		
+	}
 	
 }

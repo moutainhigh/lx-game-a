@@ -1,4 +1,4 @@
-package cn.xgame.a.player.u;
+package cn.xgame.a.player.u.o;
 
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;

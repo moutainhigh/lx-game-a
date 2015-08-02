@@ -68,6 +68,8 @@ public class CreateEvent extends IEvent {
 			player.buildTransformStream( response );
 			// 发送自己母星数据
 			home.buildTransformStream( response );
+			// 舰长数据
+			player.getCaptains().buildTransformStream(response);
 		}
 		sendPackage( ctx, response );
 	

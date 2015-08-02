@@ -21,8 +21,11 @@ public abstract class IHold extends IDepot implements ITransformStream{
 	protected int propUID = 0;
 	private int getResUID(){ return ++propUID; }
 	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
+	/**
+	 * 塞入仓库基础数据
+	 * @param buffer
+	 */
+	public void putBaseBuffer(ByteBuf buffer) {
 		buffer.writeByte( props.size() );
 		for( IProp o : props ){
 			o.putBaseBuffer(buffer);

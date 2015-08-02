@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ship.o.v;
+package cn.xgame.a.player.ship.o.bag;
 
 import java.util.List;
 
@@ -81,7 +81,7 @@ public class EquipControl extends IHold implements IArrayStream{
 	
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeShort( wroom );
-		super.buildTransformStream(buffer);
+		putBaseBuffer(buffer);
 		buffer.writeShort( eroom );
 	}
 	

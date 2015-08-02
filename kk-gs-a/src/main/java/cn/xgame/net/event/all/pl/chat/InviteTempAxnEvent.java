@@ -55,7 +55,7 @@ public class InviteTempAxnEvent extends IEvent {
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
 			// 加入频道
-			chatControl.appendAxn( axnId, to );
+			axn.appendTempCrew( to );
 			
 			// 记录到玩家身上
 			to.getChats().appendAxn( ChatType.TEMPAXN, axnId );

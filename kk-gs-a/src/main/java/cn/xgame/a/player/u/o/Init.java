@@ -1,5 +1,6 @@
-package cn.xgame.a.player.u;
+package cn.xgame.a.player.u.o;
 
+import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.PlayerInitPo;
 

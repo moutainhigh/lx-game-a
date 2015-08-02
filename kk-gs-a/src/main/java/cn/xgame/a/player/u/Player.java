@@ -14,6 +14,8 @@ import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.ectype.o.PreEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
+import cn.xgame.a.player.u.o.DBBaseUID;
+import cn.xgame.a.player.u.o.IPlayer;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.ectype.SEctype;
@@ -41,7 +43,7 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 包检测
 	private PackageCheck pcheck 		= new PackageCheck();
-
+	
 	
 	//////////////////////数据库相关//////////////////////////
 	
@@ -232,6 +234,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public ChatControl getChats() {
 		return chats;
 	}
+	
+
 
 
 
