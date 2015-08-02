@@ -18,4 +18,10 @@ public interface Captains {
 	
 	/** 表格ID */
 	int nid();
+	
+	/** 所属舰船UID */
+	int shipUid();
+	
+	/** 装备信息 */
+	byte[] equips();
 }

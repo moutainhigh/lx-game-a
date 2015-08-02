@@ -11,6 +11,7 @@ import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IUObject;
+import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.cequip.CEquip;
 import cn.xgame.config.gen.CsvGen;
@@ -28,7 +29,10 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 
 	private final CaptainPo templet;
 	
-	private EquipControl equips = new EquipControl();
+	// 所属舰船UID
+	private int shipUid 			= -1;
+	
+	private EquipControl equips 	= new EquipControl();
 	
 	public CaptainInfo(int uid, int nid) {
 		super( uid, nid );
@@ -38,10 +42,9 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 	public CaptainInfo(CaptainsDto dto) {
 		super( dto.getUid(), dto.getNid() );
 		templet = CsvGen.getCaptainPo(dto.getNid());
+		shipUid	= dto.getShipUid();
+		equips.fromBytes( dto.getEquips() );
 	}
-
-	public CaptainPo templet(){ return templet; }
-	public EquipControl getEquips() { return equips; }
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
@@ -51,6 +54,10 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( equip == null ? -1 : equip.getnId() );
 	}
 
+	public CaptainPo templet(){ return templet; }
+	public EquipControl getEquips() { return equips; }
+	public int getShipUid() { return shipUid; }
+	public void setShipUid(int shipUid) { this.shipUid = shipUid; }
 	
 	//TODO------------数据库相关
 	public void createDB( Player root ) {
@@ -72,8 +79,10 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 	}
 	private void setDBData(CaptainsDto dto) {
 		dto.setNid(getnId());
+		dto.setShipUid(shipUid);
+		dto.setEquips(equips.toBytes());
 	}
-
+	
 	//TODO------------其他函数
 
 	/**
@@ -93,7 +102,6 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 		return equips.warpFightProperty( attacks, defends, askings, answers );
 	}
 
-	
 	
 	
 }

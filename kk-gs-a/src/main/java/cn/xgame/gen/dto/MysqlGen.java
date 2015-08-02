@@ -8,6 +8,8 @@
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
+			setObject( "shipUid", dto.getShipUid() );
+			setObject( "equips", dto.getEquips() );
 
 			super.commit( true );		}	}
 	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Integer id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Integer id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
@@ -58,33 +60,45 @@
 		private String uname = null;
 		private Integer uid = null;
 		private Integer nid = null;
+		private Integer shipUid = null;
+		private byte[] equips = null;
 
 		public CaptainsDto() {		}				/**		 * Copy new one		 */		public CaptainsDto(CaptainsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
 			this.uid = src.uid;
 			this.nid = src.nid;
+			this.shipUid = src.shipUid;
+			this.equips = src.equips;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
+		/**  所属舰船UID  */		public Integer getShipUid(){			return this.shipUid;		}
+		/**  装备信息  */		public byte[] getEquips(){			return this.equips;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  所属舰船UID  */		public void setShipUid( Integer shipUid ){			this.shipUid = shipUid;		}
+		/**  装备信息  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String shipUidChangeSql( Integer x) {			return "shipUid=" + x;		}
+		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
+			shipUid = o.getInt( "shipUid" );
+			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
 	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
