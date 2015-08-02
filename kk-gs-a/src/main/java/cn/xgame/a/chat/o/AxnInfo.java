@@ -110,6 +110,24 @@ public class AxnInfo implements ITransformStream{
 		axnCrews.add(crew);
 	}
 
-
+	/**
+	 * 玩家退出
+	 * @param player
+	 * @return
+	 */
+	public void exit( Player player ) {
+		
+		
+	}
+	
+	/**
+	 * 玩家离线
+	 * @param player
+	 * @return
+	 */
+	public void offline( Player player ) {
+		
+	}
+	
 	
 }

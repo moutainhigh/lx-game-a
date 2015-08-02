@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
+import cn.xgame.a.player.u.Player;
 
 import x.javaplus.collections.Lists;
 
@@ -46,5 +47,21 @@ public class AxnControl {
 		return axn;
 	}
 
+	/**
+	 * 玩家离线 处理
+	 * @param player
+	 */
+	public void playerOffline( Player player ){
+		List<Integer> ls = player.getChatAxns().getAllAxn();
+		for( int axnId : ls ){
+			AxnInfo axn = getAXNInfo( axnId );
+			if( axn == null ) {
+				player.getChatAxns().removeAxn( axnId );
+				continue;
+			}
+			axn.offline( player );
+		}
+	}
+	
 	
 }

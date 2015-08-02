@@ -3,6 +3,7 @@ package cn.xgame.a.player.chat;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -24,13 +25,14 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
 	// 聊天操作类
 	private final AxnControl chatControl = ChatManager.o.getChatControl();
-	
+	private final Player root;
 	
 	// 临时频道
 	private List<Integer> tempaxn = Lists.newArrayList();
 	
 	
 	public ChatAxnControl(Player player) {
+		root = player;
 	}
 
 	@Override
@@ -67,6 +69,17 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	}
 	
 	/**
+	 * 获取玩家所有频道
+	 * @return
+	 */
+	public List<Integer> getAllAxn(){
+		List<Integer> ret = Lists.newArrayList();
+		ret.addAll(root.getDocks().getAllAxn());
+		ret.addAll(tempaxn);
+		return ret;
+	}
+	
+	/**
 	 * 根据频道类型获取 频道ID列表
 	 * @param type
 	 * @return
@@ -74,6 +87,9 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	public List<Integer> getAxn( ChatType type ){
 		if( type == ChatType.TEMPAXN )
 			return tempaxn;
+		if( type == ChatType.TEMPAXN ){
+			return root.getDocks().getAllAxn();
+		}
 		return null;
 	}
 	
@@ -97,6 +113,22 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		List<Integer> axns = getAxn( type );
 		if( axns.indexOf(axnId) == -1 )
 			axns.add( axnId );
+	}
+	
+	/**
+	 * 删除一个频道ID
+	 * @param axnId
+	 */
+	public void removeAxn( int axnId ) {
+		Iterator<Integer> iter = tempaxn.iterator();
+		while( iter.hasNext() ){
+			int next = iter.next();
+			if( next == axnId ){
+				iter.remove();
+				return;
+			}
+		}
+		root.getDocks().removeAxn( axnId );
 	}
 
 

@@ -144,6 +144,32 @@ public class DockControl implements ITransformStream,IFromDB{
 		return false;
 	}
 	
+	/**
+	 * 获取所有频道
+	 * @return
+	 */
+	public List<Integer> getAllAxn() {
+		List<Integer> ret = Lists.newArrayList();
+		for( ShipInfo ship : ships ){
+			if( ship.getTeamId() != 0 )
+				ret.add( ship.getTeamId() );
+		}
+		return ret;
+	}
+	
+	/**
+	 * 删除一个频道ID
+	 * @param axnId
+	 */
+	public void removeAxn(int axnId) {
+		for( ShipInfo ship : ships ){
+			if( ship.getTeamId() == axnId ){
+				ship.setTeamId(0);
+				return;
+			}
+		}
+	}
+	
 	//TODO-------------其他函数
 
 	/**
@@ -221,9 +247,6 @@ public class DockControl implements ITransformStream,IFromDB{
 		ship.updateDB( root );
 		return ret;
 	}
-
-
-	
 	
 	
 	
