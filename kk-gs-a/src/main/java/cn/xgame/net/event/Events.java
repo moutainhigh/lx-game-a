@@ -39,9 +39,11 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
-import cn.xgame.net.event.all.pl.ship.DownEquipEvent;
+import cn.xgame.net.event.all.pl.ship.MountCaptainEvent;
+import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
+import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
-import cn.xgame.net.event.all.pl.ship.PutinHoldEvent;
+import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
@@ -80,10 +82,12 @@ public enum Events {
 	APPLY_CAPTAINS				( 1013, 	new ApplyCaptainEvent() ),
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
 	
-	SHIP_PUTIN_HOLD				( 1021, 	new PutinHoldEvent() ),
+	SHIP_MOUNT_HOLD				( 1021, 	new MountHoldEvent() ),
 	SHIP_UNLOAD_HOLD			( 1022, 	new UnloadHoldEvent() ),
 	SHIP_MOUNT_EQUIP			( 1023, 	new MountEquipEvent() ),
-	SHIP_DOWN_EQUIP				( 1024, 	new DownEquipEvent() ),
+	SHIP_UNLOAD_EQUIP			( 1024, 	new UnloadEquipEvent() ),
+	SHIP_MOUNT_CAPTAIN			( 1025, 	new MountCaptainEvent() ),
+	SHIP_UNLOAD_CAPTAIN			( 1026, 	new UnloadCaptainEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),

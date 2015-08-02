@@ -16,7 +16,7 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-7-23 上午11:22:59
  */
-public class PutinHoldEvent extends IEvent{
+public class MountHoldEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
