@@ -1,9 +1,12 @@
 package cn.xgame.a.chat.o;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.chat.o.v.TeamAxnCrew;
 import cn.xgame.a.chat.o.v.TempAxnCrew;
 import cn.xgame.a.player.ship.o.ShipInfo;
@@ -14,7 +17,7 @@ import cn.xgame.a.player.u.Player;
  * @author deng		
  * @date 2015-8-2 下午12:53:08
  */
-public class AxnInfo {
+public class AxnInfo implements ITransformStream{
 
 	// 频道唯一ID
 	private int  		axnId;
@@ -28,6 +31,16 @@ public class AxnInfo {
 	public AxnInfo(ChatType type, int axnId) {
 		this.type 	= type;
 		this.axnId 	= axnId;
+	}
+	
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeInt( axnId );
+		buffer.writeByte( axnCrews.size() );
+		for( IAxnCrew crew : axnCrews ){
+			crew.buildTransformStream(buffer);
+		}
 	}
 	
 	public int getAxnId() { return axnId; }
@@ -96,6 +109,7 @@ public class AxnInfo {
 		crew.setShipNid( ship.getnId() );
 		axnCrews.add(crew);
 	}
+
 
 	
 }

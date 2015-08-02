@@ -8,6 +8,10 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.ITransformStream;
+import cn.xgame.a.chat.AxnControl;
+import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.player.u.Player;
 
@@ -16,8 +20,12 @@ import cn.xgame.a.player.u.Player;
  * @author deng		
  * @date 2015-8-2 下午4:01:50
  */
-public class ChatAxnControl implements IArrayStream{
-
+public class ChatAxnControl implements IArrayStream, ITransformStream{
+	
+	// 聊天操作类
+	private final AxnControl chatControl = ChatManager.o.getChatControl();
+	
+	
 	// 临时频道
 	private List<Integer> tempaxn = Lists.newArrayList();
 	
@@ -47,6 +55,15 @@ public class ChatAxnControl implements IArrayStream{
 			buf.writeInt(i);
 		}
 		return buf.array();
+	}
+	
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeByte( tempaxn.size() );
+		for( int axnid : tempaxn ){
+			AxnInfo axn = chatControl.getAXNInfo(axnid);
+			axn.buildTransformStream(buffer);
+		}
 	}
 	
 	/**
