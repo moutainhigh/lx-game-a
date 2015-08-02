@@ -1,5 +1,8 @@
 package cn.xgame.a.player.chat;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -24,14 +27,26 @@ public class ChatAxnControl implements IArrayStream{
 
 	@Override
 	public void fromBytes(byte[] data) {
-		// TODO Auto-generated method stub
-		
+		if( data == null )
+			return;
+		tempaxn.clear();
+		ByteBuf buf = Unpooled.copiedBuffer(data);
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			tempaxn.add( buf.readInt() );
+		}
 	}
 
 	@Override
 	public byte[] toBytes() {
-		// TODO Auto-generated method stub
-		return null;
+		if( tempaxn.isEmpty() ) 
+			return null;
+		ByteBuf buf = Unpooled.buffer( 1024 );
+		buf.writeByte( tempaxn.size() );
+		for( int i : tempaxn ){
+			buf.writeInt(i);
+		}
+		return buf.array();
 	}
 	
 	/**
