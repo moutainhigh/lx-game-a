@@ -121,12 +121,14 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		// 装备
 		equips.buildTransformStream(buffer);
 		// 组队
-		AxnInfo axn = chatControl.getAXNInfo(teamId);
 		buffer.writeInt( teamId );
-		buffer.writeByte( axn.getAxnCrews().size() );
-		for( IAxnCrew crew : axn.getAxnCrews() ){
-			TeamAxnCrew team = (TeamAxnCrew)crew;
-			team.buildTransformStream(buffer);
+		AxnInfo axn = chatControl.getAXNInfo(teamId);
+		buffer.writeByte( axn == null ? 0: axn.getAxnCrews().size() );
+		if( axn != null ){
+			for( IAxnCrew crew : axn.getAxnCrews() ){
+				TeamAxnCrew team = (TeamAxnCrew)crew;
+				team.buildTransformStream(buffer);
+			}
 		}
 	}
 
@@ -190,7 +192,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	}
 	
 	/**
-	 * 获取航行到目标星球
+	 * 获取航行到目标星球 的航行时间
 	 * @param snid 目标星球
 	 * @return 需要的航行时间 
 	 */
@@ -199,7 +201,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 			return 0;
 		StarsPo cur	 	= CsvGen.getStarsPo( status.getTargetSnid() );
 		StarsPo to 		= CsvGen.getStarsPo( snid );
-		Lua lua 		= LuaUtil.getGameData();
+		Lua lua 		= LuaUtil.getEctypeCombat();
 		LuaValue[] ret 	= lua.getField( "sailingTime" ).call( 1, cur, to );
 		int sailTime 	= ret[0].getInt();
 		Logs.debug( "获取航行时间  " +status.getTargetSnid()+ " -> " +snid+ "  时间：" + sailTime );

@@ -70,6 +70,8 @@ public class CreateEvent extends IEvent {
 			home.buildTransformStream( response );
 			// 舰长数据
 			player.getCaptains().buildTransformStream(response);
+			// 聊天频道信息
+			player.getChatAxns().buildTransformStream(response);
 		}
 		sendPackage( ctx, response );
 	

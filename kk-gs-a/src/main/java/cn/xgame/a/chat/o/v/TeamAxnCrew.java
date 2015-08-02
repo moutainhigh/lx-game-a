@@ -2,10 +2,6 @@ package cn.xgame.a.chat.o.v;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.chat.o.IAxnCrew;
-import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.ship.o.ShipInfo;
-import cn.xgame.a.player.u.Player;
 
 /**
  * 组队频道 玩家信息
@@ -24,15 +20,15 @@ public class TeamAxnCrew extends IAxnCrew{
 	public void buildTransformStream(ByteBuf buffer) {
 		super.buildTransformStream(buffer);
 		buffer.writeInt( shipNid );
-		Player player = PlayerManager.o.getPlayerFmOnline(getUid());
-		buffer.writeInt( player == null ? -1 : shipUid );
-		if( player != null ){
-			ShipInfo ship = player.getDocks().getShip(shipUid);
-			buffer.writeInt( ship.getStatus().getCurrentSnid() );
-			ship.getEquips().putBaseBuffer(buffer);
-			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-			captain.buildTransformStream(buffer);
-		}
+//		Player player = PlayerManager.o.getPlayerFmOnline(getUid());
+//		buffer.writeInt( player == null ? -1 : shipUid );
+//		if( player != null ){
+//			ShipInfo ship = player.getDocks().getShip(shipUid);
+//			buffer.writeInt( ship.getStatus().getCurrentSnid() );
+//			ship.getEquips().putBaseBuffer(buffer);
+//			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
+//			captain.buildTransformStream(buffer);
+//		}
 	}
 	
 	public int getShipUid() {

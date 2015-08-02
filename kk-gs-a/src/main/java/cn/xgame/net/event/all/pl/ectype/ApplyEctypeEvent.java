@@ -13,7 +13,7 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-7-20 上午10:12:10
  */
-public class ApplyAccEctypeEvent extends IEvent{
+public class ApplyEctypeEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
