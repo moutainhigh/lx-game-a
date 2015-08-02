@@ -6,6 +6,7 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
@@ -144,6 +145,30 @@ public abstract class IEctype {
 			enemy.setCount( Integer.parseInt( x[1] ) );
 			enemys.add(enemy);
 		}
+	}
+	
+	/**
+	 * 刷新奖励
+	 * @return
+	 */
+	public List<AwardInfo> updateAward() {
+		List<AwardInfo> ret = Lists.newArrayList();
+		// 先计算副本身奖励
+		for( DropAward drop : drops ){
+			if( !drop.isDrop() )
+				continue;
+			ret.add(drop);
+		}
+		// 在计算怪物身上的
+		for( Enemy enemy : enemys ){
+			List<DropAward> ls = enemy.getDrops();
+			for( DropAward drop : ls ){
+				if( !drop.isDrop() )
+					continue;
+				ret.add(drop);
+			}
+		}
+		return ret;
 	}
 	
 	

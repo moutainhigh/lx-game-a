@@ -1,5 +1,6 @@
 package cn.xgame.a.player.ectype.enemy;
 
+import x.javaplus.util.Util.Random;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.award.AwardInfo;
 
@@ -26,6 +27,14 @@ public class DropAward extends AwardInfo {
 	}
 	public void setRand(int rand) {
 		this.rand = rand;
+	}
+	
+	/**
+	 * 是否掉落
+	 * @return
+	 */
+	public boolean isDrop() {
+		return Random.get( 0, 10000 ) <= rand;
 	}
 	
 }

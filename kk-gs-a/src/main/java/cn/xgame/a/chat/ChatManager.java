@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.Collection;
 import java.util.List;
 
-import cn.xgame.a.chat.o.AxnControl;
 import cn.xgame.a.chat.o.IAxnCrew;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;

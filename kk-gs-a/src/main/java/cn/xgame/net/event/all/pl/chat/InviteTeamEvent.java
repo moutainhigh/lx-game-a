@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.chat.AxnControl;
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.o.AxnControl;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.ship.o.ShipInfo;

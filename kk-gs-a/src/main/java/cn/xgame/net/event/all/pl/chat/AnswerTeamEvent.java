@@ -7,8 +7,8 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.chat.AxnControl;
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.o.AxnControl;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
 import cn.xgame.a.chat.o.IAxnCrew;

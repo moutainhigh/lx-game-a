@@ -1,6 +1,9 @@
-package cn.xgame.a.chat.o;
+package cn.xgame.a.chat;
 
 import java.util.List;
+
+import cn.xgame.a.chat.o.AxnInfo;
+import cn.xgame.a.chat.o.ChatType;
 
 import x.javaplus.collections.Lists;
 

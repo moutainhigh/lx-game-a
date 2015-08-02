@@ -98,7 +98,7 @@ public class StartAttackEvent extends IEvent{
 				combatTime	= ret[0].getInt();
 				
 				// 根据胜利 获取算出奖励
-				List<AwardInfo> awards = isWin == 1 ? null : null;
+				List<AwardInfo> awards = isWin == 1 ? ectype.updateAward() : null;
 				
 				// 切换战斗状态
 				status.startAttack( combatTime );

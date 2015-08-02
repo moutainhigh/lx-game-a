@@ -93,7 +93,7 @@ public class AxnInfo {
 		crew.setHeadIco( player.getHeadIco() );
 		crew.setSocket( player.getCtx() );
 		crew.setShipUid( ship.getuId() );
-		
+		crew.setShipNid( ship.getnId() );
 		axnCrews.add(crew);
 	}
 
