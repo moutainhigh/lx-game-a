@@ -8,6 +8,11 @@ import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.chat.AxnControl;
+import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.o.AxnInfo;
+import cn.xgame.a.chat.o.IAxnCrew;
+import cn.xgame.a.chat.o.v.TeamAxnCrew;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
@@ -36,6 +41,7 @@ import cn.xgame.utils.LuaUtil;
  */
 public class ShipInfo extends IUObject implements ITransformStream{
 
+	private final AxnControl chatControl = ChatManager.o.getChatControl();
 	private final ShipPo template;
 	
 	
@@ -55,7 +61,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	private EctypeCombatInfo keepInfo 	= new EctypeCombatInfo(); 
 	
 	// 组队 id
-	private int teamId = 0;
+	private int teamId 					= 0;
 	
 	
 	
@@ -88,6 +94,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		keepInfo.fromBytes( dto.getKeepinfos() );
 		holds.fromBytes( dto.getHolds() );
 		equips.fromBytes( dto.getEquips() );
+		teamId = chatControl.getAXNInfo(dto.getTeamAxnid()) == null ? 0 : dto.getTeamAxnid();
 	}
 
 	@Override
@@ -95,6 +102,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( getuId() );
 		buffer.writeInt( getnId() );
 		buffer.writeInt( captainUID );
+		// 状态
 		status.buildTransformStream(buffer);
 		if( status.getStatus() == ShipStatus.SAILING ){
 			buffer.writeInt( status.getSurplusTime() );
@@ -108,8 +116,18 @@ public class ShipInfo extends IUObject implements ITransformStream{
 			buffer.writeInt( keepInfo.getEnid() );
 			buffer.writeInt( keepInfo.isWin() );
 		}
+		// 货仓
 		holds.buildTransformStream(buffer);
+		// 装备
 		equips.buildTransformStream(buffer);
+		// 组队
+		AxnInfo axn = chatControl.getAXNInfo(teamId);
+		buffer.writeInt( teamId );
+		buffer.writeByte( axn.getAxnCrews().size() );
+		for( IAxnCrew crew : axn.getAxnCrews() ){
+			TeamAxnCrew team = (TeamAxnCrew)crew;
+			team.buildTransformStream(buffer);
+		}
 	}
 
 	
@@ -139,6 +157,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		dto.setKeepinfos( keepInfo.toBytes() );
 		dto.setHolds( holds.toBytes() );
 		dto.setEquips( equips.toBytes() );
+		dto.setTeamAxnid( teamId );
 	}
 	
 

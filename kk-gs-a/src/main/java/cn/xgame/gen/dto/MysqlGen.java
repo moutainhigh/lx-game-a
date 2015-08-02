@@ -54,6 +54,7 @@
 			setObject( "keepinfos", dto.getKeepinfos() );
 			setObject( "holds", dto.getHolds() );
 			setObject( "equips", dto.getEquips() );
+			setObject( "teamAxnid", dto.getTeamAxnid() );
 
 			super.commit( true );		}	}
 
@@ -292,6 +293,7 @@
 		private byte[] keepinfos = null;
 		private byte[] holds = null;
 		private byte[] equips = null;
+		private Integer teamAxnid = null;
 
 		public ShipsDto() {		}				/**		 * Copy new one		 */		public ShipsDto(ShipsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
@@ -302,6 +304,7 @@
 			this.keepinfos = src.keepinfos;
 			this.holds = src.holds;
 			this.equips = src.equips;
+			this.teamAxnid = src.teamAxnid;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
@@ -312,6 +315,7 @@
 		/**  副本留存信息  */		public byte[] getKeepinfos(){			return this.keepinfos;		}
 		/**  货仓  */		public byte[] getHolds(){			return this.holds;		}
 		/**  装备  */		public byte[] getEquips(){			return this.equips;		}
+		/**  组队频道ID  */		public Integer getTeamAxnid(){			return this.teamAxnid;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
@@ -322,6 +326,7 @@
 		/**  副本留存信息  */		public void setKeepinfos( byte[] keepinfos ){			this.keepinfos = keepinfos;		}
 		/**  货仓  */		public void setHolds( byte[] holds ){			this.holds = holds;		}
 		/**  装备  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
+		/**  组队频道ID  */		public void setTeamAxnid( Integer teamAxnid ){			this.teamAxnid = teamAxnid;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
@@ -332,6 +337,7 @@
 		public static String keepinfosChangeSql( byte[] x) {			return "keepinfos=" + x;		}
 		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
 		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
+		public static String teamAxnidChangeSql( Integer x) {			return "teamAxnid=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
@@ -342,7 +348,8 @@
 			keepinfos = o.getBytes( "keepinfos" );
 			holds = o.getBytes( "holds" );
 			equips = o.getBytes( "equips" );
+			teamAxnid = o.getInt( "teamAxnid" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips+","+"teamAxnid="+teamAxnid;		}	}
 
 }

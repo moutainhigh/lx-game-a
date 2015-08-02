@@ -34,4 +34,7 @@ public interface Ships {
 	/** 装备 */
 	byte[] equips();
 	
+	/** 组队频道ID */
+	int teamAxnid();
+	
 }

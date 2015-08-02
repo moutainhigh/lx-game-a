@@ -9,7 +9,7 @@ import x.javaplus.collections.Lists;
 
 
 /**
- * 聊天操作中心
+ * 频道操作中心
  * @author deng		
  * @date 2015-8-2 下午12:49:07
  */
@@ -32,35 +32,6 @@ public class AxnControl {
 		return null;
 	}
 	
-	/**
-	 * 根据频道类型 获取频道列表
-	 * @param type
-	 * @return
-	 */
-	public List<AxnInfo> getAxn( ChatType type ) {
-		List<AxnInfo> ret = Lists.newArrayList();
-		for( AxnInfo axn : axns ){
-			if( axn.getType() == type ){
-				ret.add(axn);
-			}
-		}
-		return ret;
-	}
-	
-	/**
-	 * 频道个数是否已经满
-	 * @return
-	 */
-	public boolean axnIsMax( ChatType type ) {
-		int count = 0;
-		for( AxnInfo axn : axns ){
-			if( axn.getType() == type )
-				++count;
-		}
-		return count >= type.max();
-	}
-
-
 	/**
 	 * 创建一个频道
 	 * @param tempaxn
