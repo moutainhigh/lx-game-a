@@ -19,8 +19,14 @@ public interface Ships {
 	/** 表格ID */
 	int nid();
 	
+	/** 当前血量 */
+	int currentHp();
+	
 	/** 舰长唯一ID */
 	int captainUid();
+	
+	/** 组队频道ID */
+	int teamAxnid();
 	
 	/** 状态 */
 	byte[] statuss();
@@ -33,8 +39,5 @@ public interface Ships {
 	
 	/** 装备 */
 	byte[] equips();
-	
-	/** 组队频道ID */
-	int teamAxnid();
 	
 }

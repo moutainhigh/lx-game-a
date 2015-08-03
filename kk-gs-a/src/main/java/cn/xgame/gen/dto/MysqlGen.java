@@ -49,12 +49,13 @@
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
+			setObject( "currentHp", dto.getCurrentHp() );
 			setObject( "captainUid", dto.getCaptainUid() );
+			setObject( "teamAxnid", dto.getTeamAxnid() );
 			setObject( "statuss", dto.getStatuss() );
 			setObject( "keepinfos", dto.getKeepinfos() );
 			setObject( "holds", dto.getHolds() );
 			setObject( "equips", dto.getEquips() );
-			setObject( "teamAxnid", dto.getTeamAxnid() );
 
 			super.commit( true );		}	}
 
@@ -288,68 +289,74 @@
 		private String uname = null;
 		private Integer uid = null;
 		private Integer nid = null;
+		private Integer currentHp = null;
 		private Integer captainUid = null;
+		private Integer teamAxnid = null;
 		private byte[] statuss = null;
 		private byte[] keepinfos = null;
 		private byte[] holds = null;
 		private byte[] equips = null;
-		private Integer teamAxnid = null;
 
 		public ShipsDto() {		}				/**		 * Copy new one		 */		public ShipsDto(ShipsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
 			this.uid = src.uid;
 			this.nid = src.nid;
+			this.currentHp = src.currentHp;
 			this.captainUid = src.captainUid;
+			this.teamAxnid = src.teamAxnid;
 			this.statuss = src.statuss;
 			this.keepinfos = src.keepinfos;
 			this.holds = src.holds;
 			this.equips = src.equips;
-			this.teamAxnid = src.teamAxnid;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
+		/**  当前血量  */		public Integer getCurrentHp(){			return this.currentHp;		}
 		/**  舰长唯一ID  */		public Integer getCaptainUid(){			return this.captainUid;		}
+		/**  组队频道ID  */		public Integer getTeamAxnid(){			return this.teamAxnid;		}
 		/**  状态  */		public byte[] getStatuss(){			return this.statuss;		}
 		/**  副本留存信息  */		public byte[] getKeepinfos(){			return this.keepinfos;		}
 		/**  货仓  */		public byte[] getHolds(){			return this.holds;		}
 		/**  装备  */		public byte[] getEquips(){			return this.equips;		}
-		/**  组队频道ID  */		public Integer getTeamAxnid(){			return this.teamAxnid;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  当前血量  */		public void setCurrentHp( Integer currentHp ){			this.currentHp = currentHp;		}
 		/**  舰长唯一ID  */		public void setCaptainUid( Integer captainUid ){			this.captainUid = captainUid;		}
+		/**  组队频道ID  */		public void setTeamAxnid( Integer teamAxnid ){			this.teamAxnid = teamAxnid;		}
 		/**  状态  */		public void setStatuss( byte[] statuss ){			this.statuss = statuss;		}
 		/**  副本留存信息  */		public void setKeepinfos( byte[] keepinfos ){			this.keepinfos = keepinfos;		}
 		/**  货仓  */		public void setHolds( byte[] holds ){			this.holds = holds;		}
 		/**  装备  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
-		/**  组队频道ID  */		public void setTeamAxnid( Integer teamAxnid ){			this.teamAxnid = teamAxnid;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String currentHpChangeSql( Integer x) {			return "currentHp=" + x;		}
 		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
+		public static String teamAxnidChangeSql( Integer x) {			return "teamAxnid=" + x;		}
 		public static String statussChangeSql( byte[] x) {			return "statuss=" + x;		}
 		public static String keepinfosChangeSql( byte[] x) {			return "keepinfos=" + x;		}
 		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
 		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
-		public static String teamAxnidChangeSql( Integer x) {			return "teamAxnid=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
+			currentHp = o.getInt( "currentHp" );
 			captainUid = o.getInt( "captainUid" );
+			teamAxnid = o.getInt( "teamAxnid" );
 			statuss = o.getBytes( "statuss" );
 			keepinfos = o.getBytes( "keepinfos" );
 			holds = o.getBytes( "holds" );
 			equips = o.getBytes( "equips" );
-			teamAxnid = o.getInt( "teamAxnid" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"captainUid="+captainUid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips+","+"teamAxnid="+teamAxnid;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"currentHp="+currentHp+","+"captainUid="+captainUid+","+"teamAxnid="+teamAxnid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
 
 }

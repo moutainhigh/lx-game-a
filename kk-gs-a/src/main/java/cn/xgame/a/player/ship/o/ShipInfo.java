@@ -63,7 +63,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	// 组队 id
 	private int teamId 					= 0;
 	
-	
+	// 血量
+	private int currentHp				= 0;
 	
 	// 临时记录信息  该数据不用保存数据库
 	private TempRecordInfo temprecord 	= new TempRecordInfo();
@@ -77,6 +78,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public ShipInfo( int uid, int nid ) {
 		super( uid, nid );
 		template = CsvGen.getShipPo(nid);
+		currentHp = template.hp;
 		holds.setRoom( template.groom );
 		equips.setWroom( template.wroom );
 		equips.setEroom( template.eroom );
@@ -89,6 +91,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public ShipInfo( ShipsDto dto ) {
 		super( dto.getUid(), dto.getNid() );
 		template = CsvGen.getShipPo( dto.getNid() );
+		currentHp = dto.getCurrentHp();
 		captainUID = dto.getCaptainUid();
 		status.fromBytes( dto.getStatuss() );
 		keepInfo.fromBytes( dto.getKeepinfos() );
@@ -154,6 +157,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	}
 	private void setDBData(ShipsDto dto) {
 		dto.setNid( getnId() );
+		dto.setCurrentHp( currentHp );
 		dto.setCaptainUid( captainUID );
 		dto.setStatuss( status.toBytes() );
 		dto.setKeepinfos( keepInfo.toBytes() );
@@ -169,12 +173,13 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void setStatus( ShipStatus shipStatus ) { status.setStatus(shipStatus); }
 	public int getTeamId() { return teamId; }
 	public void setTeamId(int teamId) { this.teamId = teamId; }
+	public int getCurrentHp() { return currentHp; }
+	public void setCurrentHp(int curHp) { this.currentHp = curHp; }
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
 	public StatusControl getStatus() { return status; }
 	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
 	public TempRecordInfo getTemprecord() { return temprecord; }
-	
 	/**
 	 * 是否悬停
 	 * @return
@@ -238,10 +243,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		ret	+= equips.warpFightProperty(attacks, defends, askings, answers);
 		return ret;
 	}
-
-
-
-
 	
 	
 }

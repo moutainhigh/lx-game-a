@@ -35,6 +35,8 @@ public class Fighter {
 	// 答列表
 	public List<Answers> 	answers = new ArrayList<Answers>();
 	
+	// 装备总耐久度
+	private int totalDur = 0;
 	
 	private AtkAndDef getAttacks( int type ) {
 		for( AtkAndDef o : attacks ){
@@ -104,19 +106,24 @@ public class Fighter {
 		}
 	}
 	
+	public int getTotalDur() {
+		return totalDur;
+	}
+	
 	/**
 	 * 根据舰船塞入数据
-	 * @param player 
+	 * @param player
 	 * @param ship
 	 */
 	public Fighter( Player player, ShipInfo ship ) {
 		
+		hp = ship.getCurrentHp();
 		// 
-		hp = ship.warpFightProperty( attacks, defends, askings, answers );
+		totalDur = ship.warpFightProperty( attacks, defends, askings, answers );
 		// 如果有舰长 那么还要塞入舰长的数据
 		if( ship.getCaptainUID() != -1 ){
 			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-			hp += captain.warpFightProperty( attacks, defends, askings, answers );
+			totalDur += captain.warpFightProperty( attacks, defends, askings, answers );
 		}
 		
 		// 自后整理一下 
@@ -136,5 +143,6 @@ public class Fighter {
 		// 自后整理一下 
 		systemize();
 	}
+
 	
 }

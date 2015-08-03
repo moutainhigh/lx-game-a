@@ -93,12 +93,15 @@ public class StartAttackEvent extends IEvent{
 				
 				Lua lua = LuaUtil.getEctypeCombat();
 				// 攻击者 防御者 基础战斗时间 胜率上限
-				LuaValue[] ret = lua.getField( "oneToOneCombat" ).call( 2, att, def, ectype.templet().btime, ectype.templet().maxran );
-				int winRate = ret[1].getInt();
+				LuaValue[] ret 	= lua.getField( "ectypeFight" ).call( 4, att, def, ectype.templet().btime, ectype.templet().maxran );
+				combatTime		= ret[0].getInt();
+				int winRate 	= ret[1].getInt();
+				int warDamaged 	= ret[2].getInt();
+				int depletion	= ret[3].getInt();
 				
+				// 算出胜负
 				int rand 	= Random.get( 0, 10000 );
 				isWin 		= (byte) (rand <= winRate ? 1 : 0);
-				combatTime	= ret[0].getInt();
 				
 				// 根据胜利 获取算出奖励
 				List<AwardInfo> awards = isWin == 1 ? ectype.updateAward() : null;
@@ -109,6 +112,7 @@ public class StartAttackEvent extends IEvent{
 				// 这里记录战斗 信息
 				ship.recordEctypeCombatInfo( enid, isWin, awards );
 				
+				Logs.debug( player, "攻打副本结果 combatTime=" + combatTime + ", winRate=" + winRate + ", warDamaged=" + warDamaged + ", depletion=" + depletion );
 			} catch (Exception e) {
 				Logs.error( player, "副本战斗错误 ", e );
 				isWin = 0;

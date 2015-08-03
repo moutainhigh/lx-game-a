@@ -106,14 +106,14 @@ public class EquipControl extends IHold implements IArrayStream{
 	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
 			List<Askings> askings, List<Answers> answers) {
 		
-		int hp = 0;
+		int dur = 0;
 		
 		List<IProp> all = getAll();
 		for( IProp prop : all ){
 			try {
 				SEquip equip = (SEquip)prop;
-				// 累加血量
-				hp += equip.templet().hp;
+				// 累加耐久度
+				dur += equip.templet().dur;
 				// 基础属性
 				List<AtkAndDef> atkdef = prop.itemType() == 1 ? attacks : defends;
 				CombatUtil.putBasisProperty( atkdef, equip.templet().type, equip.templet().value );
@@ -126,7 +126,7 @@ public class EquipControl extends IHold implements IArrayStream{
 			}
 		}
 		
-		return hp;
+		return dur;
 	}
 	
 	
