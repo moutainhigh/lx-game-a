@@ -12,6 +12,8 @@ import cn.xgame.a.combat.Fighter;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.StarsPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
@@ -47,13 +49,14 @@ public class ApplyEctypeInfoEvent extends IEvent{
 			
 			Fighter att = new Fighter( player, ship );// 攻击者
 			Fighter def = new Fighter( ectype );// 防御者
-			
+			StarsPo cur	= CsvGen.getStarsPo( ship.getStatus().getCurrentSnid() );
+			StarsPo to 	= CsvGen.getStarsPo( snid );
 			try {
 				Lua lua = LuaUtil.getEctypeCombat();
 				// 攻击者 防御者 基础战斗时间 胜率上限
 				LuaValue[] ret = lua.getField( "ectypeDetailInfo" ).call( 3, att, def, 
-						ectype.templet().btime, ectype.templet().maxran
-						
+						ectype.templet().btime, ectype.templet().maxran,
+						cur, to
 						);
 				sailTime	= ret[0].getInt();
 				combatTime	= ret[1].getInt();

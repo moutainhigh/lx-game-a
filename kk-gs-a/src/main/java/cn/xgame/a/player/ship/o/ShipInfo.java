@@ -197,9 +197,9 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 * @return 需要的航行时间 
 	 */
 	public int getSailingTime( int snid ) {
-		if( status.getTargetSnid() == snid )
+		if( status.getCurrentSnid() == snid )
 			return 0;
-		StarsPo cur	 	= CsvGen.getStarsPo( status.getTargetSnid() );
+		StarsPo cur	 	= CsvGen.getStarsPo( status.getCurrentSnid() );
 		StarsPo to 		= CsvGen.getStarsPo( snid );
 		Lua lua 		= LuaUtil.getEctypeCombat();
 		LuaValue[] ret 	= lua.getField( "sailingTime" ).call( 1, cur, to );
