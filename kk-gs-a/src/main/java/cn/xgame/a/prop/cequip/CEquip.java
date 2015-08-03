@@ -1,7 +1,6 @@
 package cn.xgame.a.prop.cequip;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
@@ -17,8 +16,6 @@ public class CEquip extends IProp{
 
 	private final TreasurePo templet;
 	
-	// 当前耐久度
-	private int currentDur;
 		
 	public CEquip(int uid, int nid, int count) {
 		super(uid, nid, count);
@@ -27,16 +24,11 @@ public class CEquip extends IProp{
 	public CEquip( PropsDto o ) {
 		super(o);
 		templet = CsvGen.getTreasurePo( getnId() );
-		if( o.getAttach() == null )
-			return;
-		ByteBuf buf = Unpooled.copiedBuffer( o.getAttach() );
-		wrapAttach(buf);
 	}
 
 	@Override
 	public IProp clone() {
 		CEquip ret = new CEquip(getuId(), getnId(), getCount());
-		ret.currentDur = currentDur;
 		return ret;
 	}
 	
@@ -50,30 +42,17 @@ public class CEquip extends IProp{
 
 	@Override
 	public void createDB(Player player) {
-		ByteBuf buf = Unpooled.buffer( 1024 );
-		putAttachBuffer(buf);
-		super.create(player, buf.array());
+		super.create(player, null);
 	}
 	@Override
 	public void updateDB(Player player) {
-		ByteBuf buf = Unpooled.buffer( 1024 );
-		putAttachBuffer(buf);
-		super.update(player, buf.array());
+		super.update(player, null);
 	}
 	@Override
 	public void putAttachBuffer(ByteBuf buf) {
-		buf.writeInt(currentDur);
 	}
 	@Override
 	public void wrapAttach(ByteBuf buf) {
-		currentDur = buf.readInt();
-	}
-	
-	public int getCurrentDur() {
-		return currentDur;
-	}
-	public void setCurrentDur(int currentDur) {
-		this.currentDur = currentDur;
 	}
 
 }
