@@ -18,7 +18,7 @@ public class SEquip extends IProp{
 	private final WeaponPo templet;
 	
 	// 当前耐久度
-	private int currentDur;
+	private int currentDur = 0;
 	
 	public SEquip(int uid, int nid, int count) {
 		super(uid, nid, count);

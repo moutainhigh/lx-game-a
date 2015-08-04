@@ -3,6 +3,7 @@ package cn.xgame.a.player.u.o;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.PlayerInitPo;
+import cn.xgame.utils.Logs;
 
 /**
  * 玩家初始化
@@ -47,8 +48,12 @@ public class Init {
 		if( items == null ) return ;
 		for( String x : items ){
 			if( x.isEmpty() ) continue;
-			String[] v = x.split(";");
-			ret.getDepots().appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+			try {
+				String[] v = x.split(";");
+				ret.getDepots().appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+			} catch (Exception e) {
+				Logs.error( "Init.initItem  at=" + x , e );
+			}
 		}
 	}
 	
@@ -56,7 +61,11 @@ public class Init {
 		String[] ls = o.ship.split(";");
 		for( String x : ls ){
 			if( x.isEmpty() ) continue;
-			ret.getDocks().createShip( Integer.parseInt( x ) );
+			try {
+				ret.getDocks().createShip( Integer.parseInt( x ) );
+			} catch (Exception e) {
+				Logs.error( "Init.initShip  at=" + x , e );
+			}
 		}
 	}
 	
@@ -64,7 +73,11 @@ public class Init {
 		String[] ls = o.captain.split(";");
 		for( String x : ls ){
 			if( x.isEmpty() ) continue;
-			ret.getCaptains().createCaptain( Integer.parseInt( x ) );
+			try {
+				ret.getCaptains().createCaptain( Integer.parseInt( x ) );
+			} catch (Exception e) {
+				Logs.error( "Init.initCaptain  at=" + x , e );
+			}
 		}
 	}
 	

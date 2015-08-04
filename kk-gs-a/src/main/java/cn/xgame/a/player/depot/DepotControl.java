@@ -76,7 +76,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
 		
 		List<IProp> ret = Lists.newArrayList();
-		ItemPo item 		= CsvGen.getItemPo(nid);
+		ItemPo item 	= CsvGen.getItemPo(nid);
 		if( item == null ){
 			Logs.error( root, "创建道具出错 nid="+nid+" 没找到！" );
 			return ret;

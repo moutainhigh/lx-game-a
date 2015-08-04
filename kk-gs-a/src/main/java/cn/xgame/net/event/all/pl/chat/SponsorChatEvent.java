@@ -23,7 +23,7 @@ public class SponsorChatEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		short axnId		= data.readShort();
+		int axnId		= data.readInt();
 		ChatType type 	= ChatType.fromNumber( axnId/LXConstants.CHAT_UID );
 		String content 	= RW.readString(data);
 		
