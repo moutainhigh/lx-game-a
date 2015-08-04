@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -26,10 +27,12 @@ public class UnloadEquipEvent extends IEvent{
 		ErrorCode code = null;
 		IProp ret = null;
 		try {
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
+			// 检查是否在母星 只有在母星才能操作
+			if( ship.getBerthSnid() != player.getCountryId() )
+				throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
 			// 获取道具
-			IProp prop = player.getDocks().getEquipAtShip( suid, puid );
-			if( prop == null )
-				throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+			IProp prop = ship.getEquips().getPropOfException( puid );
 			
 			// 拷贝一份
 			ret = prop.clone();
@@ -38,7 +41,7 @@ public class UnloadEquipEvent extends IEvent{
 			player.getDepots().append(ret);
 			
 			// 然后从舰船装备里面删除
-			player.getDocks().removeEquipAtShip( suid, prop );
+			player.getDocks().removeEquipAtShip( ship, prop );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

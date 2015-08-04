@@ -106,26 +106,25 @@ public class DockControl implements ITransformStream,IFromDB{
 		}
 		return null;
 	}
+	/**
+	 * 根据唯一ID 获取舰船  附带异常
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public ShipInfo getShipOfException( int id ) throws Exception {
+		ShipInfo ret = getShip( id );
+		if( ret == null )
+			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
+		return ret;
+	}
 
 	/**
-	 * 从某艘船获取装备
-	 * @param suid
-	 * @param puid
-	 * @return
-	 */
-	public IProp getEquipAtShip( int suid, int puid ) {
-		ShipInfo ship = getShip(suid);
-		if( ship == null ) return null;
-		return ship.getEquips().getProp(puid);
-	}
-	
-	/**
 	 * 从某艘船删除道具
-	 * @param atsuid
+	 * @param ship
 	 * @param prop
 	 */
-	public void removeEquipAtShip( int suid, IProp prop ) {
-		ShipInfo ship = getShip(suid);
+	public void removeEquipAtShip( ShipInfo ship, IProp prop ) {
 		if( ship == null ) return;
 		ship.getEquips().remove(prop);
 		ship.updateDB(root);
@@ -174,16 +173,12 @@ public class DockControl implements ITransformStream,IFromDB{
 
 	/**
 	 * 放一个道具到 舰船货仓
-	 * @param suid 
+	 * @param ship 
 	 * @param clone
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<IProp> putinHold( int suid, IProp clone ) throws Exception {
-		// 检查舰船是否存在
-		ShipInfo ship = getShip(suid);
-		if( ship == null )
-			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+	public List<IProp> putinHold( ShipInfo ship, IProp clone ) throws Exception {
 		
 		// 看货仓是否 还有空间
 		if( !ship.getHolds().roomIsEnough( clone ) )
@@ -208,9 +203,7 @@ public class DockControl implements ITransformStream,IFromDB{
 	 */
 	public IProp unloadHoldProp( int suid, int uid, int count ) throws Exception {
 		// 检查舰船是否存在
-		ShipInfo ship = getShip(suid);
-		if( ship == null )
-			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+		ShipInfo ship = getShipOfException(suid);
 		// 执行扣除
 		IProp ret = ship.getHolds().deductProp( uid, count );
 		if( ret == null )
@@ -222,16 +215,13 @@ public class DockControl implements ITransformStream,IFromDB{
 
 	/**
 	 * 装上一个装备
-	 * @param suid
+	 * @param ship
 	 * @param clone
 	 * @return
 	 * @throws Exception 
 	 */
-	public IProp mountEquip( int suid, IProp clone ) throws Exception {
-		// 检查舰船是否存在
-		ShipInfo ship = getShip(suid);
-		if( ship == null )
-			throw new Exception( ErrorCode.SHIP_NOTEXIST.name() ) ;
+	public IProp mountEquip( ShipInfo ship, IProp clone ) throws Exception {
+		
 		// 检查是否有舰长 如果没有舰长那么就不能装备
 		// TODO
 		

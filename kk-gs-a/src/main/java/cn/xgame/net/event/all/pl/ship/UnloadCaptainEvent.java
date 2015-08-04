@@ -26,9 +26,7 @@ public class UnloadCaptainEvent extends IEvent{
 		ErrorCode code = null;
 		try {
 			
-			ShipInfo ship = player.getDocks().getShip(suid);
-			if( ship == null )
-				throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
 			
 			// 直接卸掉
 			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );

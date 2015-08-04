@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.ErrorCode;
 
 /**
  * 仓库基类
@@ -53,6 +54,13 @@ public class IDepot {
 	public IProp getProp( IProp prop ){
 		return getProp( prop.getuId() );
 	}
+	public IProp getPropOfException( int id ) throws Exception{
+		IProp prop = getProp( id );
+		if( prop == null )
+			throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+		return prop;
+	}
+	
 	
 	/**
 	 * 根据表格ID 获取道具列表

@@ -181,6 +181,14 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
 	public TempRecordInfo getTemprecord() { return temprecord; }
 	/**
+	 * 停靠星球ID
+	 * @return
+	 */
+	public int getBerthSnid() {
+		return status.getCurrentSnid();
+	}
+	
+	/**
 	 * 是否悬停
 	 * @return
 	 */
@@ -243,6 +251,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		ret	+= equips.warpFightProperty(attacks, defends, askings, answers);
 		return ret;
 	}
-	
+
 	
 }

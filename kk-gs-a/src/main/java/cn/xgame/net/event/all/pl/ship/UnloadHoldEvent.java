@@ -30,8 +30,6 @@ public class UnloadHoldEvent extends IEvent{
 		try {
 			//检查道具是否存在
 			IProp prop = player.getDocks().unloadHoldProp( suid, puid, count );
-			if( prop == null )
-				throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
 			
 			// 成功后 就把道具放入玩家仓库
 			ret = player.getDepots().appendProp( prop );

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -26,21 +27,23 @@ public class MountEquipEvent extends IEvent{
 		ErrorCode code = null;
 		IProp ret = null;
 		try {
+			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
+			ShipInfo atship = player.getDocks().getShipOfException(atsuid);
 			
 			// 获取道具
-			IProp prop = atsuid == -1 ? getPlayerProp( player, puid ) : getShipProp( player, atsuid, puid );
+			IProp prop 		= atsuid == -1 ? getPlayerProp( player, puid ) : getShipProp( player, ship, atship, puid );
 			
 			// 先拷贝一个出来
 			IProp clone = prop.clone();
 			
 			// 开始放入舰船货仓
-			ret = player.getDocks().mountEquip( suid, clone );
+			ret 		= player.getDocks().mountEquip( ship, clone );
 			
 			// 成功后 直接删除道具
 			if( atsuid == -1 ){
 				player.getDepots().remove( prop );
 			}else{
-				player.getDocks().removeEquipAtShip( atsuid, prop );
+				player.getDocks().removeEquipAtShip( atship, prop );
 			}
 			
 			code = ErrorCode.SUCCEED;
@@ -58,18 +61,17 @@ public class MountEquipEvent extends IEvent{
 	}
 
 	// 从舰船上面获取道具
-	private IProp getShipProp(Player player, int atsuid, int puid) throws Exception {
-		IProp prop = player.getDocks().getEquipAtShip( atsuid, puid );
-		if( prop == null )
-			throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
-		return prop;
+	private IProp getShipProp(Player player, ShipInfo ship, ShipInfo atship, int puid) throws Exception {
+		// 判断两个舰船是否在一个星球
+		if( ship.getBerthSnid() != atship.getBerthSnid() )
+			throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
+		// 取出装备
+		return atship.getEquips().getPropOfException(puid);
 	}
 
 	// 从玩家身上获取道具
 	private IProp getPlayerProp(Player player, int puid) throws Exception {
-		IProp prop = player.getDepots().getProp(puid);
-		if( prop == null )
-			throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+		IProp prop = player.getDepots().getPropOfException(puid);
 		// 判断是否舰船装备
 		if( !prop.isShipEquip() )
 			throw new Exception( ErrorCode.NOT_SHIPEQUIP.name() ) ;

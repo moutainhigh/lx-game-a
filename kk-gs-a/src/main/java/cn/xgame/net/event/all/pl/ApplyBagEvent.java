@@ -28,7 +28,7 @@ public class ApplyBagEvent extends IEvent{
 		
 		// 玩家背包
 		List<IProp> bag = player.getDepots().getAll();
-		size += putBagData( response, bag, 0, 0 );
+		size += putBagData( response, bag, 0, -1 );
 		// 玩家舰船
 		List<ShipInfo> ships = player.getDocks().getAll();
 		for( ShipInfo ship : ships ){

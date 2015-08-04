@@ -7,6 +7,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -28,10 +29,12 @@ public class MountHoldEvent extends IEvent{
 		ErrorCode code = null;
 		List<IProp> ret = null;
 		try {
-			//检查道具是否存在
-			IProp prop = player.getDepots().getProp(puid);
-			if( prop == null )
-				throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
+			// 检查是否在母星 只有在母星才能操作
+			if( ship.getBerthSnid() != player.getCountryId() )
+				throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
+			// 检查道具是否存在
+			IProp prop = player.getDepots().getPropOfException(puid);
 			// 判断道具个数是否足够
 			if( prop.getCount() < count )
 				throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() ) ;
@@ -41,7 +44,7 @@ public class MountHoldEvent extends IEvent{
 			clone.setCount(count);
 			
 			// 开始放入舰船货仓
-			ret = player.getDocks().putinHold( suid, clone );
+			ret = player.getDocks().putinHold( ship, clone );
 			
 			// 成功后 就把道具从玩家仓库扣除相应道具
 			player.getDepots().deductProp( puid, count );

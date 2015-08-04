@@ -36,9 +36,7 @@ public class InviteTeamEvent extends IEvent {
 		ErrorCode code 	= null;
 		try {
 			
-			ShipInfo ship = player.getDocks().getShip(suid);
-			if( ship == null )
-				throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
 			// 判断舰船是否可以出战
 			if( !ship.isCanFighting() )
 				throw new Exception( ErrorCode.SHIP_NOTFIGHTING.name() );

@@ -26,9 +26,7 @@ public class MountCaptainEvent extends IEvent{
 		ErrorCode code = null;
 		try {
 			
-			ShipInfo ship = player.getDocks().getShip(suid);
-			if( ship == null )
-				throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
 			CaptainInfo newCaptain = player.getCaptains().getCaptain(cuid);
 			if( newCaptain == null )
 				throw new Exception( ErrorCode.CAPTAIN_NOTEXIST.name() );
