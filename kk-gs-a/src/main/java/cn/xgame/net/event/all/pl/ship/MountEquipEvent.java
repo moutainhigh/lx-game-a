@@ -27,11 +27,22 @@ public class MountEquipEvent extends IEvent{
 		ErrorCode code = null;
 		IProp ret = null;
 		try {
+			if( suid == atsuid )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			ShipInfo atship = player.getDocks().getShipOfException(atsuid);
-			
+			if( !ship.isLevitation() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			// 获取道具
-			IProp prop 		= atsuid == -1 ? getPlayerProp( player, puid ) : getShipProp( player, ship, atship, puid );
+			IProp prop 		= null;
+			ShipInfo atship = null;
+			if( atsuid == -1 ){
+				prop		= getPlayerProp( player, puid );
+			}else{
+				atship 		= player.getDocks().getShipOfException(atsuid);
+				if( !atship.isLevitation() )
+					throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+				prop		= getShipProp( player, ship, atship, puid );
+			}
 			
 			// 先拷贝一个出来
 			IProp clone = prop.clone();

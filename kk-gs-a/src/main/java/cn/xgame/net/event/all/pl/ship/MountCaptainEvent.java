@@ -20,16 +20,30 @@ public class MountCaptainEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		int suid = data.readInt();
-		int cuid = data.readInt();
+		int suid 	= data.readInt();
+		int atsuid 	= data.readInt();
+		int cuid 	= data.readInt();
 		
 		ErrorCode code = null;
 		try {
-			
-			ShipInfo ship = player.getDocks().getShipOfException(suid);
-			CaptainInfo newCaptain = player.getCaptains().getCaptain(cuid);
-			if( newCaptain == null )
-				throw new Exception( ErrorCode.CAPTAIN_NOTEXIST.name() );
+			if( suid == atsuid )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			ShipInfo ship 			= player.getDocks().getShipOfException(suid);
+			if( !ship.isLevitation() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+			// 如果是从别个船上取
+			ShipInfo atship 		= null;
+			if( atsuid != -1 ){
+				atship 				= player.getDocks().getShipOfException(atsuid);
+				// 判断两个船否在一个星球上
+				if( ship.getBerthSnid() != atship.getBerthSnid() )
+					throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
+				if( !atship.isLevitation() )
+					throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+				if( cuid != atship.getCaptainUID() )
+					throw new Exception( ErrorCode.CAPTAIN_NOTEXIST.name() );
+			}
+			CaptainInfo newCaptain 	= player.getCaptains().getCaptainOfException(cuid);
 
 			// 先将舰船已经有个舰长去掉
 			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
@@ -37,7 +51,10 @@ public class MountCaptainEvent extends IEvent{
 				captain.setShipUid( -1 );
 				ship.setCaptainUID( -1 );
 			}
-			
+			// 这里要把别个船上的舰长去掉
+			if( atship != null ){
+				atship.setCaptainUID( -1 );
+			}
 			// 然后将新的舰长 指派到舰船上去
 			ship.setCaptainUID( newCaptain.getuId() );
 			newCaptain.setShipUid( ship.getuId() );

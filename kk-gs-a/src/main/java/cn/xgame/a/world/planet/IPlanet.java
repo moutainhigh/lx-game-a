@@ -90,7 +90,7 @@ public abstract class IPlanet implements ITransformStream{
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		buffer.writeShort( getId() );
+		buffer.writeInt( getId() );
 		buffer.writeShort( maxSpace );
 	}
 

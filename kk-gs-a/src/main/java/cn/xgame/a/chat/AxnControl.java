@@ -1,5 +1,6 @@
 package cn.xgame.a.chat;
 
+import java.util.Iterator;
 import java.util.List;
 
 import cn.xgame.a.chat.o.AxnInfo;
@@ -46,6 +47,20 @@ public class AxnControl {
 		axns.add(axn);
 		return axn;
 	}
+	
+	/**
+	 * 删除一个 频道
+	 * @param id
+	 */
+	private void removeAxn( int id ) {
+		Iterator<AxnInfo> iter = axns.iterator();
+		while( iter.hasNext() ){
+			if( iter.next().getAxnId() == id ){
+				iter.remove();
+				return;
+			}
+		}
+	}
 
 	/**
 	 * 玩家离线 处理
@@ -59,9 +74,10 @@ public class AxnControl {
 				player.getChatAxns().removeAxn( axnId );
 				continue;
 			}
-			axn.offline( player );
+			if( axn.exit(player) )
+				removeAxn( axn.getAxnId() );
 		}
 	}
-	
+
 	
 }

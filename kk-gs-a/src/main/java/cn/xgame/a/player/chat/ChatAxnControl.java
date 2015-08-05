@@ -43,10 +43,11 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			tempaxn.add( buf.readInt() );
+			int axnid = buf.readInt();
+			if( chatControl.getAXNInfo(axnid) != null )
+				tempaxn.add( axnid );
 		}
 	}
-
 	@Override
 	public byte[] toBytes() {
 		if( tempaxn.isEmpty() ) 
@@ -68,6 +69,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		}
 	}
 	
+
 	/**
 	 * 获取玩家所有频道
 	 * @return

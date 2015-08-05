@@ -75,7 +75,7 @@ public class ApplyEctypeInfoEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt(sailTime);
 			response.writeInt(combatTime);
-			response.writeByte(winRate);
+			response.writeByte(winRate/100);
 		}
 		sendPackage( player.getCtx(), response );
 		

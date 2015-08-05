@@ -2,6 +2,7 @@ package cn.xgame.a.chat.o;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -9,6 +10,7 @@ import x.javaplus.collections.Lists;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.chat.o.v.TeamAxnCrew;
 import cn.xgame.a.chat.o.v.TempAxnCrew;
+import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 
@@ -111,22 +113,42 @@ public class AxnInfo implements ITransformStream{
 	}
 
 	/**
+	 * 删除一个组员
+	 * @param uid
+	 */
+	private void removeAxnCrew( String uid ) {
+		Iterator<IAxnCrew> iter = axnCrews.iterator();
+		while( iter.hasNext() ){
+			if( iter.next().getUid().equals( uid ) ){
+				iter.remove();
+				return ;
+			}
+		}
+	}
+	
+	/**
 	 * 玩家退出
 	 * @param player
 	 * @return
 	 */
-	public void exit( Player player ) {
-		
-		
+	public boolean exit( Player player ) {
+		player.getChatAxns().removeAxn( axnId );
+		removeAxnCrew( player.getUID() );
+		// 这里还剩最后一个的时候 这个频道就不存在了
+		if( axnCrews.size() == 1 ){
+			Player o = PlayerManager.o.getPlayerFmOnline( axnCrews.get(0).getUid() );
+			if( o != null ) o.getChatAxns().removeAxn(axnId);
+		}
+		return axnCrews.size() <= 1;
 	}
-	
+
 	/**
 	 * 玩家离线
 	 * @param player
 	 * @return
 	 */
 	public void offline( Player player ) {
-		
+		exit( player );
 	}
 	
 	

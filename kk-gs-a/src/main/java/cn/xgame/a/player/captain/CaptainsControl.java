@@ -6,6 +6,7 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
+import x.javaplus.util.ErrorCode;
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.o.CaptainInfo;
@@ -59,6 +60,8 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		buffer.writeByte( captains.size() );
 		for( CaptainInfo captain : captains ){
 			captain.buildTransformStream(buffer);
+			buffer.writeInt( captain.getShipUid() );
+			buffer.writeByte( captain.getShipUid() == -1 ? 0 : 1 );
 		}
 	}
 	
@@ -79,7 +82,13 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		}
 		return null;
 	}
-
+	public CaptainInfo getCaptainOfException( int id ) throws Exception{
+		CaptainInfo captain = getCaptain( id );
+		if( captain == null )
+			throw new Exception( ErrorCode.CAPTAIN_NOTEXIST.name() );
+		return captain;
+	}
+	
 	/**
 	 * 创建一个 舰长
 	 * @param nid

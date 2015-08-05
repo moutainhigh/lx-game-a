@@ -60,7 +60,8 @@ public class EquipControl implements IArrayStream{
 	 */
 	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
 			List<Askings> askings, List<Answers> answers) {
-		
+		if( equip == null )
+			return 0;
 		CombatUtil.putAnswer( equip.templet().answers, answers );
 		
 		return 0;

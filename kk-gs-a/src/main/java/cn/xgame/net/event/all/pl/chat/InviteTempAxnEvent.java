@@ -3,6 +3,7 @@ package cn.xgame.net.event.all.pl.chat;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
@@ -10,6 +11,7 @@ import cn.xgame.a.chat.AxnControl;
 import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.ChatType;
+import cn.xgame.a.chat.o.IAxnCrew;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
@@ -72,6 +74,15 @@ public class InviteTempAxnEvent extends IEvent {
 		// 同步消息
 		if( code == ErrorCode.SUCCEED && to != null ){
 			((Update_3010)Events.UPDATE_3010.getEventInstance()).run( to, axnId );
+			AxnInfo axn 		= ChatManager.o.getChatControl().getAXNInfo(axnId);
+			List<IAxnCrew> crews = axn.getAxnCrews();
+			for( IAxnCrew crew : crews ){
+				if( crew.getUid().equals( to.getUID() ) )
+					continue;
+				if( crew.getUid().equals( player.getUID() ) )
+					continue;
+				((Update_3010)Events.UPDATE_3010.getEventInstance()).run( crew.getSocket(), axnId, to );
+			}
 		}
 	}
 

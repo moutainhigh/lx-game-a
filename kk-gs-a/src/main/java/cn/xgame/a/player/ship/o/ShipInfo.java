@@ -245,11 +245,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public int warpFightProperty(List<AtkAndDef> attacks, List<AtkAndDef> defends, 
 			List<Askings> askings, List<Answers> answers) {
-		// 血量
-		int ret = template.hp;
 		// 塞入装备的属性
-		ret	+= equips.warpFightProperty(attacks, defends, askings, answers);
-		return ret;
+		return equips.warpFightProperty(attacks, defends, askings, answers);
 	}
 
 	
