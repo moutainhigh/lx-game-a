@@ -34,7 +34,7 @@ public class ChatAxnUID {
 			return TEMP_UIDLS.remove(0);
 		if( ++TEMP_AXNUID >= LXConstants.CHAT_UID )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		return TEMP_AXNUID;
+		return ChatType.TEMPAXN.toNumber()*LXConstants.CHAT_UID + TEMP_AXNUID;
 	}
 	/** 获取组队频道唯一ID  */
 	public static int getTeamaxnUid() throws Exception{
@@ -42,7 +42,7 @@ public class ChatAxnUID {
 			return TEAM_UIDLS.remove(0);
 		if( ++TEMP_AXNUID >= LXConstants.CHAT_UID )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		return TEAM_AXNUID; 
+		return ChatType.TEAM.toNumber()*LXConstants.CHAT_UID + TEAM_AXNUID; 
 	}
 	
 	/**

@@ -52,7 +52,7 @@ public enum ChatType {
 		public int maxmember() { return LXConstants.TEAMAXN_MAXMEMBER; }
 		
 		@Override
-		public int generateUID() throws Exception { return 3*LXConstants.CHAT_UID + ChatAxnUID.getTeamaxnUid(); }
+		public int generateUID() throws Exception { return ChatAxnUID.getTeamaxnUid(); }
 
 		@Override
 		public void appendUID(int id) { ChatAxnUID.appendTeamUid(id); }
@@ -67,7 +67,7 @@ public enum ChatType {
 		public int maxmember() { return LXConstants.TEMPAXN_MAXMEMBER; }
 
 		@Override
-		public int generateUID() throws Exception { return 4*LXConstants.CHAT_UID + ChatAxnUID.getTempaxnUid(); }
+		public int generateUID() throws Exception { return ChatAxnUID.getTempaxnUid(); }
 
 		@Override
 		public void appendUID(int id) { ChatAxnUID.appendTempUid(id); }

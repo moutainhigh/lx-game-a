@@ -39,13 +39,16 @@ public class Update_3010 extends IEvent{
 			
 			AxnInfo axn 			= ChatManager.o.getChatControl().getAXNInfo(axnId);
 			List<IAxnCrew> crews 	= axn.getAxnCrews();
-			response.writeByte( crews.size()-1 );// 这里要减去自己
+			byte size 				= 0;
+			response.writeByte( size );
 			for( IAxnCrew crew : crews ){
-				if( crew.getUid().equals( to.getUID() ) )
+				if( crew.getUid().equals( to.getUID() ) )// 这里是自己就不显示
 					continue;
 				crew.buildTransformStream(response);
+				++size;
 			}
 			
+			response.setByte( 9, size );
 			sendPackage( to.getCtx(), response );
 			
 		} catch (Exception e) {
