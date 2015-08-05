@@ -26,6 +26,10 @@ public class AwardInfo implements ITransformStream{
 		this.count 	= buf.readInt();
 	}
 
+	public String toString(){
+		return id + "-" + count;
+	}
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( id );

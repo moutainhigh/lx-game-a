@@ -52,7 +52,9 @@ public class StatusControl implements IArrayStream, ITransformStream{
 			rTime			= buf.readInt();
 			durationTime	= buf.readInt();
 		}
+		update();
 	}
+
 	@Override
 	public byte[] toBytes() {
 		ByteBuf buf = Unpooled.buffer( 1024 );
@@ -73,6 +75,12 @@ public class StatusControl implements IArrayStream, ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( status.toNumber() );
 		buffer.writeInt( currentSnid );
+	}
+	
+	// 刷新状态
+	private void update() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**

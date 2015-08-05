@@ -23,6 +23,9 @@ public enum ChatType {
 
 		@Override
 		public int generateUID() { return 1*LXConstants.CHAT_UID + 1; }
+
+		@Override
+		public void appendUID(int id) { }
 	},
 	
 	/** 母星频道 */
@@ -35,6 +38,9 @@ public enum ChatType {
 		
 		@Override
 		public int generateUID() { return 2*LXConstants.CHAT_UID + 1; }
+
+		@Override
+		public void appendUID(int id) { }
 	},
 	
 	/** 队伍频道 */
@@ -47,6 +53,9 @@ public enum ChatType {
 		
 		@Override
 		public int generateUID() throws Exception { return 3*LXConstants.CHAT_UID + ChatAxnUID.getTeamaxnUid(); }
+
+		@Override
+		public void appendUID(int id) { ChatAxnUID.appendTeamUid(id); }
 	},
 	
 	/** 临时频道 */
@@ -59,6 +68,9 @@ public enum ChatType {
 
 		@Override
 		public int generateUID() throws Exception { return 4*LXConstants.CHAT_UID + ChatAxnUID.getTempaxnUid(); }
+
+		@Override
+		public void appendUID(int id) { ChatAxnUID.appendTempUid(id); }
 	};
 	
 	
@@ -101,6 +113,12 @@ public enum ChatType {
 	 * @throws Exception 
 	 */
 	public abstract int generateUID() throws Exception;
+	
+	/**
+	 * 添加一个UID到临时存放中
+	 * @param id
+	 */
+	public abstract void appendUID( int id );
 
 
 }

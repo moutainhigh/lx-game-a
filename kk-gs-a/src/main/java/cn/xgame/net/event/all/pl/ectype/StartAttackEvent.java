@@ -43,6 +43,7 @@ public class StartAttackEvent extends IEvent{
 		int sailTime	= 0;// 航行时间
 		int combatTime 	= 0;// 战斗时间
 		byte isWin 		= 0;// 是否胜利
+		List<AwardInfo> awards = null;
 		try {
 			
 			// 判断副本是否可以打
@@ -104,7 +105,7 @@ public class StartAttackEvent extends IEvent{
 				isWin 		= (byte) (rand <= winRate ? 1 : 0);
 				
 				// 根据胜利 获取算出奖励
-				List<AwardInfo> awards = isWin == 1 ? ectype.updateAward() : null;
+				awards = (isWin == 1 ? ectype.updateAward() : null);
 				
 				// 切换战斗状态
 				status.startAttack( combatTime );
@@ -129,7 +130,12 @@ public class StartAttackEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt( combatTime );
 			response.writeByte( isWin );
-			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin );
+			response.writeByte( awards == null ? 0 : awards.size() );
+			if( awards != null ){
+				for( AwardInfo award : awards )
+					award.buildTransformStream(response);
+			}
+			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin + ", awards=" + awards );
 		}
 		// 该船不在目标星球  这里叫他航行
 		if( code == ErrorCode.SHIP_NOTINSTAR ){

@@ -90,9 +90,9 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public ShipInfo( ShipsDto dto ) {
 		super( dto.getUid(), dto.getNid() );
-		template = CsvGen.getShipPo( dto.getNid() );
-		currentHp = dto.getCurrentHp();
-		captainUID = dto.getCaptainUid();
+		template 	= CsvGen.getShipPo( dto.getNid() );
+		currentHp 	= dto.getCurrentHp();
+		captainUID 	= dto.getCaptainUid();
 		status.fromBytes( dto.getStatuss() );
 		keepInfo.fromBytes( dto.getKeepinfos() );
 		holds.fromBytes( dto.getHolds() );

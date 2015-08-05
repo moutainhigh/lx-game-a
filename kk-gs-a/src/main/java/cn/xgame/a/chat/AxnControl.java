@@ -55,7 +55,9 @@ public class AxnControl {
 	private void removeAxn( int id ) {
 		Iterator<AxnInfo> iter = axns.iterator();
 		while( iter.hasNext() ){
-			if( iter.next().getAxnId() == id ){
+			AxnInfo next = iter.next();
+			if( next.getAxnId() == id ){
+				next.getType().appendUID( id );
 				iter.remove();
 				return;
 			}

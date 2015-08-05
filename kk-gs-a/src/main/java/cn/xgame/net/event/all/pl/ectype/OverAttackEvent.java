@@ -78,11 +78,6 @@ public class OverAttackEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			// 塞入前端展示用
-			response.writeByte( awards.size() );
-			for( AwardInfo award : awards ){
-				award.buildTransformStream(response);
-			}
 			// 奖励个数 用于更新
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
