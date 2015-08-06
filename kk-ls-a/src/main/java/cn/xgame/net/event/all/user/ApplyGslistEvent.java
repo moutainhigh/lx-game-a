@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.List;
 
 
-import cn.xgame.logic.gs.GSData;
-import cn.xgame.logic.gs.GSManager;
-import cn.xgame.logic.user.UserManager;
+import cn.xgame.a.gs.GSData;
+import cn.xgame.a.gs.GSManager;
+import cn.xgame.a.user.UserManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -18,7 +18,7 @@ import cn.xgame.net.netty.Netty.RW;
  * @author deng		
  * @date 2015-6-16 上午9:46:57
  */
-public class GslistEvent extends IEvent{
+public class ApplyGslistEvent extends IEvent{
 
 	@Override
 	public void run( ChannelHandlerContext ctx, ByteBuf data ) throws IOException {

@@ -1,4 +1,4 @@
-package cn.xgame.logic.user;
+package cn.xgame.a.user;
 
 
 import java.util.List;

@@ -67,7 +67,8 @@ public class Update_3021 extends IEvent{
 				response.writeInt( ship.getStatus().getCurrentSnid() );
 				ship.getEquips().putBaseBuffer(response);
 				CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-				captain.buildTransformStream(response);
+				if( captain != null )
+					captain.buildTransformStream(response);
 			}
 
 			sendPackage( ipla.getCtx(), response );

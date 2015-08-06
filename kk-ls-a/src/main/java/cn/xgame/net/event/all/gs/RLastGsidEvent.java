@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
 
-import cn.xgame.logic.user.UserManager;
+import cn.xgame.a.user.UserManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 

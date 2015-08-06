@@ -1,4 +1,4 @@
-package cn.xgame.logic.gs;
+package cn.xgame.a.gs;
 
 import cn.xgame.net.netty.Netty.Attr;
 import cn.xgame.net.netty.Netty.IP;
@@ -111,5 +111,8 @@ public class GSData {
 		this.onlinePeople = onlinePeople;
 	}
 	
+	public boolean isOpen() {
+		return ctx != null && Attr.getAttachment(ctx).equals(getUID());
+	}
 	
 }

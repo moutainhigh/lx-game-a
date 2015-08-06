@@ -1,6 +1,6 @@
 package cn.xgame.net;
 
-import cn.xgame.logic.gs.GSManager;
+import cn.xgame.a.gs.GSManager;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;

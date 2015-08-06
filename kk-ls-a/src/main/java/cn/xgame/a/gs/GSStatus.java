@@ -1,4 +1,4 @@
-package cn.xgame.logic.gs;
+package cn.xgame.a.gs;
 
 public enum GSStatus {
 

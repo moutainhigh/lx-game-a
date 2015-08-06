@@ -1,4 +1,4 @@
-package cn.xgame.logic.gs;
+package cn.xgame.a.gs;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class GSManager {
 			gs = new GSData( gsid );
 			gss.put( gs.getId(), gs );
 			
-		}else if( gs.getStatus() == GSStatus.OPEN ){
+		}else if( gs.isOpen() ){
 			
 			return ErrorCode.GS_EXIST;
 		}

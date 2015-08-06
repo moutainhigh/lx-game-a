@@ -11,7 +11,7 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.gs.ConnectEvent;
 import cn.xgame.net.event.all.gs.RLastGsidEvent;
 import cn.xgame.net.event.all.gs.UpdatePeopleEvent;
-import cn.xgame.net.event.all.user.GslistEvent;
+import cn.xgame.net.event.all.user.ApplyGslistEvent;
 import cn.xgame.net.event.all.user.LoginEvent;
 import cn.xgame.net.event.all.user.SignupEvent;
 
@@ -25,7 +25,7 @@ public enum Events {
 	//-----------------用户
 	USER_LOGIN					( 101, 					new LoginEvent() ),
 	USER_SIGNUP					( 102, 					new SignupEvent() ),
-	APPER_GSLIST				( 110, 					new GslistEvent() ),
+	APPER_GSLIST				( 110, 					new ApplyGslistEvent() ),
 	
 	
 	//-----------------游戏服务器

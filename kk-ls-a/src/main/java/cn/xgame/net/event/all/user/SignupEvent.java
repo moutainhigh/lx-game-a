@@ -8,7 +8,7 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
 
-import cn.xgame.logic.user.UserManager;
+import cn.xgame.a.user.UserManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.Constants;

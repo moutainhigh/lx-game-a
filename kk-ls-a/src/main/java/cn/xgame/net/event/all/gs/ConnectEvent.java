@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.logic.gs.GSManager;
+import cn.xgame.a.gs.GSManager;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 

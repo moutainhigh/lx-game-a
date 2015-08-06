@@ -84,21 +84,24 @@ public class AnswerTeamEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt( axn.getAxnId() );
 			List<IAxnCrew> crews = axn.getAxnCrews();
-			response.writeByte( crews.size()-1 );// 这里要把自己减去
+			byte size = 0;
+			response.writeByte( size );// 这里要把自己减去
 			for( IAxnCrew crew : crews ){
 				if( crew.getUid().equals( player.getUID() ) )
 					continue;
 				TeamAxnCrew team = (TeamAxnCrew)crew;
 				team.buildTransformStream(response);
+				++size;
 			}
+			response.setByte( 11, size );
 		}
 		sendPackage( player.getCtx(), response );
 		
 		// 同步给 邀请者
 		if( code == ErrorCode.SUCCEED )
-			((Update_3021)Events.UPDATE_3020.getEventInstance()).run( ipla, isuid, 1, axn.getAxnId(), player, mship );
+			((Update_3021)Events.UPDATE_3021.getEventInstance()).run( ipla, isuid, 1, axn.getAxnId(), player, mship );
 		if( code == ErrorCode.REJECTPARTY )
-			((Update_3021)Events.UPDATE_3020.getEventInstance()).run( ipla, isuid, 0, axn.getAxnId(), player, mship );
+			((Update_3021)Events.UPDATE_3021.getEventInstance()).run( ipla, isuid, 0, axn.getAxnId(), player, mship );
 	}
 
 }
