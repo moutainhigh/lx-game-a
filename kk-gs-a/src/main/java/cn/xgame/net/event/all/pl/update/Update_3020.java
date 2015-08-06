@@ -38,7 +38,7 @@ public class Update_3020 extends IEvent{
 			sendPackage( to.getCtx(), response );
 			
 		} catch (Exception e) {
-			Logs.error( "Update_3020 ", e );
+			Logs.error( "Update_3020 " + e.getMessage() );
 		}
 	}
 

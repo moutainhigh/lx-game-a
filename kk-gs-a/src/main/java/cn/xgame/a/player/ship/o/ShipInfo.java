@@ -201,7 +201,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 * @return
 	 */
 	public boolean isCanFighting() {
-		return captainUID != -1;
+//		return captainUID != -1;
+		return true;
 	}
 	
 	/**
