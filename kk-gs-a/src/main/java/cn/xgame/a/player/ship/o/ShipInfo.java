@@ -31,7 +31,6 @@ import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
-import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -218,7 +217,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		Lua lua 		= LuaUtil.getEctypeCombat();
 		LuaValue[] ret 	= lua.getField( "sailingTime" ).call( 1, cur, to );
 		int sailTime 	= ret[0].getInt();
-		Logs.debug( "获取航行时间  " +status.getTargetSnid()+ " -> " +snid+ "  时间：" + sailTime );
 		return sailTime;
 	}
 	
