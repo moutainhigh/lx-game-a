@@ -55,9 +55,6 @@ public class Netty {
 			short len = buf.readShort();
 			if( len > 0 ){
 				String ret = buf.toString( buf.readerIndex(), len, CharsetUtil.UTF_8 );
-//				if( buf.writerIndex() - buf.readerIndex() < len ) return "";
-//				byte[] content = new byte[len];
-//				buf.readBytes(content);
 				buf.readerIndex( buf.readerIndex() + len );
 				return ret;
 			}

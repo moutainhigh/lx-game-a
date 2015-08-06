@@ -1,5 +1,6 @@
 package cn.xgame.gen;
 
+
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.gen.dto.MysqlGen.UserDao;
 import cn.xgame.gen.dto.MysqlGen.UserDto;
@@ -11,11 +12,11 @@ public class Test {
 	public static void main(String[] args) {
 		
 		/////////// 只获取数据 /////////////
-//		RoleDao dao = SqlUtil.getRoleDao();
-//		RoleDto dto = dao.get( "123123" );
-//		List<RoleDto> dto = dao.getByExact( RoleDto.a1ChangeSql("1") );
-//		System.out.println( dto.toString() );
-//		dao.commit( );
+		UserDao dao = SqlUtil.getUserDao();
+		UserDto dto = dao.get( "101" );
+//		List<UserDto> dto = dao.getByExact( UserDto.idChangeSql("1") );
+		System.out.println( dto.toString() );
+		dao.commit( );
 		/////////// 获取数据 ////////////////
 //		RankDao rd	= SqlUtil.getRankDao();
 //		String sql 	= new Condition( RankDto.nameChangeSql( "a" ) ).toString();
@@ -49,14 +50,14 @@ public class Test {
 //		dao.deleteByExact( sql );
 //		dao.commit();
 		
-		UserDao dao = SqlUtil.getUserDao();
-		UserDto dto = dao.create();
-		
-		dto.setId( "101" );
-		dto.setAccount( "dxf" );
-		dto.setPassword( "1111" );
-		
-		dao.commit(dto);
+//		UserDao dao = SqlUtil.getUserDao();
+//		UserDto dto = dao.create();
+//		
+//		dto.setId( "101" );
+//		dto.setAccount( "dxf" );
+//		dto.setPassword( "1111" );
+//		
+//		dao.commit(dto);
 		
 		Dbcp.print();
 	}

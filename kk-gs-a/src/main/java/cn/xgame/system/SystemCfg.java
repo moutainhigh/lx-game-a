@@ -35,8 +35,10 @@ public class SystemCfg {
 	/** 服务器 端口 */
 	public static int 			GS_PORT 	;
 	
-	
+	/** 服务器 数据库名字 */
+	private static String		GS_DATABASENAME	;
 
+	
 	/** 登录服 ip地址 */
 	public static String  		LS_ADDRESS 	;
 	
@@ -57,6 +59,7 @@ public class SystemCfg {
 			ID				= Short.parseShort( root.getChildText( "gsId" ) );
 			GS_NAME 		= root.getChildText( "gsName" ) ;
 			GS_PORT 		= Integer.parseInt( root.getChildText( "gsPort" ) );
+			GS_DATABASENAME	= root.getChildText( "gsDatabaseName" ) ;
 			
 			LS_ADDRESS 		= root.getChildText( "lsAddress" );
 			LS_PORT 		= Integer.parseInt( root.getChildText( "lsPort" ) );
@@ -66,6 +69,15 @@ public class SystemCfg {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	
+	/**
+	 * 获取该服务器的 数据库名字
+	 * @return
+	 */
+	public static String getDatabaseName(){
+		return GS_DATABASENAME+ID;
 	}
 	
 }

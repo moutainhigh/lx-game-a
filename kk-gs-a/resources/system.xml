@@ -7,6 +7,7 @@
 	<gsId>1</gsId>
 	<gsName>校长的爱</gsName>
 	<gsPort>8100</gsPort>
+	<gsDatabaseName>kkgameserver</gsDatabaseName>
 	
 	<!--登陆服IP localhost-->
 	<lsAddress>127.0.0.1</lsAddress>

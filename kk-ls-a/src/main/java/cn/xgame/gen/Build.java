@@ -19,11 +19,11 @@ public class Build {
 				"-dtoPath", "src/main/java/cn/xgame/gen/o",
 				"-dstPath", "src/main/java/cn/xgame/gen/dto",
 				"-packageName", "cn.xgame.gen.dto", "asdsad" };
-		App.generateMysqlGen( ags );
+		App.generateMysqlGen( "kkloginserver" ,ags );
 	}
 	
 	private static void generateMysql() {
-		App.generateMysql( "src/main/java/cn/xgame/gen/o" );
+		App.generateMysql( "kkloginserver", "src/main/java/cn/xgame/gen/o" );
 	}
 	
 }

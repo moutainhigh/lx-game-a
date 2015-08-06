@@ -137,7 +137,7 @@ public class Launch {
 	// 构建数据库
 	private static void buildDB( String path ) {
 		if( new File( path ).isDirectory() )
-			App.generateMysql( path );
+			App.generateMysql( SystemCfg.getDatabaseName(), path );
 	}
 	
 	private static void startServer() {

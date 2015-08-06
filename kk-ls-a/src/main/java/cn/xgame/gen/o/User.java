@@ -1,16 +1,15 @@
 package cn.xgame.gen.o;
 
-public class User {
+public interface User {
 
-	String id;
+	String id();
 	
 	/**  账号 */
-	String account;
+	String account();
 	
 	/**  密码 */
-	String password;
+	String password();
 	
 	/**  最后一次登录的服务器ID */
-	short lastGsid;
-	
+	short lastGsid();
 }
