@@ -3,6 +3,7 @@ package cn.xgame.net.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
+import io.netty.util.CharsetUtil;
 
 import java.net.InetSocketAddress;
 
@@ -41,7 +42,7 @@ public class Netty {
 		public static void writeString( ByteBuf buf, String msg ){
 			if( msg == null )
 				throw new IllegalArgumentException( "null 字符" );
-			byte[] temp = msg.getBytes();
+			byte[] temp = msg.getBytes( CharsetUtil.UTF_8 );
 			if (temp.length > Short.MAX_VALUE)
 				throw new IllegalArgumentException( "字符串长度超" );
 			buf.writeShort((short) temp.length);
@@ -53,10 +54,12 @@ public class Netty {
 		public static String readString( ByteBuf buf ){
 			short len = buf.readShort();
 			if( len > 0 ){
-				if( buf.writerIndex() - buf.readerIndex() < len ) return "";
-				byte[] content = new byte[len];
-				buf.readBytes(content);
-				return new String(content);
+				String ret = buf.toString( buf.readerIndex(), len, CharsetUtil.UTF_8 );
+//				if( buf.writerIndex() - buf.readerIndex() < len ) return "";
+//				byte[] content = new byte[len];
+//				buf.readBytes(content);
+				buf.readerIndex( buf.readerIndex() + len );
+				return ret;
 			}
 			return "";
 		}
