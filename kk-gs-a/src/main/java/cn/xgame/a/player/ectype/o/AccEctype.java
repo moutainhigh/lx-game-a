@@ -24,7 +24,10 @@ public class AccEctype extends IEctype implements ITransformStream{
 	private int persistTime = -1;
 	
 	public String toString(){
-		return "{" + templet.id + "-" + SNID + ", times:" + times + ", endTime:" + Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "}";
+		return "{" + templet.id + "-" + SNID + ", times:" + times + ", time:" + prefixTime() + "}";
+	}
+	private String prefixTime() {
+		return endTime == -1 ? "无" : (Time.refFormatDate( endTime * 1000l, "HH:mm:ss" ) + "-" + persistTime/60 + "分" );
 	}
 	
 	/**
