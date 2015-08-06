@@ -1,4 +1,4 @@
-package cn.xgame.a.system;
+package cn.xgame.system;
 
 /**
  * 平台

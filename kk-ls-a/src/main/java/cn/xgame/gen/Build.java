@@ -1,5 +1,6 @@
 package cn.xgame.gen;
 
+import cn.xgame.system.SystemCfg;
 import x.javaplus.mysql.App;
 
 
@@ -19,11 +20,11 @@ public class Build {
 				"-dtoPath", "src/main/java/cn/xgame/gen/o",
 				"-dstPath", "src/main/java/cn/xgame/gen/dto",
 				"-packageName", "cn.xgame.gen.dto", "asdsad" };
-		App.generateMysqlGen( "kkloginserver" ,ags );
+		App.generateMysqlGen( ags );
 	}
 	
 	private static void generateMysql() {
-		App.generateMysql( "kkloginserver", "src/main/java/cn/xgame/gen/o" );
+		App.generateMysql( SystemCfg.getDatabaseName(), "src/main/java/cn/xgame/gen/o" );
 	}
 	
 }

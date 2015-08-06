@@ -1,4 +1,4 @@
-package cn.xgame.a.system;
+package cn.xgame.system;
 
 import java.util.Properties;
 
@@ -29,5 +29,12 @@ public class SystemCfg {
 		GS_PORT 	= Integer.parseInt( properties.getProperty( "gsPort" ) );
 		USER_PORT 	= Integer.parseInt( properties.getProperty( "userPort" ) );
 	}
-	
+
+	/**
+	 * 获取该服务器的 数据库名字
+	 * @return
+	 */
+	public static String getDatabaseName(){
+		return "kkloginserver";
+	}
 }

@@ -20,7 +20,7 @@ public class Build {
 				"-dtoPath", "src/main/java/cn/xgame/gen/o",
 				"-dstPath", "src/main/java/cn/xgame/gen/dto",
 				"-packageName", "cn.xgame.gen.dto" };
-		App.generateMysqlGen( SystemCfg.getDatabaseName(), ags );
+		App.generateMysqlGen( ags );
 	}
 	
 	private static void generateMysql() {

@@ -5,8 +5,8 @@ import org.apache.log4j.PropertyConfigurator;
 import x.javaplus.util.Resources;
 
 
-import cn.xgame.a.system.SystemCfg;
 import cn.xgame.net.netty.server.NettyServer;
+import cn.xgame.system.SystemCfg;
 
 /***
  * 程序入口类
