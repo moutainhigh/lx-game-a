@@ -42,7 +42,7 @@ public class Net {
 			}
 				
 		} catch (Exception e) {
-			Logs.error( "分发包错误 包号("+packageNo+") IP(" + IP.formAddress(ctx)+ ")", e );
+			Logs.error( "分发包错误 包号("+packageNo+") IP(" + IP.formAddress(ctx)+ ") " + e.getMessage() );
 		}
 		
 	}

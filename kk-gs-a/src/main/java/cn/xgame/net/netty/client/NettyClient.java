@@ -67,7 +67,7 @@ public class NettyClient {
 	public static void main( String[] args ) throws InterruptedException, NumberFormatException, IOException{
 		
 		NettyClient client = new NettyClient(  );
-		if( client.connect( "127.0.0.1", 8080 ) ){
+		if( client.connect( "192.168.1.144", 9000 ) ){
 //			int i = 0;
 //			while( true ){
 //				
@@ -78,7 +78,7 @@ public class NettyClient {
 //				i++;
 //				XOSleep.sleep( 500 );
 //			}
-			
+			System.out.println( "连接成功" );
 		}
 		
 		

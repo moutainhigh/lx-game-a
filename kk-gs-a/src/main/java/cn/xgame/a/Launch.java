@@ -68,7 +68,7 @@ public class Launch {
 			connectLoginServer();
 			
 		} catch (Exception e) {
-			Logs.error( "Launch.main", e );
+			Logs.error( "Launch.main" + e.getMessage() );
 			LSClientAgency.close();
 		}
 		
@@ -81,7 +81,7 @@ public class Launch {
 			if( code != ErrorCode.SUCCEED )
 				throw new Exception( code.getDesc() );
 			
-			Logs.debug( "登录服 登录成功" );
+			Logs.debug( SystemCfg.LS_ADDRESS+":"+SystemCfg.LS_PORT+" 登录服 登录成功" );
 			
 			// 1.加载配置表
 			CsvGen.load();

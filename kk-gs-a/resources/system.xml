@@ -10,7 +10,7 @@
 	<gsDatabaseName>kkgameserver</gsDatabaseName>
 	
 	<!--登陆服IP localhost-->
-	<lsAddress>127.0.0.1</lsAddress>
+	<lsAddress>192.168.1.144</lsAddress>
 	<!--登陆服端口-->
 	<lsPort>9000</lsPort>
 </config>
