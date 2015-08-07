@@ -1,8 +1,6 @@
 package cn.xgame.a.gs;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.xgame.net.netty.Netty.Attr;
 
@@ -17,15 +15,17 @@ import x.javaplus.util.ErrorCode;
  * @date 2015-6-12 下午4:25:17
  */
 public class GSManager {
-
 	public static GSManager o = new GSManager();
 	private GSManager(){}
 	
+	
 	// 服务器 列表
-	private Map<Short, GSData> gss = new HashMap<Short, GSData>();
+	private List<GSData> gss 	= Lists.newArrayList();
 	
 	// 推荐服务器ID
-	private short recommendGsid;
+	private short recommendGsid	= -1;
+	
+	
 	
 	/**
 	 * 获取开启 服务器 列表
@@ -33,15 +33,13 @@ public class GSManager {
 	 */
 	public List<GSData> getOpenGs(){
 		List<GSData> ret = Lists.newArrayList();
-		
-		for( GSData gs : gss.values() ){
-			if( gs.getStatus() == GSStatus.OPEN ){
+		for( GSData gs : gss ){
+			if( gs.isOpen() ){
 				ret.add(gs);
 			}
 		}
 		return ret;
 	}
-	
 	
 	/**
 	 * 服务器 连接
@@ -53,12 +51,12 @@ public class GSManager {
 	 */
 	public ErrorCode connect( short gsid, String name, int port, ChannelHandlerContext ctx ) {
 		
-		GSData gs = get( gsid );
+		GSData gs = getGs( gsid );
 		
 		if( gs == null ){
 			
 			gs = new GSData( gsid );
-			gss.put( gs.getId(), gs );
+			gss.add( gs );
 			
 		}else if( gs.isOpen() ){
 			
@@ -72,9 +70,18 @@ public class GSManager {
 		return ErrorCode.SUCCEED;
 	}
 
-	
-	public GSData get( short gsid ) {
-		return gss.get(gsid);
+	/**
+	 * 获取服务器
+	 * @param gsid
+	 * @return
+	 */
+	public GSData getGs( short gsid ) {
+		for( GSData gs : gss ){
+			if( gs.getId() == gsid ){
+				return gs;
+			}
+		}
+		return null;
 	}
 
 
@@ -85,13 +92,12 @@ public class GSManager {
 	public void disconnect( ChannelHandlerContext ctx ) {
 		
 		short id 	= getGsid( ctx );
-		GSData gs 	= get( id );
+		GSData gs 	= getGs( id );
 		if( gs == null )
 			return ;
 		// 直接设置为null
 		gs.setCtx( null );
 	}
-	
 	
 	private short getGsid( ChannelHandlerContext ctx ){
 		String attr = Attr.getAttachment(ctx);
@@ -105,8 +111,8 @@ public class GSManager {
 	 */
 	public void updatePeople( short gsid, int peopleNum, int onlinePeople ) {
 		
-		GSData gs = get( gsid );
-		if( gs == null || gs.getStatus() != GSStatus.OPEN )
+		GSData gs = getGs( gsid );
+		if( gs == null )
 			return;
 		
 		gs.setPeopleNum( peopleNum );
@@ -118,16 +124,12 @@ public class GSManager {
 
 	// 更新推荐服务器ID
 	private void updateRecommendGsid() {
-		
-		int num = 1000000000;
-		for( GSData gs : gss.values() ){
-			if( gs.getStatus() == GSStatus.OPEN ){
-				if( gs.getPeopleNum() < num ){
-					
-					num = gs.getPeopleNum();
-					recommendGsid = gs.getId();
-				}
-			}
+		int num = Integer.MAX_VALUE;
+		for( GSData gs : gss ){
+			if( !gs.isOpen() || gs.getPeopleNum() > num )
+				continue;
+			num 			= gs.getPeopleNum();
+			recommendGsid 	= gs.getId();
 		}
 	}
 

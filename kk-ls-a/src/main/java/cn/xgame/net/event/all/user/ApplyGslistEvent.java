@@ -42,7 +42,7 @@ public class ApplyGslistEvent extends IEvent{
 			RW.writeString( respond, gs.getName() );
 			RW.writeString( respond, gs.getIp() );
 			respond.writeInt( gs.getPort() );
-			respond.writeByte( gs.getCurrentStatus() );// 服务器 状态 0.流畅 1.拥挤 2.爆满
+			respond.writeByte( gs.getGSStatus() );// 服务器 状态 0.流畅 1.拥挤 2.爆满
 		}
 		sendPackage( ctx, respond );
 		
