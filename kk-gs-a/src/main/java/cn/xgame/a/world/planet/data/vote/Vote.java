@@ -8,6 +8,7 @@ import x.javaplus.collections.Lists;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -135,22 +136,30 @@ public class Vote implements ITransformStream {
 	
 	/**
 	 * 清除玩家的投票
-	 * @param uid
+	 * @param child
 	 */
-	public void purgeVote( String uid ) {
+	public void purgeVote( Child child ) {
 		Iterator<VotePlayer> iter = agrees.iterator();
-		purge( iter, uid  );
+		if( purge( iter, child.getUID() ) ){
+			agreePrivileges -= child.getPrivilege();
+			if( agreePrivileges < 0 ) agreePrivileges = 0;
+			return;
+		}
 		iter = disagrees.iterator();
-		purge( iter, uid  );
+		if( purge( iter, child.getUID() ) ){
+			disagreePrivileges -= child.getPrivilege();
+			if( disagreePrivileges < 0 ) disagreePrivileges = 0;
+		}
 	}
-	private void purge( Iterator<VotePlayer> iter, String uid) {
+	private boolean purge( Iterator<VotePlayer> iter, String uid) {
 		while( iter.hasNext() ){
 			VotePlayer o = iter.next();
 			if( o.getUID().equals(uid) ){
 				iter.remove();
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public int getTimeRestrict() {

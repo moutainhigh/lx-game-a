@@ -116,7 +116,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		if( status.getStatus() == ShipStatus.COMBAT ){
 			buffer.writeInt( status.getSurplusTime() );
 			buffer.writeInt( keepInfo.getEnid() );
-			buffer.writeInt( keepInfo.isWin() );
+			buffer.writeByte( keepInfo.isWin() );
 		}
 		// 货仓
 		holds.buildTransformStream(buffer);

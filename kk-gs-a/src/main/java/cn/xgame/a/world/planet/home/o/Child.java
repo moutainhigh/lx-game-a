@@ -19,15 +19,15 @@ public class Child implements IBufferStream, ITransformStream{
 	// 玩家名字
 	private String name;
 	// 话语权
-	private short privilege = 0;
+	private short privilege 	= 0;
 	// 贡献度
-	private int contribution = 0;
+	private int contribution 	= 0;
 	// 发起数
-	private int sponsors = 0;
+	private int sponsors 		= 0;
 	// 通过数
-	private int passs = 0;
+	private int passs 			= 0;
 	// 是否被驱逐
-	private boolean isExpel = false;
+	private boolean isExpel 	= false;
 
 	
 	// 是否元老

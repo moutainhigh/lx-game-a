@@ -66,6 +66,10 @@ public class MountCaptainEvent extends IEvent{
 		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
 		buffer.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt( suid );
+			buffer.writeInt( cuid );
+		}
 		sendPackage( player.getCtx(), buffer );
 	}
 

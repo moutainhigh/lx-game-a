@@ -51,6 +51,8 @@ public class UnloadEquipEvent extends IEvent{
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 6 );
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt( suid );
+			buffer.writeInt( puid );
 			buffer.writeInt( ret.getuId() );
 		}
 		sendPackage( player.getCtx(), buffer );

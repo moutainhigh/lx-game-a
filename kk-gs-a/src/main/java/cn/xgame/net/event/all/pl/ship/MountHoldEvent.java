@@ -57,6 +57,9 @@ public class MountHoldEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 50 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			response.writeInt( suid );
+			response.writeInt( puid );
+			response.writeInt( count );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				prop.putBaseBuffer(response);

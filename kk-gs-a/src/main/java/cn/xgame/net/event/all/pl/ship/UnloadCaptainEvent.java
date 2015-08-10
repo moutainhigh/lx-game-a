@@ -24,6 +24,7 @@ public class UnloadCaptainEvent extends IEvent{
 		int suid = data.readInt();
 		
 		ErrorCode code = null;
+		int cuid = 0;
 		try {
 			
 			ShipInfo ship = player.getDocks().getShipOfException(suid);
@@ -31,6 +32,7 @@ public class UnloadCaptainEvent extends IEvent{
 			// 直接卸掉
 			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
 			if( captain != null ) {
+				cuid = ship.getCaptainUID();
 				captain.setShipUid( -1 );
 				ship.setCaptainUID( -1 );
 			}
@@ -42,6 +44,10 @@ public class UnloadCaptainEvent extends IEvent{
 		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
 		buffer.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt( suid );
+			buffer.writeInt( cuid );
+		}
 		sendPackage( player.getCtx(), buffer );
 		
 	}

@@ -208,6 +208,17 @@ public class HomePlanet extends IPlanet {
 		// 研究中科技
 		techControl.putUnTech(buffer);
 	}
+
+	/**
+	 * 塞入一个玩家的数据
+	 * @param player
+	 * @param response
+	 */
+	public void putPlyaerInfo( Player player, ByteBuf response ) {
+		Child o = getChild( player.getUID() );
+		response.writeShort( o == null ? 0 : o.getPrivilege() );
+		response.writeInt(  o == null ? 0 : o.getContribution() );
+	}
 	
 	@Override
 	public void putAlllAffair( Player player, ByteBuf response ) { 
@@ -387,13 +398,13 @@ public class HomePlanet extends IPlanet {
 		if( child == null || child.getPrivilege() == 0 )
 			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
 		
-		// 判断是否已经参与投票了
+		// 
 		UnBuildings unBuild = buildingControl.getVoteBuild( nid );
 		if( unBuild == null )
 			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
 		
 		// 这里先将玩家已经投过的票清除
-		unBuild.getVote().purgeVote( player.getUID() );
+		unBuild.getVote().purgeVote( child );
 		
 		// 设置投票
 		byte status = unBuild.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
@@ -418,10 +429,10 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	// 开始建筑
-	private void startBuild( SbuildingPo templet, byte index, String sprUid )  {
+	private void startBuild( SbuildingPo templet, byte index, String sprUid ) throws Exception  {
 		
 		if( templet == null )
-			return;
+			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		
 		int time = -1;
 		
@@ -477,7 +488,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
 		
 		// 这里先将玩家已经投过的票清除
-		unTech.getVote().purgeVote( player.getUID() );
+		unTech.getVote().purgeVote( child );
 		
 		// 设置投票
 		byte status = unTech.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
@@ -500,9 +511,9 @@ public class HomePlanet extends IPlanet {
 		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
 	}
 	// 开始研究科技
-	private void startStudy( TechPo templet, String sprUid ) {
+	private void startStudy( TechPo templet, String sprUid ) throws Exception {
 		if( templet == null )
-			return;
+			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		
 		int time = -1;
 		
@@ -591,7 +602,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
 		
 		// 这里先将玩家已经投过的票清除
-		oust.getVote().purgeVote( player.getUID() );
+		oust.getVote().purgeVote( child );
 		
 		// 设置投票
 		byte status = oust.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
