@@ -49,6 +49,7 @@ public class DockControl implements ITransformStream,IFromDB{
 		dao.commit();
 		for( ShipsDto dto : dtos ){
 			ShipInfo ship = new ShipInfo( dto );
+			ship.updateStatus(root);
 			ships.add(ship);
 		}
 	}

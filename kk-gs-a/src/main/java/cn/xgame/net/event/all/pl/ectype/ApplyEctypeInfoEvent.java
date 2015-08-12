@@ -45,7 +45,7 @@ public class ApplyEctypeInfoEvent extends IEvent{
 			// 这里判断组队信息
 			// TODO
 			
-			ShipInfo ship = player.getDocks().getShip(suid);
+			ShipInfo ship = player.getDocks().getShipOfException(suid);
 			
 			Fighter att = new Fighter( player, ship );// 攻击者
 			Fighter def = new Fighter( ectype );// 防御者

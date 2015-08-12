@@ -14,9 +14,9 @@ import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.combat.Fighter;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
-import cn.xgame.a.player.ship.o.v.SailPurpose;
-import cn.xgame.a.player.ship.o.v.ShipStatus;
-import cn.xgame.a.player.ship.o.v.StatusControl;
+import cn.xgame.a.player.ship.o.status.SailPurpose;
+import cn.xgame.a.player.ship.o.status.ShipStatus;
+import cn.xgame.a.player.ship.o.status.StatusControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
@@ -86,7 +86,7 @@ public class StartAttackEvent extends IEvent{
 			}
 			
 			// 这里判断组队信息
-			// TODO
+			// TODO 
 			
 			Fighter att = new Fighter( player, ship );// 攻击者
 			Fighter def = new Fighter( ectype );// 防御者
@@ -105,7 +105,7 @@ public class StartAttackEvent extends IEvent{
 				isWin 		= (byte) (rand <= winRate ? 1 : 0);
 				
 				// 根据胜利 获取算出奖励
-				awards = (isWin == 1 ? ectype.updateAward() : null);
+				awards 		= (isWin == 1 ? ectype.updateAward() : null);
 				
 				// 切换战斗状态
 				status.startAttack( combatTime );
@@ -128,22 +128,20 @@ public class StartAttackEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			response.writeInt( suid );
 			response.writeInt( combatTime );
-			response.writeByte( isWin );
-			response.writeByte( awards == null ? 0 : awards.size() );
-			if( awards != null ){
-				for( AwardInfo award : awards )
-					award.buildTransformStream(response);
-			}
 			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin + ", awards=" + awards );
 		}
 		// 该船不在目标星球  这里叫他航行
 		if( code == ErrorCode.SHIP_NOTINSTAR ){
+			response.writeInt( suid );
+			response.writeInt( snid );
 			response.writeInt( sailTime );
 			Logs.debug(player, "申请出击副本 不在目标星球 sailTime=" + sailTime );
 		}
 		// 等待其他玩家
 		if( code == ErrorCode.AWAIT_OTHERPLAYER ){
+			response.writeInt( suid );
 			response.writeInt( 30 );
 		}
 		sendPackage( player.getCtx(), response );

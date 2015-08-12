@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ship.o.v;
+package cn.xgame.a.player.ship.o.status;
 
 import java.util.HashMap;
 import java.util.Map;

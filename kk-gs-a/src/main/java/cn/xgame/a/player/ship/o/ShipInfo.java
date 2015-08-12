@@ -19,10 +19,10 @@ import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IUObject;
 import cn.xgame.a.player.ship.o.bag.EquipControl;
 import cn.xgame.a.player.ship.o.bag.HoldControl;
-import cn.xgame.a.player.ship.o.v.EctypeCombatInfo;
-import cn.xgame.a.player.ship.o.v.SailPurpose;
-import cn.xgame.a.player.ship.o.v.ShipStatus;
-import cn.xgame.a.player.ship.o.v.StatusControl;
+import cn.xgame.a.player.ship.o.status.SailPurpose;
+import cn.xgame.a.player.ship.o.status.ShipStatus;
+import cn.xgame.a.player.ship.o.status.StatusControl;
+import cn.xgame.a.player.ship.o.v.CombatRecordControl;
 import cn.xgame.a.player.ship.o.v.TempRecordInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
@@ -44,9 +44,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	private final ShipPo template;
 	
 	
-	// 舰长唯一ID
-	private int captainUID = -1;
-	
 	// 货仓
 	private HoldControl holds 			= new HoldControl();
 	
@@ -57,7 +54,10 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	private StatusControl status 		= new StatusControl();
 	
 	// 副本信息   (这里只有是战斗航行和战斗状态 才有)
-	private EctypeCombatInfo keepInfo 	= new EctypeCombatInfo(); 
+	private CombatRecordControl keepInfo 	= new CombatRecordControl(); 
+	
+	// 舰长唯一ID
+	private int captainUID 				= -1;
 	
 	// 组队 id
 	private int teamId 					= 0;
@@ -76,8 +76,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 */
 	public ShipInfo( int uid, int nid ) {
 		super( uid, nid );
-		template = CsvGen.getShipPo(nid);
-		currentHp = template.hp;
+		template 	= CsvGen.getShipPo(nid);
+		currentHp 	= template.hp;
 		holds.setRoom( template.groom );
 		equips.setWroom( template.wroom );
 		equips.setEroom( template.eroom );
@@ -92,13 +92,13 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		template 	= CsvGen.getShipPo( dto.getNid() );
 		currentHp 	= dto.getCurrentHp();
 		captainUID 	= dto.getCaptainUid();
+		teamId 		= chatControl.getAXNInfo(dto.getTeamAxnid()) == null ? 0 : dto.getTeamAxnid();
 		status.fromBytes( dto.getStatuss() );
 		keepInfo.fromBytes( dto.getKeepinfos() );
 		holds.fromBytes( dto.getHolds() );
 		equips.fromBytes( dto.getEquips() );
-		teamId = chatControl.getAXNInfo(dto.getTeamAxnid()) == null ? 0 : dto.getTeamAxnid();
 	}
-
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( getuId() );
@@ -116,7 +116,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		if( status.getStatus() == ShipStatus.COMBAT ){
 			buffer.writeInt( status.getSurplusTime() );
 			buffer.writeInt( keepInfo.getEnid() );
-			buffer.writeByte( keepInfo.isWin() );
+//			buffer.writeByte( keepInfo.isWin() );
 		}
 		// 货仓
 		holds.buildTransformStream(buffer);
@@ -177,8 +177,42 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
 	public StatusControl getStatus() { return status; }
-	public EctypeCombatInfo getKeepInfo() { return keepInfo; }
+	public CombatRecordControl getKeepInfo() { return keepInfo; }
 	public TempRecordInfo getTemprecord() { return temprecord; }
+	
+	/**
+	 * 更新状态
+	 */
+	public void updateStatus( Player root ) {
+		if( status.getStatus() == ShipStatus.LEVITATION )
+			return;
+		if( status.getSurplusTime() != 0 )
+			return;
+		// 如果是航行状态 并且是去打副本的  单独处理
+		if( status.getStatus() == ShipStatus.SAILING && status.getSailPurpose() == SailPurpose.FIGHTING ){
+			// 算出已经 经过的时间
+			int t 	= (int) (System.currentTimeMillis()/1000 - status.getrTime() );
+			// 算出一共的 持续时间
+			int dt 	= status.getDurationTime() + keepInfo.getCombatTime();
+			// 先设置悬停 后面根据情况处理
+			status.levitation();
+			if( dt - t > 0 ){
+				status.startAttack( keepInfo.getCombatTime() );
+			}else{ // 这里直接发放奖励
+				keepInfo.giveoutAward(root);
+				keepInfo.clear();
+			}
+			return;
+		}
+		// 这里是战斗状态 那么要发放奖励
+		if( status.getStatus() == ShipStatus.COMBAT ){
+			keepInfo.giveoutAward(root);
+			keepInfo.clear();
+		}
+		// 最后设置悬停
+		status.levitation();
+	}
+	
 	/**
 	 * 停靠星球ID
 	 * @return
@@ -200,8 +234,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 * @return
 	 */
 	public boolean isCanFighting() {
-//		return captainUID != -1;
-		return true;
+		return captainUID != -1;
 	}
 	
 	/**

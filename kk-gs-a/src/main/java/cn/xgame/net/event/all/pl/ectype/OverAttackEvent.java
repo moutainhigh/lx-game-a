@@ -5,14 +5,13 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
-import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
-import cn.xgame.a.player.ship.o.v.ShipStatus;
-import cn.xgame.a.player.ship.o.v.StatusControl;
+import cn.xgame.a.player.ship.o.status.ShipStatus;
+import cn.xgame.a.player.ship.o.status.StatusControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -34,10 +33,11 @@ public class OverAttackEvent extends IEvent{
 		
 		Logs.debug( player, "申请结束副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
 		
-		ErrorCode code 	= null;
-		int combatTime 	= 0;// 战斗时间
-		List<AwardInfo> awards = null;
-		List<IProp> ret = Lists.newArrayList();
+		ErrorCode code 			= null;
+		int combatTime 			= 0;// 战斗时间
+		byte iswin 				= 0;
+		List<IProp> ret 		= null;
+		List<AwardInfo> awards	= null;
 		try {
 			
 			// 判断副本是否可以打
@@ -55,20 +55,16 @@ public class OverAttackEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			}
 			
-			// 这里设置 返航状态
+			// 这里设置 悬停状态
 			status.levitation();
+			
 			// 获取奖励
-			awards = ship.getKeepInfo().getAwards();
+			awards	= ship.getKeepInfo().getAwards();
+			iswin	= ship.getKeepInfo().isWin();
+			ret		= ship.getKeepInfo().giveoutAward( player );
+			
 			// 清空副本记录
 			ship.getKeepInfo().clear();
-			
-			// 这里把奖励发放到玩家身上
-			for( AwardInfo award : awards ){
-				
-				List<IProp> add = player.getDepots().appendProp( award.getId(), award.getCount() );
-				
-				ret.addAll(add);
-			}
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -78,10 +74,17 @@ public class OverAttackEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			// 奖励个数 用于更新
-			response.writeByte( ret.size() );
-			for( IProp prop : ret ){
-				prop.putBaseBuffer(response);
+			response.writeByte( iswin );
+			if( iswin == 1 ){
+				// 奖励个数 用于显示
+				response.writeByte( awards.size() );
+				for( AwardInfo award : awards )
+					award.buildTransformStream(response);
+				// 奖励个数 用于更新
+				response.writeByte( ret.size() );
+				for( IProp prop : ret ){
+					prop.putBaseBuffer(response);
+				}
 			}
 		}
 		// 时间还没结束 让前端继续播放

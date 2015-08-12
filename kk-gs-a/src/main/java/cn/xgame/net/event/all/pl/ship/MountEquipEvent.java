@@ -66,6 +66,7 @@ public class MountEquipEvent extends IEvent{
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeInt( suid );
+			buffer.writeInt( atsuid );
 			buffer.writeInt( puid );
 			buffer.writeInt( ret.getuId() );
 		}
