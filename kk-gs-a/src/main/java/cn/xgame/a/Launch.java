@@ -22,6 +22,7 @@ import x.javaplus.ip.IPSeeker;
 import x.javaplus.mysql.App;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
+import x.javaplus.util.Util.Sleep;
 import x.javaplus.util.lua.Lua;
 
 
@@ -58,6 +59,7 @@ public class Launch {
 	public static void main(String[] args) {
 		
 		try {
+			
 			// 0.构建数据库
 			buildDB( "sql" );
 			
@@ -66,7 +68,7 @@ public class Launch {
 			
 			// 2.连接 and 登录 - 登录服务器 
 			connectLoginServer();
-			
+			Sleep.sleep( 10000 );
 		} catch (Exception e) {
 			Logs.error( "Launch.main" + e.getMessage() );
 			LSClientAgency.close();

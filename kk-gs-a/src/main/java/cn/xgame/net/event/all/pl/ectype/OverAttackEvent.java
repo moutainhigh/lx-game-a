@@ -8,7 +8,6 @@ import java.util.List;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.award.AwardInfo;
-import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.ship.o.status.ShipStatus;
 import cn.xgame.a.player.ship.o.status.StatusControl;
@@ -27,11 +26,9 @@ public class OverAttackEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int snid = data.readInt();
-		int enid = data.readInt();
 		int suid = data.readInt();
 		
-		Logs.debug( player, "申请结束副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
+		Logs.debug( player, "申请结束副本 , 舰船UID=" + suid );
 		
 		ErrorCode code 			= null;
 		int combatTime 			= 0;// 战斗时间
@@ -41,9 +38,9 @@ public class OverAttackEvent extends IEvent{
 		try {
 			
 			// 判断副本是否可以打
-			IEctype ectype = player.getEctypes().getEctype( snid, enid );
-			if( ectype == null )
-				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+//			IEctype ectype = player.getEctypes().getEctype( snid, enid );
+//			if( ectype == null )
+//				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 			
 			ShipInfo ship 			= player.getDocks().getShip(suid);
 			StatusControl status 	= ship.getStatus();
@@ -72,6 +69,7 @@ public class OverAttackEvent extends IEvent{
 		}
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
+		response.writeInt( suid );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			response.writeByte( iswin );

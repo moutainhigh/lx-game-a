@@ -36,6 +36,7 @@ public abstract class IEvent {
 	}
 	/**
 	 * 创建一个长度为capacity的缓冲包，此包包括包头，包号，包长（占位符）
+	 * @param ctx
 	 * @param capacity
 	 * @return
 	 */
