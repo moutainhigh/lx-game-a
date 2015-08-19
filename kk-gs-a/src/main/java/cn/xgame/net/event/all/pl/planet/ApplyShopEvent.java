@@ -39,7 +39,8 @@ public class ApplyShopEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 512 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			List<IProp> ls = planet.getShopList();
+			// 这里只发特产数据
+			List<IProp> ls = planet.getSpecialtyControl().toProps();
 			response.writeByte( ls.size() );
 			for( IProp prop : ls ){
 				response.writeInt( prop.getNid() );

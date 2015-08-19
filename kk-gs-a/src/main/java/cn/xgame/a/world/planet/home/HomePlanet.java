@@ -34,6 +34,7 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.config.o.StarsPo;
+import cn.xgame.config.o.StarshopPo;
 import cn.xgame.config.o.TechPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
@@ -80,8 +81,9 @@ public class HomePlanet extends IPlanet {
 		super(clone);
 		tavernControl 	= new TavernControl( getId() );
 		techControl 	= new TechControl( getId() );
+		updateShop();
 	}
-	
+
 	@Override
 	public Institution getInstitution() { return institution; }
 	public void setInstitution(Institution institution) {
@@ -709,6 +711,17 @@ public class HomePlanet extends IPlanet {
 	
 	////////////------------------------------交易
 	
+	
+	private void updateShop() {
+		StarshopPo shop = CsvGen.getStarshopPo( getId() );
+		if( shop == null ) return;
+		String[] content = shop.item.split(";");
+		for( String str : content ){
+			IProp porp = IProp.create( 0, Integer.parseInt( str ), 1 );
+			shops.add(porp);
+		}
+	}
+	
 	/**
 	 * 获取商店列表
 	 * @return
@@ -728,8 +741,14 @@ public class HomePlanet extends IPlanet {
 	 * @return
 	 */
 	public IProp getShopProp( int nid ){
-		List<IProp> ls = getShopList();
-		for( IProp o : ls ){
+		List<IProp> scty = specialtyControl.toProps();
+		// 特产
+		for( IProp o : scty ){
+			if( o.getNid() == nid )
+				return o;
+		}
+		// 商店基础道具
+		for( IProp o : shops ){
 			if( o.getNid() == nid )
 				return o;
 		}
