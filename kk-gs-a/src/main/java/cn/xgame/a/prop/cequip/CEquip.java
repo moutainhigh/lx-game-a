@@ -23,12 +23,12 @@ public class CEquip extends IProp{
 	}
 	public CEquip( PropsDto o ) {
 		super(o);
-		templet = CsvGen.getTreasurePo( getnId() );
+		templet = CsvGen.getTreasurePo( getNid() );
 	}
 
 	@Override
 	public IProp clone() {
-		CEquip ret = new CEquip(getuId(), getnId(), getCount());
+		CEquip ret = new CEquip(getUid(), getNid(), getCount());
 		return ret;
 	}
 	

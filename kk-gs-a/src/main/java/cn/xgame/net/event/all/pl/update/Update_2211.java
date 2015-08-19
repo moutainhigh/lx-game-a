@@ -25,8 +25,8 @@ public class Update_2211 extends IEvent{
 			
 			ByteBuf response = buildEmptyPackage( player.getCtx(), 8 );
 			
-			response.writeInt( spe.templet().id );
-			response.writeInt( spe.getYieldCount() );
+			response.writeInt( spe.toProp().getNid() );
+			response.writeInt( spe.toProp().getCount() );
 		
 			sendPackage( player.getCtx(), response );
 			

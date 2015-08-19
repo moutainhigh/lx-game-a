@@ -46,13 +46,13 @@ public class IDepot {
 	 */
 	public IProp getProp( int uid ){
 		for( IProp o : props ){
-			if( o.getuId() == uid )
+			if( o.getUid() == uid )
 				return o;
 		}
 		return null;
 	}
 	public IProp getProp( IProp prop ){
-		return getProp( prop.getuId() );
+		return getProp( prop.getUid() );
 	}
 	public IProp getPropOfException( int id ) throws Exception{
 		IProp prop = getProp( id );
@@ -70,7 +70,7 @@ public class IDepot {
 	public List<IProp> getPropListInNid( int nid ) {
 		List<IProp> ret = Lists.newArrayList();
 		for( IProp prop : props ){
-			if( prop.getnId() == nid ){
+			if( prop.getNid() == nid ){
 				ret.add( prop );
 			}
 		}
@@ -84,13 +84,13 @@ public class IDepot {
 	 */
 	public IProp getCanCumsumProp( int nid ){
 		for( IProp o : props ){
-			if( o.getnId() == nid && o.isCanCumsum() )
+			if( o.getNid() == nid && o.isCanCumsum() )
 				return o;
 		}
 		return null;
 	}
 	public IProp getCanCumsumProp( IProp prop ){
-		return getCanCumsumProp( prop.getnId() );
+		return getCanCumsumProp( prop.getNid() );
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class IDepot {
 		Iterator<IProp> ls = props.iterator();
 		while( ls.hasNext() ){
 			IProp next = ls.next();
-			if( next.getuId() == prop.getuId() ){
+			if( next.getUid() == prop.getUid() ){
 				ls.remove();
 				return true;
 			}

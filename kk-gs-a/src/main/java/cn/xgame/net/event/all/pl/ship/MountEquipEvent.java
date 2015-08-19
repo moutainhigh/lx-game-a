@@ -68,7 +68,7 @@ public class MountEquipEvent extends IEvent{
 			buffer.writeInt( suid );
 			buffer.writeInt( atsuid );
 			buffer.writeInt( puid );
-			buffer.writeInt( ret.getuId() );
+			buffer.writeInt( ret.getUid() );
 		}
 		sendPackage( player.getCtx(), buffer );
 		

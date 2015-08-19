@@ -101,7 +101,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	}
 	public List<IProp> appendProp( IProp prop ) {
 		// TODO 以后要加有成长属性的物品   那么就在这里做
-		return appendProp( prop.getnId(), prop.getCount() );
+		return appendProp( prop.getNid(), prop.getCount() );
 	}
 	/**
 	 * 添加一个原样道具
@@ -110,7 +110,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 */
 	public void append( IProp prop ){
 		// 设置唯一ID
-		prop.setuId( root.generatorPropUID() );
+		prop.setUid( root.generatorPropUID() );
 		// 放入背包
 		super.append( prop );
 		// 在数据库 创建数据
@@ -143,7 +143,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param clone
 	 */
 	public void deductProp( IProp clone ) {
-		deductProp( clone.getuId(), clone.getCount() );
+		deductProp( clone.getUid(), clone.getCount() );
 	}
 	public void deductProp( int uid, int count ) {
 		

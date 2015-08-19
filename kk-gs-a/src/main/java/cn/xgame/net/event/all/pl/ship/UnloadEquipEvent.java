@@ -53,7 +53,7 @@ public class UnloadEquipEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeInt( suid );
 			buffer.writeInt( puid );
-			buffer.writeInt( ret.getuId() );
+			buffer.writeInt( ret.getUid() );
 		}
 		sendPackage( player.getCtx(), buffer );
 	}

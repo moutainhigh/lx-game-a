@@ -75,7 +75,7 @@ public class HoldControl extends IHold implements IArrayStream{
 	public boolean roomIsEnough( IProp prop ) {
 		short sum = getAllOccupyRoom();
 		//先判断是否可以累加 
-		IProp temp = getCanCumsumProp( prop.getnId() );
+		IProp temp = getCanCumsumProp( prop.getNid() );
 		if( temp == null ){
 			sum += prop.occupyRoom();
 		}else{

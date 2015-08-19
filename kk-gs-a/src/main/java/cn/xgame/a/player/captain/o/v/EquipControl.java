@@ -39,8 +39,8 @@ public class EquipControl implements IArrayStream{
 		if( equip == null )
 			return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeInt( equip.getuId() );
-		buf.writeInt( equip.getnId() );
+		buf.writeInt( equip.getUid() );
+		buf.writeInt( equip.getNid() );
 		buf.writeInt( equip.getCount() );
 		equip.putAttachBuffer(buf);
 		return buf.array();

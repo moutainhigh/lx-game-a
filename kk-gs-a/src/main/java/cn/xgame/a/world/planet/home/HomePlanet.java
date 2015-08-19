@@ -730,7 +730,7 @@ public class HomePlanet extends IPlanet {
 	public IProp getShopProp( int nid ){
 		List<IProp> ls = getShopList();
 		for( IProp o : ls ){
-			if( o.getnId() == nid )
+			if( o.getNid() == nid )
 				return o;
 		}
 		return null;
@@ -751,11 +751,10 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 		
 		// 数量是否足够 只有特产 才做这个判断
-		if( prop.getCount() < count && prop.getuId() == 1 )
+		if( prop.getCount() < count && prop.getUid() == 1 )
 			throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
 		
-		ItemPo item = CsvGen.getItemPo( prop.getnId() );
-		int needGold = item.buygold <= 0 ? 1 : item.buygold;
+		int needGold = prop.getSellgold();
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){
 			needGold += 1;
@@ -771,7 +770,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		
 		// 如果是特产 那么就要对应扣除数量
-		if( prop.getuId() == 1 ){
+		if( prop.getUid() == 1 ){
 			specialtyControl.deduct( nid, count );
 			// 同步给其他玩家
 			

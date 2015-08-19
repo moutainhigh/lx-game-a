@@ -51,7 +51,7 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 		buffer.writeInt( getuId() );
 		buffer.writeInt( getnId() );
 		CEquip equip = equips.getEquip();
-		buffer.writeInt( equip == null ? -1 : equip.getnId() );
+		buffer.writeInt( equip == null ? -1 : equip.getNid() );
 	}
 
 	public CaptainPo templet(){ return templet; }

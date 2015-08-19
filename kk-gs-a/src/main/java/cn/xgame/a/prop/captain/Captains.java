@@ -23,12 +23,12 @@ public class Captains extends IProp {
 
 	public Captains( PropsDto o ) {
 		super( o );
-		templet = CsvGen.getCaptainPo( getnId() );
+		templet = CsvGen.getCaptainPo( getNid() );
 	}
 	
 	@Override
 	public IProp clone() {
-		Captains ret = new Captains( getuId(), getnId(), getCount() );
+		Captains ret = new Captains( getUid(), getNid(), getCount() );
 		return ret ;
 	}
 	

@@ -23,13 +23,13 @@ public class Ships extends IProp{
 
 	public Ships( PropsDto o ){
 		super(o);
-		templet = CsvGen.getShipPo( getnId() );
+		templet = CsvGen.getShipPo( getNid() );
 		// 下面加自己的属性 o.getAttach();
 	}
 	
 	@Override
 	public IProp clone() {
-		Ships ret = new Ships( getuId(), getnId(), getCount());
+		Ships ret = new Ships( getUid(), getNid(), getCount());
 		return ret;
 	}
 	

@@ -1,12 +1,8 @@
 package cn.xgame.a.world.planet.data.specialty;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ItemPo;
 import cn.xgame.utils.Logs;
 
 /**
@@ -14,43 +10,54 @@ import cn.xgame.utils.Logs;
  * @author deng		
  * @date 2015-6-26 下午12:07:42
  */
-public class Specialty implements IBufferStream,ITransformStream{
+public class Specialty implements ITransformStream{
 
-	private final ItemPo templet;
+	// 
+	volatile private IProp prop;
 	
 	// 产出时间
 	volatile private int yieldTime;
 	// 产量
 	volatile private int yieldNum;
-	// 当前产出数量
-	volatile private int yieldCount;
 	
 	// 记录时间
 	volatile private int rtime;
 	
-	public Specialty( int id ) {
-		templet = CsvGen.getItemPo(id);
-		rtime	= (int) (System.currentTimeMillis()/1000);
+	/**
+	 * 创建一个特产
+	 * @param id 特产表格ID
+	 * @param yieldTime 产出时间 间隔
+	 * @param yieldNum 一次产出的数量
+	 */
+	public Specialty( int id, int yieldTime, int yieldNum ) {
+		this.prop		= IProp.create( 1, id, 0 );
+		this.rtime		= (int) (System.currentTimeMillis()/1000);
+		this.yieldTime 	= yieldTime;
+		this.yieldNum 	= yieldNum;
 	}
 
-	@Override
-	public void putBuffer(ByteBuf buf) {
+	/**
+	 * 从数据库获取
+	 * @param buf
+	 */
+	public Specialty( ByteBuf buf ) {
+		this.prop		= IProp.create( 1, buf.readInt(), buf.readInt() );
+		this.rtime		= (int) (System.currentTimeMillis()/1000);
+		this.yieldTime 	= buf.readInt();
+		this.yieldNum 	= buf.readInt();
+	}
+
+	public void putBuffer( ByteBuf buf ) {
+		buf.writeInt( prop.getNid() );
+		buf.writeInt( prop.getCount() );
 		buf.writeInt( yieldTime );
 		buf.writeInt( yieldNum );
-		buf.writeInt( yieldCount );
 	}
 
 	@Override
-	public void wrapBuffer(ByteBuf buf) {
-		yieldTime 	= buf.readInt();
-		yieldNum 	= buf.readInt();
-		yieldCount 	= buf.readInt();
-	}
-	
-	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( templet.id );
-		buffer.writeInt( yieldCount );
+		buffer.writeInt( prop.getNid() );
+		buffer.writeInt( prop.getCount() );
 	}
 	
 	
@@ -59,26 +66,21 @@ public class Specialty implements IBufferStream,ITransformStream{
 	 */
 	public boolean run(){
 		
-		if( yieldCount >= templet.manymax )
+		if( prop.getCount() >= prop.getMaxOverlap() )
 			return false;
 		
 		int gobyTime = (int) (System.currentTimeMillis()/1000) - rtime;
 		if( gobyTime >= yieldTime ){
 			rtime = (int) (System.currentTimeMillis()/1000);
 			
-			yieldCount += yieldNum;
-			if( yieldCount > templet.manymax )
-				yieldCount = templet.manymax;
+			prop.addCount( yieldNum );
 			
-			Logs.debug( "星球特产"+templet.id+" 生产 " + yieldCount + "个" );
+			Logs.debug( "星球特产"+prop.getNid()+" 生产 "+prop.getCount()+"个" );
 			return true;
 		}
 		return false;
 	}
 	
-	public ItemPo templet() {
-		return templet;
-	}
 	public int getYieldTime() {
 		return yieldTime;
 	}
@@ -91,21 +93,9 @@ public class Specialty implements IBufferStream,ITransformStream{
 	public void setYieldNum(int yieldNum) {
 		this.yieldNum = yieldNum;
 	}
-	public int getYieldCount() {
-		return yieldCount;
-	}
-	public void setYieldCount(int yieldCount) {
-		this.yieldCount = yieldCount;
-	}
-
 	public IProp toProp() {
-		PropType type = PropType.fromNumber( templet.bagtype );
-		return type.create( 1, templet.id, yieldCount );
+		return prop;
 	}
-
-
-
-
 
 
 }

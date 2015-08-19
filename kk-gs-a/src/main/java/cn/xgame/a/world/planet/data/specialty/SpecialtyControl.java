@@ -40,9 +40,7 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 			String[] x 	= ls[i].split( ";" );
 			int id = Integer.parseInt( x[0] );
 			if( getSpecialty( id ) != null ) continue;
-			Specialty o = new Specialty( id );
-			o.setYieldTime( Integer.parseInt( x[1] ) );
-			o.setYieldNum( Integer.parseInt( x[2] ) );
+			Specialty o = new Specialty( id, Integer.parseInt( x[1] ), Integer.parseInt( x[2] ) );
 			specialtys.add(o);
 		}
 	}
@@ -53,9 +51,7 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			int id = buf.readInt();
-			Specialty o = new Specialty( id );
-			o.wrapBuffer(buf);
+			Specialty o = new Specialty( buf );
 			specialtys.add(o);
 		}
 	}
@@ -67,7 +63,6 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		buf.writeByte( specialtys.size() );
 		for( Specialty o : specialtys ){
-			buf.writeInt( o.templet().id );
 			o.putBuffer( buf );
 		}
 		return buf.array();
@@ -98,7 +93,7 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 
 	public Specialty getSpecialty( int nid ) {
 		for( Specialty o : specialtys ){
-			if( o.templet().id == nid )
+			if( o.toProp().getNid() == nid )
 				return o;
 		}
 		return null;
@@ -113,9 +108,7 @@ public class SpecialtyControl implements IArrayStream,ITransformStream{
 	public void deduct( int nid, int count ) {
 		Specialty o = getSpecialty( nid );
 		if( o == null ) return;
-		int rcount = o.getYieldCount() - count;
-		if( rcount < 0 ) rcount = 0;
-		o.setYieldCount( rcount );
+		o.toProp().deductCount(count);
 	}
 
 

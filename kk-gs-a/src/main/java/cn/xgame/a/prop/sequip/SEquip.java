@@ -28,7 +28,7 @@ public class SEquip extends IProp{
 	
 	public SEquip( PropsDto o ) {
 		super(o);
-		templet = CsvGen.getWeaponPo(getnId());
+		templet = CsvGen.getWeaponPo(getNid());
 		if( o.getAttach() == null )
 			return;
 		ByteBuf buf = Unpooled.copiedBuffer( o.getAttach() );
@@ -37,7 +37,7 @@ public class SEquip extends IProp{
 
 	@Override
 	public IProp clone() {
-		SEquip ret = new SEquip(getuId(), getnId(), getCount());
+		SEquip ret = new SEquip(getUid(), getNid(), getCount());
 		ret.currentDur = currentDur;
 		return ret;
 	}

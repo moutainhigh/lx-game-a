@@ -74,8 +74,8 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		List<IProp> ls = getAll();
 		buffer.writeByte( ls.size() );
 		for( IProp prop : ls ){
-			buffer.writeInt( prop.getuId() );
-			buffer.writeInt( prop.getnId() );
+			buffer.writeInt( prop.getUid() );
+			buffer.writeInt( prop.getNid() );
 			buffer.writeInt( prop.getCount() );
 		}
 	}
@@ -106,7 +106,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 
 	/** 这里自己封一个 为了给物品一个唯一ID */
 	public void append( IProp prop ){
-		prop.setuId( getResUID() );
+		prop.setUid( getResUID() );
 		super.append( prop );
 	}
 	
@@ -156,7 +156,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		List<IProp> ret = Lists.newArrayList();
 		List<IProp> ls = getAll();
 		for( IProp prop : ls ){
-			if( prop.getnId() == nid ){
+			if( prop.getNid() == nid ){
 				ret.add( prop.clone() );
 			}
 		}

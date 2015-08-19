@@ -40,7 +40,7 @@ public abstract class IHold extends IDepot implements ITransformStream{
 		
 		List<IProp> ret = Lists.newArrayList();
 		// 获取一个可累加道具
-		IProp temp 	= getCanCumsumProp( prop.getnId() );
+		IProp temp 	= getCanCumsumProp( prop.getNid() );
 		if( temp == null ){
 			ret.add( put( prop ) );
 		}else{
@@ -61,7 +61,7 @@ public abstract class IHold extends IDepot implements ITransformStream{
 	 * @return
 	 */
 	public IProp put( IProp prop ){
-		prop.setuId( getResUID() );
+		prop.setUid( getResUID() );
 		append(prop);
 		return prop;
 	}

@@ -48,8 +48,8 @@ public class ShopBuyEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
-				response.writeInt( prop.getuId() );
-				response.writeInt( prop.getnId() );
+				response.writeInt( prop.getUid() );
+				response.writeInt( prop.getNid() );
 				response.writeInt( prop.getCount() );
 			}
 			response.writeInt( player.getCurrency() );

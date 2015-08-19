@@ -23,9 +23,9 @@ public abstract class IProp implements ITransformStream{
 	private final PropType type;
 	
 	// 唯一ID
-	private int uId;
+	private int uid;
 	// 表格ID
-	private int nId;
+	private int nid;
 	// 数量
 	private int count;
 	
@@ -37,8 +37,8 @@ public abstract class IProp implements ITransformStream{
 	 * @param count
 	 */
 	public IProp( int uid, int nid, int count ){
-		this.uId 	= uid;
-		this.nId 	= nid;
+		this.uid 	= uid;
+		this.nid 	= nid;
 		this.item 	= CsvGen.getItemPo(nid);
 		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( count );
@@ -49,15 +49,28 @@ public abstract class IProp implements ITransformStream{
 	 * @param o
 	 */
 	public IProp( PropsDto o ){
-		this.uId 	= o.getUid();
-		this.nId 	= o.getNid();
-		this.item 	= CsvGen.getItemPo(nId);
+		this.uid 	= o.getUid();
+		this.nid 	= o.getNid();
+		this.item 	= CsvGen.getItemPo(nid);
 		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( o.getCount() );
 	}
 	
+	/**
+	 * 创建一个简单的道具
+	 * @param uid
+	 * @param nid
+	 * @param count
+	 * @return
+	 */
+	public static IProp create( int uid, int nid, int count ) {
+		ItemPo item 	= CsvGen.getItemPo(nid);
+		PropType type 	= PropType.fromNumber( item.bagtype );
+		return type.create(uid, nid, count);
+	}
+	
 	public String toString(){
-		return type().name() + ", uId=" + uId + ", nId=" + nId + ", count=" + count; 
+		return type().name() + ", uId=" + uid + ", nId=" + nid + ", count=" + count; 
 	}
 	
 	/**
@@ -65,8 +78,8 @@ public abstract class IProp implements ITransformStream{
 	 * @param buffer
 	 */
 	public void putBaseBuffer( ByteBuf buffer ) {
-		buffer.writeInt(uId);
-		buffer.writeInt(nId);
+		buffer.writeInt(uid);
+		buffer.writeInt(nid);
 		buffer.writeInt(count);
 	}
 	
@@ -98,9 +111,9 @@ public abstract class IProp implements ITransformStream{
 		PropsDto dto = dao.create();
 		dto.setGsid( player.getGsid() );
 		dto.setUname( player.getUID() );
-		dto.setUid( getuId() );
-		dto.setNid( getnId() );
-		dto.setCount( getCount() );
+		dto.setUid( uid );
+		dto.setNid( nid );
+		dto.setCount( count );
 		dto.setAttach( attach );
 		dao.commit(dto);
 	}
@@ -112,10 +125,10 @@ public abstract class IProp implements ITransformStream{
 	public abstract void updateDB( Player player );
 	protected void update( Player player, byte[] attach ) {
 		PropsDao dao 	= SqlUtil.getPropsDao();
-		String sql 		= new Condition( PropsDto.uidChangeSql( getuId() ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
+		String sql 		= new Condition( PropsDto.uidChangeSql( uid ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
 				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
 		PropsDto dto	= dao.updateByExact( sql );
-		dto.setNid( getnId() );
+		dto.setNid( nid );
 		dto.setCount( getCount() );
 		dto.setAttach( attach );
 		dao.commit(dto);
@@ -127,17 +140,17 @@ public abstract class IProp implements ITransformStream{
 	 */
 	public void deleteDB( Player player ){
 		PropsDao dao 	= SqlUtil.getPropsDao();
-		String sql 		= new Condition( PropsDto.uidChangeSql( getuId() ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
+		String sql 		= new Condition( PropsDto.uidChangeSql( uid ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
 				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
 		dao.deleteByExact(sql);
 		dao.commit();
 	}
 	
 	public ItemPo item(){ return item; }
-	public int getuId() { return uId; }
-	public void setuId(int uId) { this.uId = uId; }
-	public int getnId() { return nId; }
-	public void setnId(int nId) { this.nId = nId; }
+	public int getUid() { return uid; }
+	public void setUid(int uId) { this.uid = uId; }
+	public int getNid() { return nid; }
+	public void setNid(int nId) { this.nid = nId; }
 	public int getCount() { return count; }
 	public void setCount(int count) { this.count = count; }
 	
@@ -198,7 +211,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public boolean isCurrency() {
-		return item.itemtype == 0 && nId == LXConstants.CURRENCY_NID;
+		return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID;
 	}
 	
 	/**
@@ -220,7 +233,7 @@ public abstract class IProp implements ITransformStream{
 	/**
 	 * 添加数量 
 	 * @param num
-	 * @return 多出的
+	 * @return 多出的 (如：最大叠加为5 3 + 3 = 6  返回1)
 	 */
 	public int addCount( int num ) {
 		int ret 	= count + Math.abs( num );
@@ -234,7 +247,7 @@ public abstract class IProp implements ITransformStream{
 	/**
 	 * 扣除数量
 	 * @param num
-	 * @return 不够的
+	 * @return 不够的 (如：3 - 5 = -2  返回2)
 	 */
 	public int deductCount( int num ){
 		int ret 	= count - Math.abs( num );
@@ -245,8 +258,20 @@ public abstract class IProp implements ITransformStream{
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
 
+	/**
+	 * 道具出售价格
+	 * @return
+	 */
+	public int getSellgold() {
+		return item.buygold;
+	}
 
-
-
+	/**
+	 * 最大叠加数
+	 * @return
+	 */
+	public int getMaxOverlap() {
+		return item.manymax;
+	}
 
 }

@@ -26,7 +26,7 @@ public class Stuff extends IProp{
 	
 	@Override
 	public IProp clone() {
-		Stuff ret = new Stuff(getuId(), getnId(), getCount());
+		Stuff ret = new Stuff(getUid(), getNid(), getCount());
 		
 		return ret;
 	}
