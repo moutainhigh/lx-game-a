@@ -75,7 +75,7 @@ public class StartAttackEvent extends IEvent{
 				combatTime		= ret[0].getInt();
 				int winRate 	= ret[1].getInt();
 				int warDamaged 	= ret[2].getInt();
-				int depletion	= ret[3].getInt();
+				int ammoExpend	= ret[3].getInt();
 				
 				// 算出胜负
 				int rand 		= Random.get( 0, 10000 );
@@ -87,7 +87,7 @@ public class StartAttackEvent extends IEvent{
 				// 这里记录战斗 信息
 				ship.recordEctypeCombatInfo( enid, isWin, awards );
 				
-				Logs.debug( player, "攻打副本结果 combatTime=" + combatTime + ", winRate=" + winRate + ", warDamaged=" + warDamaged + ", depletion=" + depletion );
+				Logs.debug( player, "攻打副本结果 combatTime=" + combatTime + ", winRate=" + winRate + ", warDamaged=" + warDamaged + ", ammoExpend=" + ammoExpend );
 			} catch ( Exception e ) {
 				Logs.error( player, "副本战斗错误 ", e );
 			}

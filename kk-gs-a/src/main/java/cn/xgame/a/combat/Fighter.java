@@ -36,7 +36,7 @@ public class Fighter {
 	public List<Answers> 	answers = new ArrayList<Answers>();
 	
 	// 装备总耐久度
-	private int totalDur = 0;
+	public int totalDur = 0;
 	
 	private AtkAndDef getAttacks( int type ) {
 		for( AtkAndDef o : attacks ){
@@ -104,10 +104,6 @@ public class Fighter {
 			if( o == null )
 				answers.add( x );
 		}
-	}
-	
-	public int getTotalDur() {
-		return totalDur;
 	}
 	
 	/**

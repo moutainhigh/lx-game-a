@@ -14,7 +14,7 @@ import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 申请星球特产
+ * 申请星球商店数据
  * @author deng		
  * @date 2015-6-30 下午4:47:08
  */

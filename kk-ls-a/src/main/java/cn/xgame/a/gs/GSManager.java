@@ -60,7 +60,7 @@ public class GSManager {
 			
 		}else if( gs.isOpen() ){
 			
-			return ErrorCode.GS_EXIST;
+//			return ErrorCode.GS_EXIST;
 		}
 		
 		gs.setCtx( ctx );
