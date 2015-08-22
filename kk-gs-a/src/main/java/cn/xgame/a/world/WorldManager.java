@@ -49,17 +49,17 @@ public class WorldManager {
 				if( star.type == 1 ){
 					
 					HomePlanet home = new HomePlanet( star );
-					append( home );
+					assign( home );
 					homes.add( home );
 				}else if( star.type == 2 ){
 					
 					EntrepotPlanet entrepot = new EntrepotPlanet(star);
-					append( entrepot );
+					assign( entrepot );
 					entrepots.add( entrepot );
 				}else if( star.type == 3 ){
 					
 					EctypePlanet ectype = new EctypePlanet(star);
-					append( ectype );
+					assign( ectype );
 					ectypes.add( ectype );
 				}
 			} catch (Exception e) {
@@ -69,7 +69,7 @@ public class WorldManager {
 		
 	}
 
-	private void append( IPlanet planet ) {
+	private void assign( IPlanet planet ) {
 		PlanetDataDao dao = SqlUtil.getPlanetDataDao();
 		PlanetDataDto dto = dao.get( planet.getId() );
 		if( dto == null ){
@@ -244,14 +244,5 @@ public class WorldManager {
 		}
 	}
 	
-	/**
-	 * 酒馆更新
-	 */
-	public void runTavern() {
-		for( HomePlanet home : homes ){
-			home.updateTavern();
-		}
-	}
-
 
 }

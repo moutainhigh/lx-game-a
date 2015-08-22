@@ -74,7 +74,7 @@ public class Init {
 		for( String x : ls ){
 			if( x.isEmpty() ) continue;
 			try {
-				ret.getCaptains().createCaptain( Integer.parseInt( x ) );
+				ret.getCaptains().createCaptain( Integer.parseInt( x ), (byte) 1 );
 			} catch (Exception e) {
 				Logs.error( "Init.initCaptain  at=" + x , e );
 			}

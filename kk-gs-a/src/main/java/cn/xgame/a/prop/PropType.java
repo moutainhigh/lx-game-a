@@ -3,11 +3,11 @@ package cn.xgame.a.prop;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.xgame.a.prop.captain.Captains;
-import cn.xgame.a.prop.cequip.CEquip;
-import cn.xgame.a.prop.sequip.SEquip;
-import cn.xgame.a.prop.ship.Ships;
-import cn.xgame.a.prop.stuff.Stuff;
+import cn.xgame.a.prop.captain.CaptainAttr;
+import cn.xgame.a.prop.cequip.CEquipAttr;
+import cn.xgame.a.prop.sequip.SEquipAttr;
+import cn.xgame.a.prop.ship.ShipAttr;
+import cn.xgame.a.prop.stuff.StuffAttr;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
@@ -33,11 +33,11 @@ public enum PropType {
 	SHIP( 2 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new Ships( uid, nid, count );
+			return new ShipAttr( uid, nid, count );
 		}
 		@Override
 		public IProp wrapDB( PropsDto dto ) {
-			return new Ships( dto );
+			return new ShipAttr( dto );
 		}
 	},
 	
@@ -45,11 +45,11 @@ public enum PropType {
 	SEQUIP( 3 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new SEquip( uid, nid, count );
+			return new SEquipAttr( uid, nid, count );
 		}
 		@Override
 		public IProp wrapDB(PropsDto dto) {
-			return new SEquip( dto );
+			return new SEquipAttr( dto );
 		}
 	},
 	
@@ -57,11 +57,11 @@ public enum PropType {
 	CAPTAIN( 4 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new Captains( uid, nid, count );
+			return new CaptainAttr( uid, nid, count );
 		}
 		@Override
 		public IProp wrapDB(PropsDto dto) {
-			return new Captains( dto );
+			return new CaptainAttr( dto );
 		}
 	},
 	
@@ -69,11 +69,11 @@ public enum PropType {
 	CEQUIP( 5 ) {
 		@Override
 		public IProp create( int uid, int nid, int count) {
-			return new CEquip( uid, nid, count );
+			return new CEquipAttr( uid, nid, count );
 		}
 		@Override
 		public IProp wrapDB(PropsDto dto) {
-			return new CEquip( dto );
+			return new CEquipAttr( dto );
 		}
 	},
 	
@@ -81,11 +81,11 @@ public enum PropType {
 	STUFF( 6 ) {
 		@Override
 		public IProp create( int uid, int nid, int count ) {
-			return new Stuff( uid, nid, count );
+			return new StuffAttr( uid, nid, count );
 		}
 		@Override
 		public IProp wrapDB(PropsDto dto) {
-			return new Stuff( dto );
+			return new StuffAttr( dto );
 		}
 	};
 	

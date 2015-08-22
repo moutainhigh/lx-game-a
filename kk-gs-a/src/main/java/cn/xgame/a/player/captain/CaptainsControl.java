@@ -92,10 +92,11 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 	/**
 	 * 创建一个 舰长
 	 * @param nid
+	 * @param quality 
 	 */
-	public CaptainInfo createCaptain( int nid ) {
+	public CaptainInfo createCaptain( int nid, byte quality ) {
 		
-		CaptainInfo cap = new CaptainInfo( root.generatorCaptainUID(), nid );
+		CaptainInfo cap = new CaptainInfo( root.generatorCaptainUID(), nid, quality );
 		
 		append(cap);
 		

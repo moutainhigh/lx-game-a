@@ -8,27 +8,27 @@ import cn.xgame.config.o.TreasurePo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
- * 舰长装备对象
+ * 舰长装备属性
  * @author deng		
  * @date 2015-6-18 下午1:49:59
  */
-public class CEquip extends IProp{
+public class CEquipAttr extends IProp{
 
 	private final TreasurePo templet;
 	
 		
-	public CEquip(int uid, int nid, int count) {
+	public CEquipAttr(int uid, int nid, int count) {
 		super(uid, nid, count);
 		templet = CsvGen.getTreasurePo(nid);
 	}
-	public CEquip( PropsDto o ) {
+	public CEquipAttr( PropsDto o ) {
 		super(o);
 		templet = CsvGen.getTreasurePo( getNid() );
 	}
 
 	@Override
 	public IProp clone() {
-		CEquip ret = new CEquip(getUid(), getNid(), getCount());
+		CEquipAttr ret = new CEquipAttr(getUid(), getNid(), getCount());
 		return ret;
 	}
 	

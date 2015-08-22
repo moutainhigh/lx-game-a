@@ -8,20 +8,20 @@ import cn.xgame.config.o.ShipPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
- * 舰船对象
+ * 舰船属性
  * @author deng		
  * @date 2015-6-18 下午1:48:46
  */
-public class Ships extends IProp{
+public class ShipAttr extends IProp{
 
 	private final ShipPo templet;
 	
-	public Ships(int uid, int nid, int count) {
+	public ShipAttr(int uid, int nid, int count) {
 		super(uid, nid, count);
 		templet = CsvGen.getShipPo(nid);
 	}
 
-	public Ships( PropsDto o ){
+	public ShipAttr( PropsDto o ){
 		super(o);
 		templet = CsvGen.getShipPo( getNid() );
 		// 下面加自己的属性 o.getAttach();
@@ -29,7 +29,7 @@ public class Ships extends IProp{
 	
 	@Override
 	public IProp clone() {
-		Ships ret = new Ships( getUid(), getNid(), getCount());
+		ShipAttr ret = new ShipAttr( getUid(), getNid(), getCount());
 		return ret;
 	}
 	

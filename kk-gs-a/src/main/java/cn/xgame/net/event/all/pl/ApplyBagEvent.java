@@ -9,7 +9,7 @@ import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.cequip.CEquip;
+import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -42,7 +42,7 @@ public class ApplyBagEvent extends IEvent{
 		// 玩家舰长
 		List<CaptainInfo> captains = player.getCaptains().getAll();
 		for( CaptainInfo captain : captains ){
-			CEquip equip = captain.getEquips().getEquip();
+			CEquipAttr equip = captain.getEquips().getEquip();
 			if( equip == null ) continue;
 			equip.putBaseBuffer(response);
 			response.writeByte( 3 );

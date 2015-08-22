@@ -1,5 +1,4 @@
 package cn.xgame.gen;
-
 import x.javaplus.mysql.db.Dbcp;
 
 
@@ -45,7 +44,6 @@ public class Test {
 ////		dao.delete( "1004" );
 //		dao.deleteByExact( sql );
 //		dao.commit();
-		
 		
 		Dbcp.print();
 	}

@@ -10,7 +10,7 @@ import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
-import cn.xgame.a.prop.cequip.CEquip;
+import cn.xgame.a.prop.cequip.CEquipAttr;
 
 
 /**
@@ -21,7 +21,7 @@ import cn.xgame.a.prop.cequip.CEquip;
 public class EquipControl implements IArrayStream{
 
 	// 装备
-	private CEquip equip = null;
+	private CEquipAttr equip = null;
 	
 	
 	
@@ -30,7 +30,7 @@ public class EquipControl implements IArrayStream{
 		if( data == null )
 			return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		equip = new CEquip( buf.readInt(), buf.readInt(), buf.readInt() );
+		equip = new CEquipAttr( buf.readInt(), buf.readInt(), buf.readInt() );
 		equip.wrapAttach(buf);
 	}
 	
@@ -46,7 +46,7 @@ public class EquipControl implements IArrayStream{
 		return buf.array();
 	}
 	
-	public CEquip getEquip() {
+	public CEquipAttr getEquip() {
 		return equip;
 	}
 	

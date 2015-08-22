@@ -10,12 +10,10 @@ import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
-import cn.xgame.a.player.IUObject;
 import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.prop.cequip.CEquip;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.CaptainPo;
+import cn.xgame.a.prop.captain.CaptainAttr;
+import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -25,36 +23,39 @@ import cn.xgame.gen.dto.MysqlGen.SqlUtil;
  * @author deng		
  * @date 2015-7-9 下午12:28:55
  */
-public class CaptainInfo extends IUObject implements ITransformStream{
+public class CaptainInfo implements ITransformStream{
 
-	private final CaptainPo templet;
+	// 舰长属性
+	private CaptainAttr attr;
 	
 	// 所属舰船UID
 	private int shipUid 			= -1;
 	
 	private EquipControl equips 	= new EquipControl();
 	
-	public CaptainInfo(int uid, int nid) {
-		super( uid, nid );
-		templet = CsvGen.getCaptainPo(nid);
+	public CaptainInfo(int uid, int nid, byte quality) {
+		attr = new CaptainAttr( uid, nid, 1 );
+		attr.setQuality( quality );
 	}
 
 	public CaptainInfo(CaptainsDto dto) {
-		super( dto.getUid(), dto.getNid() );
-		templet = CsvGen.getCaptainPo(dto.getNid());
+		attr 	= new CaptainAttr( dto.getUid(), dto.getNid(), 1 );
+		attr.setQuality( dto.getQuality() );
 		shipUid	= dto.getShipUid();
 		equips.fromBytes( dto.getEquips() );
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( getuId() );
-		buffer.writeInt( getnId() );
-		CEquip equip = equips.getEquip();
+		buffer.writeInt( attr.getUid() );
+		buffer.writeInt( attr.getNid() );
+		CEquipAttr equip = equips.getEquip();
 		buffer.writeInt( equip == null ? -1 : equip.getNid() );
 	}
 
-	public CaptainPo templet(){ return templet; }
+	public CaptainAttr attr(){ return attr; }
+	public int getuId() { return attr.getUid(); }
+	public int getnId() { return attr.getNid(); }
 	public EquipControl getEquips() { return equips; }
 	public int getShipUid() { return shipUid; }
 	public void setShipUid(int shipUid) { this.shipUid = shipUid; }
@@ -78,9 +79,10 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 		dao.commit(dto);
 	}
 	private void setDBData(CaptainsDto dto) {
-		dto.setNid(getnId());
-		dto.setShipUid(shipUid);
-		dto.setEquips(equips.toBytes());
+		dto.setNid( attr.getNid() );
+		dto.setQuality( attr.getQuality() );
+		dto.setShipUid( shipUid );
+		dto.setEquips( equips.toBytes() );
 	}
 	
 	//TODO------------其他函数
@@ -97,7 +99,7 @@ public class CaptainInfo extends IUObject implements ITransformStream{
 			List<Askings> askings, List<Answers> answers) {
 		
 		// 答
-		CombatUtil.putAnswer( templet.answer, answers );
+		CombatUtil.putAnswer( attr.templet().answer, answers );
 		
 		return equips.warpFightProperty( attacks, defends, askings, answers );
 	}

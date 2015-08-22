@@ -48,6 +48,7 @@ public class TavernBuyEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt( ret.getuId() );
 			response.writeInt( ret.getnId() );
+			response.writeByte( ret.attr().getQuality() );
 			response.writeInt( player.getCurrency() );
 		}
 		sendPackage( player.getCtx(), response );

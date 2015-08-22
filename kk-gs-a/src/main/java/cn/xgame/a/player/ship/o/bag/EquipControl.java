@@ -12,7 +12,7 @@ import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
-import cn.xgame.a.prop.sequip.SEquip;
+import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.utils.Logs;
 
 /**
@@ -89,7 +89,7 @@ public class EquipControl extends IHold implements IArrayStream{
 	public boolean roomIsEnough( IProp prop ) {
 		if( !prop.isShipEquip() )
 			return false;
-		SEquip equip	= (SEquip)prop;
+		SEquipAttr equip	= (SEquipAttr)prop;
 		short sum 		= getAllOccupyRoomInType( equip.item().itemtype );
 		short room 		= equip.isWeapon() ? wroom : eroom;
 		return sum + prop.occupyRoom() <= room;
@@ -111,7 +111,7 @@ public class EquipControl extends IHold implements IArrayStream{
 		List<IProp> all = getAll();
 		for( IProp prop : all ){
 			try {
-				SEquip equip = (SEquip)prop;
+				SEquipAttr equip = (SEquipAttr)prop;
 				// 累加耐久度
 				dur += equip.templet().dur;
 				// 基础属性

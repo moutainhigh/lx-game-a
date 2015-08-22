@@ -8,6 +8,7 @@
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
+			setObject( "quality", dto.getQuality() );
 			setObject( "shipUid", dto.getShipUid() );
 			setObject( "equips", dto.getEquips() );
 
@@ -35,6 +36,7 @@
 			setObject( "ectypes", dto.getEctypes() );
 			setObject( "manors", dto.getManors() );
 			setObject( "chatAxns", dto.getChatAxns() );
+			setObject( "taverns", dto.getTaverns() );
 
 			super.commit( true );		}	}
 	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -63,6 +65,7 @@
 		private String uname = null;
 		private Integer uid = null;
 		private Integer nid = null;
+		private Byte quality = null;
 		private Integer shipUid = null;
 		private byte[] equips = null;
 
@@ -70,6 +73,7 @@
 			this.uname = src.uname;
 			this.uid = src.uid;
 			this.nid = src.nid;
+			this.quality = src.quality;
 			this.shipUid = src.shipUid;
 			this.equips = src.equips;
 
@@ -77,6 +81,7 @@
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
+		/**  品质  */		public Byte getQuality(){			return this.quality;		}
 		/**  所属舰船UID  */		public Integer getShipUid(){			return this.shipUid;		}
 		/**  装备信息  */		public byte[] getEquips(){			return this.equips;		}
 
@@ -84,6 +89,7 @@
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  品质  */		public void setQuality( Byte quality ){			this.quality = quality;		}
 		/**  所属舰船UID  */		public void setShipUid( Integer shipUid ){			this.shipUid = shipUid;		}
 		/**  装备信息  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
@@ -91,6 +97,7 @@
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String qualityChangeSql( Byte x) {			return "quality=" + x;		}
 		public static String shipUidChangeSql( Integer x) {			return "shipUid=" + x;		}
 		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
 
@@ -98,10 +105,11 @@
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
+			quality = o.getByte( "quality" );
 			shipUid = o.getInt( "shipUid" );
 			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"quality="+quality+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
 	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
@@ -170,6 +178,7 @@
 		private byte[] ectypes = null;
 		private byte[] manors = null;
 		private byte[] chatAxns = null;
+		private byte[] taverns = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -184,6 +193,7 @@
 			this.ectypes = src.ectypes;
 			this.manors = src.manors;
 			this.chatAxns = src.chatAxns;
+			this.taverns = src.taverns;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  唯一ID  */		public String getUid(){			return this.uid;		}
@@ -198,6 +208,7 @@
 		/**  副本(常驻副本-额外副本-偶发副本)  */		public byte[] getEctypes(){			return this.ectypes;		}
 		/**  领地  */		public byte[] getManors(){			return this.manors;		}
 		/**  聊天频道ID列表  */		public byte[] getChatAxns(){			return this.chatAxns;		}
+		/**  酒馆数据  */		public byte[] getTaverns(){			return this.taverns;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -212,6 +223,7 @@
 		/**  副本(常驻副本-额外副本-偶发副本)  */		public void setEctypes( byte[] ectypes ){			this.ectypes = ectypes;		}
 		/**  领地  */		public void setManors( byte[] manors ){			this.manors = manors;		}
 		/**  聊天频道ID列表  */		public void setChatAxns( byte[] chatAxns ){			this.chatAxns = chatAxns;		}
+		/**  酒馆数据  */		public void setTaverns( byte[] taverns ){			this.taverns = taverns;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
@@ -226,6 +238,7 @@
 		public static String ectypesChangeSql( byte[] x) {			return "ectypes=" + x;		}
 		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
 		public static String chatAxnsChangeSql( byte[] x) {			return "chatAxns=" + x;		}
+		public static String tavernsChangeSql( byte[] x) {			return "taverns=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -240,8 +253,9 @@
 			ectypes = o.getBytes( "ectypes" );
 			manors = o.getBytes( "manors" );
 			chatAxns = o.getBytes( "chatAxns" );
+			taverns = o.getBytes( "taverns" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

@@ -14,6 +14,7 @@ import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.ectype.o.PreEctype;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.ship.DockControl;
+import cn.xgame.a.player.tavern.TavernControl;
 import cn.xgame.a.player.u.o.DBBaseUID;
 import cn.xgame.a.player.u.o.IPlayer;
 import cn.xgame.a.world.WorldManager;
@@ -49,10 +50,21 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 玩家领地
 	private ManorControl 		manors			= new ManorControl( this );
-		
+	
+	// 偶发副本信息
+	private EctypeControl 		ectypes 		= new EctypeControl( this );
+	
+	// 玩家聊天聊天频道列表
+	private ChatAxnControl		chatAxns 		= new ChatAxnControl( this );
+	
+	// 酒馆数据
+	private TavernControl 		taverns			= new TavernControl( this );
+	
+	
+	//////////////////////////////////////////////////////////////////////
 	// 所有道具唯一ID基础值 
 	private DBBaseUID 			propBaseUid 	= new DBBaseUID( this );
-
+	
 	// 背包
 	private DepotControl 		depots 			= new DepotControl( this );
 	
@@ -61,12 +73,6 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 舰长室
 	private CaptainsControl 	captains 		= new CaptainsControl( this );
-	
-	// 偶发副本信息
-	private EctypeControl 		ectypes 		= new EctypeControl( this );
-	
-	// 玩家聊天聊天频道列表
-	private ChatAxnControl		chatAxns 		= new ChatAxnControl( this );
 	
 	/**
 	 * 创建一个
@@ -80,6 +86,7 @@ public class Player extends IPlayer implements ITransformStream{
 		setHeadIco( headIco );
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
+		taverns.init();
 	}
 	
 	/**
@@ -97,6 +104,8 @@ public class Player extends IPlayer implements ITransformStream{
 			ectypes.fromBytes( dto.getEctypes() );
 		// 取出 聊天频道列表
 		chatAxns.fromBytes( dto.getChatAxns() );
+		// 酒馆数据
+		taverns.fromBytes( dto.getTaverns() );
 		
 		////-------------------------下面不是玩家数据库的  但是需要在获取玩家的时候一起取出来
 		// 取出所有道具类型的基础UID
@@ -118,6 +127,8 @@ public class Player extends IPlayer implements ITransformStream{
 		dto.setEctypes( ectypes.toBytes() );
 		// 聊天
 		dto.setChatAxns( chatAxns.toBytes() );
+		// 酒馆
+		dto.setTaverns( taverns.toBytes() );
 	}
 	
 	@Override
@@ -248,7 +259,9 @@ public class Player extends IPlayer implements ITransformStream{
 	public ManorControl getManors() {
 		return manors;
 	}
-	
+	public TavernControl getTaverns() {
+		return taverns;
+	}
 
 
 

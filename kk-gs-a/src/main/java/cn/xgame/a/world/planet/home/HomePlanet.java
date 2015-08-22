@@ -16,13 +16,13 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.captain.o.CaptainInfo;
+import cn.xgame.a.player.tavern.TavernCaptain;
+import cn.xgame.a.player.tavern.TavernData;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
-import cn.xgame.a.world.planet.data.tavern.TCaptain;
-import cn.xgame.a.world.planet.data.tavern.TavernControl;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.tech.UnTechs;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
@@ -62,9 +62,6 @@ public class HomePlanet extends IPlanet {
 	// 瞭望距离 
 	private int 			qutlook 	= 0;
 	
-	// 酒馆
-	private TavernControl 	tavernControl ;
-	
 	// 商店列表
 	private List<IProp> 	shops 		= Lists.newArrayList();
 	
@@ -79,7 +76,6 @@ public class HomePlanet extends IPlanet {
 
 	public HomePlanet(StarsPo clone) {
 		super(clone);
-		tavernControl 	= new TavernControl( getId() );
 		techControl 	= new TechControl( getId() );
 		updateShop();
 	}
@@ -102,8 +98,6 @@ public class HomePlanet extends IPlanet {
 	@Override
 	public boolean isCanDonate() { return true; }
 	
-	public TavernControl getTavernControl() { return tavernControl; }
-	
 	@Override
 	public int getPeople() { return childs.size(); }
 	public List<Child> getPeoples() { return childs; }
@@ -115,8 +109,6 @@ public class HomePlanet extends IPlanet {
 		setInstitution(Institution.REPUBLIC);
 		// 初始瞭望
 		qutlook = 100;
-		// 酒馆
-		updateTavern();
 		// 副本
 		updateEctypeInOutlook();
 	}
@@ -143,8 +135,6 @@ public class HomePlanet extends IPlanet {
 		updateChildSequence();
 		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
 		updateInstitution();
-		// 更新一下酒馆
-		updateTavern();
 		// 根据瞭望科技 更新副本信息
 		updateEctypeInOutlook();
 	}
@@ -694,13 +684,6 @@ public class HomePlanet extends IPlanet {
 		}
 	}
 	
-	/**
-	 * 更新酒馆
-	 */
-	public void updateTavern(){
-		tavernControl.updateTavern( templet().tavernCapTimes );
-	}
-	
 	////////////------------------------------副本
 	
 	// 根据瞭望科技 更新副本信息
@@ -810,15 +793,18 @@ public class HomePlanet extends IPlanet {
 	 */
 	public CaptainInfo runTavernBuy( Player player, int nid ) throws Exception {
 		// 舰长是否存在
-		TCaptain tcap = tavernControl.getTCaptain(nid);
-		if( tcap == null )
+		TavernData tavernData = player.getTaverns().get( getId() );
+		if( tavernData == null )
+			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
+		TavernCaptain captain = tavernData.getCaptain( nid );
+		if( captain == null )
 			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 		
 		ItemPo item = CsvGen.getItemPo( nid );
 		int needGold = item.buygold <= 0 ? 1 : item.buygold;
 		//先判断 玩家是否该星球的
 		if( getChild( player.getUID() ) == null ){
-			needGold += 1;
+			needGold += 1000;
 		}
 		
 		// 看金币是否足够
@@ -826,10 +812,10 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		
 		// 放入舰长室
-		CaptainInfo ret = player.getCaptains().createCaptain(nid);
+		CaptainInfo ret = player.getCaptains().createCaptain( captain.id, captain.quality );
 		
 		// 将舰长从酒馆里面删除掉
-		tavernControl.remove( tcap );
+		tavernData.remove( nid );
 		
 		// 及时更新数据库
 		PlayerManager.o.update(player);

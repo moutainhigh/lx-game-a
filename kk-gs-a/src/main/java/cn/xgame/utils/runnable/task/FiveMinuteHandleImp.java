@@ -26,8 +26,6 @@ public class FiveMinuteHandleImp extends IThread{
 			// 
 			WorldManager.o.runUpdateInstitution();
 			
-			WorldManager.o.runTavern();
-			
 			
 			// 这里测试用于打印星球仓库信息
 			List<IPlanet> ls = WorldManager.o.getAllPlanet();

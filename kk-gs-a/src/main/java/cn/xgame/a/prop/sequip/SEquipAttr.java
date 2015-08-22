@@ -9,24 +9,24 @@ import cn.xgame.config.o.WeaponPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
- * 舰船装备对象
+ * 舰船装备属性
  * @author deng		
  * @date 2015-6-18 下午1:49:18
  */
-public class SEquip extends IProp{
+public class SEquipAttr extends IProp{
 
 	private final WeaponPo templet;
 	
 	// 当前耐久度
 	private int currentDur = 0;
 	
-	public SEquip(int uid, int nid, int count) {
+	public SEquipAttr(int uid, int nid, int count) {
 		super(uid, nid, count);
 		templet = CsvGen.getWeaponPo(nid);
 		currentDur = templet.dur;
 	}
 	
-	public SEquip( PropsDto o ) {
+	public SEquipAttr( PropsDto o ) {
 		super(o);
 		templet = CsvGen.getWeaponPo(getNid());
 		if( o.getAttach() == null )
@@ -37,7 +37,7 @@ public class SEquip extends IProp{
 
 	@Override
 	public IProp clone() {
-		SEquip ret = new SEquip(getUid(), getNid(), getCount());
+		SEquipAttr ret = new SEquipAttr(getUid(), getNid(), getCount());
 		ret.currentDur = currentDur;
 		return ret;
 	}

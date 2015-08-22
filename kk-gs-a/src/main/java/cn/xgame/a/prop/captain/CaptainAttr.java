@@ -8,27 +8,30 @@ import cn.xgame.config.o.CaptainPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
- * 舰长对象
+ * 舰长属性
  * @author deng		
  * @date 2015-6-17 下午7:19:24
  */
-public class Captains extends IProp {
+public class CaptainAttr extends IProp {
 
 	private final CaptainPo templet;
+	
+	// 舰长品质
+	private byte quality;
 
-	public Captains( int uid, int nid, int count ) {
+	public CaptainAttr( int uid, int nid, int count ) {
 		super( uid, nid, count );
 		templet = CsvGen.getCaptainPo(nid);
 	}
 
-	public Captains( PropsDto o ) {
+	public CaptainAttr( PropsDto o ) {
 		super( o );
 		templet = CsvGen.getCaptainPo( getNid() );
 	}
 	
 	@Override
 	public IProp clone() {
-		Captains ret = new Captains( getUid(), getNid(), getCount() );
+		CaptainAttr ret = new CaptainAttr( getUid(), getNid(), getCount() );
 		return ret ;
 	}
 	
@@ -59,6 +62,11 @@ public class Captains extends IProp {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public byte getQuality() {
+		return quality;
+	}
+	public void setQuality(byte quality) {
+		this.quality = quality;
+	}
 
 }

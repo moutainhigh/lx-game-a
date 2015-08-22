@@ -19,7 +19,7 @@ public class LXConstants {
 	//--------------------------通过配置获取
 	
 	/** 酒馆刷新时间 单位秒 */
-	public static int TAVERN_UPDATE_TIME 	= 300;
+	public static int TAVERN_UPDATE_TIME 	= 600;
 
 	/** 货币表格ID */
 	public static int CURRENCY_NID 			= 60000;

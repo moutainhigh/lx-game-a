@@ -19,6 +19,9 @@ public interface Captains {
 	/** 表格ID */
 	int nid();
 	
+	/** 品质 */
+	byte quality();
+	
 	/** 所属舰船UID */
 	int shipUid();
 	

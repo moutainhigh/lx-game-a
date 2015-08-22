@@ -1,5 +1,6 @@
 package cn.xgame.utils;
 
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.system.SystemCfg;
 import x.javaplus.util.lua.Lua;
 
@@ -15,7 +16,9 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getGameData() {
-		return new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
+		Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
+		lua.registerObject( CsvGen.class, "CsvGen" );
+		return lua;
 	}
 
 	/**

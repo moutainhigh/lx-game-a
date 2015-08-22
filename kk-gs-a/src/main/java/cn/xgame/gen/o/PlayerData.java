@@ -47,4 +47,7 @@ public interface PlayerData {
 	/** 聊天频道ID列表 */
 	byte[] chatAxns();
 	
+	/** 酒馆数据 */
+	byte[] taverns();
+	
 }
