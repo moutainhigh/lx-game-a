@@ -22,7 +22,6 @@ import x.javaplus.ip.IPSeeker;
 import x.javaplus.mysql.App;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
-import x.javaplus.util.Util.Sleep;
 import x.javaplus.util.lua.Lua;
 
 
@@ -68,7 +67,7 @@ public class Launch {
 			
 			// 2.连接 and 登录 - 登录服务器 
 			connectLoginServer();
-			Sleep.sleep( 10000 );
+			
 		} catch (Exception e) {
 			Logs.error( "Launch.main" + e.getMessage() );
 			LSClientAgency.close();
@@ -101,7 +100,7 @@ public class Launch {
 			Logs.debug( "线程启动完成 -- " );
 			
 		} catch (Exception e) {
-			Logs.error( "Launch.main", e );
+			Logs.error( "Launch.handleConnect", e );
 			LSClientAgency.close();
 		}
 		

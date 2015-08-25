@@ -102,7 +102,7 @@ public class TavernData implements IBufferStream,ITransformStream{
 	 * 获取剩余时间
 	 */
 	public int getSurplusTime(){
-		return intervalTime - (int) (System.currentTimeMillis()/1000 - rtime);
+		return intervalTime - ((int) (System.currentTimeMillis()/1000) - rtime);
 	}
 	
 	/**
