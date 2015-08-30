@@ -32,29 +32,17 @@ public abstract class IProp{
 	
 	/**
 	 * 创建一个 并保存到数据库
+	 * @param item 
 	 * @param uid
 	 * @param nid
 	 * @param count
 	 */
-	public IProp( int uid, int nid, int count ){
+	public IProp( ItemPo item, int uid, int nid, int count ){
 		this.uid 	= uid;
 		this.nid 	= nid;
-		this.item 	= CsvGen.getItemPo(nid);
+		this.item 	= item;
 		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( count );
-	}
-	
-	/**
-	 * 从数据库获取数据
-	 * @param o
-	 */
-	public IProp( PropsDto o ){
-		this.uid 	= o.getUid();
-		this.nid 	= o.getNid();
-		this.item 	= CsvGen.getItemPo(nid);
-		this.type 	= PropType.fromNumber( item.bagtype );
-		addCount( o.getCount() );
-		wrapAttachBytes( o.getAttach() );
 	}
 	
 	/**
@@ -71,6 +59,18 @@ public abstract class IProp{
 	}
 	
 	/**
+	 * 拷贝一份
+	 * @param clone
+	 */
+	public IProp( IProp clone ) {
+		this.uid 	= clone.uid;
+		this.nid 	= clone.nid;
+		this.count 	= clone.count;
+		this.item 	= clone.item;
+		this.type 	= clone.type;
+	}
+
+	/**
 	 * 创建一个简单的道具
 	 * @param uid
 	 * @param nid
@@ -79,8 +79,20 @@ public abstract class IProp{
 	 */
 	public static IProp create( int uid, int nid, int count ) {
 		ItemPo item 	= CsvGen.getItemPo(nid);
+		if( item == null ) return null;
 		PropType type 	= PropType.fromNumber( item.bagtype );
-		return type.create(uid, nid, count);
+		return type.create( item, uid, nid, count );
+	}
+	
+	/**
+	 * 从数据库中创建一个道具出来
+	 * @param buf
+	 * @return
+	 */
+	public static IProp create( PropsDto o ) {
+		IProp prop 	= create( o.getUid(), o.getNid(), o.getCount() );
+		prop.wrapAttachBytes( o.getAttach() );
+		return prop;
 	}
 	
 	/**

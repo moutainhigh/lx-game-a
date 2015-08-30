@@ -5,7 +5,7 @@ import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.CaptainPo;
-import cn.xgame.gen.dto.MysqlGen.PropsDto;
+import cn.xgame.config.o.ItemPo;
 
 /**
  * 舰长属性
@@ -19,22 +19,19 @@ public class CaptainAttr extends IProp {
 	// 舰长品质
 	private byte quality;
 
-	public CaptainAttr( int uid, int nid, int count ) {
-		super( uid, nid, count );
+	public CaptainAttr( ItemPo item, int uid, int nid, int count ) {
+		super( item, uid, nid, count );
 		templet = CsvGen.getCaptainPo(nid);
 	}
 
-	public CaptainAttr( PropsDto o ) {
-		super( o );
-		templet = CsvGen.getCaptainPo( getNid() );
+	private CaptainAttr( CaptainAttr clone ) {
+		super( clone );
+		templet = clone.templet;
+		quality	= clone.quality;
 	}
 	
 	@Override
-	public IProp clone() {
-		CaptainAttr ret = new CaptainAttr( getUid(), getNid(), getCount() );
-		ret.quality 	= this.quality;
-		return ret ;
-	}
+	public CaptainAttr clone() { return new CaptainAttr( this ); }
 	
 	public CaptainPo templet(){ return templet; }
 	

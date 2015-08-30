@@ -2,7 +2,7 @@ package cn.xgame.a.prop.stuff;
 
 
 import cn.xgame.a.prop.IProp;
-import cn.xgame.gen.dto.MysqlGen.PropsDto;
+import cn.xgame.config.o.ItemPo;
 
 /**
  * 材料属性
@@ -12,20 +12,16 @@ import cn.xgame.gen.dto.MysqlGen.PropsDto;
 public class StuffAttr extends IProp{
 	
 	
-	public StuffAttr( int uid, int nid, int count ) {
-		super( uid, nid, count );
+	public StuffAttr( ItemPo item, int uid, int nid, int count ) {
+		super( item, uid, nid, count );
 	}
 	
-	public StuffAttr( PropsDto o ){
-		super(o);
+	private StuffAttr( StuffAttr clone ){
+		super( clone );
 	}
 	
 	@Override
-	public IProp clone() {
-		StuffAttr ret = new StuffAttr(getUid(), getNid(), getCount());
-		
-		return ret;
-	}
+	public StuffAttr clone() { return new StuffAttr(this); }
 
 	@Override
 	public byte[] toAttachBytes() {

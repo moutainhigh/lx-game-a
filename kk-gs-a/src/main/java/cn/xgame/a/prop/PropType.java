@@ -8,7 +8,7 @@ import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.a.prop.ship.ShipAttr;
 import cn.xgame.a.prop.stuff.StuffAttr;
-import cn.xgame.gen.dto.MysqlGen.PropsDto;
+import cn.xgame.config.o.ItemPo;
 
 /**
  * 道具大类型
@@ -20,11 +20,7 @@ public enum PropType {
 	/** 其他 */
 	OTHER( 1 ) {
 		@Override
-		public IProp create( int uid, int nid, int count ) {
-			return null;
-		}
-		@Override
-		public IProp wrapDB(PropsDto dto) {
+		public IProp create( ItemPo item, int uid, int nid, int count ) {
 			return null;
 		}
 	},
@@ -32,60 +28,40 @@ public enum PropType {
 	/** 舰船 */
 	SHIP( 2 ) {
 		@Override
-		public IProp create( int uid, int nid, int count) {
-			return new ShipAttr( uid, nid, count );
-		}
-		@Override
-		public IProp wrapDB( PropsDto dto ) {
-			return new ShipAttr( dto );
+		public IProp create( ItemPo item, int uid, int nid, int count) {
+			return new ShipAttr( item, uid, nid, count );
 		}
 	},
 	
 	/** 舰船装备 */
 	SEQUIP( 3 ) {
 		@Override
-		public IProp create( int uid, int nid, int count) {
-			return new SEquipAttr( uid, nid, count );
-		}
-		@Override
-		public IProp wrapDB(PropsDto dto) {
-			return new SEquipAttr( dto );
+		public IProp create( ItemPo item, int uid, int nid, int count) {
+			return new SEquipAttr( item, uid, nid, count );
 		}
 	},
 	
 	/** 舰长 */
 	CAPTAIN( 4 ) {
 		@Override
-		public IProp create( int uid, int nid, int count) {
-			return new CaptainAttr( uid, nid, count );
-		}
-		@Override
-		public IProp wrapDB(PropsDto dto) {
-			return new CaptainAttr( dto );
+		public IProp create( ItemPo item, int uid, int nid, int count) {
+			return new CaptainAttr( item, uid, nid, count );
 		}
 	},
 	
 	/** 舰长装备 */
 	CEQUIP( 5 ) {
 		@Override
-		public IProp create( int uid, int nid, int count) {
-			return new CEquipAttr( uid, nid, count );
-		}
-		@Override
-		public IProp wrapDB(PropsDto dto) {
-			return new CEquipAttr( dto );
+		public IProp create( ItemPo item, int uid, int nid, int count) {
+			return new CEquipAttr( item, uid, nid, count );
 		}
 	},
 	
 	/** 材料 */
 	STUFF( 6 ) {
 		@Override
-		public IProp create( int uid, int nid, int count ) {
-			return new StuffAttr( uid, nid, count );
-		}
-		@Override
-		public IProp wrapDB(PropsDto dto) {
-			return new StuffAttr( dto );
+		public IProp create( ItemPo item, int uid, int nid, int count ) {
+			return new StuffAttr( item, uid, nid, count );
 		}
 	};
 	
@@ -112,18 +88,12 @@ public enum PropType {
 
 	/**
 	 * 创建一个 道具
+	 * @param item 
 	 * @param uid
 	 * @param nid
 	 * @param count
 	 * @return
 	 */
-	public abstract IProp create( int uid, int nid, int count);
-	
-	/**
-	 * 从数据库获取一个 道具
-	 * @param dto
-	 * @return
-	 */
-	public abstract IProp wrapDB( PropsDto dto );
+	public abstract IProp create( ItemPo item, int uid, int nid, int count);
 	
 }

@@ -8,7 +8,6 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
@@ -68,7 +67,7 @@ public class DonateStuffEvent extends IEvent{
 	private IProp deductCurrency(Player player, int count) throws Exception {
 		if( player.changeCurrency( -count ) == -1 )
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
-		return PropType.STUFF.create( 0, LXConstants.CURRENCY_NID, count );
+		return IProp.create( 0, LXConstants.CURRENCY_NID, count );
 	}
 
 	// 扣除道具

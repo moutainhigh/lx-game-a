@@ -9,9 +9,6 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -56,13 +53,9 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		List<PropsDto> dtos = dao.getByExact(sql);
 		dao.commit();
 		for( PropsDto dto : dtos ){
-			IProp prop = wrapInDB( dto );
+			IProp prop = IProp.create( dto );
 			super.append( prop );
 		}
-	}
-	private IProp wrapInDB( PropsDto dto ) {
-		ItemPo item = CsvGen.getItemPo( dto.getNid() );
-		return PropType.fromNumber( item.bagtype ).wrapDB( dto );
 	}
 
 	/**
@@ -76,27 +69,25 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
 		
 		List<IProp> ret = Lists.newArrayList();
-		ItemPo item 	= CsvGen.getItemPo(nid);
-		if( item == null ){
-			Logs.error( root, "创建道具出错 nid="+nid+" 没找到！" );
-			return ret;
+		
+		try {
+			IProp prop = getCanCumsumProp( nid );
+			if( prop == null ){
+				ret.add( createProp( nid, count ) );
+			}else{
+				// 算出差值
+				int surplus = prop.addCount( count );
+				// 保存数据库
+				prop.updateDB(root);
+				ret.add( prop );
+				// 如果有多余的 就在创建一个 
+				if( surplus > 0 )
+					ret.add( createProp( nid, surplus ) );
+			}
+		} catch (Exception e) {
+			Logs.debug( root, e.getMessage() );
 		}
 		
-		PropType type 	= PropType.fromNumber( item.bagtype );
-		
-		IProp prop 		= getCanCumsumProp( nid );
-		if( prop == null ){
-			ret.add( createProp( type, nid, count ) );
-		}else{
-			// 算出差值
-			int surplus = prop.addCount( count );
-			// 保存数据库
-			prop.updateDB(root);
-			ret.add( prop );
-			// 如果有多余的 就在创建一个 
-			if( surplus > 0 )
-				ret.add( createProp( type, nid, surplus ) );
-		}
 		return ret;
 	}
 	public List<IProp> appendProp( IProp prop ) {
@@ -126,17 +117,20 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param nid
 	 * @param count
 	 * @return
+	 * @throws Exception 
 	 */
-	private IProp createProp( PropType type, int nid, int count){
+	private IProp createProp( int nid, int count) throws Exception{
 		// 创建一个道具出来
-		IProp prop = type.create( root.generatorPropUID(), nid, count );
+		IProp prop = IProp.create( root.generatorPropUID(), nid, count );
+		if( prop == null )
+			throw new Exception( "创建道具出错 nid="+nid+" 没找到！" );
 		// 放入背包
 		super.append( prop );
 		// 在数据库 创建数据
 		prop.createDB( root );
 		// 这里看数量是否超过累加数
 		if( prop.getCount() < count )
-			createProp( type, nid, count - prop.getCount() );
+			createProp( nid, count - prop.getCount() );
 		return prop;
 	}
 	

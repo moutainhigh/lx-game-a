@@ -12,6 +12,7 @@ import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.captain.CaptainAttr;
 import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
@@ -33,13 +34,13 @@ public class CaptainInfo implements ITransformStream{
 	
 	private EquipControl equips 	= new EquipControl();
 	
-	public CaptainInfo(int uid, int nid, byte quality) {
-		attr = new CaptainAttr( uid, nid, 1 );
+	public CaptainInfo( int uid, int nid, byte quality ) {
+		attr = (CaptainAttr) IProp.create( uid, nid, 1 );
 		attr.setQuality( quality );
 	}
 
 	public CaptainInfo(CaptainsDto dto) {
-		attr 	= new CaptainAttr( dto.getUid(), dto.getNid(), 1 );
+		attr = (CaptainAttr) IProp.create( dto.getUid(), dto.getNid(), 1 );
 		attr.setQuality( dto.getQuality() );
 		shipUid	= dto.getShipUid();
 		equips.fromBytes( dto.getEquips() );

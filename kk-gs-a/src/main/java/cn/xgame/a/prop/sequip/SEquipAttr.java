@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.WeaponPo;
-import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
  * 舰船装备属性
@@ -19,23 +19,20 @@ public class SEquipAttr extends IProp{
 	// 当前耐久度
 	private int currentDur = 0;
 	
-	public SEquipAttr(int uid, int nid, int count) {
-		super(uid, nid, count);
+	public SEquipAttr( ItemPo item, int uid, int nid, int count ) {
+		super( item, uid, nid, count);
 		templet 	= CsvGen.getWeaponPo(nid);
 		currentDur 	= templet.dur;
 	}
 	
-	public SEquipAttr( PropsDto o ) {
-		super(o);
-		templet = CsvGen.getWeaponPo(getNid());
+	private SEquipAttr( SEquipAttr clone ){
+		super( clone );
+		templet 	= clone.templet;
+		currentDur 	= clone.currentDur;
 	}
-
+	
 	@Override
-	public IProp clone() {
-		SEquipAttr ret = new SEquipAttr(getUid(), getNid(), getCount());
-		ret.currentDur = this.currentDur;
-		return ret;
-	}
+	public SEquipAttr clone() { return new SEquipAttr( this ); }
 	
 	public WeaponPo templet() { return templet; }
 

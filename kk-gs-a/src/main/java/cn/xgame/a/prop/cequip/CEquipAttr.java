@@ -3,8 +3,8 @@ package cn.xgame.a.prop.cequip;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.TreasurePo;
-import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
 /**
  * 舰长装备属性
@@ -16,25 +16,23 @@ public class CEquipAttr extends IProp{
 	private final TreasurePo templet;
 	
 		
-	public CEquipAttr(int uid, int nid, int count) {
-		super( uid, nid, count );
+	public CEquipAttr(ItemPo item, int uid, int nid, int count) {
+		super( item, uid, nid, count );
 		templet = CsvGen.getTreasurePo(nid);
 	}
 	
-	public CEquipAttr( PropsDto o ) {
-		super( o );
-		templet = CsvGen.getTreasurePo( getNid() );
-	}
 	public CEquipAttr( ByteBuf buf ) {
 		super( buf );
 		templet = CsvGen.getTreasurePo( getNid() );
 	}
+	
+	private CEquipAttr( CEquipAttr clone ) {
+		super( clone );
+		templet = clone.templet;
+	}
 
 	@Override
-	public IProp clone() {
-		CEquipAttr ret = new CEquipAttr(getUid(), getNid(), getCount());
-		return ret;
-	}
+	public CEquipAttr clone() { return new CEquipAttr(this); }
 	
 	public TreasurePo templet() { return templet; }
 	
