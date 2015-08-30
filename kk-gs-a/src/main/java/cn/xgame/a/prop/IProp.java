@@ -135,23 +135,6 @@ public abstract class IProp{
 	}
 	
 	/**
-	 * 克隆一个
-	 */
-	public abstract IProp clone();
-	
-	/**
-	 * 把附加属性塞入
-	 * @param buf
-	 */
-	public abstract byte[] toAttachBytes();
-	
-	/**
-	 * 获取 附加属性
-	 * @param buf
-	 */
-	public abstract void wrapAttachBytes( byte[] bytes );
-	
-	/**
 	 * 在数据库创建数据
 	 * @param player
 	 */
@@ -168,7 +151,7 @@ public abstract class IProp{
 	}
 	
 	/**
-	 * 更新数据库数据
+	 * 更新数据库数据 - 只用于玩家仓库
 	 * @param player
 	 */
 	public void updateDB( Player player ) {
@@ -183,7 +166,7 @@ public abstract class IProp{
 	}
 
 	/**
-	 * 从数据库删除数据
+	 * 从数据库删除数据 - 只用于玩家仓库
 	 * @param player
 	 */
 	public void deleteDB( Player player ){
@@ -194,6 +177,24 @@ public abstract class IProp{
 		dao.commit();
 	}
 	
+	/**
+	 * 克隆一个
+	 */
+	public abstract IProp clone();
+	
+	/**
+	 * 把附加属性塞入
+	 * @param buf
+	 */
+	public abstract byte[] toAttachBytes();
+	
+	/**
+	 * 获取 附加属性
+	 * @param buf
+	 */
+	public abstract void wrapAttachBytes( byte[] bytes );
+	
+	
 	public ItemPo item(){ return item; }
 	public int getUid() { return uid; }
 	public void setUid(int uId) { this.uid = uId; }
@@ -202,81 +203,48 @@ public abstract class IProp{
 	public int getCount() { return count; }
 	public void setCount(int count) { this.count = count; }
 	
-	/**
-	 * 道具类型
-	 * @return
-	 */
+	/** 道具类型 */
 	public PropType type(){ return type; }
 	/**
-	 * 道具小类型
-	 * type == 2 舰船
-	 * 1.
-	 * 
-	 * ------type == 3 舰船装备
-	 * 1.武器(攻击)
-	 * 2.防具(防御)
-	 * 3.推进器
-	 * 4.辅助
-	 * 
+	 * 道具小类型<br>
+	 * ------type == 2 舰船<br>
+	 * 1.<br>
+	 * ------type == 3 舰船装备<br>
+	 * 1.武器(攻击)<br>
+	 * 2.防具(防御)<br>
+	 * 3.推进器<br>
+	 * 4.辅助<br>
 	 * 
 	 * @return
 	 */
-	public int itemType() {
-		return item.itemtype;
-	}
+	public int itemType() { return item.itemtype; }
 	
 	/** 获取这个物品的贡献度 */
-	public int getContributions() {
-		return item.sellgold == 0 ? 1 : item.sellgold * 5;
-	}
+	public int getContributions() { return item.sellgold == 0 ? 1 : item.sellgold * 5; }
 	
-	/**
-	 * 是否可以累加
-	 * @return
-	 */
-	public boolean isCanCumsum() {
-		return count < item.manymax;
-	}
+	/** 是否可以累加 */
+	public boolean isCanCumsum() { return count < item.manymax; }
 	
-	/**
-	 * 道具占用空间
-	 * @return
-	 */
-	public int occupyRoom() {
-		return item.usegrid;
-	}
+	/** 道具占用空间 */
+	public int occupyRoom() { return item.usegrid; }
 	
-	/**
-	 * 是否一个空的道具
-	 * @return
-	 */
-	public boolean isEmpty() {
-		return count <= 0;
-	}
+	/** 是否一个空的道具 */
+	public boolean isEmpty() { return count <= 0; }
 	
-	/**
-	 * 是否货币
-	 * @return
-	 */
-	public boolean isCurrency() {
-		return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID;
-	}
+	/** 是否货币 */
+	public boolean isCurrency() { return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID; }
 	
-	/**
-	 * 是否舰船装备
-	 * @return
-	 */
-	public boolean isShipEquip() {
-		return type() == PropType.SEQUIP;
-	}
+	/** 是否舰船装备 */
+	public boolean isShipEquip() { return type == PropType.SEQUIP; }
 	
-	/**
-	 * 是否舰长装备
-	 * @return
-	 */
-	public boolean isCaptainEquip() {
-		return type() == PropType.CEQUIP;
-	}
+	/** 是否舰长装备 */
+	public boolean isCaptainEquip() { return type == PropType.CEQUIP; }
+	
+	/** 道具出售价格  */
+	public int getSellgold() { return item.buygold; }
+
+	/** 最大叠加数 */
+	public int getMaxOverlap() { return item.manymax; }
 	
 	/**
 	 * 添加数量 
@@ -305,23 +273,6 @@ public abstract class IProp{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
-
-	/**
-	 * 道具出售价格
-	 * @return
-	 */
-	public int getSellgold() {
-		return item.buygold;
-	}
-
-	/**
-	 * 最大叠加数
-	 * @return
-	 */
-	public int getMaxOverlap() {
-		return item.manymax;
-	}
-
 
 
 }
