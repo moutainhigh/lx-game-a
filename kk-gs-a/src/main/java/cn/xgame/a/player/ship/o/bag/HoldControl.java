@@ -8,7 +8,6 @@ import io.netty.buffer.Unpooled;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 
 /**
  * 一个货仓
@@ -36,16 +35,11 @@ public class HoldControl extends IHold implements IArrayStream{
 		setRoom(buf.readShort());
 		short size 	= buf.readShort();
 		for( int i = 0; i < size; i++ ){
-			PropType type 	= PropType.fromNumber( buf.readByte() );
-			int uid			= buf.readInt();
-			int nid 		= buf.readInt();
-			int count 		= buf.readInt();
-			IProp prop 		= type.create( uid, nid, count );
-			prop.wrapAttach( buf );
+			IProp prop 		= IProp.create( buf );
 			super.append( prop );
 			
 			// 得出最大的唯一ID
-			if( uid > propUID ) propUID	= uid;
+			if( prop.getUid() > propUID ) propUID = prop.getUid();
 		}
 	}
 
@@ -55,9 +49,7 @@ public class HoldControl extends IHold implements IArrayStream{
 		buf.writeShort( getRoom() );
 		buf.writeShort( props.size() );
 		for( IProp o : props ){
-			buf.writeByte( o.type().toNumber() );
-			o.putBaseBuffer(buf);
-			o.putAttachBuffer(buf);
+			o.putBuffer(buf);
 		}
 		return buf.array();
 	}

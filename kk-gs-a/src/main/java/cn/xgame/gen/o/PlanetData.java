@@ -30,4 +30,7 @@ public interface PlanetData {
 	
 	/** 星球科技 */
 	byte[] techs();
+	
+	/** 交易所 */
+	byte[] exchanges();
 }

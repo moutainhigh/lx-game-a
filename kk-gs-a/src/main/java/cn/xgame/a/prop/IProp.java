@@ -1,13 +1,13 @@
 package cn.xgame.a.prop;
 
 import x.javaplus.mysql.db.Condition;
-import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import io.netty.buffer.ByteBuf;
 
@@ -16,7 +16,7 @@ import io.netty.buffer.ByteBuf;
  * @author deng		
  * @date 2015-6-17 下午7:02:11
  */
-public abstract class IProp implements ITransformStream{
+public abstract class IProp{
 	
 	// 基础物品表
 	private final ItemPo item;
@@ -54,6 +54,20 @@ public abstract class IProp implements ITransformStream{
 		this.item 	= CsvGen.getItemPo(nid);
 		this.type 	= PropType.fromNumber( item.bagtype );
 		addCount( o.getCount() );
+		wrapAttachBytes( o.getAttach() );
+	}
+	
+	/**
+	 * 从buffer中获取数据
+	 * @param o
+	 */
+	public IProp( ByteBuf buf ){
+		this.uid 	= buf.readInt();
+		this.nid 	= buf.readInt();
+		addCount( buf.readInt() );
+		wrapAttachBytes( RW.readBytes(buf) );
+		this.item 	= CsvGen.getItemPo(nid);
+		this.type 	= PropType.fromNumber( item.bagtype );
 	}
 	
 	/**
@@ -67,6 +81,20 @@ public abstract class IProp implements ITransformStream{
 		ItemPo item 	= CsvGen.getItemPo(nid);
 		PropType type 	= PropType.fromNumber( item.bagtype );
 		return type.create(uid, nid, count);
+	}
+	
+	/**
+	 * 从buffer中创建一个道具出来
+	 * @param buf
+	 * @return
+	 */
+	public static IProp create( ByteBuf buf ) {
+		int uid 	= buf.readInt();
+		int nid 	= buf.readInt();
+		int count 	= buf.readInt();
+		IProp prop 	= create( uid, nid, count );
+		prop.wrapAttachBytes( RW.readBytes(buf) );
+		return prop;
 	}
 	
 	public String toString(){
@@ -83,6 +111,16 @@ public abstract class IProp implements ITransformStream{
 		buffer.writeInt(count);
 	}
 	
+	/**
+	 * 写入全部数据到buffer
+	 * @param buf
+	 */
+	public void putBuffer( ByteBuf buffer ) {
+		buffer.writeInt(uid);
+		buffer.writeInt(nid);
+		buffer.writeInt(count);
+		buffer.writeBytes( toAttachBytes() );
+	}
 	
 	/**
 	 * 克隆一个
@@ -93,20 +131,19 @@ public abstract class IProp implements ITransformStream{
 	 * 把附加属性塞入
 	 * @param buf
 	 */
-	public abstract void putAttachBuffer( ByteBuf buf );
-
+	public abstract byte[] toAttachBytes();
+	
 	/**
 	 * 获取 附加属性
 	 * @param buf
 	 */
-	public abstract void wrapAttach( ByteBuf buf ) ;
+	public abstract void wrapAttachBytes( byte[] bytes );
 	
 	/**
 	 * 在数据库创建数据
 	 * @param player
 	 */
-	public abstract void createDB( Player player );
-	protected void create( Player player, byte[] attach ){
+	public void createDB( Player player ){
 		PropsDao dao = SqlUtil.getPropsDao();
 		PropsDto dto = dao.create();
 		dto.setGsid( player.getGsid() );
@@ -114,7 +151,7 @@ public abstract class IProp implements ITransformStream{
 		dto.setUid( uid );
 		dto.setNid( nid );
 		dto.setCount( count );
-		dto.setAttach( attach );
+		dto.setAttach( toAttachBytes() );
 		dao.commit(dto);
 	}
 	
@@ -122,18 +159,17 @@ public abstract class IProp implements ITransformStream{
 	 * 更新数据库数据
 	 * @param player
 	 */
-	public abstract void updateDB( Player player );
-	protected void update( Player player, byte[] attach ) {
+	public void updateDB( Player player ) {
 		PropsDao dao 	= SqlUtil.getPropsDao();
 		String sql 		= new Condition( PropsDto.uidChangeSql( uid ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
 				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
 		PropsDto dto	= dao.updateByExact( sql );
 		dto.setNid( nid );
 		dto.setCount( getCount() );
-		dto.setAttach( attach );
+		dto.setAttach( toAttachBytes() );
 		dao.commit(dto);
 	}
-	
+
 	/**
 	 * 从数据库删除数据
 	 * @param player
@@ -273,5 +309,7 @@ public abstract class IProp implements ITransformStream{
 	public int getMaxOverlap() {
 		return item.manymax;
 	}
+
+
 
 }

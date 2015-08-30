@@ -27,6 +27,7 @@ import cn.xgame.net.event.all.pl.ectype.ApplyEctypeInfoEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
@@ -45,6 +46,8 @@ import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
+import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
+import cn.xgame.net.event.all.pl.transaction.ExchBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
@@ -96,6 +99,7 @@ public enum Events {
 	APPLY_ALLLAFFAIR			( 1113, 	new ApplyAlllAffairEvent() ),
 	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent() ),
 	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent() ),
+	APPLY_EXCH					( 1116, 	new ApplyExchEvent() ),
 	DONATE_STUFF				( 1121, 	new DonateStuffEvent() ),
 	
 	// 建筑
@@ -115,6 +119,8 @@ public enum Events {
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent() ),
 	TAVERN_BUY					( 1311, 	new TavernBuyEvent() ),
+	EXCH_ADDED					( 1321, 	new ExchAddedEvent() ),
+	EXCH_BUY					( 1322, 	new ExchBuyEvent() ),
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent() ),

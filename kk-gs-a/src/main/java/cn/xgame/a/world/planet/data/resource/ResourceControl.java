@@ -10,7 +10,6 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.utils.Logs;
 
 /**
@@ -41,16 +40,11 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			PropType type 	= PropType.fromNumber( buf.readByte() );
-			int uid			= buf.readInt();
-			int nid 		= buf.readInt();
-			int count 		= buf.readInt();
-			IProp prop 		= type.create( uid, nid, count );
-			prop.wrapAttach(buf);
+			IProp prop = IProp.create( buf );
 			super.append( prop );
 			
 			// 得出最大的唯一ID
-			if( uid > resUID ) resUID = uid;
+			if( prop.getUid() > resUID ) resUID = prop.getUid();
 		}
 	}
 
@@ -62,9 +56,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		buf.writeByte( ls.size() );
 		for( IProp prop : ls ){
-			buf.writeByte( prop.type().toNumber() );
-			prop.putBaseBuffer(buf);
-			prop.putAttachBuffer(buf);
+			prop.putBuffer(buf);
 		}
 		return buf.array();
 	}

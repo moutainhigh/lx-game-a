@@ -1,7 +1,6 @@
 package cn.xgame.a.prop.cequip;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.TreasurePo;
@@ -18,11 +17,16 @@ public class CEquipAttr extends IProp{
 	
 		
 	public CEquipAttr(int uid, int nid, int count) {
-		super(uid, nid, count);
+		super( uid, nid, count );
 		templet = CsvGen.getTreasurePo(nid);
 	}
+	
 	public CEquipAttr( PropsDto o ) {
-		super(o);
+		super( o );
+		templet = CsvGen.getTreasurePo( getNid() );
+	}
+	public CEquipAttr( ByteBuf buf ) {
+		super( buf );
 		templet = CsvGen.getTreasurePo( getNid() );
 	}
 
@@ -32,27 +36,14 @@ public class CEquipAttr extends IProp{
 		return ret;
 	}
 	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public TreasurePo templet() { return templet; }
-
+	
 	@Override
-	public void createDB(Player player) {
-		super.create(player, null);
+	public byte[] toAttachBytes() {
+		return null;
 	}
 	@Override
-	public void updateDB(Player player) {
-		super.update(player, null);
-	}
-	@Override
-	public void putAttachBuffer(ByteBuf buf) {
-	}
-	@Override
-	public void wrapAttach(ByteBuf buf) {
+	public void wrapAttachBytes(byte[] bytes) {
 	}
 
 }

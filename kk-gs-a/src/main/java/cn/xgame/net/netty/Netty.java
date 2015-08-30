@@ -60,6 +60,18 @@ public class Netty {
 			}
 			return "";
 		}
+		
+		/** 读取bytes */
+		public static byte[] readBytes( ByteBuf buf ){
+			short len = buf.readShort();
+			if( len > 0 ){
+				byte[] ret = new byte[len];
+				buf.readBytes(ret);
+				return ret;
+			}
+			return null;
+		}
+		
 	}
 	
 	public static final class Attr{

@@ -100,7 +100,10 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 		return ret;
 	}
 	public List<IProp> appendProp( IProp prop ) {
-		// TODO 以后要加有成长属性的物品   那么就在这里做
+		if( prop.getMaxOverlap() == 1 ){
+			append( prop );
+			return Lists.newArrayList( prop );
+		}
 		return appendProp( prop.getNid(), prop.getCount() );
 	}
 	/**

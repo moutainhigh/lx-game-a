@@ -1,7 +1,5 @@
 package cn.xgame.a.prop.ship;
 
-import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ShipPo;
@@ -24,7 +22,6 @@ public class ShipAttr extends IProp{
 	public ShipAttr( PropsDto o ){
 		super(o);
 		templet = CsvGen.getShipPo( getNid() );
-		// 下面加自己的属性 o.getAttach();
 	}
 	
 	@Override
@@ -33,40 +30,17 @@ public class ShipAttr extends IProp{
 		return ret;
 	}
 	
-	@Override
-	public void createDB( Player player ) {
-		super.create( player, null );
-	}
-
-	@Override
-	public void updateDB( Player player ) {
-		super.update( player, null );
-	}
-	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public ShipPo templet(){ return templet; }
 
 	@Override
-	public void putAttachBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+	public byte[] toAttachBytes() {
+		return null;
 	}
 
 	@Override
-	public void wrapAttach(ByteBuf buf) {
-		// TODO Auto-generated method stub
+	public void wrapAttachBytes(byte[] bytes) {
 		
 	}
-
-
-
-
-
 
 
 }

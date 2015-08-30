@@ -30,8 +30,7 @@ public class EquipControl implements IArrayStream{
 		if( data == null )
 			return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		equip = new CEquipAttr( buf.readInt(), buf.readInt(), buf.readInt() );
-		equip.wrapAttach(buf);
+		equip = new CEquipAttr( buf );
 	}
 	
 	@Override
@@ -39,10 +38,7 @@ public class EquipControl implements IArrayStream{
 		if( equip == null )
 			return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeInt( equip.getUid() );
-		buf.writeInt( equip.getNid() );
-		buf.writeInt( equip.getCount() );
-		equip.putAttachBuffer(buf);
+		equip.putBuffer( buf );
 		return buf.array();
 	}
 	

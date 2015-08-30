@@ -22,6 +22,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
+import cn.xgame.a.world.planet.data.exchange.ExchangeControl;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
 import cn.xgame.a.world.planet.data.tech.UnTechs;
@@ -73,27 +74,26 @@ public class HomePlanet extends IPlanet {
 	
 	// 科技列表
 	private TechControl techControl ;
+	
+	// 交易所
+	private ExchangeControl exchangeControl;
 
 	public HomePlanet(StarsPo clone) {
 		super(clone);
 		techControl 	= new TechControl( getId() );
+		exchangeControl	= new ExchangeControl( getId() );
 		updateShop();
 	}
 
 	@Override
 	public Institution getInstitution() { return institution; }
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
-	}
+	public void setInstitution(Institution institution) { this.institution = institution; }
 	@Override
 	public byte getTechLevel() { return techLevel; }
-	public void setTechLevel(byte techLevel) {
-		this.techLevel = techLevel;
-	}
+	public void setTechLevel(byte techLevel) { this.techLevel = techLevel; }
 	public int getQutlook() { return qutlook; }
-	public void setQutlook(int qutlook) {
-		this.qutlook = qutlook;
-	}
+	public void setQutlook(int qutlook) { this.qutlook = qutlook; }
+	public ExchangeControl getExchange(){ return this.exchangeControl; }
 	
 	@Override
 	public boolean isCanDonate() { return true; }
@@ -129,6 +129,7 @@ public class HomePlanet extends IPlanet {
 		wrapPlayer( dto.getPlayers() );
 		wrapOustPlayer( dto.getExpelGenr() );
 		techControl.fromBytes( dto.getTechs() );
+		exchangeControl.fromBytes( dto.getExchanges() );
 		// 根据科技获取最大星球科技等级
 		updateTechLevel();
 		// 先排个序
@@ -241,6 +242,7 @@ public class HomePlanet extends IPlanet {
 		dto.setTechs( techControl.toBytes() );
 		dto.setPlayers( toPlayers() );
 		dto.setExpelGenr( toOustPlayers() );
+		dto.setExchanges( exchangeControl.toBytes() );
 		dao.commit(dto);
 	}
 

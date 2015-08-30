@@ -1,8 +1,6 @@
 package cn.xgame.a.prop.stuff;
 
 
-import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 
@@ -20,8 +18,6 @@ public class StuffAttr extends IProp{
 	
 	public StuffAttr( PropsDto o ){
 		super(o);
-		// 下面加自己的属性 o.getAttach();
-		
 	}
 	
 	@Override
@@ -30,31 +26,14 @@ public class StuffAttr extends IProp{
 		
 		return ret;
 	}
-	
-	
+
 	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		
-		
+	public byte[] toAttachBytes() {
+		return null;
 	}
 
 	@Override
-	public void createDB(Player player) {
-		super.create(player, null);
-	}
-
-	@Override
-	public void updateDB(Player player) {
-		super.update(player, null);
-	}
-
-	@Override
-	public void putAttachBuffer(ByteBuf buf) {
-		
-	}
-
-	@Override
-	public void wrapAttach(ByteBuf buf) {
+	public void wrapAttachBytes(byte[] bytes) {
 		
 	}
 

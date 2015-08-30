@@ -11,7 +11,6 @@ import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.PropType;
 import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.utils.Logs;
 
@@ -52,16 +51,12 @@ public class EquipControl extends IHold implements IArrayStream{
 		eroom		= buf.readShort();
 		short size 	= buf.readShort();
 		for( int i = 0; i < size; i++ ){
-			PropType type 	= PropType.fromNumber( buf.readByte() );
-			int uid			= buf.readInt();
-			int nid 		= buf.readInt();
-			int count 		= buf.readInt();
-			IProp prop 		= type.create( uid, nid, count );
-			prop.wrapAttach( buf );
+			IProp prop 		= IProp.create( buf );
 			super.append( prop );
 			
 			// 得出最大的唯一ID
-			if( uid > propUID ) propUID	= uid;
+			if( prop.getUid() > propUID ) 
+				propUID = prop.getUid();
 		}
 	}
 
@@ -72,9 +67,7 @@ public class EquipControl extends IHold implements IArrayStream{
 		buf.writeShort( eroom );
 		buf.writeShort( props.size() );
 		for( IProp o : props ){
-			buf.writeByte( o.type().toNumber() );
-			o.putBaseBuffer(buf);
-			o.putAttachBuffer(buf);
+			o.putBuffer(buf);
 		}
 		return buf.array();
 	}

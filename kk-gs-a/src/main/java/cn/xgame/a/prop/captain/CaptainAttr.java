@@ -1,7 +1,7 @@
 package cn.xgame.a.prop.captain;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.u.Player;
+import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.CaptainPo;
@@ -32,41 +32,32 @@ public class CaptainAttr extends IProp {
 	@Override
 	public IProp clone() {
 		CaptainAttr ret = new CaptainAttr( getUid(), getNid(), getCount() );
+		ret.quality 	= this.quality;
 		return ret ;
 	}
 	
-	@Override
-	public void buildTransformStream( ByteBuf buffer ) {
-		
-	}
-
 	public CaptainPo templet(){ return templet; }
 	
 	@Override
-	public void createDB(Player player) {
-		super.create(player, null);
+	public byte[] toAttachBytes() {
+		ByteBuf buf = Unpooled.buffer( 1 );
+		buf.writeByte(quality);
+		return buf.array();
 	}
 
 	@Override
-	public void updateDB(Player player) {
-		super.update(player, null);
+	public void wrapAttachBytes( byte[] bytes ) {
+		ByteBuf buf = Unpooled.copiedBuffer(bytes);
+		quality = buf.readByte();
 	}
-
-	@Override
-	public void putAttachBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void wrapAttach(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	public byte getQuality() {
 		return quality;
 	}
 	public void setQuality(byte quality) {
 		this.quality = quality;
 	}
+
+
 
 }
