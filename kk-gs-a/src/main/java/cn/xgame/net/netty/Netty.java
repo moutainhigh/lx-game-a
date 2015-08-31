@@ -61,6 +61,13 @@ public class Netty {
 			return "";
 		}
 		
+		/** 写入bytes */
+		public static void writeBytes( ByteBuf buf, byte[] bytes ) {
+			buf.writeShort( bytes.length );
+			if( bytes.length != 0 )
+				buf.writeBytes(bytes);
+		}
+		
 		/** 读取bytes */
 		public static byte[] readBytes( ByteBuf buf ){
 			short len = buf.readShort();

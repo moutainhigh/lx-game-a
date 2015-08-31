@@ -128,10 +128,8 @@ public abstract class IProp{
 	 * @param buf
 	 */
 	public void putBuffer( ByteBuf buffer ) {
-		buffer.writeInt(uid);
-		buffer.writeInt(nid);
-		buffer.writeInt(count);
-		buffer.writeBytes( toAttachBytes() );
+		putBaseBuffer( buffer );
+		RW.writeBytes( buffer, toAttachBytes() );
 	}
 	
 	/**
