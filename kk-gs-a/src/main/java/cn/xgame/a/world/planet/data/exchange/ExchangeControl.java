@@ -146,6 +146,23 @@ public class ExchangeControl implements IArrayStream{
 	}
 
 	/**
+	 * 根据玩家获取物品列表
+	 * @param player 
+	 * @param page
+	 * @return
+	 */
+	public List<ExchGoods> getGoodsByPlayer( Player player, int page ) {
+		List<ExchGoods> ret = Lists.newArrayList();
+		for( List<ExchGoods> gls : goodsSet.values() ){
+			for( ExchGoods g : gls ){
+				if( g.getSellUid().equals( player.getUID() ) )
+					ret.add(g);
+			}
+		}
+		return ret;
+	}
+	
+	/**
 	 * 上架
 	 * @param player
 	 * @param newPorp
@@ -165,6 +182,8 @@ public class ExchangeControl implements IArrayStream{
 		putExchGoods( g );
 		return newPorp.getUid();
 	}
+
+
 	
 	
 }

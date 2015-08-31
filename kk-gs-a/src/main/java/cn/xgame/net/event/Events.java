@@ -28,6 +28,7 @@ import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyExchMeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
@@ -100,6 +101,7 @@ public enum Events {
 	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent() ),
 	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent() ),
 	APPLY_EXCH					( 1116, 	new ApplyExchEvent() ),
+	APPLY_EXCHME				( 1117, 	new ApplyExchMeEvent() ),
 	DONATE_STUFF				( 1121, 	new DonateStuffEvent() ),
 	
 	// 建筑

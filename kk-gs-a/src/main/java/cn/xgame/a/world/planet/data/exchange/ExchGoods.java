@@ -47,7 +47,6 @@ public class ExchGoods implements ITransformStream,IBufferStream{
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		RW.writeString(buffer, sellName);
 		prop.putBaseBuffer(buffer);
 		buffer.writeInt(unitprice);
 	}
