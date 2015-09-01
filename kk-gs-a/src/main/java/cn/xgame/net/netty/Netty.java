@@ -72,7 +72,7 @@ public class Netty {
 		public static byte[] readBytes( ByteBuf buf ){
 			short len = buf.readShort();
 			if( len > 0 ){
-				byte[] ret = new byte[len];
+				byte[] ret = new byte[1024];
 				buf.readBytes(ret);
 				return ret;
 			}
@@ -102,6 +102,9 @@ public class Netty {
 		public static void setAttachment( ChannelHandlerContext ctx, String s ){
 			ctx.attr( SSTRING ).set( s );
 		}
+	}
+	
+	public static void main(String[] args) {
 	}
 	
 }

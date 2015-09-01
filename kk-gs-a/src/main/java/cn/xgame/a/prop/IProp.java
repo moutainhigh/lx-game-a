@@ -60,14 +60,14 @@ public abstract class IProp{
 	
 	/**
 	 * 拷贝一份
-	 * @param clone
+	 * @param src
 	 */
-	public IProp( IProp clone ) {
-		this.uid 	= clone.uid;
-		this.nid 	= clone.nid;
-		this.count 	= clone.count;
-		this.item 	= clone.item;
-		this.type 	= clone.type;
+	public IProp( IProp src ) {
+		this.uid 	= src.uid;
+		this.nid 	= src.nid;
+		this.count 	= src.count;
+		this.item 	= src.item;
+		this.type 	= src.type;
 	}
 
 	/**
