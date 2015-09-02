@@ -48,12 +48,19 @@ public class CaptainAttr extends IProp {
 		quality = buf.readByte();
 	}
 	
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		
+	}
+	
 	public byte getQuality() {
 		return quality;
 	}
 	public void setQuality(byte quality) {
 		this.quality = quality;
 	}
+
+
 
 
 

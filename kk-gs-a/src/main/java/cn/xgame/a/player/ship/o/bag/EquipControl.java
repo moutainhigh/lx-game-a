@@ -74,7 +74,11 @@ public class EquipControl extends IHold implements IArrayStream{
 	
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeShort( wroom );
-		putBaseBuffer(buffer);
+		buffer.writeByte( props.size() );
+		for( IProp o : props ){
+			o.putBaseBuffer( buffer );
+			o.buildTransformStream( buffer );
+		}
 		buffer.writeShort( eroom );
 	}
 	

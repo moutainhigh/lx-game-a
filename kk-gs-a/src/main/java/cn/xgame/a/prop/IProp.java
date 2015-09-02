@@ -1,6 +1,7 @@
 package cn.xgame.a.prop;
 
 import x.javaplus.mysql.db.Condition;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
@@ -16,7 +17,7 @@ import io.netty.buffer.ByteBuf;
  * @author deng		
  * @date 2015-6-17 下午7:02:11
  */
-public abstract class IProp{
+public abstract class IProp implements ITransformStream{
 	
 	// 基础物品表
 	private final ItemPo item;

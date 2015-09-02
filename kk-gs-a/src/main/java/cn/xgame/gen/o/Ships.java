@@ -22,8 +22,14 @@ public interface Ships {
 	/** 当前血量 */
 	int currentHp();
 	
+	/** 最大血量 */
+	int maxHp();
+	
 	/** 舰长唯一ID */
 	int captainUid();
+	
+	/** 所属舰队 */
+	byte fleet();
 	
 	/** 组队频道ID */
 	int teamAxnid();

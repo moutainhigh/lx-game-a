@@ -44,4 +44,10 @@ public class CEquipAttr extends IProp{
 	public void wrapAttachBytes(byte[] bytes) {
 	}
 
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -16,7 +16,6 @@ import cn.xgame.a.chat.o.v.TeamAxnCrew;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
 import cn.xgame.a.combat.o.AtkAndDef;
-import cn.xgame.a.player.IUObject;
 import cn.xgame.a.player.ship.o.bag.EquipControl;
 import cn.xgame.a.player.ship.o.bag.HoldControl;
 import cn.xgame.a.player.ship.o.status.SailPurpose;
@@ -25,8 +24,9 @@ import cn.xgame.a.player.ship.o.status.StatusControl;
 import cn.xgame.a.player.ship.o.v.CombatRecordControl;
 import cn.xgame.a.player.ship.o.v.TempRecordInfo;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.ship.ShipAttr;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ShipPo;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
@@ -38,20 +38,21 @@ import cn.xgame.utils.LuaUtil;
  * @author deng		
  * @date 2015-7-9 下午12:22:54
  */
-public class ShipInfo extends IUObject implements ITransformStream{
+public class ShipInfo implements ITransformStream{
 
 	private final AxnControl chatControl = ChatManager.o.getChatControl();
-	private final ShipPo template;
 	
+	// 舰船属性
+	private ShipAttr attr;
 	
 	// 货仓
-	private HoldControl holds 			= new HoldControl();
+	private HoldControl holds 				= new HoldControl();
 	
 	// 装备 武器-辅助
-	private EquipControl equips 		= new EquipControl();
+	private EquipControl equips 			= new EquipControl();
 	
 	// 状态
-	private StatusControl status 		= new StatusControl();
+	private StatusControl status 			= new StatusControl();
 	
 	// 副本信息   (这里只有是战斗航行和战斗状态 才有)
 	private CombatRecordControl keepInfo 	= new CombatRecordControl(); 
@@ -62,8 +63,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	// 组队 id
 	private int teamId 					= 0;
 	
-	// 血量
-	private int currentHp				= 0;
+	// 所属舰队
+	private byte fleet					= 0;
 	
 	// 临时记录信息  该数据不用保存数据库
 	private TempRecordInfo temprecord 	= new TempRecordInfo();
@@ -75,12 +76,10 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 * @param nid
 	 */
 	public ShipInfo( int uid, int nid ) {
-		super( uid, nid );
-		template 	= CsvGen.getShipPo(nid);
-		currentHp 	= template.hp;
-		holds.setRoom( template.groom );
-		equips.setWroom( template.wroom );
-		equips.setEroom( template.eroom );
+		attr = (ShipAttr) IProp.create( uid, nid, 1 );
+		holds.setRoom( attr.templet().groom );
+		equips.setWroom( attr.templet().wroom );
+		equips.setEroom( attr.templet().eroom );
 	}
 
 	/**
@@ -88,11 +87,12 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	 * @param dto
 	 */
 	public ShipInfo( ShipsDto dto ) {
-		super( dto.getUid(), dto.getNid() );
-		template 	= CsvGen.getShipPo( dto.getNid() );
-		currentHp 	= dto.getCurrentHp();
+		attr 		= (ShipAttr) IProp.create( dto.getUid(), dto.getNid(), 1 );
+		attr.setCurrentHp( dto.getCurrentHp() );
+		attr.setMaxHp( dto.getMaxHp() );
 		captainUID 	= dto.getCaptainUid();
 		teamId 		= chatControl.getAXNInfo(dto.getTeamAxnid()) == null ? 0 : dto.getTeamAxnid();
+		fleet		= dto.getFleet();
 		status.fromBytes( dto.getStatuss() );
 		keepInfo.fromBytes( dto.getKeepinfos() );
 		holds.fromBytes( dto.getHolds() );
@@ -101,8 +101,8 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( getuId() );
-		buffer.writeInt( getnId() );
+		buffer.writeInt( attr.getUid() );
+		buffer.writeInt( attr.getNid() );
 		buffer.writeInt( captainUID );
 		// 状态
 		status.buildTransformStream(buffer);
@@ -116,7 +116,6 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		if( status.getStatus() == ShipStatus.COMBAT ){
 			buffer.writeInt( status.getSurplusTime() );
 			buffer.writeInt( keepInfo.getEnid() );
-//			buffer.writeByte( keepInfo.isWin() );
 		}
 		// 货仓
 		holds.buildTransformStream(buffer);
@@ -141,7 +140,7 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		ShipsDto dto = dao.create();
 		dto.setGsid( player.getGsid() );
 		dto.setUname( player.getUID() );
-		dto.setUid( getuId() );
+		dto.setUid( attr.getUid() );
 		setDBData(dto);
 		dao.commit(dto);
 	}
@@ -149,15 +148,17 @@ public class ShipInfo extends IUObject implements ITransformStream{
 	public void updateDB(Player player) {
 		ShipsDao dao = SqlUtil.getShipsDao();
 		String sql 	= new Condition( ShipsDto.gsidChangeSql( player.getGsid() ) ).
-				AND( ShipsDto.unameChangeSql( player.getUID() ) ).AND( ShipsDto.uidChangeSql( getuId() ) ).toString();
+				AND( ShipsDto.unameChangeSql( player.getUID() ) ).AND( ShipsDto.uidChangeSql( attr.getUid() ) ).toString();
 		ShipsDto dto = dao.updateByExact( sql );
 		setDBData(dto);
 		dao.commit(dto);
 	}
 	private void setDBData(ShipsDto dto) {
-		dto.setNid( getnId() );
-		dto.setCurrentHp( currentHp );
+		dto.setNid( attr.getNid() );
+		dto.setCurrentHp( attr.getCurrentHp() );
+		dto.setMaxHp( attr.getMaxHp() );
 		dto.setCaptainUid( captainUID );
+		dto.setFleet( fleet );
 		dto.setStatuss( status.toBytes() );
 		dto.setKeepinfos( keepInfo.toBytes() );
 		dto.setHolds( holds.toBytes() );
@@ -165,15 +166,14 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		dto.setTeamAxnid( teamId );
 	}
 	
-
-	public ShipPo template(){ return template; }
+	public ShipAttr attr(){ return attr; }
+	public int getuId() { return attr.getUid(); }
+	public int getnId() { return attr.getNid(); }
 	public int getCaptainUID() { return captainUID; }
 	public void setCaptainUID(int captainUID) { this.captainUID = captainUID; }
 	public void setStatus( ShipStatus shipStatus ) { status.setStatus(shipStatus); }
 	public int getTeamId() { return teamId; }
 	public void setTeamId(int teamId) { this.teamId = teamId; }
-	public int getCurrentHp() { return currentHp; }
-	public void setCurrentHp(int curHp) { this.currentHp = curHp; }
 	public HoldControl getHolds() { return holds; }
 	public EquipControl getEquips() { return equips; }
 	public StatusControl getStatus() { return status; }
@@ -280,6 +280,9 @@ public class ShipInfo extends IUObject implements ITransformStream{
 		// 塞入装备的属性
 		return equips.warpFightProperty(attacks, defends, askings, answers);
 	}
+
+
+
 
 	
 }

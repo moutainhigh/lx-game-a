@@ -1,6 +1,7 @@
 package cn.xgame.a.prop.stuff;
 
 
+import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.o.ItemPo;
 
@@ -30,6 +31,12 @@ public class StuffAttr extends IProp{
 
 	@Override
 	public void wrapAttachBytes(byte[] bytes) {
+		
+	}
+
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		// TODO Auto-generated method stub
 		
 	}
 
