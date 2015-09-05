@@ -22,6 +22,9 @@ public interface Props {
 	/** 数量 */
 	int count();
 	
+	/** 品质 */
+	byte quality();
+	
 	/** 附加数据 */
 	byte[] attach();
 	

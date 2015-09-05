@@ -20,8 +20,6 @@ public class SEquipAttr extends IProp{
 
 	private final WeaponPo templet;
 	
-	// 品质
-	private byte quality;
 	// 消耗能量
 	private int energy;
 	// 精密度
@@ -73,7 +71,6 @@ public class SEquipAttr extends IProp{
 	@Override
 	public void wrapAttachBytes(byte[] bytes) {
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		quality		= buf.readByte();
 		energy 		= buf.readInt();
 		accuracy 	= buf.readInt();
 		perplexity 	= buf.readInt();
@@ -98,7 +95,6 @@ public class SEquipAttr extends IProp{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeByte( quality );
 		buffer.writeInt( energy );
 		buffer.writeInt( accuracy );
 		buffer.writeInt( perplexity );
@@ -135,12 +131,6 @@ public class SEquipAttr extends IProp{
 	}
 	public void setCurrentDur(int currentDur) {
 		this.currentDur = currentDur;
-	}
-	public byte getQuality() {
-		return quality;
-	}
-	public void setQuality(byte quality) {
-		this.quality = quality;
 	}
 
 	

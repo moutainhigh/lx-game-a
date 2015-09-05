@@ -45,6 +45,7 @@
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
 			setObject( "count", dto.getCount() );
+			setObject( "quality", dto.getQuality() );
 			setObject( "attach", dto.getAttach() );
 
 			super.commit( true );		}	}
@@ -270,6 +271,7 @@
 		private Integer uid = null;
 		private Integer nid = null;
 		private Integer count = null;
+		private Byte quality = null;
 		private byte[] attach = null;
 
 		public PropsDto() {		}				/**		 * Copy new one		 */		public PropsDto(PropsDto src) {			this.gsid = src.gsid;
@@ -277,6 +279,7 @@
 			this.uid = src.uid;
 			this.nid = src.nid;
 			this.count = src.count;
+			this.quality = src.quality;
 			this.attach = src.attach;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
@@ -284,6 +287,7 @@
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
 		/**  数量  */		public Integer getCount(){			return this.count;		}
+		/**  品质  */		public Byte getQuality(){			return this.quality;		}
 		/**  附加数据  */		public byte[] getAttach(){			return this.attach;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
@@ -291,6 +295,7 @@
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
 		/**  数量  */		public void setCount( Integer count ){			this.count = count;		}
+		/**  品质  */		public void setQuality( Byte quality ){			this.quality = quality;		}
 		/**  附加数据  */		public void setAttach( byte[] attach ){			this.attach = attach;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
@@ -298,6 +303,7 @@
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
 		public static String countChangeSql( Integer x) {			return "count=" + x;		}
+		public static String qualityChangeSql( Byte x) {			return "quality=" + x;		}
 		public static String attachChangeSql( byte[] x) {			return "attach=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
@@ -305,9 +311,10 @@
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
 			count = o.getInt( "count" );
+			quality = o.getByte( "quality" );
 			attach = o.getBytes( "attach" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count+","+"attach="+attach;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"count="+count+","+"quality="+quality+","+"attach="+attach;		}	}
 	public static class ShipsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer uid = null;

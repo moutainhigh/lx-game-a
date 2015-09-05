@@ -29,7 +29,8 @@ public abstract class IProp implements ITransformStream{
 	private int nid;
 	// 数量
 	private int count;
-	
+	// 品质
+	private Quality quality = Quality.DEFAULT;
 	
 	/**
 	 * 创建一个 并保存到数据库
@@ -54,6 +55,7 @@ public abstract class IProp implements ITransformStream{
 		this.uid 	= buf.readInt();
 		this.nid 	= buf.readInt();
 		addCount( buf.readInt() );
+		this.quality= Quality.fromNumber( buf.readByte() );
 		wrapAttachBytes( RW.readBytes(buf) );
 		this.item 	= CsvGen.getItemPo(nid);
 		this.type 	= PropType.fromNumber( item.bagtype );
@@ -64,11 +66,12 @@ public abstract class IProp implements ITransformStream{
 	 * @param src
 	 */
 	public IProp( IProp src ) {
-		this.uid 	= src.uid;
-		this.nid 	= src.nid;
-		this.count 	= src.count;
-		this.item 	= src.item;
-		this.type 	= src.type;
+		this.uid 		= src.uid;
+		this.nid 		= src.nid;
+		this.count 		= src.count;
+		this.item 		= src.item;
+		this.type 		= src.type;
+		this.quality	= src.quality;
 	}
 
 	/**
@@ -105,7 +108,9 @@ public abstract class IProp implements ITransformStream{
 		int uid 	= buf.readInt();
 		int nid 	= buf.readInt();
 		int count 	= buf.readInt();
+		byte q		= buf.readByte();
 		IProp prop 	= create( uid, nid, count );
+		prop.setQuality( Quality.fromNumber(q) );
 		prop.wrapAttachBytes( RW.readBytes(buf) );
 		return prop;
 	}
@@ -122,6 +127,7 @@ public abstract class IProp implements ITransformStream{
 		buffer.writeInt(uid);
 		buffer.writeInt(nid);
 		buffer.writeInt(count);
+		buffer.writeByte( quality.toNumber() );
 	}
 	
 	/**
@@ -145,6 +151,7 @@ public abstract class IProp implements ITransformStream{
 		dto.setUid( uid );
 		dto.setNid( nid );
 		dto.setCount( count );
+		dto.setQuality( quality.toNumber() );
 		dto.setAttach( toAttachBytes() );
 		dao.commit(dto);
 	}
@@ -160,6 +167,7 @@ public abstract class IProp implements ITransformStream{
 		PropsDto dto	= dao.updateByExact( sql );
 		dto.setNid( nid );
 		dto.setCount( getCount() );
+		dto.setQuality( quality.toNumber() );
 		dto.setAttach( toAttachBytes() );
 		dao.commit(dto);
 	}
@@ -201,6 +209,8 @@ public abstract class IProp implements ITransformStream{
 	public void setNid(int nId) { this.nid = nId; }
 	public int getCount() { return count; }
 	public void setCount(int count) { this.count = count; }
+	public Quality getQuality() { return quality; }
+	public void setQuality(Quality quality) { this.quality = quality; }
 	
 	/** 道具类型 */
 	public PropType type(){ return type; }
@@ -272,6 +282,5 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
-
 
 }
