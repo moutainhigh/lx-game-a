@@ -59,8 +59,6 @@ public class ShipAttr extends IProp{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public int getCurrentHp() {

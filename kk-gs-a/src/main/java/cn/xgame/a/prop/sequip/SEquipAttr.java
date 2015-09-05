@@ -42,7 +42,10 @@ public class SEquipAttr extends IProp{
 	private List<BattleAttr> atks = Lists.newArrayList();
 	// 防御属性列表
 	private List<BattleAttr> defs = Lists.newArrayList();
-	
+	// 应答 - 问
+	private List<Integer> askings = Lists.newArrayList();
+	// 应答 - 答
+	private List<Integer> answers = Lists.newArrayList();
 	
 	public SEquipAttr( ItemPo item, int uid, int nid, int count ) {
 		super( item, uid, nid, count);
@@ -85,6 +88,12 @@ public class SEquipAttr extends IProp{
 		size		= buf.readByte();
 		for( int i = 0; i < size; i++ )
 			defs.add( new BattleAttr(buf) );
+		size 		= buf.readByte();
+		for( int i = 0; i < size; i++ )
+			askings.add( buf.readInt() );
+		size 		= buf.readByte();
+		for( int i = 0; i < size; i++ )
+			answers.add( buf.readInt() );
 	}
 	
 	@Override
@@ -104,6 +113,12 @@ public class SEquipAttr extends IProp{
 		buffer.writeByte( defs.size() );
 		for( BattleAttr a : defs )
 			a.buildTransformStream( buffer );
+		buffer.writeByte( askings.size() );
+		for( int id : askings )
+			buffer.writeInt(id);
+		buffer.writeByte( answers.size() );
+		for( int id : answers )
+			buffer.writeInt(id);
 	}
 	
 	

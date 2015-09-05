@@ -14,13 +14,14 @@ public class BattleAttr implements ITransformStream{
 	private int value;
 	
 	public BattleAttr(ByteBuf buf) {
-		// TODO Auto-generated constructor stub
+		type 	= buf.readByte();
+		value 	= buf.readInt();
 	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
+		buffer.writeByte( type );
+		buffer.writeInt( value );
 	}
 
 	public byte getType() {

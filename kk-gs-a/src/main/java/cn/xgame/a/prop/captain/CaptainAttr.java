@@ -50,7 +50,7 @@ public class CaptainAttr extends IProp {
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		
+		buffer.writeByte(quality);
 	}
 	
 	public byte getQuality() {

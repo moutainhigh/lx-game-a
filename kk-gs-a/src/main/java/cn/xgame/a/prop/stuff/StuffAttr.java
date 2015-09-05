@@ -36,8 +36,6 @@ public class StuffAttr extends IProp{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	

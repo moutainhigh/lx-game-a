@@ -47,6 +47,7 @@ public class ApplyBagEvent extends IEvent{
 			equip.putBaseBuffer(response);
 			response.writeByte( 3 );
 			response.writeInt( captain.getuId() );
+			equip.buildTransformStream(response);
 			++size;
 		}
 		
@@ -59,6 +60,7 @@ public class ApplyBagEvent extends IEvent{
 			prop.putBaseBuffer(response);
 			response.writeByte( type );
 			response.writeInt( theirId );
+			prop.buildTransformStream(response);
 		}
 		return bag.size();
 	}

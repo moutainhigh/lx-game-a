@@ -46,8 +46,6 @@ public class CEquipAttr extends IProp{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
