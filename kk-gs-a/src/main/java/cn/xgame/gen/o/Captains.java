@@ -22,6 +22,9 @@ public interface Captains {
 	/** 品质 */
 	byte quality();
 	
+	/** 附加属性 */
+	byte[] attachAttr();
+	
 	/** 所属舰船UID */
 	int shipUid();
 	

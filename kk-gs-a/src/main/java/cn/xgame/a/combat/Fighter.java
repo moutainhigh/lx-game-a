@@ -113,7 +113,7 @@ public class Fighter {
 	 */
 	public Fighter( Player player, ShipInfo ship ) {
 		
-		hp = ship.attr().getCurrentHp();
+		hp = ship.getCurrentHp();
 		// 
 		totalDur = ship.warpFightProperty( attacks, defends, askings, answers );
 		// 如果有舰长 那么还要塞入舰长的数据

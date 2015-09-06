@@ -20,7 +20,7 @@ public enum PropType {
 	/** 其他 */
 	OTHER( 1 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count ) {
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
 			return null;
 		}
 	},
@@ -28,40 +28,40 @@ public enum PropType {
 	/** 舰船 */
 	SHIP( 2 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count) {
-			return new ShipAttr( item, uid, nid, count );
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			return new ShipAttr( item, uid, nid, count, quality );
 		}
 	},
 	
 	/** 舰船装备 */
 	SEQUIP( 3 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count) {
-			return new SEquipAttr( item, uid, nid, count );
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			return new SEquipAttr( item, uid, nid, count, quality );
 		}
 	},
 	
 	/** 舰长 */
 	CAPTAIN( 4 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count) {
-			return new CaptainAttr( item, uid, nid, count );
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			return new CaptainAttr( item, uid, nid, count, quality );
 		}
 	},
 	
 	/** 舰长装备 */
 	CEQUIP( 5 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count) {
-			return new CEquipAttr( item, uid, nid, count );
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			return new CEquipAttr( item, uid, nid, count, quality );
 		}
 	},
 	
 	/** 材料 */
 	STUFF( 6 ) {
 		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count ) {
-			return new StuffAttr( item, uid, nid, count );
+		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			return new StuffAttr( item, uid, nid, count, quality );
 		}
 	};
 	
@@ -92,8 +92,9 @@ public enum PropType {
 	 * @param uid
 	 * @param nid
 	 * @param count
+	 * @param quality 
 	 * @return
 	 */
-	public abstract IProp create( ItemPo item, int uid, int nid, int count);
+	public abstract IProp create( ItemPo item, int uid, int nid, int count, Quality quality);
 	
 }

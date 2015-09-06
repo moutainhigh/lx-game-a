@@ -13,7 +13,6 @@ import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.Quality;
 import cn.xgame.a.prop.captain.CaptainAttr;
 import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
@@ -36,13 +35,13 @@ public class CaptainInfo implements ITransformStream{
 	private EquipControl equips 	= new EquipControl();
 	
 	public CaptainInfo( int uid, int nid, byte quality ) {
-		attr = (CaptainAttr) IProp.create( uid, nid, 1 );
-		attr.setQuality( Quality.fromNumber(quality) );
+		attr = (CaptainAttr) IProp.create( uid, nid, 1, quality );
+		attr.randomAttachAttr();
 	}
 
 	public CaptainInfo(CaptainsDto dto) {
-		attr = (CaptainAttr) IProp.create( dto.getUid(), dto.getNid(), 1 );
-		attr.setQuality( Quality.fromNumber(dto.getQuality()) );
+		attr = (CaptainAttr) IProp.create( dto.getUid(), dto.getNid(), 1, dto.getQuality() );
+		attr.wrapAttachBytes( dto.getAttachAttr() );
 		shipUid	= dto.getShipUid();
 		equips.fromBytes( dto.getEquips() );
 	}
@@ -51,6 +50,7 @@ public class CaptainInfo implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
+//		attr.buildTransformStream(buffer);
 		CEquipAttr equip = equips.getEquip();
 		buffer.writeInt( equip == null ? -1 : equip.getNid() );
 	}
@@ -83,6 +83,7 @@ public class CaptainInfo implements ITransformStream{
 	private void setDBData(CaptainsDto dto) {
 		dto.setNid( attr.getNid() );
 		dto.setQuality( attr.getQuality().toNumber() );
+		dto.setAttachAttr( attr.toAttachBytes() );
 		dto.setShipUid( shipUid );
 		dto.setEquips( equips.toBytes() );
 	}

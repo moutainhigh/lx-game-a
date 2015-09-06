@@ -2,6 +2,7 @@ package cn.xgame.a.prop.cequip;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.TreasurePo;
@@ -16,8 +17,8 @@ public class CEquipAttr extends IProp{
 	private final TreasurePo templet;
 	
 		
-	public CEquipAttr(ItemPo item, int uid, int nid, int count) {
-		super( item, uid, nid, count );
+	public CEquipAttr(ItemPo item, int uid, int nid, int count, Quality quality ) {
+		super( item, uid, nid, count, quality );
 		templet = CsvGen.getTreasurePo(nid);
 	}
 	
@@ -46,6 +47,12 @@ public class CEquipAttr extends IProp{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+	}
+
+	@Override
+	public void randomAttachAttr() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -45,6 +45,9 @@ public class ShipInfo implements ITransformStream{
 	// 舰船属性
 	private ShipAttr attr;
 	
+	// 当前血量
+	private int currentHp;
+	
 	// 货仓
 	private HoldControl holds 				= new HoldControl();
 	
@@ -77,6 +80,8 @@ public class ShipInfo implements ITransformStream{
 	 */
 	public ShipInfo( int uid, int nid ) {
 		attr = (ShipAttr) IProp.create( uid, nid, 1 );
+		attr.randomAttachAttr();
+		currentHp = attr.getMaxHp();
 		holds.setRoom( attr.templet().groom );
 		equips.setWroom( attr.templet().wroom );
 		equips.setEroom( attr.templet().eroom );
@@ -88,8 +93,8 @@ public class ShipInfo implements ITransformStream{
 	 */
 	public ShipInfo( ShipsDto dto ) {
 		attr 		= (ShipAttr) IProp.create( dto.getUid(), dto.getNid(), 1 );
-		attr.setCurrentHp( dto.getCurrentHp() );
-		attr.setMaxHp( dto.getMaxHp() );
+		attr.wrapAttachBytes( dto.getAttachAttr() );
+		currentHp 	= dto.getCurrentHp();
 		captainUID 	= dto.getCaptainUid();
 		teamId 		= chatControl.getAXNInfo(dto.getTeamAxnid()) == null ? 0 : dto.getTeamAxnid();
 		fleet		= dto.getFleet();
@@ -103,6 +108,9 @@ public class ShipInfo implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
+		attr.buildTransformStream(buffer);
+		// 
+		buffer.writeInt( currentHp );
 		buffer.writeInt( captainUID );
 		// 状态
 		status.buildTransformStream(buffer);
@@ -155,8 +163,8 @@ public class ShipInfo implements ITransformStream{
 	}
 	private void setDBData(ShipsDto dto) {
 		dto.setNid( attr.getNid() );
-		dto.setCurrentHp( attr.getCurrentHp() );
-		dto.setMaxHp( attr.getMaxHp() );
+		dto.setAttachAttr( attr.toAttachBytes() );
+		dto.setCurrentHp( currentHp );
 		dto.setCaptainUid( captainUID );
 		dto.setFleet( fleet );
 		dto.setStatuss( status.toBytes() );
@@ -169,6 +177,8 @@ public class ShipInfo implements ITransformStream{
 	public ShipAttr attr(){ return attr; }
 	public int getuId() { return attr.getUid(); }
 	public int getnId() { return attr.getNid(); }
+	public int getCurrentHp() { return currentHp; }
+	public void setCurrentHp(int currentHp) { this.currentHp = currentHp; }
 	public int getCaptainUID() { return captainUID; }
 	public void setCaptainUID(int captainUID) { this.captainUID = captainUID; }
 	public void setStatus( ShipStatus shipStatus ) { status.setStatus(shipStatus); }

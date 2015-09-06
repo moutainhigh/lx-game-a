@@ -9,6 +9,7 @@
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
 			setObject( "quality", dto.getQuality() );
+			setObject( "attachAttr", dto.getAttachAttr() );
 			setObject( "shipUid", dto.getShipUid() );
 			setObject( "equips", dto.getEquips() );
 
@@ -53,8 +54,8 @@
 			setObject( "uname", dto.getUname() );
 			setObject( "uid", dto.getUid() );
 			setObject( "nid", dto.getNid() );
+			setObject( "attachAttr", dto.getAttachAttr() );
 			setObject( "currentHp", dto.getCurrentHp() );
-			setObject( "maxHp", dto.getMaxHp() );
 			setObject( "captainUid", dto.getCaptainUid() );
 			setObject( "fleet", dto.getFleet() );
 			setObject( "teamAxnid", dto.getTeamAxnid() );
@@ -70,6 +71,7 @@
 		private Integer uid = null;
 		private Integer nid = null;
 		private Byte quality = null;
+		private byte[] attachAttr = null;
 		private Integer shipUid = null;
 		private byte[] equips = null;
 
@@ -78,6 +80,7 @@
 			this.uid = src.uid;
 			this.nid = src.nid;
 			this.quality = src.quality;
+			this.attachAttr = src.attachAttr;
 			this.shipUid = src.shipUid;
 			this.equips = src.equips;
 
@@ -86,6 +89,7 @@
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
 		/**  品质  */		public Byte getQuality(){			return this.quality;		}
+		/**  附加属性  */		public byte[] getAttachAttr(){			return this.attachAttr;		}
 		/**  所属舰船UID  */		public Integer getShipUid(){			return this.shipUid;		}
 		/**  装备信息  */		public byte[] getEquips(){			return this.equips;		}
 
@@ -94,6 +98,7 @@
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
 		/**  品质  */		public void setQuality( Byte quality ){			this.quality = quality;		}
+		/**  附加属性  */		public void setAttachAttr( byte[] attachAttr ){			this.attachAttr = attachAttr;		}
 		/**  所属舰船UID  */		public void setShipUid( Integer shipUid ){			this.shipUid = shipUid;		}
 		/**  装备信息  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
@@ -102,6 +107,7 @@
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
 		public static String qualityChangeSql( Byte x) {			return "quality=" + x;		}
+		public static String attachAttrChangeSql( byte[] x) {			return "attachAttr=" + x;		}
 		public static String shipUidChangeSql( Integer x) {			return "shipUid=" + x;		}
 		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
 
@@ -110,10 +116,11 @@
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
 			quality = o.getByte( "quality" );
+			attachAttr = o.getBytes( "attachAttr" );
 			shipUid = o.getInt( "shipUid" );
 			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"quality="+quality+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"quality="+quality+","+"attachAttr="+attachAttr+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
 	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
@@ -319,8 +326,8 @@
 		private String uname = null;
 		private Integer uid = null;
 		private Integer nid = null;
+		private byte[] attachAttr = null;
 		private Integer currentHp = null;
-		private Integer maxHp = null;
 		private Integer captainUid = null;
 		private Byte fleet = null;
 		private Integer teamAxnid = null;
@@ -333,8 +340,8 @@
 			this.uname = src.uname;
 			this.uid = src.uid;
 			this.nid = src.nid;
+			this.attachAttr = src.attachAttr;
 			this.currentHp = src.currentHp;
-			this.maxHp = src.maxHp;
 			this.captainUid = src.captainUid;
 			this.fleet = src.fleet;
 			this.teamAxnid = src.teamAxnid;
@@ -347,8 +354,8 @@
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  表格ID  */		public Integer getNid(){			return this.nid;		}
+		/**  附加属性  */		public byte[] getAttachAttr(){			return this.attachAttr;		}
 		/**  当前血量  */		public Integer getCurrentHp(){			return this.currentHp;		}
-		/**  最大血量  */		public Integer getMaxHp(){			return this.maxHp;		}
 		/**  舰长唯一ID  */		public Integer getCaptainUid(){			return this.captainUid;		}
 		/**  所属舰队  */		public Byte getFleet(){			return this.fleet;		}
 		/**  组队频道ID  */		public Integer getTeamAxnid(){			return this.teamAxnid;		}
@@ -361,8 +368,8 @@
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  表格ID  */		public void setNid( Integer nid ){			this.nid = nid;		}
+		/**  附加属性  */		public void setAttachAttr( byte[] attachAttr ){			this.attachAttr = attachAttr;		}
 		/**  当前血量  */		public void setCurrentHp( Integer currentHp ){			this.currentHp = currentHp;		}
-		/**  最大血量  */		public void setMaxHp( Integer maxHp ){			this.maxHp = maxHp;		}
 		/**  舰长唯一ID  */		public void setCaptainUid( Integer captainUid ){			this.captainUid = captainUid;		}
 		/**  所属舰队  */		public void setFleet( Byte fleet ){			this.fleet = fleet;		}
 		/**  组队频道ID  */		public void setTeamAxnid( Integer teamAxnid ){			this.teamAxnid = teamAxnid;		}
@@ -375,8 +382,8 @@
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
 		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
+		public static String attachAttrChangeSql( byte[] x) {			return "attachAttr=" + x;		}
 		public static String currentHpChangeSql( Integer x) {			return "currentHp=" + x;		}
-		public static String maxHpChangeSql( Integer x) {			return "maxHp=" + x;		}
 		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
 		public static String fleetChangeSql( Byte x) {			return "fleet=" + x;		}
 		public static String teamAxnidChangeSql( Integer x) {			return "teamAxnid=" + x;		}
@@ -389,8 +396,8 @@
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			nid = o.getInt( "nid" );
+			attachAttr = o.getBytes( "attachAttr" );
 			currentHp = o.getInt( "currentHp" );
-			maxHp = o.getInt( "maxHp" );
 			captainUid = o.getInt( "captainUid" );
 			fleet = o.getByte( "fleet" );
 			teamAxnid = o.getInt( "teamAxnid" );
@@ -399,6 +406,6 @@
 			holds = o.getBytes( "holds" );
 			equips = o.getBytes( "equips" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"currentHp="+currentHp+","+"maxHp="+maxHp+","+"captainUid="+captainUid+","+"fleet="+fleet+","+"teamAxnid="+teamAxnid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"attachAttr="+attachAttr+","+"currentHp="+currentHp+","+"captainUid="+captainUid+","+"fleet="+fleet+","+"teamAxnid="+teamAxnid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
 
 }

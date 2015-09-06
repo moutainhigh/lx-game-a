@@ -31,6 +31,7 @@ public class Specialty implements ITransformStream{
 	 */
 	public Specialty( int id, int yieldTime, int yieldNum ) {
 		this.prop		= IProp.create( 1, id, 0 );
+		this.prop.randomAttachAttr();
 		this.rtime		= (int) (System.currentTimeMillis()/1000);
 		this.yieldTime 	= yieldTime;
 		this.yieldNum 	= yieldNum;
@@ -41,15 +42,14 @@ public class Specialty implements ITransformStream{
 	 * @param buf
 	 */
 	public Specialty( ByteBuf buf ) {
-		this.prop		= IProp.create( 1, buf.readInt(), buf.readInt() );
+		this.prop		= IProp.create( buf );
 		this.rtime		= (int) (System.currentTimeMillis()/1000);
 		this.yieldTime 	= buf.readInt();
 		this.yieldNum 	= buf.readInt();
 	}
 
 	public void putBuffer( ByteBuf buf ) {
-		buf.writeInt( prop.getNid() );
-		buf.writeInt( prop.getCount() );
+		prop.putBuffer( buf );
 		buf.writeInt( yieldTime );
 		buf.writeInt( yieldNum );
 	}

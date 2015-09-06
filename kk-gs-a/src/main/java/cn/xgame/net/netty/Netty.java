@@ -63,8 +63,8 @@ public class Netty {
 		
 		/** 写入bytes */
 		public static void writeBytes( ByteBuf buf, byte[] bytes ) {
-			buf.writeShort( bytes.length );
-			if( bytes.length != 0 )
+			buf.writeShort( bytes == null ? 0 : bytes.length );
+			if( bytes != null && bytes.length != 0 )
 				buf.writeBytes(bytes);
 		}
 		

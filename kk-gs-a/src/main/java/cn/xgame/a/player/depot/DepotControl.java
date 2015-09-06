@@ -64,7 +64,7 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @param count 数量
 	 * @return
 	 */
-	public List<IProp> appendProp( int nid, int count) {
+	public List<IProp> appendProp( int nid, int count ) {
 		
 		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
 		
@@ -119,11 +119,12 @@ public class DepotControl extends IDepot implements ITransformStream, IFromDB{
 	 * @return
 	 * @throws Exception 
 	 */
-	private IProp createProp( int nid, int count) throws Exception{
+	private IProp createProp( int nid, int count ) throws Exception{
 		// 创建一个道具出来
 		IProp prop = IProp.create( root.generatorPropUID(), nid, count );
 		if( prop == null )
 			throw new Exception( "创建道具出错 nid="+nid+" 没找到！" );
+		prop.randomAttachAttr();
 		// 放入背包
 		super.append( prop );
 		// 在数据库 创建数据

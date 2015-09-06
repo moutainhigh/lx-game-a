@@ -3,6 +3,7 @@ package cn.xgame.a.prop.ship;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.ShipPo;
@@ -16,24 +17,23 @@ public class ShipAttr extends IProp{
 
 	private final ShipPo templet;
 	
-	// 当前血量
-	private int currentHp;
 	// 最大血量
 	private int maxHp;
 	
+	// 最大能源
+	private int maxEnergy;
 	
+	// 质量
+	private int mass;
 	
-	public ShipAttr( ItemPo item, int uid, int nid, int count) {
-		super( item, uid, nid, count);
+	public ShipAttr( ItemPo item, int uid, int nid, int count, Quality quality) {
+		super( item, uid, nid, count, quality );
 		templet 	= CsvGen.getShipPo(nid);
-		currentHp	= templet.hp;
-		maxHp		= templet.hp;
 	}
 
 	private ShipAttr( ShipAttr clone ){
 		super( clone );
 		templet 	= clone.templet;
-		currentHp	= clone.currentHp;
 		maxHp		= clone.maxHp;
 	}
 	
@@ -44,35 +44,54 @@ public class ShipAttr extends IProp{
 
 	@Override
 	public byte[] toAttachBytes() {
-		ByteBuf buf = Unpooled.buffer( 8 );
-		buf.writeInt( currentHp );
-		buf.writeInt( maxHp );
+		ByteBuf buf = Unpooled.buffer( 24 );
+		buildTransformStream( buf );
 		return buf.array();
 	}
 
 	@Override
 	public void wrapAttachBytes( byte[] bytes ) {
+		if( bytes == null )
+			return;
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		currentHp 	= buf.readInt();
 		maxHp 		= buf.readInt();
+		maxEnergy	= buf.readInt();
+		mass		= buf.readInt();
+	}
+	
+	@Override
+	public void randomAttachAttr() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeInt( maxHp );
+		buffer.writeInt( maxEnergy );
+		buffer.writeInt( mass );
 	}
 
-	public int getCurrentHp() {
-		return currentHp;
-	}
-	public void setCurrentHp(int currentHp) {
-		this.currentHp = currentHp;
-	}
 	public int getMaxHp() {
 		return maxHp;
 	}
 	public void setMaxHp(int maxHp) {
 		this.maxHp = maxHp;
 	}
+	public int getMaxEnergy() {
+		return maxEnergy;
+	}
+	public void setMaxEnergy(int maxEnergy) {
+		this.maxEnergy = maxEnergy;
+	}
+	public int getMass() {
+		return mass;
+	}
+	public void setMass(int mass) {
+		this.mass = mass;
+	}
+
+
 
 
 }

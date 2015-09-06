@@ -703,6 +703,7 @@ public class HomePlanet extends IPlanet {
 		String[] content = shop.item.split(";");
 		for( String str : content ){
 			IProp porp = IProp.create( 0, Integer.parseInt( str ), 1 );
+			porp.randomAttachAttr();
 			shops.add(porp);
 		}
 	}

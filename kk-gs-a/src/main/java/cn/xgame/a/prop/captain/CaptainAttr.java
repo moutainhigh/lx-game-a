@@ -2,6 +2,7 @@ package cn.xgame.a.prop.captain;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.CaptainPo;
 import cn.xgame.config.o.ItemPo;
@@ -16,8 +17,8 @@ public class CaptainAttr extends IProp {
 	private final CaptainPo templet;
 	
 
-	public CaptainAttr( ItemPo item, int uid, int nid, int count ) {
-		super( item, uid, nid, count );
+	public CaptainAttr( ItemPo item, int uid, int nid, int count, Quality quality ) {
+		super( item, uid, nid, count, quality );
 		templet = CsvGen.getCaptainPo(nid);
 	}
 
@@ -38,15 +39,17 @@ public class CaptainAttr extends IProp {
 
 	@Override
 	public void wrapAttachBytes( byte[] bytes ) {
+		
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 	}
+
+	@Override
+	public void randomAttachAttr() {
+		
+	}
 	
-
-
-
-
 
 }

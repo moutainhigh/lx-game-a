@@ -3,6 +3,7 @@ package cn.xgame.a.prop.stuff;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.Quality;
 import cn.xgame.config.o.ItemPo;
 
 /**
@@ -13,8 +14,8 @@ import cn.xgame.config.o.ItemPo;
 public class StuffAttr extends IProp{
 	
 	
-	public StuffAttr( ItemPo item, int uid, int nid, int count ) {
-		super( item, uid, nid, count );
+	public StuffAttr( ItemPo item, int uid, int nid, int count, Quality quality ) {
+		super( item, uid, nid, count, quality );
 	}
 	
 	private StuffAttr( StuffAttr clone ){
@@ -30,13 +31,18 @@ public class StuffAttr extends IProp{
 	}
 
 	@Override
-	public void wrapAttachBytes(byte[] bytes) {
+	public void wrapAttachBytes( byte[] bytes ) {
+		
+	}
+
+	@Override
+	public void randomAttachAttr() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 	}
-
 	
 }

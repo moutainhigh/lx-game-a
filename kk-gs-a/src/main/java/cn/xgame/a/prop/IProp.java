@@ -38,13 +38,15 @@ public abstract class IProp implements ITransformStream{
 	 * @param uid
 	 * @param nid
 	 * @param count
+	 * @param quality 
 	 */
-	public IProp( ItemPo item, int uid, int nid, int count ){
-		this.uid 	= uid;
-		this.nid 	= nid;
-		this.item 	= item;
-		this.type 	= PropType.fromNumber( item.bagtype );
+	public IProp( ItemPo item, int uid, int nid, int count, Quality quality ){
+		this.uid 		= uid;
+		this.nid 		= nid;
+		this.item 		= item;
+		this.type 		= PropType.fromNumber( item.bagtype );
 		addCount( count );
+		this.quality	= quality;
 	}
 	
 	/**
@@ -52,13 +54,13 @@ public abstract class IProp implements ITransformStream{
 	 * @param o
 	 */
 	public IProp( ByteBuf buf ){
-		this.uid 	= buf.readInt();
-		this.nid 	= buf.readInt();
+		this.uid 		= buf.readInt();
+		this.nid 		= buf.readInt();
+		this.item 		= CsvGen.getItemPo(nid);
+		this.type 		= PropType.fromNumber( item.bagtype );
 		addCount( buf.readInt() );
-		this.quality= Quality.fromNumber( buf.readByte() );
+		this.quality	= Quality.fromNumber( buf.readByte() );
 		wrapAttachBytes( RW.readBytes(buf) );
-		this.item 	= CsvGen.getItemPo(nid);
-		this.type 	= PropType.fromNumber( item.bagtype );
 	}
 	
 	/**
@@ -82,10 +84,16 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
+		return create( uid, nid, count, Quality.DEFAULT );
+	}
+	public static IProp create( int uid, int nid, int count, Byte quality ) {
+		return create( uid, nid, count, Quality.fromNumber( quality ) );
+	}
+	public static IProp create( int uid, int nid, int count, Quality quality ) {
 		ItemPo item 	= CsvGen.getItemPo(nid);
 		if( item == null ) return null;
 		PropType type 	= PropType.fromNumber( item.bagtype );
-		return type.create( item, uid, nid, count );
+		return type.create( item, uid, nid, count, quality );
 	}
 	
 	/**
@@ -94,7 +102,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( PropsDto o ) {
-		IProp prop 	= create( o.getUid(), o.getNid(), o.getCount() );
+		IProp prop 	= create( o.getUid(), o.getNid(), o.getCount(), o.getQuality() );
 		prop.wrapAttachBytes( o.getAttach() );
 		return prop;
 	}
@@ -109,8 +117,7 @@ public abstract class IProp implements ITransformStream{
 		int nid 	= buf.readInt();
 		int count 	= buf.readInt();
 		byte q		= buf.readByte();
-		IProp prop 	= create( uid, nid, count );
-		prop.setQuality( Quality.fromNumber(q) );
+		IProp prop 	= create( uid, nid, count, q );
 		prop.wrapAttachBytes( RW.readBytes(buf) );
 		return prop;
 	}
@@ -200,6 +207,11 @@ public abstract class IProp implements ITransformStream{
 	 * @param buf
 	 */
 	public abstract void wrapAttachBytes( byte[] bytes );
+	
+	/**
+	 * 随机 生成附加属性
+	 */
+	public abstract void randomAttachAttr();
 	
 	
 	public ItemPo item(){ return item; }

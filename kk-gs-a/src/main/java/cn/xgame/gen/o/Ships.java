@@ -19,11 +19,11 @@ public interface Ships {
 	/** 表格ID */
 	int nid();
 	
+	/** 附加属性 */
+	byte[] attachAttr();
+	
 	/** 当前血量 */
 	int currentHp();
-	
-	/** 最大血量 */
-	int maxHp();
 	
 	/** 舰长唯一ID */
 	int captainUid();
