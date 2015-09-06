@@ -9,8 +9,12 @@ import java.util.Map;
  * @date 2015-9-5 下午5:29:58
  */
 public enum Quality {
-
-	DEFAULT(0);
+	
+	// 默认
+	DEFAULT(0),
+	
+	// 白
+	WHITE(1);
 	
 	
 	private final byte	number;
