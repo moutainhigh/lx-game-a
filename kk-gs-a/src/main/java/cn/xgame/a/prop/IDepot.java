@@ -97,7 +97,7 @@ public class IDepot {
 	 * 添加一个道具
 	 * @param prop
 	 */
-	protected void append( IProp prop ) {
+	public void append( IProp prop ) {
 		if( getProp( prop ) != null )
 			return;
 		props.add(prop);

@@ -38,7 +38,7 @@ public class UnloadEquipEvent extends IEvent{
 			ret = prop.clone();
 			
 			// 放入玩家背包
-			player.getDepots(ship.getBerthSnid()).append(ret);
+			player.getDepots(ship.getBerthSnid()).appendProp(prop);
 			
 			// 然后从舰船装备里面删除
 			player.getDocks().removeEquipAtShip( ship, prop );

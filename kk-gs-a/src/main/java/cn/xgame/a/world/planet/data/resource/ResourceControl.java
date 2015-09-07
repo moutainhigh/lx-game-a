@@ -80,7 +80,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		List<IProp> ret = Lists.newArrayList();
 		IProp prop = getCanCumsumProp( param );
 		if( prop == null ){
-			append( param );
+			zappend( param );
 			ret.add( param );
 		}else{
 			int surplus = prop.addCount( param.getCount() );
@@ -88,7 +88,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 			// 这里说明还有剩余的
 			if( surplus > 0 ){
 				param.setCount( surplus );
-				append( param );
+				zappend( param );
 				ret.add( param );
 			}
 		}
@@ -97,7 +97,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 	}
 
 	/** 这里自己封一个 为了给物品一个唯一ID */
-	public void append( IProp prop ){
+	private void zappend( IProp prop ){
 		prop.setUid( getResUID() );
 		super.append( prop );
 	}

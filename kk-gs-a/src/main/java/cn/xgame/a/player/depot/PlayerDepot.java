@@ -65,7 +65,7 @@ public class PlayerDepot extends IDepot {
 	}
 	public List<IProp> appendProp( IProp prop ) {
 		if( prop.getMaxOverlap() == 1 ){
-			append( prop );
+			zappend( prop );
 			return Lists.newArrayList( prop );
 		}
 		return appendProp( prop.getNid(), prop.getCount() );
@@ -76,7 +76,7 @@ public class PlayerDepot extends IDepot {
 	 * @param root
 	 * @param prop
 	 */
-	public void append( IProp prop ) {
+	private void zappend( IProp prop ) {
 		// 设置唯一ID
 		prop.setUid( root.generatorPropUID() );
 		// 放入背包
