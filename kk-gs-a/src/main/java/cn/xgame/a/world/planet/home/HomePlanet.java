@@ -770,7 +770,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		
 		// 加入玩家背包
-		List<IProp> ret = player.getDepots().appendProp( nid, count );
+		List<IProp> ret = player.getDepots(getId()).appendProp( nid, count );
 		if( ret.isEmpty() )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
 		

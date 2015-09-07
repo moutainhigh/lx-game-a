@@ -50,7 +50,7 @@ public class ExchBuyEvent extends IEvent{
 			// 放入玩家仓库
 			IProp clone = goods.getProp().clone();
 			clone.setCount(count);
-			ret = player.getDepots().appendProp( clone );
+			ret = player.getDepots(home.getId()).appendProp( clone );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

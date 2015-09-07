@@ -58,7 +58,7 @@ public class OverAttackEvent extends IEvent{
 			// 获取奖励
 			awards	= ship.getKeepInfo().getAwards();
 			iswin	= ship.getKeepInfo().isWin();
-			ret		= ship.getKeepInfo().giveoutAward( player );
+			ret		= ship.getKeepInfo().giveoutAward( status.getCurrentSnid(), player );
 			
 			// 清空副本记录
 			ship.getKeepInfo().clear();

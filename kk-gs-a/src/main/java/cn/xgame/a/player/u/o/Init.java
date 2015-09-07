@@ -50,7 +50,7 @@ public class Init {
 			if( x.isEmpty() ) continue;
 			try {
 				String[] v = x.split(";");
-				ret.getDepots().appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+				ret.getDepots(ret.getCountryId()).appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
 			} catch (Exception e) {
 				Logs.error( "Init.initItem  at=" + x , e );
 			}

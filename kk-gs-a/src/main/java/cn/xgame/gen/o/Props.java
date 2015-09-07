@@ -13,6 +13,9 @@ public interface Props {
 	/** 玩家唯一ID */
 	String uname();
 	
+	/** 所属星球ID */
+	int beSnid();
+	
 	/** 唯一ID */
 	int uid();
 	

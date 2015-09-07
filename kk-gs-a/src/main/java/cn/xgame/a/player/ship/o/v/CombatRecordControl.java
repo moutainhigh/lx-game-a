@@ -77,11 +77,11 @@ public class CombatRecordControl implements IArrayStream {
 	 * @param player
 	 * @return
 	 */
-	public List<IProp> giveoutAward(Player player) {
+	public List<IProp> giveoutAward( int snid, Player player) {
 		List<IProp> ret = Lists.newArrayList();
 		// 这里把奖励发放到玩家身上
 		for( AwardInfo award : awards ){
-			List<IProp> add = player.getDepots().appendProp( award.getId(), award.getCount() );
+			List<IProp> add = player.getDepots(snid).appendProp( award.getId(), award.getCount() );
 			ret.addAll(add);
 		}
 		return ret;

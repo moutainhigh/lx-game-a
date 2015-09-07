@@ -196,15 +196,13 @@ public class DockControl implements ITransformStream,IFromDB{
 
 	/**
 	 * 在舰船货仓里面卸下一个道具
-	 * @param suid
+	 * @param ship
 	 * @param uid
 	 * @param count
 	 * @return
 	 * @throws Exception 
 	 */
-	public IProp unloadHoldProp( int suid, int uid, int count ) throws Exception {
-		// 检查舰船是否存在
-		ShipInfo ship = getShipOfException(suid);
+	public IProp unloadHoldProp( ShipInfo ship, int uid, int count ) throws Exception {
 		// 执行扣除
 		IProp ret = ship.getHolds().deductProp( uid, count );
 		if( ret == null )

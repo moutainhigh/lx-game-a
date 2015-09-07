@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.depot.PlayerDepot;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -35,8 +36,9 @@ public class MountEquipEvent extends IEvent{
 			// 获取道具
 			IProp prop 		= null;
 			ShipInfo atship = null;
+			PlayerDepot depot = player.getDepots(ship.getBerthSnid());
 			if( atsuid == -1 ){
-				prop		= getPlayerProp( player, puid );
+				prop		= getPlayerProp( depot, puid );
 			}else{
 				atship 		= player.getDocks().getShipOfException(atsuid);
 				if( !atship.isLevitation() )
@@ -52,7 +54,7 @@ public class MountEquipEvent extends IEvent{
 			
 			// 成功后 直接删除道具
 			if( atsuid == -1 ){
-				player.getDepots().remove( prop );
+				depot.remove( prop );
 			}else{
 				player.getDocks().removeEquipAtShip( atship, prop );
 			}
@@ -84,8 +86,8 @@ public class MountEquipEvent extends IEvent{
 	}
 
 	// 从玩家身上获取道具
-	private IProp getPlayerProp(Player player, int puid) throws Exception {
-		IProp prop = player.getDepots().getPropOfException(puid);
+	private IProp getPlayerProp( PlayerDepot depot, int puid) throws Exception {
+		IProp prop = depot.getPropOfException(puid);
 		// 判断是否舰船装备
 		if( !prop.isShipEquip() )
 			throw new Exception( ErrorCode.NOT_SHIPEQUIP.name() ) ;

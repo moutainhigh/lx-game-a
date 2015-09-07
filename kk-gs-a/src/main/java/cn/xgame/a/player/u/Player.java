@@ -9,6 +9,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.chat.ChatAxnControl;
 import cn.xgame.a.player.depot.DepotControl;
+import cn.xgame.a.player.depot.PlayerDepot;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.AccEctype;
 import cn.xgame.a.player.ectype.o.PreEctype;
@@ -147,8 +148,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public void exit() {
 		setLastLogoutTime( System.currentTimeMillis() );
 		
-		// 保存所有道具 信息
-		depots.update();
+		// 保存所有道具 信息 这里不保存 让道具及时保存
+//		depots.update();
 		// 保存所有舰船 信息
 		docks.update();
 		// 保存所有舰长 信息
@@ -244,6 +245,9 @@ public class Player extends IPlayer implements ITransformStream{
 	public DepotControl getDepots() {
 		return depots;
 	}
+	public PlayerDepot getDepots( int snid ) {
+		return depots.getDepot(snid);
+	}
 	public DockControl getDocks() {
 		return docks;
 	}
@@ -262,7 +266,7 @@ public class Player extends IPlayer implements ITransformStream{
 	public TavernControl getTaverns() {
 		return taverns;
 	}
-
+	
 
 
 

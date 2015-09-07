@@ -209,14 +209,14 @@ public class ShipInfo implements ITransformStream{
 			if( dt - t > 0 ){
 				status.startAttack( keepInfo.getCombatTime() );
 			}else{ // 这里直接发放奖励
-				keepInfo.giveoutAward(root);
+				keepInfo.giveoutAward( status.getCurrentSnid(), root );
 				keepInfo.clear();
 			}
 			return;
 		}
 		// 这里是战斗状态 那么要发放奖励
 		if( status.getStatus() == ShipStatus.COMBAT ){
-			keepInfo.giveoutAward(root);
+			keepInfo.giveoutAward( status.getCurrentSnid(), root );
 			keepInfo.clear();
 		}
 		// 最后设置悬停

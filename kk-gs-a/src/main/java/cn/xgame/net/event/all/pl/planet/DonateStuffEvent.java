@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.depot.PlayerDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -41,7 +42,7 @@ public class DonateStuffEvent extends IEvent{
 				throw new Exception( ErrorCode.CANNOT_DONATE.name() );
 			
 			// 扣除捐献的道具  uid=-1代表 是捐献货币
-			IProp prop = uid == -1 ? deductCurrency(player, count) : deductProp( player, uid, count );
+			IProp prop = uid == -1 ? deductCurrency(player, count) : deductProp( id, player, uid, count );
 			
 			// 开始捐献
 			planet.donateResource( player, prop );
@@ -71,9 +72,10 @@ public class DonateStuffEvent extends IEvent{
 	}
 
 	// 扣除道具
-	private IProp deductProp(Player player, int uid, int count) throws Exception {
+	private IProp deductProp( int id, Player player, int uid, int count) throws Exception {
 		
-		IProp prop = player.getDepots().getProp( uid );
+		PlayerDepot depot = player.getDepots(id);
+		IProp prop = depot.getProp( uid );
 		if( prop == null )
 			throw new Exception( ErrorCode.STUFF_NOTEXIST.name() );
 		
@@ -85,7 +87,7 @@ public class DonateStuffEvent extends IEvent{
 		prop.setCount( count );
 		
 		// 扣除 玩家身上的道具  注：这里要先扣除玩家身上的道具 因为下面捐献后 会把UID换掉
-		player.getDepots().deductProp( prop );
+		depot.deductProp( prop );
 		
 		return prop;
 	}

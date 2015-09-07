@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.depot.PlayerDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -31,7 +32,8 @@ public class ExchAddedEvent extends IEvent{
 		try {
 			
 			// 仓库是否有这个道具
-			IProp prop = player.getDepots().getProp(uid);
+			PlayerDepot depot = player.getDepots(player.getCountryId());
+			IProp prop = depot.getProp(uid);
 			if( prop == null )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 			// 数量是否够
@@ -44,7 +46,7 @@ public class ExchAddedEvent extends IEvent{
 			retUid 			= home.getExchange().added( player, newPorp, count, price );
 			
 			// 最后在玩家仓库扣除对应道具
-			player.getDepots().deductProp( prop.getUid(), count );
+			depot.deductProp( prop.getUid(), count );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

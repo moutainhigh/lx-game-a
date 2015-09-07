@@ -1,13 +1,9 @@
 package cn.xgame.a.prop;
 
-import x.javaplus.mysql.db.Condition;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
-import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
-import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import io.netty.buffer.ByteBuf;
@@ -144,51 +140,6 @@ public abstract class IProp implements ITransformStream{
 	public void putBuffer( ByteBuf buffer ) {
 		putBaseBuffer( buffer );
 		RW.writeBytes( buffer, toAttachBytes() );
-	}
-	
-	/**
-	 * 在数据库创建数据
-	 * @param player
-	 */
-	public void createDB( Player player ){
-		PropsDao dao = SqlUtil.getPropsDao();
-		PropsDto dto = dao.create();
-		dto.setGsid( player.getGsid() );
-		dto.setUname( player.getUID() );
-		dto.setUid( uid );
-		dto.setNid( nid );
-		dto.setCount( count );
-		dto.setQuality( quality.toNumber() );
-		dto.setAttach( toAttachBytes() );
-		dao.commit(dto);
-	}
-	
-	/**
-	 * 更新数据库数据 - 只用于玩家仓库
-	 * @param player
-	 */
-	public void updateDB( Player player ) {
-		PropsDao dao 	= SqlUtil.getPropsDao();
-		String sql 		= new Condition( PropsDto.uidChangeSql( uid ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
-				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
-		PropsDto dto	= dao.updateByExact( sql );
-		dto.setNid( nid );
-		dto.setCount( getCount() );
-		dto.setQuality( quality.toNumber() );
-		dto.setAttach( toAttachBytes() );
-		dao.commit(dto);
-	}
-
-	/**
-	 * 从数据库删除数据 - 只用于玩家仓库
-	 * @param player
-	 */
-	public void deleteDB( Player player ){
-		PropsDao dao 	= SqlUtil.getPropsDao();
-		String sql 		= new Condition( PropsDto.uidChangeSql( uid ) ).AND( PropsDto.gsidChangeSql( player.getGsid() ) ).
-				AND( PropsDto.unameChangeSql( player.getUID() ) ).toString();
-		dao.deleteByExact(sql);
-		dao.commit();
 	}
 	
 	/**

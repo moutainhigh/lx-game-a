@@ -7,6 +7,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -28,11 +29,13 @@ public class UnloadHoldEvent extends IEvent{
 		ErrorCode code = null;
 		List<IProp> ret = null;
 		try {
+			// 检查舰船是否存在
+			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
 			//检查道具是否存在
-			IProp prop = player.getDocks().unloadHoldProp( suid, puid, count );
+			IProp prop 		= player.getDocks().unloadHoldProp( ship, puid, count );
 			
 			// 成功后 就把道具放入玩家仓库
-			ret = player.getDepots().appendProp( prop );
+			ret 			= player.getDepots(ship.getBerthSnid()).appendProp( prop );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
