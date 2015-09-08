@@ -57,4 +57,8 @@ public class UnTechs extends Techs{
 	public boolean isComplete() {
 		return getPastTime() >= templet().needtime || templet().needtime == 0;
 	}
+
+	public void runEffect() {
+		
+	}
 }

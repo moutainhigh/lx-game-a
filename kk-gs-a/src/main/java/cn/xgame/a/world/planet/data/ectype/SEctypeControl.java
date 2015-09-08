@@ -37,7 +37,7 @@ public class SEctypeControl {
 		for( String o : content ){
 			if( o.isEmpty() ) continue;
 			SEctype e = new SEctype( templet.id, Integer.parseInt( o ) );
-			itself.add( e );
+			getItself().add( e );
 		}
 		
 	}
@@ -48,9 +48,17 @@ public class SEctypeControl {
 	 */
 	public List<SEctype> getAll(){
 		List<SEctype> ret = Lists.newArrayList();
-		ret.addAll(itself);
+		ret.addAll(getItself());
 		ret.addAll(outlook);
 		return ret;
+	}
+
+	public List<SEctype> getItself() {
+		return itself;
+	}
+
+	public void addOutlookEctype( List<SEctype> itself ) {
+		outlook.addAll(itself);
 	}
 	
 }

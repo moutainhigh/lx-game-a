@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.string.StringUtil;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
@@ -20,11 +21,13 @@ import cn.xgame.a.player.tavern.TavernCaptain;
 import cn.xgame.a.player.tavern.TavernData;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.a.world.planet.data.building.UnBuildings;
 import cn.xgame.a.world.planet.data.exchange.ExchangeControl;
 import cn.xgame.a.world.planet.data.specialty.Specialty;
 import cn.xgame.a.world.planet.data.tech.TechControl;
+import cn.xgame.a.world.planet.data.tech.Techs;
 import cn.xgame.a.world.planet.data.tech.UnTechs;
 import cn.xgame.a.world.planet.data.vote.VotePlayer;
 import cn.xgame.a.world.planet.home.o.Child;
@@ -62,6 +65,9 @@ public class HomePlanet extends IPlanet {
 	
 	// 瞭望距离 
 	private int 			qutlook 	= 0;
+	
+	// 可购买的领地列表
+	private List<Integer> 	canBuyManor = Lists.newArrayList();
 	
 	// 商店列表
 	private List<IProp> 	shops 		= Lists.newArrayList();
@@ -107,10 +113,6 @@ public class HomePlanet extends IPlanet {
 		super.init(dto);
 		// 初始体制
 		setInstitution(Institution.REPUBLIC);
-		// 初始瞭望
-		qutlook = 100;
-		// 副本
-		updateEctypeInOutlook();
 	}
 	
 	@Override
@@ -131,7 +133,7 @@ public class HomePlanet extends IPlanet {
 		techControl.fromBytes( dto.getTechs() );
 		exchangeControl.fromBytes( dto.getExchanges() );
 		// 根据科技获取最大星球科技等级
-		updateTechLevel();
+		updateTechData( );
 		// 先排个序
 		updateChildSequence();
 		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
@@ -529,8 +531,9 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	// 刷新科技等级
-	private void updateTechLevel() {
+	private void updateTechData() {
 		techLevel = techControl.getMaxTechLevel();
+		
 	}
 	
 	/////////////////// =================元老====================
@@ -674,7 +677,8 @@ public class HomePlanet extends IPlanet {
 		// 研究完毕
 		UnTechs tech = techControl.runDevelopment();
 		if( tech != null ){
-			updateTechLevel();
+			updateTechData(  );
+			handleTech( tech );
 			Syn.tech( childs, 5, tech );
 			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 研究完毕!" );
 		}
@@ -685,12 +689,31 @@ public class HomePlanet extends IPlanet {
 			Logs.debug( templet().name + " 科技(" + tech.templet().name + "," + tech.templet().id + ") 投票完毕! - 不同意" );
 		}
 	}
-	
+	// 处理科技
+	private void handleTech( Techs tech ) {
+		if( tech.templet().type == 2 )// 如果 功能升级 
+		{
+			switch( tech.templet().efftype ){
+			case 1:// 瞭望距离
+				qutlook += Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) );
+				updateEctypeInOutlook();
+				break;
+			case 2:// 领地
+				canBuyManor.add( Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) ) );
+				break;
+			}
+		}
+	}
+
 	////////////------------------------------副本
 	
 	// 根据瞭望科技 更新副本信息
 	private void updateEctypeInOutlook() {
-		
+		if( qutlook == 0 ) return;
+		List<IPlanet> ls = WorldManager.o.getDistanceConfineTo( qutlook, templet().x, templet().y, templet().z );
+		for( IPlanet planet : ls ){
+			ectypeControl.addOutlookEctype( planet.getEctypeControl().getItself() );
+		}
 	}
 	
 	

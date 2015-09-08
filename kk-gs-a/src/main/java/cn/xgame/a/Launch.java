@@ -97,7 +97,7 @@ public class Launch {
 			
 			// 4.启动线程
 			ThreadManager.start();
-			Logs.debug( "线程启动完成 -- " );
+			Logs.debug( "线程启动完成 -- 服务器启动完成!" );
 			
 		} catch (Exception e) {
 			Logs.error( "Launch.handleConnect", e );

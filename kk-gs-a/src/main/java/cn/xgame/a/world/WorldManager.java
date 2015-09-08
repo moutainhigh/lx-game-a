@@ -244,5 +244,33 @@ public class WorldManager {
 		}
 	}
 	
+	/**
+	 * 根据瞭望距离获取周围的星球
+	 * @param qutlook
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public List<IPlanet> getDistanceConfineTo( int qutlook, int x, int y, int z ) {
+		List<IPlanet> ret = Lists.newArrayList();
+		List<IPlanet> ls = getAllPlanet();
+		for( IPlanet planet : ls ){
+			int distance = conversionDistance( planet.templet().x, planet.templet().y, planet.templet().z, x, y, z );
+			if( distance <= qutlook )
+				ret.add(planet);
+		}
+		return ret;
+	}
+	// 换算两点之间的距离
+	private int conversionDistance( int x, int y, int z, int x2, int y2, int z2 ) {
+		int a = Math.abs( x - x2 );
+		int b = Math.abs( y - y2 );
+		int c = (int) Math.sqrt( a*a + b*b );
+		int d = Math.abs( z - z2 );
+		int e = (int) Math.sqrt( c*c + d*d );
+		return e;
+	}
+	
 
 }
