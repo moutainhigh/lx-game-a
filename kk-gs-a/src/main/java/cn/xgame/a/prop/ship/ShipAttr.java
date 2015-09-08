@@ -1,5 +1,7 @@
 package cn.xgame.a.prop.ship;
 
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
@@ -7,6 +9,7 @@ import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.ShipPo;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 舰船属性
@@ -61,8 +64,11 @@ public class ShipAttr extends IProp{
 	
 	@Override
 	public void randomAttachAttr() {
-		// TODO Auto-generated method stub
-		
+		Lua lua = LuaUtil.getGameData();
+		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 3, templet, type().toNumber(), getQuality().toNumber() );
+		maxHp 		= value[0].getInt();
+		maxEnergy 	= value[1].getInt();
+		mass 		= value[2].getInt();
 	}
 	
 	@Override

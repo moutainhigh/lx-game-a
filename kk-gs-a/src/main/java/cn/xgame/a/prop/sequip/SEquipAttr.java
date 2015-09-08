@@ -62,7 +62,20 @@ public class SEquipAttr extends IProp{
 	private SEquipAttr( SEquipAttr clone ){
 		super( clone );
 		templet 	= clone.templet;
+		energy		= clone.energy;
+		accuracy	= clone.accuracy;
+		perplexity	= clone.perplexity;
+		mass		= clone.mass;
 		currentDur 	= clone.currentDur;
+		maxDur		= clone.maxDur;
+		boost		= clone.boost;
+		curAmmo		= clone.curAmmo;
+		maxAmmo		= clone.maxAmmo;
+		addHp		= clone.addHp;
+		atks.addAll( clone.atks );
+		defs.addAll( clone.defs );
+		askings.addAll( clone.askings );
+		answers.addAll( clone.answers );
 	}
 	
 	@Override
@@ -108,17 +121,17 @@ public class SEquipAttr extends IProp{
 	@Override
 	public void randomAttachAttr() {
 		Lua lua 	= LuaUtil.getGameData();
-		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 14, type().toNumber(), getQuality().toNumber() );
+		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 12, templet, type().toNumber(), getQuality().toNumber() );
 		int i 		= 0;
 		energy 		= value[i++].getInt();
 		accuracy 	= value[i++].getInt();
 		perplexity 	= value[i++].getInt();
 		mass 		= value[i++].getInt();
-		currentDur 	= value[i++].getInt();
 		maxDur 		= value[i++].getInt();
+		currentDur	= maxDur;
 		boost 		= value[i++].getInt();
-		curAmmo 	= value[i++].getInt();
 		maxAmmo 	= value[i++].getInt();
+		curAmmo		= maxAmmo;
 		addHp 		= value[i++].getInt();
 		String str  = value[i++].getString();
 		if( !str.isEmpty() ){

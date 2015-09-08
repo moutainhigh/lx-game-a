@@ -10,6 +10,7 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
 
 /**
@@ -38,10 +39,16 @@ public class PlayerDepot extends IDepot {
 	 * @return
 	 */
 	public List<IProp> appendProp( int nid, int count ) {
+		List<IProp> ret = Lists.newArrayList();
+		
+		// 检测是否货币
+		if( nid == LXConstants.CURRENCY_NID ){
+			root.changeCurrency( count );
+			ret.add( IProp.create( 0, nid, count) );
+			return ret;
+		}
 		
 		// TODO  以后如果要做玩家的仓库空间限制 就在这里加
-		
-		List<IProp> ret = Lists.newArrayList();
 		
 		try {
 			IProp prop = getCanCumsumProp( nid );

@@ -16,6 +16,7 @@ import cn.xgame.a.player.ectype.enemy.Enemy;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AskingPo;
 import cn.xgame.config.o.EctypePo;
+import cn.xgame.system.LXConstants;
 
 /**
  * 副本基类
@@ -132,7 +133,7 @@ public abstract class IEctype {
 			drops.add(drop);
 		}
 	}
-	
+		
 	// 初始化敌人
 	private void initEnemy() {
 		if( templet.meetid.isEmpty() )
@@ -158,6 +159,13 @@ public abstract class IEctype {
 			if( !drop.isDrop() )
 				continue;
 			ret.add(drop);
+		}
+		// 金币
+		if( !templet.money.isEmpty() ){
+			String[] str = templet.money.split( ";" );
+			int retmoney = Random.get( Integer.parseInt( str[0] ), Integer.parseInt( str[1] ) );
+			if( retmoney != 0 )
+				ret.add( new AwardInfo( LXConstants.CURRENCY_NID, retmoney ) );
 		}
 		// 在计算怪物身上的
 		for( Enemy enemy : enemys ){
