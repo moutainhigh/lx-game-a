@@ -23,6 +23,9 @@ public class CaptainAttr extends IProp {
 	// 亲密度
 	private int curIntimacy = 0;
 	
+	// 忠诚度
+	private int loyalty ;
+	
 	// 周薪
 	private int weekpay;
 	
@@ -45,6 +48,7 @@ public class CaptainAttr extends IProp {
 		super( clone );
 		templet 	= clone.templet;
 		curIntimacy = clone.curIntimacy;
+		loyalty		= clone.loyalty;
 		weekpay 	= clone.weekpay;
 		control 	= clone.control;
 		perception 	= clone.perception;
@@ -68,6 +72,7 @@ public class CaptainAttr extends IProp {
 		if( bytes == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
 		curIntimacy = buf.readInt();
+		loyalty 	= buf.readInt();
 		weekpay 	= buf.readInt();
 		control 	= buf.readInt();
 		perception 	= buf.readInt();
@@ -77,6 +82,7 @@ public class CaptainAttr extends IProp {
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( curIntimacy );
+		buffer.writeInt( loyalty );
 		buffer.writeInt( weekpay );
 		buffer.writeInt( control );
 		buffer.writeInt( perception );
@@ -88,6 +94,7 @@ public class CaptainAttr extends IProp {
 		Lua lua = LuaUtil.getGameData();
 		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 4, templet, type().toNumber(), getQuality().toNumber() );
 		curIntimacy	= 0;
+		loyalty		= 70;
 		weekpay 	= value[0].getInt();
 		control 	= value[1].getInt();
 		perception 	= value[2].getInt();
@@ -123,6 +130,12 @@ public class CaptainAttr extends IProp {
 	}
 	public void setAffinity(int affinity) {
 		this.affinity = affinity;
+	}
+	public int getLoyalty() {
+		return loyalty;
+	}
+	public void setLoyalty(int loyalty) {
+		this.loyalty = loyalty;
 	}
 	
 

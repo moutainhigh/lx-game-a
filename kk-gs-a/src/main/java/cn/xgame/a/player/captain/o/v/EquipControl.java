@@ -6,6 +6,7 @@ import io.netty.buffer.Unpooled;
 import java.util.List;
 
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.combat.CombatUtil;
 import cn.xgame.a.combat.o.Answers;
 import cn.xgame.a.combat.o.Askings;
@@ -18,7 +19,7 @@ import cn.xgame.a.prop.cequip.CEquipAttr;
  * @author deng		
  * @date 2015-7-24 下午6:16:37
  */
-public class EquipControl implements IArrayStream{
+public class EquipControl implements IArrayStream,ITransformStream{
 
 	// 装备
 	private CEquipAttr equip = null;
@@ -61,6 +62,13 @@ public class EquipControl implements IArrayStream{
 		CombatUtil.putAnswer( equip.templet().answers, answers );
 		
 		return 0;
+	}
+
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeInt( equip == null ? -1 : equip.getUid() );
+		if( equip != null ){
+			equip.buildTransformStream(buffer);
+		}
 	}
 
 

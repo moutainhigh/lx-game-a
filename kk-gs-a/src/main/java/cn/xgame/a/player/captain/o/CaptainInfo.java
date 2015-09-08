@@ -14,7 +14,6 @@ import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.captain.CaptainAttr;
-import cn.xgame.a.prop.cequip.CEquipAttr;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -50,9 +49,8 @@ public class CaptainInfo implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
-//		attr.buildTransformStream(buffer);
-		CEquipAttr equip = equips.getEquip();
-		buffer.writeInt( equip == null ? -1 : equip.getNid() );
+		attr.buildTransformStream( buffer );
+		equips.buildTransformStream( buffer );
 	}
 
 	public CaptainAttr attr(){ return attr; }
