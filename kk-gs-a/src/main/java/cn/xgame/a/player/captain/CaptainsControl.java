@@ -2,6 +2,7 @@ package cn.xgame.a.player.captain;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -89,6 +90,17 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		return captain;
 	}
 	
+	
+	private void remove(int uid) {
+		Iterator<CaptainInfo> iter = captains.iterator();
+		while( iter.hasNext() ){
+			if( iter.next().getuId() == uid ){
+				iter.remove();
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * 创建一个 舰长
 	 * @param nid
@@ -105,6 +117,20 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		
 		return cap;
 	}
+	
+	/**
+	 * 销毁一个舰长
+	 * @param captain
+	 */
+	public void destroy( CaptainInfo captain ) {
+		if( captain == null ) return;
+		remove( captain.getuId() );
+		captain.deleteDB( root );
+	}
+	public void destroy( int uid ) {
+		destroy( getCaptain(uid) );
+	}
+
 
 
 

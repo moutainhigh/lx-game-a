@@ -34,7 +34,7 @@ public class CaptainAttr extends IProp {
 	private int weekpay;
 	// 记录时间 每周一次
 	private int weekTime;
-		
+	
 	// 操控
 	private int control;
 	
@@ -202,4 +202,14 @@ public class CaptainAttr extends IProp {
 		if( answers.indexOf(id) == -1 )
 			answers.add(id);
 	}
+	
+	/**
+	 * 结算忠诚度  忠诚度完了那么就删除掉
+	 * @param value
+	 */
+	public boolean changeLoyalty( int value ) {
+		loyalty += value;
+		return loyalty <= 0;
+	}
+	
 }

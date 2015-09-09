@@ -8,6 +8,7 @@ import java.util.List;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.player.captain.o.CaptainInfo;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.ship.o.status.ShipStatus;
 import cn.xgame.a.player.ship.o.status.StatusControl;
@@ -58,10 +59,20 @@ public class OverAttackEvent extends IEvent{
 			// 获取奖励
 			awards	= ship.getKeepInfo().getAwards();
 			iswin	= ship.getKeepInfo().isWin();
-			ret		= ship.getKeepInfo().giveoutAward( status.getCurrentSnid(), player );
+			if( iswin == 1 )
+				ret	= ship.getKeepInfo().giveoutAward( status.getCurrentSnid(), player );
 			
 			// 清空副本记录
 			ship.getKeepInfo().clear();
+			
+			// 这里结算舰船的舰长忠诚度
+			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
+			if( captain != null ){
+				if( captain.changeLoyalty( iswin == 1 ? 1 : -1 ) ){// 这里如果没有忠诚度了 就要删除掉
+					player.getCaptains().destroy( captain );
+					ship.setCaptainUID( -1 );
+				}
+			}
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

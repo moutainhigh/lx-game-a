@@ -90,9 +90,25 @@ public class CaptainInfo implements ITransformStream{
 		dto.setShipUid( shipUid );
 		dto.setEquips( equips.toBytes() );
 	}
-	
+	public void deleteDB( Player player ){
+		CaptainsDao dao = SqlUtil.getCaptainsDao();
+		String sql 		= new Condition( CaptainsDto.uidChangeSql( attr.getUid() ) ).AND( CaptainsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( CaptainsDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact( sql );
+		dao.commit();
+	}
 	//TODO------------其他函数
 
+
+	/**
+	 * 结算忠诚度
+	 * @param value
+	 */
+	public boolean changeLoyalty( int value ) {
+		
+		return attr.changeLoyalty( value );
+	}
+	
 	
 	/**
 	 * 塞入舰长 战斗数据
@@ -112,6 +128,7 @@ public class CaptainInfo implements ITransformStream{
 		
 		return 0;
 	}
+
 
 	
 
