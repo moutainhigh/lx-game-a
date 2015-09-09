@@ -8,6 +8,7 @@ import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.ShipPo;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -17,6 +18,8 @@ import cn.xgame.utils.LuaUtil;
  */
 public class ShipAttr extends IProp{
 
+	private static final int version = 1;
+	
 	private final ShipPo templet;
 	
 	// 最大血量
@@ -46,8 +49,9 @@ public class ShipAttr extends IProp{
 
 	@Override
 	public byte[] toAttachBytes() {
-		ByteBuf buf = Unpooled.buffer( 24 );
-		buildTransformStream( buf );
+		ByteBuf buf = Unpooled.buffer(  );
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "shipAttr_ToBytes" ).call( 0, version, buf, this );
 		return buf.array();
 	}
 
@@ -56,9 +60,8 @@ public class ShipAttr extends IProp{
 		if( bytes == null )
 			return;
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		maxHp 		= buf.readInt();
-		maxEnergy	= buf.readInt();
-		mass		= buf.readInt();
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "shipAttr_WrapBytes" ).call( 0, buf, this );
 	}
 	
 	@Override
@@ -93,7 +96,24 @@ public class ShipAttr extends IProp{
 		this.mass = mass;
 	}
 
-
+	public static void main(String[] args) {
+		Lua.setLogClass( Logs.class );
+		CsvGen.load();
+		ItemPo item = CsvGen.getItemPo( 20001 );
+		
+		ShipAttr attr = new ShipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		attr.randomAttachAttr();
+		
+		System.out.println( "1----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
+		
+		byte[] bytes = attr.toAttachBytes();
+		
+		attr = new ShipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		System.out.println( "2----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
+		
+		attr.wrapAttachBytes(bytes);
+		System.out.println( "3----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
+	}
 
 
 }

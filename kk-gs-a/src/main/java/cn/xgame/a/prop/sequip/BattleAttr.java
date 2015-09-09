@@ -14,6 +14,10 @@ public class BattleAttr implements ITransformStream{
 	private byte type;
 	private int value;
 	
+	public String toString(){
+		return "type=" + type + ", value=" + value;
+	}
+	
 	public BattleAttr(ByteBuf buf) {
 		type 	= buf.readByte();
 		value 	= buf.readInt();

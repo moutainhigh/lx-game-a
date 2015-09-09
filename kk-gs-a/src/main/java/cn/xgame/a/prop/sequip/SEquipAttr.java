@@ -101,49 +101,8 @@ public class SEquipAttr extends IProp{
 	
 	@Override
 	public void randomAttachAttr() {
-		Lua lua 	= LuaUtil.getGameData();
+		Lua lua = LuaUtil.getGameData();
 		lua.getField( "randomAttachAttr" ).call( 0, this );
-//		int i 		= 0;
-//		energy 		= value[i++].getInt();
-//		accuracy 	= value[i++].getInt();
-//		perplexity 	= value[i++].getInt();
-//		mass 		= value[i++].getInt();
-//		maxDur 		= value[i++].getInt();
-//		currentDur	= maxDur;
-//		boost 		= value[i++].getInt();
-//		maxAmmo 	= value[i++].getInt();
-//		curAmmo		= maxAmmo;
-//		addHp 		= value[i++].getInt();
-//		String str  = value[i++].getString();
-//		if( !str.isEmpty() ){
-//			String[] ls = str.split("\\|");
-//			for( String o : ls ){
-//				if( o.isEmpty() ) continue;
-//				atks.add( new BattleAttr(o) );
-//			}
-//		}
-//		str  		= value[i++].getString();
-//		if( !str.isEmpty() ){
-//			String[] ls = str.split("\\|");
-//			for( String o : ls ){
-//				if( o.isEmpty() ) continue;
-//				defs.add( new BattleAttr(o) );
-//			}
-//		}
-//		str  		= value[i++].getString();
-//		if( !str.isEmpty() ){
-//			String[] ls = str.split(";");
-//			for( String o : ls ){
-//				askings.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
-//			}
-//		}
-//		str  		= value[i++].getString();
-//		if( !str.isEmpty() ){
-//			String[] ls = str.split(";");
-//			for( String o : ls ){
-//				answers.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
-//			}
-//		}
 	}
 	
 	@Override
@@ -260,7 +219,4 @@ public class SEquipAttr extends IProp{
 		return answers;
 	}
 
-
-
-	
 }
