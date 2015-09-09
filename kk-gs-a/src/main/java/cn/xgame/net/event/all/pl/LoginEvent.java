@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
-import x.javaplus.util.Util.Time;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
@@ -29,8 +28,6 @@ public class LoginEvent extends IEvent{
 	}
 
 	public void run( ChannelHandlerContext ctx, ByteBuf data ) throws IOException {
-		
-		Time.beginTimer();
 		
 		String UID 	= RW.readString(data);
 		String key	= RW.readString(data);
@@ -81,7 +78,6 @@ public class LoginEvent extends IEvent{
 			player.getEctypes().startRLoginTime();
 		}
 		
-		Time.endTimerToPrint();
 	}
 
 

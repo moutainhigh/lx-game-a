@@ -27,6 +27,11 @@ public class BattleAttr implements ITransformStream{
 		value 	= Integer.parseInt( StringUtil.convertNumberString( o[1] ) );
 	}
 	
+	public BattleAttr( byte type, int value ) {
+		this.type = type;
+		this.value = value;
+	}
+
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( type );

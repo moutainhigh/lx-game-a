@@ -4,7 +4,6 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
@@ -21,6 +20,8 @@ import cn.xgame.utils.LuaUtil;
  */
 public class CaptainAttr extends IProp {
 
+	private static final int version = 1;
+	
 	private final CaptainPo templet;
 	
 	// 亲密度
@@ -31,7 +32,9 @@ public class CaptainAttr extends IProp {
 	
 	// 周薪
 	private int weekpay;
-	
+	// 记录时间 每周一次
+	private int weekTime;
+		
 	// 操控
 	private int control;
 	
@@ -57,6 +60,7 @@ public class CaptainAttr extends IProp {
 		curIntimacy = clone.curIntimacy;
 		loyalty		= clone.loyalty;
 		weekpay 	= clone.weekpay;
+		weekTime	= clone.weekTime;
 		control 	= clone.control;
 		perception 	= clone.perception;
 		affinity 	= clone.affinity;
@@ -71,14 +75,9 @@ public class CaptainAttr extends IProp {
 	
 	@Override
 	public byte[] toAttachBytes() {
-		ByteBuf buf = Unpooled.buffer( 20 );
-		buildTransformStream( buf );
-		buf.writeByte( askings.size() );
-		for( int i : askings )
-			buf.writeInt(i);
-		buf.writeByte( answers.size() );
-		for( int i : answers )
-			buf.writeInt(i);
+		ByteBuf buf = Unpooled.buffer(  );
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "captainAttr_ToBytes" ).call( 0, version, buf, this );
 		return buf.array();
 	}
 
@@ -86,18 +85,17 @@ public class CaptainAttr extends IProp {
 	public void wrapAttachBytes( byte[] bytes ) {
 		if( bytes == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		curIntimacy = buf.readInt();
-		loyalty 	= buf.readInt();
-		weekpay 	= buf.readInt();
-		control 	= buf.readInt();
-		perception 	= buf.readInt();
-		affinity 	= buf.readInt();
-		byte size 	= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			askings.add( buf.readInt() );
-		size 		= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			answers.add( buf.readInt() );
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "captainAttr_WrapBytes" ).call( 0, buf, this );
+	}
+	
+	@Override
+	public void randomAttachAttr() {
+		Lua lua = LuaUtil.getGameData();
+		lua.getField( "randomAttachAttr" ).call( 0, this );
+		curIntimacy	= 0;
+		loyalty		= 70;
+		weekTime	= (int) (System.currentTimeMillis()/1000);
 	}
 	
 	@Override
@@ -108,18 +106,6 @@ public class CaptainAttr extends IProp {
 		buffer.writeInt( control );
 		buffer.writeInt( perception );
 		buffer.writeInt( affinity );
-	}
-
-	@Override
-	public void randomAttachAttr() {
-		Lua lua = LuaUtil.getGameData();
-		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 4, templet, type().toNumber(), getQuality().toNumber() );
-		curIntimacy	= 0;
-		loyalty		= 70;
-		weekpay 	= value[0].getInt();
-		control 	= value[1].getInt();
-		perception 	= value[2].getInt();
-		affinity 	= value[3].getInt();
 	}
 
 	public int getCurIntimacy() {
@@ -133,6 +119,12 @@ public class CaptainAttr extends IProp {
 	}
 	public void setWeekpay(int weekpay) {
 		this.weekpay = weekpay;
+	}
+	public int getWeekTime(){
+		return weekTime;
+	}
+	public void setWeekTime( int weekTime ){
+		this.weekTime = weekTime;
 	}
 	public int getControl() {
 		return control;
@@ -210,5 +202,4 @@ public class CaptainAttr extends IProp {
 		if( answers.indexOf(id) == -1 )
 			answers.add(id);
 	}
-	
 }

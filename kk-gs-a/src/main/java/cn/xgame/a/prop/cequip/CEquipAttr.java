@@ -1,7 +1,6 @@
 package cn.xgame.a.prop.cequip;
 
 import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
@@ -69,19 +68,16 @@ public class CEquipAttr extends IProp{
 	}
 
 	@Override
+	public void randomAttachAttr() {
+		Lua lua = LuaUtil.getGameData();
+		lua.getField( "randomAttachAttr" ).call( 0, this );
+	}
+	
+	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( control );
 		buffer.writeInt( perception );
 		buffer.writeInt( affinity );
-	}
-
-	@Override
-	public void randomAttachAttr() {
-		Lua lua = LuaUtil.getGameData();
-		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 3, templet, type().toNumber(), getQuality().toNumber() );
-		control 	= value[0].getInt();
-		perception 	= value[1].getInt();
-		affinity 	= value[2].getInt();
 	}
 
 	public int getControl() {

@@ -3,9 +3,7 @@ package cn.xgame.a.prop.sequip;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.string.StringUtil;
 import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -23,6 +21,8 @@ import cn.xgame.utils.LuaUtil;
  */
 public class SEquipAttr extends IProp{
 
+	private static final int version = 1;
+	
 	private final WeaponPo templet;
 	
 	// 消耗能量
@@ -85,8 +85,9 @@ public class SEquipAttr extends IProp{
 
 	@Override
 	public byte[] toAttachBytes() {
-		ByteBuf buf = Unpooled.buffer( 125 );
-		buildTransformStream( buf );
+		ByteBuf buf = Unpooled.buffer( );
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "SEquipAttr_ToBytes" ).call( 0, version, buf, this );
 		return buf.array();
 	}
 
@@ -94,75 +95,55 @@ public class SEquipAttr extends IProp{
 	public void wrapAttachBytes(byte[] bytes) {
 		if( bytes == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(bytes);
-		energy 		= buf.readInt();
-		accuracy 	= buf.readInt();
-		perplexity 	= buf.readInt();
-		mass 		= buf.readInt();
-		currentDur 	= buf.readInt();
-		maxDur 		= buf.readInt();
-		boost 		= buf.readInt();
-		curAmmo 	= buf.readInt();
-		maxAmmo 	= buf.readInt();
-		addHp 		= buf.readInt();
-		byte size	= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			atks.add( new BattleAttr(buf) );
-		size		= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			defs.add( new BattleAttr(buf) );
-		size 		= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			askings.add( buf.readInt() );
-		size 		= buf.readByte();
-		for( int i = 0; i < size; i++ )
-			answers.add( buf.readInt() );
+		Lua lua 	= LuaUtil.getDatabaseBufferForm();
+		lua.getField( "SEquipAttr_WrapBytes" ).call( 0, buf, this );
 	}
 	
 	@Override
 	public void randomAttachAttr() {
 		Lua lua 	= LuaUtil.getGameData();
-		LuaValue[] value = lua.getField( "randomAttachAttr" ).call( 12, templet, type().toNumber(), getQuality().toNumber() );
-		int i 		= 0;
-		energy 		= value[i++].getInt();
-		accuracy 	= value[i++].getInt();
-		perplexity 	= value[i++].getInt();
-		mass 		= value[i++].getInt();
-		maxDur 		= value[i++].getInt();
-		currentDur	= maxDur;
-		boost 		= value[i++].getInt();
-		maxAmmo 	= value[i++].getInt();
-		curAmmo		= maxAmmo;
-		addHp 		= value[i++].getInt();
-		String str  = value[i++].getString();
-		if( !str.isEmpty() ){
-			String[] ls = str.split("\\|");
-			for( String o : ls ){
-				if( o.isEmpty() ) continue;
-				atks.add( new BattleAttr(o) );
-			}
-		}
-		str  		= value[i++].getString();
-		if( !str.isEmpty() ){
-			String[] ls = str.split("\\|");
-			for( String o : ls ){
-				if( o.isEmpty() ) continue;
-				defs.add( new BattleAttr(o) );
-			}
-		}
-		str  		= value[i++].getString();
-		if( !str.isEmpty() ){
-			String[] ls = str.split(";");
-			for( String o : ls ){
-				askings.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
-			}
-		}
-		str  		= value[i++].getString();
-		if( !str.isEmpty() ){
-			String[] ls = str.split(";");
-			for( String o : ls ){
-				answers.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
-			}
-		}
+		lua.getField( "randomAttachAttr" ).call( 0, this );
+//		int i 		= 0;
+//		energy 		= value[i++].getInt();
+//		accuracy 	= value[i++].getInt();
+//		perplexity 	= value[i++].getInt();
+//		mass 		= value[i++].getInt();
+//		maxDur 		= value[i++].getInt();
+//		currentDur	= maxDur;
+//		boost 		= value[i++].getInt();
+//		maxAmmo 	= value[i++].getInt();
+//		curAmmo		= maxAmmo;
+//		addHp 		= value[i++].getInt();
+//		String str  = value[i++].getString();
+//		if( !str.isEmpty() ){
+//			String[] ls = str.split("\\|");
+//			for( String o : ls ){
+//				if( o.isEmpty() ) continue;
+//				atks.add( new BattleAttr(o) );
+//			}
+//		}
+//		str  		= value[i++].getString();
+//		if( !str.isEmpty() ){
+//			String[] ls = str.split("\\|");
+//			for( String o : ls ){
+//				if( o.isEmpty() ) continue;
+//				defs.add( new BattleAttr(o) );
+//			}
+//		}
+//		str  		= value[i++].getString();
+//		if( !str.isEmpty() ){
+//			String[] ls = str.split(";");
+//			for( String o : ls ){
+//				askings.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
+//			}
+//		}
+//		str  		= value[i++].getString();
+//		if( !str.isEmpty() ){
+//			String[] ls = str.split(";");
+//			for( String o : ls ){
+//				answers.add( Integer.parseInt( StringUtil.convertNumberString( o ) ) );
+//			}
+//		}
 	}
 	
 	@Override
@@ -205,6 +186,78 @@ public class SEquipAttr extends IProp{
 	}
 	public void setCurrentDur(int currentDur) {
 		this.currentDur = currentDur;
+	}
+	public int getEnergy() {
+		return energy;
+	}
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
+	public int getAccuracy() {
+		return accuracy;
+	}
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
+	public int getPerplexity() {
+		return perplexity;
+	}
+	public void setPerplexity(int perplexity) {
+		this.perplexity = perplexity;
+	}
+	public int getMass() {
+		return mass;
+	}
+	public void setMass(int mass) {
+		this.mass = mass;
+	}
+	public int getMaxDur() {
+		return maxDur;
+	}
+	public void setMaxDur(int maxDur) {
+		this.maxDur = maxDur;
+	}
+	public int getBoost() {
+		return boost;
+	}
+	public void setBoost(int boost) {
+		this.boost = boost;
+	}
+	public int getCurAmmo() {
+		return curAmmo;
+	}
+	public void setCurAmmo(int curAmmo) {
+		this.curAmmo = curAmmo;
+	}
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+	public void setMaxAmmo(int maxAmmo) {
+		this.maxAmmo = maxAmmo;
+	}
+	public int getAddHp() {
+		return addHp;
+	}
+	public void setAddHp(int addHp) {
+		this.addHp = addHp;
+	}
+	public List<BattleAttr> getAtks() {
+		return atks;
+	}
+	public void setAtks( byte type, int value ){
+		atks.add( new BattleAttr( type, value ) );
+	}
+	public List<BattleAttr> getDefs() {
+		return defs;
+	}
+	public void setDefs( byte type, int value ){
+		defs.add( new BattleAttr( type, value ) );
+	}
+	public List<Integer> getAskings() {
+		return askings;
+	}
+	public List<Integer> getAnswers() {
+		return answers;
 	}
 
 

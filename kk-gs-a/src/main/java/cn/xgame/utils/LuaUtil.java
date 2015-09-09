@@ -16,7 +16,7 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getGameData() {
-		Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/gameData.lua" );
+		Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/GameData.lua" );
 		lua.registerObject( CsvGen.class, "CsvGen" );
 		return lua;
 	}
@@ -26,7 +26,7 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getEctype() {
-		return new Lua( SystemCfg.FILE_NAME + "lua/ectype.lua" );
+		return new Lua( SystemCfg.FILE_NAME + "lua/EctypeInfo.lua" );
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getEctypeCombat() {
-		return new Lua( SystemCfg.FILE_NAME + "lua/ectypeCombat.lua" );
+		return new Lua( SystemCfg.FILE_NAME + "lua/EctypeCombat.lua" );
 	}
 
 	/**
@@ -42,7 +42,15 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getCaptainProperty() {
-		return new Lua( SystemCfg.FILE_NAME + "lua/captainProperty.lua" );
+		return new Lua( SystemCfg.FILE_NAME + "lua/CaptainProperty.lua" );
 	}
 
+	/**
+	 * 数据库 buffer 输入数据
+	 * @return
+	 */
+	public static Lua getDatabaseBufferForm() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/DatabaseBufferForm.lua" );
+	}
+	
 }
