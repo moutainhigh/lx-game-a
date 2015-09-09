@@ -106,9 +106,11 @@ public class CaptainInfo implements ITransformStream{
 			List<Askings> askings, List<Answers> answers) {
 		
 		// 答
-		CombatUtil.putAnswer( attr.templet().answer, answers );
+		CombatUtil.putAnswer( attr.getAnswers(), answers );
+		// 问
+		CombatUtil.putAsking( attr.getAskings(), askings );
 		
-		return equips.warpFightProperty( attacks, defends, askings, answers );
+		return 0;
 	}
 
 	

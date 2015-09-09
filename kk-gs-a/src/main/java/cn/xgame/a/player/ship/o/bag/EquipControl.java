@@ -106,12 +106,12 @@ public class EquipControl extends IHold implements IArrayStream{
 			try {
 				SEquipAttr equip = (SEquipAttr)prop;
 				// 累加耐久度
-				dur += equip.templet().dur;
+				dur += equip.getCurrentDur();
 				// 基础属性
-				List<AtkAndDef> atkdef = prop.itemType() == 1 ? attacks : defends;
-//				CombatUtil.putBasisProperty( atkdef, equip.templet().type, equip.templet().value );
+				attacks.addAll( equip.getAtks() );
+				defends.addAll( equip.getDefs() );
 				// 答
-				CombatUtil.putAnswer( equip.templet().answers, answers );
+				CombatUtil.putAnswer( equip.getAnswers(), answers );
 				// 问
 				
 			} catch (Exception e) {

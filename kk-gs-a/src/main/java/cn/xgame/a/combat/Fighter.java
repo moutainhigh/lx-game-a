@@ -40,14 +40,14 @@ public class Fighter {
 	
 	private AtkAndDef getAttacks( int type ) {
 		for( AtkAndDef o : attacks ){
-			if( o.type == type )
+			if( o.getType() == type )
 				return o;
 		}
 		return null;
 	}
 	private AtkAndDef getDefends(int type) {
 		for( AtkAndDef o : defends ){
-			if( o.type == type )
+			if( o.getType() == type )
 				return o;
 		}
 		return null;
@@ -79,19 +79,19 @@ public class Fighter {
 		answers.clear();
 		
 		for( AtkAndDef x : a1 ){
-			AtkAndDef o = getAttacks( x.type );
+			AtkAndDef o = getAttacks( x.getType() );
 			if( o == null ){
 				attacks.add( x );
 			}else{
-				o.value += x.value;
+				o.setValue(o.getValue() + x.getValue());
 			}
 		}
 		for( AtkAndDef x : a2 ){
-			AtkAndDef o = getDefends( x.type );
+			AtkAndDef o = getDefends( x.getType() );
 			if( o == null ){
 				defends.add( x );
 			}else{
-				o.value += x.value;
+				o.setValue(o.getValue() + x.getValue());
 			}
 		}
 		for( Askings x : b1 ){

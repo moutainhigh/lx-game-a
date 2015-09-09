@@ -222,11 +222,12 @@ public abstract class IEctype {
 			// 血量
 			hp += enemy.getHP();
 			// 基础属性
-			CombatUtil.putBasisProperty( attacks, enemy.getAtkType(), enemy.getAtkValue() );
-			CombatUtil.putBasisProperty( defends, enemy.getDefType(), enemy.getDefValue() );
+			attacks.addAll( enemy.getAtks() );
+			defends.addAll( enemy.getDefs() );
 			// 问
-			CombatUtil.putAsking( enemy.templet().askings, askings );
+			CombatUtil.putAsking( enemy.getAskings(), askings );
 			// 答
+			CombatUtil.putAnswer( enemy.getAnswers(), answers );
 		}
 		return hp;
 	}

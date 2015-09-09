@@ -7,6 +7,7 @@ import x.javaplus.util.lua.Lua;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import cn.xgame.a.combat.o.AtkAndDef;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;
@@ -46,9 +47,9 @@ public class SEquipAttr extends IProp{
 	// 添加生命值
 	private int addHp;
 	// 攻击属性列表
-	private List<BattleAttr> atks = Lists.newArrayList();
+	private List<AtkAndDef> atks = Lists.newArrayList();
 	// 防御属性列表
-	private List<BattleAttr> defs = Lists.newArrayList();
+	private List<AtkAndDef> defs = Lists.newArrayList();
 	// 应答 - 问
 	private List<Integer> askings = Lists.newArrayList();
 	// 应答 - 答
@@ -118,10 +119,10 @@ public class SEquipAttr extends IProp{
 		buffer.writeInt( maxAmmo );
 		buffer.writeInt( addHp );
 		buffer.writeByte( atks.size() );
-		for( BattleAttr a : atks )
+		for( AtkAndDef a : atks )
 			a.buildTransformStream( buffer );
 		buffer.writeByte( defs.size() );
-		for( BattleAttr a : defs )
+		for( AtkAndDef a : defs )
 			a.buildTransformStream( buffer );
 		buffer.writeByte( askings.size() );
 		for( int id : askings )
@@ -200,17 +201,17 @@ public class SEquipAttr extends IProp{
 	public void setAddHp(int addHp) {
 		this.addHp = addHp;
 	}
-	public List<BattleAttr> getAtks() {
+	public List<AtkAndDef> getAtks() {
 		return atks;
 	}
-	public void setAtks( byte type, int value ){
-		atks.add( new BattleAttr( type, value ) );
+	public void setAtks( byte type, float value ){
+		atks.add( new AtkAndDef( type, value ) );
 	}
-	public List<BattleAttr> getDefs() {
+	public List<AtkAndDef> getDefs() {
 		return defs;
 	}
-	public void setDefs( byte type, int value ){
-		defs.add( new BattleAttr( type, value ) );
+	public void setDefs( byte type, float value ){
+		defs.add( new AtkAndDef( type, value ) );
 	}
 	public List<Integer> getAskings() {
 		return askings;

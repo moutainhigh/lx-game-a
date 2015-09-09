@@ -1,5 +1,7 @@
 package cn.xgame.a.combat.o;
 
+import io.netty.buffer.ByteBuf;
+
 
 /**
  * 攻击和防御属性 结构
@@ -9,9 +11,32 @@ package cn.xgame.a.combat.o;
 public class AtkAndDef {
 
 	// 类型
-	public int type;
+	private byte type;
 	
 	// 数值
-	public float value;
+	private float value;
+
+	public AtkAndDef( byte type, float value ) {
+		this.type = type;
+		this.value = value;
+	}
+
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeByte( type );
+		buffer.writeFloat( value );
+	}
+
+	public byte getType() {
+		return type;
+	}
+	public void setType( byte type ) {
+		this.type = type;
+	}
+	public float getValue() {
+		return value;
+	}
+	public void setValue(float value) {
+		this.value = value;
+	}
 	
 }
