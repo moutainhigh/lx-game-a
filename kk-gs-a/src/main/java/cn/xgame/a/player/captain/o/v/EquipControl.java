@@ -28,25 +28,33 @@ public class EquipControl implements IArrayStream,ITransformStream{
 	
 	@Override
 	public void fromBytes(byte[] data) {
-		if( data == null )
-			return;
+		if( data == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		equip = new CEquipAttr( buf );
 	}
 	
 	@Override
 	public byte[] toBytes() {
-		if( equip == null )
-			return null;
+		if( equip == null ) return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		equip.putBuffer( buf );
 		return buf.array();
 	}
 	
-	public CEquipAttr getEquip() {
-		return equip;
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeInt( equip == null ? -1 : equip.getUid() );
+		if( equip != null ){
+			equip.buildTransformStream(buffer);
+		}
 	}
-	
+
+	public CEquipAttr getEquip() { return equip; }
+	public void setEquip( CEquipAttr equip ) { 
+		this.equip = equip;
+		this.equip.setUid( 1 );
+	}
+
 	/**
 	 * 包装 战斗数据
 	 * @param attacks
@@ -63,16 +71,6 @@ public class EquipControl implements IArrayStream,ITransformStream{
 		
 		return 0;
 	}
-
-	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( equip == null ? -1 : equip.getUid() );
-		if( equip != null ){
-			equip.buildTransformStream(buffer);
-		}
-	}
-
-
-
 
 
 }

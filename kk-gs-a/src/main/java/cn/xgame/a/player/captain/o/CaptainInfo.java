@@ -28,6 +28,9 @@ public class CaptainInfo implements ITransformStream{
 	// 舰长属性
 	private CaptainAttr attr;
 	
+	// 所在星球ID
+	private int snid;
+	
 	// 所属舰船UID
 	private int shipUid 			= -1;
 	
@@ -59,6 +62,8 @@ public class CaptainInfo implements ITransformStream{
 	public EquipControl getEquips() { return equips; }
 	public int getShipUid() { return shipUid; }
 	public void setShipUid(int shipUid) { this.shipUid = shipUid; }
+	public int getSnid() { return snid; }
+	public void setSnid(int snid) { this.snid = snid; }
 	
 	//TODO------------数据库相关
 	public void createDB( Player root ) {
@@ -88,6 +93,7 @@ public class CaptainInfo implements ITransformStream{
 	
 	//TODO------------其他函数
 
+	
 	/**
 	 * 塞入舰长 战斗数据
 	 * @param attacks
@@ -106,5 +112,7 @@ public class CaptainInfo implements ITransformStream{
 	}
 
 	
+
+
 	
 }

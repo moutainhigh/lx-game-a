@@ -1,5 +1,8 @@
 package cn.xgame.a.prop.captain;
 
+import java.util.List;
+
+import x.javaplus.collections.Lists;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
@@ -38,6 +41,10 @@ public class CaptainAttr extends IProp {
 	// 亲和力
 	private int affinity;
 	
+	// 应答 - 问
+	private List<Integer> askings = Lists.newArrayList();
+	// 应答 - 答
+	private List<Integer> answers = Lists.newArrayList();
 	
 	public CaptainAttr( ItemPo item, int uid, int nid, int count, Quality quality ) {
 		super( item, uid, nid, count, quality );
@@ -53,6 +60,8 @@ public class CaptainAttr extends IProp {
 		control 	= clone.control;
 		perception 	= clone.perception;
 		affinity 	= clone.affinity;
+		askings.addAll( clone.askings );
+		answers.addAll( clone.answers );
 	}
 	
 	@Override
@@ -64,6 +73,12 @@ public class CaptainAttr extends IProp {
 	public byte[] toAttachBytes() {
 		ByteBuf buf = Unpooled.buffer( 20 );
 		buildTransformStream( buf );
+		buf.writeByte( askings.size() );
+		for( int i : askings )
+			buf.writeInt(i);
+		buf.writeByte( answers.size() );
+		for( int i : answers )
+			buf.writeInt(i);
 		return buf.array();
 	}
 
@@ -77,6 +92,12 @@ public class CaptainAttr extends IProp {
 		control 	= buf.readInt();
 		perception 	= buf.readInt();
 		affinity 	= buf.readInt();
+		byte size 	= buf.readByte();
+		for( int i = 0; i < size; i++ )
+			askings.add( buf.readInt() );
+		size 		= buf.readByte();
+		for( int i = 0; i < size; i++ )
+			answers.add( buf.readInt() );
 	}
 	
 	@Override
@@ -137,6 +158,57 @@ public class CaptainAttr extends IProp {
 	public void setLoyalty(int loyalty) {
 		this.loyalty = loyalty;
 	}
+	public List<Integer> getAskings(){ 
+		return askings; 
+	}
+	public List<Integer> getAnswers(){ 
+		return answers; 
+	}
 	
-
+	
+	public void addIntimacy( int value ) {
+		curIntimacy += value;
+		int maxIntimacy = getMaxIntimacy();
+		if( curIntimacy > maxIntimacy ) curIntimacy = maxIntimacy;
+	}
+	
+	/** 获取最大亲密度 */
+	public int getMaxIntimacy(){
+		if( templet.intimate.isEmpty() )
+			return 0;
+		String[] str = templet.intimate.split(";");
+		return Integer.parseInt( str[str.length-1] );
+	}
+	
+	/** 获取当前阶段 */
+	public int getCurphase(){
+		if( templet.intimate.isEmpty() )
+			return 0;
+		String[] str = templet.intimate.split(";");
+		int i = 0;
+		while( i < str.length ){
+			if( curIntimacy < Integer.parseInt( str[i] ) ) break;
+			++i;
+		}
+		return i;
+	}
+	
+	/**
+	 * 添加一个应答-问
+	 * @param id
+	 */
+	public void addAsking( int id ){
+		if( askings.indexOf(id) == -1 )
+			askings.add(id);
+	}
+	
+	/**
+	 * 添加一个应答-答
+	 * @param id
+	 */
+	public void addAnswer( int id ){
+		if( answers.indexOf(id) == -1 )
+			answers.add(id);
+	}
+	
 }

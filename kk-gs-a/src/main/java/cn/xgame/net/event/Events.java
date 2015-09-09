@@ -17,6 +17,8 @@ import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.captain.EatEquipEvent;
+import cn.xgame.net.event.all.pl.captain.EatIntimacyEvent;
 import cn.xgame.net.event.all.pl.chat.AnswerTeamEvent;
 import cn.xgame.net.event.all.pl.chat.InviteTeamEvent;
 import cn.xgame.net.event.all.pl.chat.InviteTempAxnEvent;
@@ -85,13 +87,16 @@ public enum Events {
 	APPLY_DOCKS					( 1012, 	new ApplyDockEvent() ),
 	APPLY_CAPTAINS				( 1013, 	new ApplyCaptainEvent() ),
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
-	
+	// 舰船
 	SHIP_MOUNT_HOLD				( 1021, 	new MountHoldEvent() ),
 	SHIP_UNLOAD_HOLD			( 1022, 	new UnloadHoldEvent() ),
 	SHIP_MOUNT_EQUIP			( 1023, 	new MountEquipEvent() ),
 	SHIP_UNLOAD_EQUIP			( 1024, 	new UnloadEquipEvent() ),
 	SHIP_MOUNT_CAPTAIN			( 1025, 	new MountCaptainEvent() ),
 	SHIP_UNLOAD_CAPTAIN			( 1026, 	new UnloadCaptainEvent() ),
+	// 舰长
+	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
+	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),

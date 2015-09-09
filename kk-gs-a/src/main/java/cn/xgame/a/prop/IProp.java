@@ -203,6 +203,13 @@ public abstract class IProp implements ITransformStream{
 	/** 是否一个空的道具 */
 	public boolean isEmpty() { return count <= 0; }
 	
+	/** 道具出售价格  */
+	public int getSellgold() { return item.buygold; }
+
+	/** 最大叠加数 */
+	public int getMaxOverlap() { return item.manymax; }
+	
+	
 	/** 是否货币 */
 	public boolean isCurrency() { return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID; }
 	
@@ -212,11 +219,10 @@ public abstract class IProp implements ITransformStream{
 	/** 是否舰长装备 */
 	public boolean isCaptainEquip() { return type == PropType.CEQUIP; }
 	
-	/** 道具出售价格  */
-	public int getSellgold() { return item.buygold; }
+	/** 是否舰长食用亲密豆 */
+	public boolean isCaptainIntimacy() { return type == PropType.STUFF && item.itemtype == 5; }
+	
 
-	/** 最大叠加数 */
-	public int getMaxOverlap() { return item.manymax; }
 	
 	/**
 	 * 添加数量 
@@ -245,5 +251,6 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
+
 
 }

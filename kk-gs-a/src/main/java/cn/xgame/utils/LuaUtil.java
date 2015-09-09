@@ -37,4 +37,12 @@ public class LuaUtil {
 		return new Lua( SystemCfg.FILE_NAME + "lua/ectypeCombat.lua" );
 	}
 
+	/**
+	 * 舰长属性
+	 * @return
+	 */
+	public static Lua getCaptainProperty() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/captainProperty.lua" );
+	}
+
 }
