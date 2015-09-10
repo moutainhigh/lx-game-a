@@ -47,6 +47,9 @@ public class LoginEvent extends IEvent{
 			// 获取母星 信息
 			home 	= WorldManager.o.getHPlanetInPlayer( player );
 			
+			// 这里结算 舰长周薪
+			player.getCaptains().balanceWeekly();
+			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
@@ -74,8 +77,6 @@ public class LoginEvent extends IEvent{
 			
 			// 记录最后一次登录的服务器ID
 			player.rLastGsid();
-			// 开始记录登录计时副本
-			player.getEctypes().startRLoginTime();
 		}
 		
 	}

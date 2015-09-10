@@ -53,8 +53,8 @@ public class CreateEvent extends IEvent {
 			// 加入星球
 			home.appendPlayer(player);
 			
-			// 获取副本信息
-			player.updateEctype();
+			// 初始化副本信息
+			player.getEctypes().initialize();
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -81,9 +81,6 @@ public class CreateEvent extends IEvent {
 			
 			// 记录最后一次登录的服务器ID
 			player.rLastGsid();
-			
-			// 开始记录登录计时副本
-			player.getEctypes().startRLoginTime();
 			
 			// 保存数据库一次
 //			PlayerManager.o.update(player);

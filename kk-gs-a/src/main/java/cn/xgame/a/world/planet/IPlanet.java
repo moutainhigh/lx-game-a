@@ -3,25 +3,20 @@ package cn.xgame.a.world.planet;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
+
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.ectype.o.AccEctype;
+import cn.xgame.a.ectype.ChapterEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
-import cn.xgame.a.world.planet.data.ectype.SEctypeControl;
 import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.EctypePo;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
-import cn.xgame.utils.LuaUtil;
 
 /**
  * 星球基类
@@ -45,17 +40,12 @@ public abstract class IPlanet implements ITransformStream{
 	// 星球建筑
 	protected BuildingControl 		buildingControl ;
 	
-	// ------临时数据
-	// 星球副本 - 这个不需要保存数据库 每次根据表格生成出来
-	protected SEctypeControl 		ectypeControl ;
-	
 	
 	public IPlanet( StarsPo clone ){
 		templet 			= clone;
 		specialtyControl 	= new SpecialtyControl( getId() );
 		depotControl 		= new ResourceControl( getId() );
 		buildingControl 	= new BuildingControl( getId() );
-		ectypeControl 		= new SEctypeControl( getId() );
 	}
 	
 	/**
@@ -66,7 +56,6 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
-		ectypeControl.fromTemplet( templet );
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
@@ -85,7 +74,6 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromTemplet( templet.goods );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
-		ectypeControl.fromTemplet( templet );
 	}
 	
 	@Override
@@ -121,6 +109,8 @@ public abstract class IPlanet implements ITransformStream{
 	public abstract boolean isCanDonate();
 	/** 保存数据库 */
 	public abstract void updateDB();
+	/** 获取瞭望的星球ID列表 */
+	public abstract List<Integer> getScopePlanet();
 	
 	/** 获得该星球体制 */
 	public Institution getInstitution() { return null; }
@@ -136,29 +126,42 @@ public abstract class IPlanet implements ITransformStream{
 	public SpecialtyControl getSpecialtyControl() { return specialtyControl; }
 	public ResourceControl getDepotControl() { return depotControl; }
 	public BuildingControl getBuildingControl() { return buildingControl; }
-	public SEctypeControl getEctypeControl() { return ectypeControl; }
 
+	/** 
+	 * 获取该星球本身自带的副本
+	 * @return
+	 */
+	public List<Integer> getItselfEctype() {
+		List<Integer> ret = Lists.newArrayList();
+		if( !templet().ectypes.isEmpty() ){
+			String[] str = templet().ectypes.split(";");
+			for( String o : str )
+				ret.add( Integer.parseInt(o) );
+		}
+		return ret;
+	}
+	
 	/**
 	 * 获取偶发副本
 	 * @return
 	 */
-	public List<AccEctype> getAccEctype() {
+	public List<ChapterEctype> getAccidentalEctype() {
 		
-		Lua lua = LuaUtil.getEctype();
-		LuaValue[] ret = lua.getField( "getStarAccEctype" ).call( 1, templet.id );
-		String[] content = ret[0].getString().split(",");
-		
-		List<AccEctype> retAcc = Lists.newArrayList();
-		for( String v : content ){
-			if( v.isEmpty() ) continue;
-			EctypePo e = CsvGen.getEctypePo( Integer.parseInt(v) );
-			if( e == null ) continue;
-			AccEctype acc = new AccEctype(templet.id,e);
-			if( !acc.isClose() ){
-				retAcc.add( acc );
-			}
-		}
-		return retAcc;
+//		Lua lua = LuaUtil.getEctype();
+//		LuaValue[] ret = lua.getField( "getStarAccEctype" ).call( 1, templet.id );
+//		String[] content = ret[0].getString().split(",");
+//		
+//		List<AccEctype> retAcc = Lists.newArrayList();
+//		for( String v : content ){
+//			if( v.isEmpty() ) continue;
+//			EctypePo e = CsvGen.getEctypePo( Integer.parseInt(v) );
+//			if( e == null ) continue;
+//			AccEctype acc = new AccEctype(templet.id,e);
+//			if( !acc.isClose() ){
+//				retAcc.add( acc );
+//			}
+//		}
+		return null;
 	}
 
 

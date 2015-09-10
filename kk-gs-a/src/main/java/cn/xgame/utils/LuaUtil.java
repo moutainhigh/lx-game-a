@@ -25,7 +25,7 @@ public class LuaUtil {
 	 * 副本其他相关
 	 * @return
 	 */
-	public static Lua getEctype() {
+	public static Lua getEctypeInfo() {
 		return new Lua( SystemCfg.FILE_NAME + "lua/EctypeInfo.lua" );
 	}
 

@@ -65,6 +65,7 @@ public class HomePlanet extends IPlanet {
 	
 	// 瞭望距离 
 	private int 			qutlook 	= 0;
+	private List<Integer> 	scopes		= Lists.newArrayList();
 	
 	// 可购买的领地列表
 	private List<Integer> 	canBuyManor = Lists.newArrayList();
@@ -98,6 +99,7 @@ public class HomePlanet extends IPlanet {
 	public byte getTechLevel() { return techLevel; }
 	public void setTechLevel(byte techLevel) { this.techLevel = techLevel; }
 	public int getQutlook() { return qutlook; }
+	public List<Integer> getScopePlanet(){ return scopes; }
 	public void setQutlook(int qutlook) { this.qutlook = qutlook; }
 	public ExchangeControl getExchange(){ return this.exchangeControl; }
 	
@@ -138,8 +140,6 @@ public class HomePlanet extends IPlanet {
 		updateChildSequence();
 		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
 		updateInstitution();
-		// 根据瞭望科技 更新副本信息
-		updateEctypeInOutlook();
 	}
 
 	private void wrapPlayer( byte[] data ) {
@@ -269,14 +269,6 @@ public class HomePlanet extends IPlanet {
 				return child;
 		}
 		return null;
-	}
-	
-
-	/**
-	 * 刷新酒馆数据
-	 */
-	public void updateTavernCaptains(){
-		
 	}
 	
 	
@@ -696,7 +688,8 @@ public class HomePlanet extends IPlanet {
 			switch( tech.templet().efftype ){
 			case 1:// 瞭望距离
 				qutlook += Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) );
-				updateEctypeInOutlook();
+				scopes.clear();
+				scopes.addAll( WorldManager.o.getDistanceConfineTo( qutlook, templet().x, templet().y, templet().z ) );
 				break;
 			case 2:// 领地
 				canBuyManor.add( Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) ) );
@@ -704,18 +697,6 @@ public class HomePlanet extends IPlanet {
 			}
 		}
 	}
-
-	////////////------------------------------副本
-	
-	// 根据瞭望科技 更新副本信息
-	private void updateEctypeInOutlook() {
-		if( qutlook == 0 ) return;
-		List<IPlanet> ls = WorldManager.o.getDistanceConfineTo( qutlook, templet().x, templet().y, templet().z );
-		for( IPlanet planet : ls ){
-			ectypeControl.addOutlookEctype( planet.getEctypeControl().getItself() );
-		}
-	}
-	
 	
 	////////////------------------------------交易
 	
@@ -726,7 +707,6 @@ public class HomePlanet extends IPlanet {
 		String[] content = shop.item.split(";");
 		for( String str : content ){
 			IProp porp = IProp.create( 0, Integer.parseInt( str ), 1 );
-//			porp.randomAttachAttr();
 			shops.add(porp);
 		}
 	}

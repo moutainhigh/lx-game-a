@@ -31,6 +31,16 @@ public class ShipAttr extends IProp{
 	// 质量
 	private int mass;
 	
+	//------------------- 下面三个空间不用存数据库 就只是一个厨初始数据
+	// 武器最大空间
+	private short wroom;
+	
+	// 辅助最大空间
+	private short eroom;
+	
+	// 货仓最大空间
+	private short groom;
+	
 	public ShipAttr( ItemPo item, int uid, int nid, int count, Quality quality) {
 		super( item, uid, nid, count, quality );
 		templet 	= CsvGen.getShipPo(nid);
@@ -95,7 +105,25 @@ public class ShipAttr extends IProp{
 	public void setMass(int mass) {
 		this.mass = mass;
 	}
-
+	public short getWroom() {
+		return wroom;
+	}
+	public void setWroom(short wroom) {
+		this.wroom = wroom;
+	}
+	public short getEroom() {
+		return eroom;
+	}
+	public void setEroom(short eroom) {
+		this.eroom = eroom;
+	}
+	public short getGroom() {
+		return groom;
+	}
+	public void setGroom(short groom) {
+		this.groom = groom;
+	}
+	
 	public static void main(String[] args) {
 		Lua.setLogClass( Logs.class );
 		CsvGen.load();
@@ -114,6 +142,8 @@ public class ShipAttr extends IProp{
 		attr.wrapAttachBytes(bytes);
 		System.out.println( "3----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
 	}
+
+
 
 
 }

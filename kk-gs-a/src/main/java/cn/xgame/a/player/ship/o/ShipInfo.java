@@ -13,9 +13,9 @@ import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.o.AxnInfo;
 import cn.xgame.a.chat.o.IAxnCrew;
 import cn.xgame.a.chat.o.v.TeamAxnCrew;
-import cn.xgame.a.combat.o.Answers;
-import cn.xgame.a.combat.o.Askings;
-import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.ectype.combat.o.Answers;
+import cn.xgame.a.ectype.combat.o.Askings;
+import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.player.ship.o.bag.EquipControl;
 import cn.xgame.a.player.ship.o.bag.HoldControl;
 import cn.xgame.a.player.ship.o.status.SailPurpose;
@@ -82,9 +82,9 @@ public class ShipInfo implements ITransformStream{
 		attr = (ShipAttr) IProp.create( uid, nid, 1 );
 		attr.randomAttachAttr();
 		currentHp = attr.getMaxHp();
-		holds.setRoom( attr.templet().groom );
-		equips.setWroom( attr.templet().wroom );
-		equips.setEroom( attr.templet().eroom );
+		holds.setRoom( attr.getGroom() );
+		equips.setWroom( attr.getWroom() );
+		equips.setEroom( attr.getEroom() );
 	}
 
 	/**

@@ -3,6 +3,7 @@ package cn.xgame.a.prop.captain;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Time;
 import x.javaplus.util.lua.Lua;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -95,7 +96,7 @@ public class CaptainAttr extends IProp {
 		lua.getField( "randomAttachAttr" ).call( 0, this );
 		curIntimacy	= 0;
 		loyalty		= 70;
-		weekTime	= (int) (System.currentTimeMillis()/1000);
+		weekTime	= (int)Time.refTimeInMillis( 0, 0, 0 );
 	}
 	
 	@Override

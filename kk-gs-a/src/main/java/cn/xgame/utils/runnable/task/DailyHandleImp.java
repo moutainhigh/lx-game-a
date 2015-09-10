@@ -22,6 +22,7 @@ public class DailyHandleImp extends IThread{
 			PlayerManager.o.allDailyHandle();
 			
 			
+			
 		} catch (Exception e) {
 			Logs.error( "DailyHandleImp:" , e );
 		}

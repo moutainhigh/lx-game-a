@@ -6,10 +6,10 @@ import java.util.List;
 import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.combat.CombatUtil;
-import cn.xgame.a.combat.o.Answers;
-import cn.xgame.a.combat.o.Askings;
-import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.ectype.combat.CombatUtil;
+import cn.xgame.a.ectype.combat.o.Answers;
+import cn.xgame.a.ectype.combat.o.Askings;
+import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.player.captain.o.v.EquipControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -109,6 +109,15 @@ public class CaptainInfo implements ITransformStream{
 		return attr.changeLoyalty( value );
 	}
 	
+	/**
+	 * 是否到发工资的时候了
+	 * 7 * 24 * 60 * 60 = 604800
+	 * @return
+	 */
+	public boolean isWantPayoff() {
+		int t = (int) (System.currentTimeMillis()/1000);
+		return t - attr.getWeekTime() >= 86400;
+	}
 	
 	/**
 	 * 塞入舰长 战斗数据
@@ -128,6 +137,8 @@ public class CaptainInfo implements ITransformStream{
 		
 		return 0;
 	}
+
+
 
 
 	

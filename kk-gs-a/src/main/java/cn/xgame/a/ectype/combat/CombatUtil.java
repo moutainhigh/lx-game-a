@@ -1,10 +1,10 @@
-package cn.xgame.a.combat;
+package cn.xgame.a.ectype.combat;
 
 import java.util.List;
 
-import cn.xgame.a.combat.o.Answers;
-import cn.xgame.a.combat.o.Askings;
-import cn.xgame.a.combat.o.Respond;
+import cn.xgame.a.ectype.combat.o.Answers;
+import cn.xgame.a.ectype.combat.o.Askings;
+import cn.xgame.a.ectype.combat.o.Respond;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AnswerPo;
 import cn.xgame.config.o.AskingPo;

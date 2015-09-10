@@ -5,10 +5,10 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.combat.CombatUtil;
-import cn.xgame.a.combat.o.Answers;
-import cn.xgame.a.combat.o.Askings;
-import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.ectype.combat.CombatUtil;
+import cn.xgame.a.ectype.combat.o.Answers;
+import cn.xgame.a.ectype.combat.o.Askings;
+import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.player.IHold;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.sequip.SEquipAttr;
@@ -113,6 +113,7 @@ public class EquipControl extends IHold implements IArrayStream{
 				// 答
 				CombatUtil.putAnswer( equip.getAnswers(), answers );
 				// 问
+				CombatUtil.putAsking( equip.getAskings(), askings );
 				
 			} catch (Exception e) {
 				Logs.error( "EquipControl.warpFightProperty ", e );

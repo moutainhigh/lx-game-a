@@ -131,7 +131,16 @@ public class CaptainsControl implements ITransformStream,IFromDB{
 		destroy( getCaptain(uid) );
 	}
 
-
+	/**
+	 * 结算周薪
+	 */
+	public void balanceWeekly() {
+		for( CaptainInfo captain : captains ){
+			if( captain.isWantPayoff() ){
+				root.changeCurrency( -captain.attr().getWeekpay() );
+			}
+		}
+	}
 
 
 }

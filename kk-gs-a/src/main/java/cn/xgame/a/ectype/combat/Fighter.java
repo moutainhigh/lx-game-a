@@ -1,15 +1,15 @@
-package cn.xgame.a.combat;
+package cn.xgame.a.ectype.combat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.combat.o.Answers;
-import cn.xgame.a.combat.o.Askings;
-import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.ectype.IEctype;
+import cn.xgame.a.ectype.combat.o.Answers;
+import cn.xgame.a.ectype.combat.o.Askings;
+import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.ectype.IEctype;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 
@@ -133,9 +133,9 @@ public class Fighter {
 	 */
 	public Fighter( IEctype ectype ) {
 		// 副本应答 - 问
-		ectype.wrapAsking( askings );
-		// 怪物数据
-		hp = ectype.wrapEnemy( attacks, defends, askings, answers );
+//		ectype.wrapAsking( askings );
+//		// 怪物数据
+//		hp = ectype.wrapEnemy( attacks, defends, askings, answers );
 		// 自后整理一下 
 		systemize();
 	}

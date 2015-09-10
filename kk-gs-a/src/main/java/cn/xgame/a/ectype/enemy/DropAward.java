@@ -1,4 +1,4 @@
-package cn.xgame.a.player.ectype.enemy;
+package cn.xgame.a.ectype.enemy;
 
 import x.javaplus.util.Util.Random;
 import io.netty.buffer.ByteBuf;

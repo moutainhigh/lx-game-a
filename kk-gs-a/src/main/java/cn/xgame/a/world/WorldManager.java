@@ -252,13 +252,13 @@ public class WorldManager {
 	 * @param z
 	 * @return
 	 */
-	public List<IPlanet> getDistanceConfineTo( int qutlook, int x, int y, int z ) {
-		List<IPlanet> ret = Lists.newArrayList();
+	public List<Integer> getDistanceConfineTo( int qutlook, int x, int y, int z ) {
+		List<Integer> ret = Lists.newArrayList();
 		List<IPlanet> ls = getAllPlanet();
 		for( IPlanet planet : ls ){
 			int distance = conversionDistance( planet.templet().x, planet.templet().y, planet.templet().z, x, y, z );
 			if( distance <= qutlook )
-				ret.add(planet);
+				ret.add(planet.getId());
 		}
 		return ret;
 	}

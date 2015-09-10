@@ -3,6 +3,7 @@ package cn.xgame.utils.runnable;
 import x.javaplus.util.Util.Time;
 import cn.xgame.utils.runnable.task.DailyHandleImp;
 import cn.xgame.utils.runnable.task.FiveMinuteHandleImp;
+import cn.xgame.utils.runnable.task.OneHourHandleImp;
 import cn.xgame.utils.runnable.task.OneMinuteHandleImp;
 import cn.xgame.utils.runnable.task.OneSecondHandleImp;
 import cn.xgame.utils.runnable.task.TwoMinuteHandleImp;
@@ -30,6 +31,8 @@ public class ThreadManager {
 	private static TwohundredMilliscondHandleImp twohundredMilliscondHandleImp = null;
 	// 每一秒
 	private static OneSecondHandleImp oneSecondHandleImp = null;
+	// 每小时
+	private static OneHourHandleImp oneHourHandleImp = null;
 	
 	/** 开启所有 线程 */
 	public static void start(){
@@ -57,6 +60,11 @@ public class ThreadManager {
 		// 每1秒
 		oneSecondHandleImp = new OneSecondHandleImp();
 		oneSecondHandleImp.start( 1000l, 1000l );
+		
+		// 每小时 1 * 60 * 60 * 1000
+		oneHourHandleImp = new OneHourHandleImp();
+		oneHourHandleImp.start( 3600000l, 3600000l );
+		
 	}
 	
 	/** 关闭所有 线程 */
@@ -74,7 +82,8 @@ public class ThreadManager {
 		twohundredMilliscondHandleImp = null;
 		oneSecondHandleImp.stop();
 		oneSecondHandleImp = null;
-		
+		oneHourHandleImp.stop();
+		oneHourHandleImp = null;
 	}
 		
 }

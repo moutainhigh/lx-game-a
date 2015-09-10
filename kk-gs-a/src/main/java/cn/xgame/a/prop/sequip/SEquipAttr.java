@@ -7,7 +7,7 @@ import x.javaplus.util.lua.Lua;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import cn.xgame.a.combat.o.AtkAndDef;
+import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.Quality;
 import cn.xgame.config.gen.CsvGen;

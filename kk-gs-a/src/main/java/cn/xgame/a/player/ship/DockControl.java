@@ -10,6 +10,7 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.ship.o.FleetInfo;
 import cn.xgame.a.player.ship.o.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -235,6 +236,16 @@ public class DockControl implements ITransformStream,IFromDB{
 		
 		ship.updateDB( root );
 		return ret;
+	}
+
+	/**
+	 * 根据舰队ID获取舰队信息
+	 * @param fleetId
+	 * @return
+	 */
+	public FleetInfo getFleetInfo(byte fleetId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package cn.xgame.a.combat.o;
+package cn.xgame.a.ectype.combat.o;
 
 
 

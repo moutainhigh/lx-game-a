@@ -3,195 +3,153 @@ package cn.xgame.a.player.ectype;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.ectype.o.AccEctype;
-import cn.xgame.a.player.ectype.o.PreEctype;
+import cn.xgame.a.ectype.ChapterEctype;
+import cn.xgame.a.ectype.StarEctype;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.utils.Logs;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 副本信息
  * @author deng		
  * @date 2015-7-17 上午3:23:52
  */
-public class EctypeControl implements IArrayStream,ITransformStream{
+public class EctypeControl implements IArrayStream{
 
 	private Player root;
 	
-	// 偶发副本
-	private List<AccEctype> accEctypes = Lists.newArrayList();
-
-	// 本星球常驻副本（这里包括瞭望的）
-	private List<PreEctype> preEctypes = Lists.newArrayList();
+	// 各个星球副本
+	private List<StarEctype> sectypes 	= Lists.newArrayList();
 	
-	// 瞭望范围外的副本 （就是根据某舰船停靠获得）
-	private List<PreEctype> ourEctypes = Lists.newArrayList();
+	// 特殊限时副本次数记录
+	private List<ChapterEctype> special = Lists.newArrayList();
 	
-	// 需要删除的列表
-	private List<Integer> removes = Lists.newArrayList();
 	
-	public EctypeControl(Player player) {
+	public EctypeControl( Player player ) {
 		root = player;
 	}
-
+	
+	/** 初始化副本信息 */
+	public void initialize() {
+		List<IPlanet> all = WorldManager.o.getAllPlanet();
+		for( IPlanet planet : all ){
+			StarEctype o = new StarEctype( planet.getId() );
+			List<Integer> ls = planet.getItselfEctype();
+			for( int id : ls ){
+				ChapterEctype ectype = new ChapterEctype(id);
+				ectype.generateNextEctype();
+				o.getGeneral().add(ectype);
+			}
+			o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
+			sectypes.add( o );
+		}
+	}
+	
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
-		clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		// 常驻副本
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			preEctypes.add( new PreEctype(buf) );
+			StarEctype o = new StarEctype( buf.readInt() );
+			o.wrapBuffer(buf);
+			sectypes.add( o );
 		}
-		// 额外副本
-		size = buf.readByte();
-		for( int i = 0; i < size; i++ ){
-			ourEctypes.add( new PreEctype(buf) );
-		}
-		// 偶发副本
-		size = buf.readByte();
-		for( int i = 0; i < size; i++ ){
-			AccEctype acc = new AccEctype( buf );
-			if( !acc.isClose() )
-				accEctypes.add( acc );
-		}
-		
 	}
 
 	@Override
 	public byte[] toBytes() {
-		if( accEctypes.isEmpty() ) return null;
-		ByteBuf buf = Unpooled.buffer( 1024 );
-		// 常驻副本
-		buf.writeByte( preEctypes.size() );
-		for( PreEctype pre : preEctypes ){
-			pre.putBuffer(buf);
+		ByteBuf buf = Unpooled.buffer( );
+		buf.writeByte( sectypes.size() );
+		for( StarEctype o : sectypes ){
+			buf.writeInt( o.getSnid() );
+			o.putBuffer(buf);
 		}
-		// 额外副本
-		buf.writeByte( ourEctypes.size() );
-		for( PreEctype pre : ourEctypes ){
-			pre.putBuffer(buf);
-		}
-		// 偶发副本
-		buf.writeByte( accEctypes.size() );
-		for( AccEctype acc : accEctypes )
-			acc.putBuffer(buf);
 		return buf.array();
 	}
 	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		// 常驻-本星球副本个数（包括瞭望的）
-		buffer.writeByte( preEctypes.size() );
-		for( PreEctype pre : preEctypes ){
-			pre.buildTransformStream(buffer);
+	public StarEctype getStarEctype(int snid) {
+		for( StarEctype o : sectypes ){
+			if( o.getSnid() == snid )
+				return o;
 		}
-		// 常驻-不在瞭望范围内的副本个数
-		buffer.writeByte( ourEctypes.size() );
-		for( PreEctype pre : ourEctypes ){
-			pre.buildTransformStream(buffer);
+		return null;
+	}
+	
+	
+	/**
+	 * 初始所有副本次数
+	 */
+	public void initAllTimes() {
+		for( StarEctype stare : sectypes ){
+			stare.initGeneralTimes();
+			stare.getNormal().clear();
+			stare.getNormal().addAll( updateNormalEctype( stare.getSnid() ) );
 		}
-		// 偶发副本个数 
-		buffer.writeByte( accEctypes.size() );
-		for( AccEctype acc : accEctypes ){
-			acc.buildTransformStream(buffer);
-		}
-		Logs.debug( root, "常驻副本 " + preEctypes );
-		Logs.debug( root, "额外副本 " + ourEctypes );
-		Logs.debug( root, "偶发副本 " + accEctypes );
 	}
 	
 	/**
-	 * 获取所有副本
+	 * 刷新普通限时副本
+	 * @param snid
 	 * @return
 	 */
-	public List<IEctype> getAll() {
-		List<IEctype> ret = Lists.newArrayList();
-		ret.addAll( preEctypes );
-		ret.addAll( ourEctypes );
-		ret.addAll( accEctypes );
+	private List<ChapterEctype> updateNormalEctype( int snid ) {
+		List<ChapterEctype> ret = Lists.newArrayList();
+		Lua lua = LuaUtil.getEctypeInfo();
+		LuaValue[] value = lua.getField( "getStarRandomEctype" ).call( 1, snid );
+		String content = value[0].getString();
+		if( !content.isEmpty() ){
+			String[] str = content.split("\\|");
+			for( String x : str ){
+				if( x.isEmpty() ) continue;
+				String[] o = x.split( ";" );
+				ChapterEctype ectype = new ChapterEctype( Integer.parseInt( o[0] ) );
+				ectype.generateNextEctype();
+				ectype.setPersistTime( Integer.parseInt( o[1] ) );
+				ectype.setRtime( (int) (System.currentTimeMillis()/1000) );
+				ret.add(ectype);
+			}
+		}
+		Logs.debug( root, "刷新普通限时副本 " + ret );
 		return ret;
 	}
 	
 	/**
-	 * 根据星球ID和副本ID获取 对应副本
+	 * 根据星球获取对应星球的副本列表
 	 * @param snid
-	 * @param enid
 	 * @return
 	 */
-	public IEctype getEctype(int snid, int enid) {
-		List<IEctype> ls = getAll();
-		for( IEctype ie : ls ){
-			if( ie.SNID == snid && ie.getNid() == enid )
-				return ie;
-		}
-		return null;
-	}
-
-
-	/**
-	 * 删除偶发副本
-	 * @param nid
-	 */
-	public void removeAcc( int nid ){
-		Iterator<AccEctype> iter = accEctypes.iterator();
-		while( iter.hasNext() ){
-			AccEctype o = iter.next();
-			if( o.getNid() == nid ){
-				iter.remove();
-				return;
+	public List<List<ChapterEctype>> getEctypeList( IPlanet planet ) {
+		List<List<ChapterEctype>> ret = Lists.newArrayList();
+		List<ChapterEctype> a = Lists.newArrayList();
+		List<ChapterEctype> b = Lists.newArrayList();
+		List<Integer> scope = planet.getScopePlanet();
+		for( StarEctype o : sectypes ){
+			if( scope.indexOf( o.getSnid() ) != -1 || o.getSnid() == planet.getId() ){
+				a.addAll( o.getGeneral() );
+				b.addAll( o.getNormal() );
 			}
 		}
+		ret.add( a );
+		ret.add( b );
+		return ret;
 	}
 	
-	public void appendPre( PreEctype ectype ) {
-		preEctypes.add(ectype);
-	}
-	public void appendAcc( List<AccEctype> v ) {
-		accEctypes.addAll(v);
-	}
-	
-	public void clear() {
-		accEctypes.clear();
-		preEctypes.clear();
-		ourEctypes.clear();
-	}
-
-	/** 玩家登录 记录登录计时副本 */
-	public void startRLoginTime() {
-		for( AccEctype o : accEctypes ){
-			if( o.type() != EctypeType.LOGINTIME )
-				continue;
-			if( o.getEndTime() != -1 )
-				continue;
-			o.setEndTime();
-		}
-	}
-
 	/**
-	 * 线程 这里检测副本是否关闭 然后删除掉
+	 * 获取特殊限时副本
+	 * @return
 	 */
-	public void run(){
-		
-		for( AccEctype o : accEctypes ){
-			if( o.isClose() ){
-				removes.add( o.getNid() );
-				Logs.debug( root, "副本" + o.getNid() + " 已加入删除列表" );
-			}
-		}
-		
-		while( !removes.isEmpty() )
-			removeAcc( removes.remove(0) );
+	public List<ChapterEctype> getSpecial() {
+		return special;
 	}
-
-
-
 	
 }
