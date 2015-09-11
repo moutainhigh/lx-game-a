@@ -37,7 +37,8 @@ public class StarDepot extends IDepot implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeShort( props.size() );
 		for( IProp o : props ){
-			o.putBuffer(buffer);
+			o.putBaseBuffer(buffer);
+			o.buildTransformStream(buffer);
 		}
 	}
 	

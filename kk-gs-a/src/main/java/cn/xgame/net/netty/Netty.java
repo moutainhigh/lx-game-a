@@ -1,6 +1,7 @@
 package cn.xgame.net.netty;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
@@ -64,15 +65,15 @@ public class Netty {
 		/** 写入bytes */
 		public static void writeBytes( ByteBuf buf, byte[] bytes ) {
 			buf.writeShort( bytes == null ? 0 : bytes.length );
-			if( bytes != null && bytes.length != 0 )
+			if( bytes != null )
 				buf.writeBytes(bytes);
 		}
 		
 		/** 读取bytes */
 		public static byte[] readBytes( ByteBuf buf ){
-			short len = buf.readShort();
+			int len = buf.readShort();
 			if( len > 0 ){
-				byte[] ret = new byte[1024];
+				byte[] ret = new byte[len];
 				buf.readBytes(ret);
 				return ret;
 			}
@@ -105,6 +106,26 @@ public class Netty {
 	}
 	
 	public static void main(String[] args) {
+		
+		ByteBuf buf = Unpooled.buffer();
+		buf.writeInt( 19 );
+		byte[] bytes = new byte[]{ 1,2,3,4,5,8,124,12 };
+		buf.writeBytes(bytes);
+		
+		System.out.println( buf );
+		
+		System.out.println( buf.readInt() );
+		System.out.println( buf );
+		
+//		System.out.println( buf.readerIndex() + ", " + buf.writerIndex() );
+		System.out.println( buf.isReadable() );
+		byte[] bytes1 = new byte[buf.writerIndex()-buf.readerIndex()];
+		buf.readBytes(bytes1);
+		for( int i = 0; i < bytes1.length ; i++ )
+			System.out.print( bytes1[i] + ", " );
+		
+		System.out.println( buf.isReadable() );
+		
 	}
 	
 }
