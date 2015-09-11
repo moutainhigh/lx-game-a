@@ -55,7 +55,6 @@ public class FleetControl implements IArrayStream{
 		ByteBuf buf = Unpooled.buffer();
 		buf.writeByte( fleets.size() );
 		for( FleetInfo fleet : fleets ){
-			buf.writeInt( fleet.getBerthSnid() );
 			fleet.buildTransformStream(buf);
 		}
 		return buf.array();

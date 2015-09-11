@@ -30,14 +30,17 @@ public class EatIntimacyEvent extends IEvent{
 		
 		try {
 			CaptainInfo captain = player.getDocks().getCaptainOfException(cuid);
-			StarDepot depots = player.getDepots( captain.getSnid() );
-			IProp prop = depots.getPropOfException(puid);
+			
+			// 获取道具
+			StarDepot depots 	= player.getDepots( captain.getSnid() );
+			IProp prop 			= depots.getPropOfException(puid);
 			if( !prop.isCaptainIntimacy() )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 			
 			// 添加亲密度
 			Lua lua 			= LuaUtil.getCaptainProperty();
 			lua.getField( "addIntimacyFun" ).call( 0, prop.getNid(), captain.attr() );
+			captain.updateDB(player);
 			
 			// 完后在玩家仓库删除道具
 			depots.remove(prop);

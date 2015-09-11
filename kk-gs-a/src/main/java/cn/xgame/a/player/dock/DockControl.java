@@ -12,7 +12,6 @@ import cn.xgame.a.IFromDB;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.StatusType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
@@ -131,9 +130,7 @@ public class DockControl implements IFromDB{
 		FleetInfo fleet = root.getFleets().getFleetInfo( ship );
 		if( fleet == null )
 			return true;
-		if( fleet.getStatus().type() != StatusType.HOVER )
-			throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
-		return true;
+		return fleet.isLeisure( );
 	}
 	
 	/**
@@ -223,72 +220,4 @@ public class DockControl implements IFromDB{
 		}
 	}
 
-	
-//	/**
-//	 * 放一个道具到 舰船货仓
-//	 * @param ship 
-//	 * @param clone
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	public List<IProp> putinHold( ShipInfo ship, IProp clone ) throws Exception {
-//		
-//		// 看货仓是否 还有空间
-//		if( !ship.getHolds().roomIsEnough( clone ) )
-//			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
-//		
-//		// 放入货仓
-//		List<IProp> ret = ship.getHolds().appendProp( clone );
-//		
-//		// 最后保存数据库
-//		ship.updateDB(root);
-//		
-//		return ret;
-//	}
-//
-//	/**
-//	 * 在舰船货仓里面卸下一个道具
-//	 * @param ship
-//	 * @param uid
-//	 * @param count
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	public IProp unloadHoldProp( ShipInfo ship, int uid, int count ) throws Exception {
-//		// 执行扣除
-//		IProp ret = ship.getHolds().deductProp( uid, count );
-//		if( ret == null )
-//			throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
-//		// 最后保存一下数据库
-//		ship.updateDB(root);
-//		return ret;
-//	}
-//
-//	/**
-//	 * 装上一个装备
-//	 * @param ship
-//	 * @param clone
-//	 * @return
-//	 * @throws Exception 
-//	 */
-//	public IProp mountEquip( ShipInfo ship, IProp clone ) throws Exception {
-//		
-//		// 检查是否有舰长 如果没有舰长那么就不能装备
-//		// TODO
-//		
-//		// 看货仓是否 还有空间
-//		if( !ship.getEquips().roomIsEnough( clone ) )
-//			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
-//		// 检测复杂度是否足够
-//		// TODO
-//		
-//		// 直接放入
-//		IProp ret = ship.getEquips().put(clone);
-//		
-//		ship.updateDB( root );
-//		return ret;
-//	}
-
-	
-	
 }

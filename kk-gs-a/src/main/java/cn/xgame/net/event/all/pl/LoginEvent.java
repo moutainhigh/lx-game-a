@@ -87,8 +87,11 @@ public class LoginEvent extends IEvent{
 			// 舰队数据
 			List<FleetInfo> fleets = fleetCtr.getFleet();
 			response.writeByte( fleets.size() );
-			for( FleetInfo fleet : fleets )
+			for( int i = 0; i < fleets.size(); i++ ){
+				FleetInfo fleet = fleets.get(i);
+				response.writeByte( i );
 				fleet.buildTransformStream(response);
+			}
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(response);
 		}

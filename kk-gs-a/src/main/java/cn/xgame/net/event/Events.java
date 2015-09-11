@@ -39,6 +39,8 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
+import cn.xgame.net.event.all.pl.ship.FleetAwayEvent;
+import cn.xgame.net.event.all.pl.ship.FleetIntoEvent;
 import cn.xgame.net.event.all.pl.ship.MountCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
@@ -81,12 +83,14 @@ public enum Events {
 	PLAYER_CREATE				( 1002, 	new CreateEvent() ),
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
 	// 舰船
-	SHIP_MOUNT_HOLD				( 1021, 	new MountHoldEvent() ),
-	SHIP_UNLOAD_HOLD			( 1022, 	new UnloadHoldEvent() ),
-	SHIP_MOUNT_EQUIP			( 1023, 	new MountEquipEvent() ),
-	SHIP_UNLOAD_EQUIP			( 1024, 	new UnloadEquipEvent() ),
-	SHIP_MOUNT_CAPTAIN			( 1025, 	new MountCaptainEvent() ),
-	SHIP_UNLOAD_CAPTAIN			( 1026, 	new UnloadCaptainEvent() ),
+	MOUNT_HOLD					( 1021, 	new MountHoldEvent() ),
+	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent() ),
+	MOUNT_EQUIP					( 1023, 	new MountEquipEvent() ),
+	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent() ),
+	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() ),
+	UNLOAD_CAPTAIN				( 1026, 	new UnloadCaptainEvent() ),
+	FLEET_INTO					( 1027, 	new FleetIntoEvent() ),
+	FLEET_AWAY					( 1028, 	new FleetAwayEvent() ),
 	// 舰长
 	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),

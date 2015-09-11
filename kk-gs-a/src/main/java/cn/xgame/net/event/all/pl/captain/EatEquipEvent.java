@@ -31,13 +31,17 @@ public class EatEquipEvent extends IEvent {
 		try {
 			
 			CaptainInfo captain = player.getDocks().getCaptainOfException(cuid);
-			StarDepot depots = player.getDepots( captain.getSnid() );
-			IProp prop = depots.getPropOfException(puid);
+			
+			// 获取装备
+			StarDepot depots 	= player.getDepots( captain.getSnid() );
+			IProp prop 			= depots.getPropOfException(puid);
+			
 			if( !prop.isCaptainEquip() )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 			
 			// 直接设置装备
 			captain.setEquip( (CEquipAttr) prop );
+			captain.updateDB( player );
 			
 			// 完后在玩家仓库删除道具
 			depots.remove(prop);

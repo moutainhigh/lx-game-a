@@ -33,7 +33,7 @@ public class ShipInfo implements ITransformStream{
 	// 舰长唯一ID
 	private int captainUID 				= -1;
 	
-	// 当前停靠星球ID -如果为-1那么就代表已经在舰队上面了 
+	// 当前停靠星球ID
 	private int berthSid				= -1;
 	
 	// 货仓
