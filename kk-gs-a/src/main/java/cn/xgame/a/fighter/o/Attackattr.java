@@ -1,4 +1,4 @@
-package cn.xgame.a.ectype.combat.o;
+package cn.xgame.a.fighter.o;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf;
  * @author deng		
  * @date 2015-7-30 上午11:16:36
  */
-public class AtkAndDef {
+public class Attackattr {
 
 	// 类型
 	private byte type;
@@ -16,7 +16,7 @@ public class AtkAndDef {
 	// 数值
 	private float value;
 
-	public AtkAndDef( byte type, float value ) {
+	public Attackattr( byte type, float value ) {
 		this.type = type;
 		this.value = value;
 	}
@@ -35,7 +35,7 @@ public class AtkAndDef {
 	public float getValue() {
 		return value;
 	}
-	public void setValue(float value) {
+	public void setValue( float value ) {
 		this.value = value;
 	}
 	

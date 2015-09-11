@@ -1,11 +1,16 @@
 package cn.xgame.a.player.fleet;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
+import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -13,9 +18,8 @@ import cn.xgame.a.player.u.Player;
  * @author deng		
  * @date 2015-9-10 下午11:47:20
  */
-public class FleetControl {
+public class FleetControl implements IArrayStream{
 	
-	@SuppressWarnings("unused")
 	private Player root;
 	
 	// 舰队列表
@@ -24,6 +28,37 @@ public class FleetControl {
 	
 	public FleetControl( Player player ) {
 		this.root = player;
+	}
+	
+	@Override
+	public void fromBytes( byte[] data ) {
+		if( data == null ) return ;
+		ByteBuf buf = Unpooled.copiedBuffer(data);
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			FleetInfo fleet = new FleetInfo();
+			List<ShipInfo> ships = fleet.getShips();
+			fleet.setBerthSnid( buf.readInt() );
+			byte count = buf.readByte();
+			for( int j = 0; j < count; j++ ){
+				ShipInfo ship = root.getDocks().getShip( buf.readInt() );
+				if( ship == null ) continue;
+				ships.add( ship );
+			}
+			fleet.setStatus( IStatus.create( buf ) );
+		}
+	}
+	
+	@Override
+	public byte[] toBytes() {
+		if( fleets.isEmpty() ) return null;
+		ByteBuf buf = Unpooled.buffer();
+		buf.writeByte( fleets.size() );
+		for( FleetInfo fleet : fleets ){
+			buf.writeInt( fleet.getBerthSnid() );
+			fleet.buildTransformStream(buf);
+		}
+		return buf.array();
 	}
 	
 	public List<FleetInfo> getFleet(){ return fleets; }
@@ -56,7 +91,7 @@ public class FleetControl {
 	public int getIndex( ShipInfo ship ) {
 		for( int i = 0; i < fleets.size(); i++ ){
 			FleetInfo fleet = fleets.get(i);
-			if( fleet.isHave( ship.getuId() ) )
+			if( fleet.getShip( ship.getuId() ) != null )
 				return i;
 		}
 		return -1;
@@ -68,5 +103,7 @@ public class FleetControl {
 	public void addFleet(){
 		fleets.add( new FleetInfo() );
 	}
+
+
 	
 }

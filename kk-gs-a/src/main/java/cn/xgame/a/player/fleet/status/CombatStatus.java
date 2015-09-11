@@ -11,12 +11,17 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class CombatStatus extends IStatus{
 
-	@Override
-	public StatusType type() { return StatusType.COMBAT; }
+	public CombatStatus(StatusType type) {
+		super(type);
+	}
+	public CombatStatus(StatusType type, ByteBuf buf) {
+		super(type);
+	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
+		putBuffer( buffer );
+		
 		
 	}
 

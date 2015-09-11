@@ -11,13 +11,16 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class HoverStatus extends IStatus{
 
-	@Override
-	public StatusType type() { return StatusType.HOVER; }
+	public HoverStatus(StatusType type) {
+		super(type);
+	}
+	public HoverStatus(StatusType type, ByteBuf buf) {
+		super(type);
+	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
+		putBuffer( buffer );		
 	}
 
 }

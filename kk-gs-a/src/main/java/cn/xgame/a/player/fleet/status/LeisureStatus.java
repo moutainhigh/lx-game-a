@@ -11,11 +11,16 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class LeisureStatus extends IStatus{
 
-	@Override
-	public StatusType type() { return StatusType.LEISURE; }
+	public LeisureStatus( StatusType type ) {
+		super(type);
+	}
+	public LeisureStatus(StatusType type, ByteBuf buf) {
+		super(type);
+	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+		putBuffer( buffer );
 	}
 
 }

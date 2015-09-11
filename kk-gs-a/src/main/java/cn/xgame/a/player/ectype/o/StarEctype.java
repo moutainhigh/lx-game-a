@@ -29,6 +29,10 @@ public class StarEctype implements IBufferStream{
 		this.snid = id;
 	}
 	
+	public String toString(){
+		return snid + " - general=" + general.size() + ", normal=" + normal.size();
+	}
+	
 	@Override
 	public void putBuffer(ByteBuf buf) {
 		buf.writeByte( general.size() );
@@ -51,14 +55,14 @@ public class StarEctype implements IBufferStream{
 	public void wrapBuffer( ByteBuf buf ) {
 		byte count = buf.readByte();
 		for( int j = 0; j < count; j++ ){
-			ChapterEctype ectype = new ChapterEctype( buf.readInt() );
+			ChapterEctype ectype = new ChapterEctype( snid, buf.readInt() );
 			ectype.setTimes( buf.readByte() );
 			ectype.wrapBuffer( buf );
 			general.add(ectype);
 		}
 		count = buf.readByte();
 		for( int j = 0; j < count; j++ ){
-			ChapterEctype ectype = new ChapterEctype( buf.readInt() );
+			ChapterEctype ectype = new ChapterEctype( snid, buf.readInt() );
 			ectype.setTimes( buf.readByte() );
 			ectype.setRtime( buf.readInt() );
 			ectype.setPersistTime( buf.readInt() );

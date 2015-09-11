@@ -11,13 +11,17 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class SailStatus extends IStatus{
 
-	@Override
-	public StatusType type() { return StatusType.SAIL; }
+	public SailStatus(StatusType type) {
+		super(type);
+	}
+	public SailStatus(StatusType type, ByteBuf buf) {
+		super(type);
+	}
+
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		// TODO Auto-generated method stub
-		
+		putBuffer( buffer );
 	}
 
 }

@@ -45,7 +45,7 @@ public class EctypeControl implements IArrayStream{
 			StarEctype o = new StarEctype( planet.getId() );
 			List<Integer> ls = planet.getItselfEctype();
 			for( int id : ls ){
-				ChapterEctype ectype = new ChapterEctype(id);
+				ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
 				ectype.generateNextEctype();
 				o.getGeneral().add(ectype);
 			}
@@ -112,7 +112,7 @@ public class EctypeControl implements IArrayStream{
 			for( String x : str ){
 				if( x.isEmpty() ) continue;
 				String[] o = x.split( ";" );
-				ChapterEctype ectype = new ChapterEctype( Integer.parseInt( o[0] ) );
+				ChapterEctype ectype = new ChapterEctype( snid, Integer.parseInt( o[0] ) );
 				ectype.generateNextEctype();
 				ectype.setPersistTime( Integer.parseInt( o[1] ) );
 				ectype.setRtime( (int) (System.currentTimeMillis()/1000) );
@@ -128,20 +128,15 @@ public class EctypeControl implements IArrayStream{
 	 * @param snid
 	 * @return
 	 */
-	public List<List<ChapterEctype>> getEctypeList( IPlanet planet ) {
-		List<List<ChapterEctype>> ret = Lists.newArrayList();
-		List<ChapterEctype> a = Lists.newArrayList();
-		List<ChapterEctype> b = Lists.newArrayList();
-		List<Integer> scope = planet.getScopePlanet();
+	public List<StarEctype> getEctypeList( IPlanet planet ) {
+		List<StarEctype> ret 	= Lists.newArrayList();
+		List<Integer> scope 	= planet.getScopePlanet();
 		for( StarEctype o : sectypes ){
 			if( scope.indexOf( o.getSnid() ) != -1 || o.getSnid() == planet.getId() ){
-				a.addAll( o.getGeneral() );
 				o.updateNormalEctype();
-				b.addAll( o.getNormal() );
+				ret.add(o);
 			}
 		}
-		ret.add( a );
-		ret.add( b );
 		return ret;
 	}
 	

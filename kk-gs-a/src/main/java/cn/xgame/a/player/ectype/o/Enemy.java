@@ -4,8 +4,8 @@ package cn.xgame.a.player.ectype.o;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import cn.xgame.a.award.DropAward;
-import cn.xgame.a.ectype.combat.o.AtkAndDef;
+import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.fighter.o.Attackattr;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.EnemyPo;
 
@@ -22,23 +22,20 @@ public class Enemy {
 	// 数量
 	private int count 				= 1;
 	
-	// 奖励列表
-	private List<DropAward> drops 	= Lists.newArrayList();
-	
 	// 攻击属性
-	private List<AtkAndDef> atks 	= Lists.newArrayList();
+	private List<Attackattr> atks 	= Lists.newArrayList();
 	
 	// 防御属性
-	private List<AtkAndDef> defs 	= Lists.newArrayList();
+	private List<Attackattr> defs 	= Lists.newArrayList();
 	
 	// 应答 - 问
-	private List<Integer> askings = Lists.newArrayList();
+	private List<Integer> askings 	= Lists.newArrayList();
 	// 应答 - 答
-	private List<Integer> answers = Lists.newArrayList();
+	private List<Integer> answers 	= Lists.newArrayList();
 	
-	public Enemy(int id) {
-		templet = CsvGen.getEnemyPo(id);
-		initDropAward();
+	public Enemy( int id, int count ) {
+		this.templet 	= CsvGen.getEnemyPo(id);
+		this.count 		= count;
 		initProperty();
 		initAnswer();
 	}
@@ -48,29 +45,17 @@ public class Enemy {
 			String[] a = templet.atktype.split(";");
 			String[] b = templet.atkvalue.split(";");
 			for( int i = 0; i < a.length; i++ ){
-				atks.add( new AtkAndDef( Byte.parseByte( a[i] ), Float.parseFloat( b[i] )*count ) );
+				atks.add( new Attackattr( Byte.parseByte( a[i] ), Float.parseFloat( b[i] )*count ) );
 			}
 		}
 		if( !templet.deftype.isEmpty() && !templet.defvalue.isEmpty() ){
 			String[] a = templet.deftype.split(";");
 			String[] b = templet.defvalue.split(";");
 			for( int i = 0; i < a.length; i++ ){
-				defs.add( new AtkAndDef( Byte.parseByte( a[i] ), Float.parseFloat( b[i] )*count ) );
+				defs.add( new Attackattr( Byte.parseByte( a[i] ), Float.parseFloat( b[i] )*count ) );
 			}
 		}
 	}
-
-	private void initDropAward() {
-		if( templet.rewards.isEmpty() )
-			return;
-		String[] content = templet.rewards.split("\\|");
-		for( String str : content ){
-			String[] x 		= str.split(";");
-			DropAward drop 	= new DropAward( Integer.parseInt( x[0] ), Integer.parseInt( x[1] ), Integer.parseInt( x[2] ) );
-			drops.add(drop);
-		}
-	}
-	
 	private void initAnswer() {
 		if( !templet.askings.isEmpty() ){
 			String[] x = templet.askings.split( ";" );
@@ -89,19 +74,13 @@ public class Enemy {
 	public int getCount() {
 		return count;
 	}
-	public void setCount(int count) {
-		this.count = count;
-	}
-	public List<DropAward> getDrops() {
-		return drops;
-	}
 	public int getHP() {
 		return templet.hp*count;
 	}
-	public List<AtkAndDef> getAtks() {
+	public List<Attackattr> getAtks() {
 		return atks;
 	}
-	public List<AtkAndDef> getDefs() {
+	public List<Attackattr> getDefs() {
 		return defs;
 	}
 	public List<Integer> getAskings() {
@@ -109,6 +88,15 @@ public class Enemy {
 	}
 	public List<Integer> getAnswers() {
 		return answers;
+	}
+
+	/**
+	 * 包装攻击防御属性
+	 * @param fighter
+	 */
+	public void wrapAttackattr( Fighter fighter ) {
+		fighter.attacks.addAll( atks );
+		fighter.defends.addAll( defs );
 	}
 
 }

@@ -1,16 +1,10 @@
 package cn.xgame.a.player.dock.capt;
 
 
-import java.util.List;
-
 import x.javaplus.mysql.db.Condition;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.ectype.combat.CombatUtil;
-import cn.xgame.a.ectype.combat.o.Answers;
-import cn.xgame.a.ectype.combat.o.Askings;
-import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.captain.CaptainAttr;
@@ -86,9 +80,13 @@ public class CaptainInfo implements ITransformStream{
 		dto.setQuality( attr.getQuality().toNumber() );
 		dto.setAttachAttr( attr.toAttachBytes() );
 		dto.setShipUid( shipUid );
-		ByteBuf buf = Unpooled.buffer();
-		equip.putBuffer( buf );
-		dto.setEquips( buf.array() );
+		byte[] bytes = null;
+		if( equip != null ){
+			ByteBuf buf = Unpooled.buffer();
+			equip.putBuffer( buf );
+			bytes = buf.array();
+		}
+		dto.setEquips( bytes );
 	}
 	public void deleteDB( Player player ){
 		CaptainsDao dao = SqlUtil.getCaptainsDao();
@@ -129,26 +127,6 @@ public class CaptainInfo implements ITransformStream{
 		int t = (int) (System.currentTimeMillis()/1000);
 		return t - attr.getWeekTime() >= 86400;
 	}
-	
-	/**
-	 * 塞入舰长 战斗数据
-	 * @param attacks
-	 * @param defends
-	 * @param askings
-	 * @param answers
-	 * @return
-	 */
-	public int warpFightProperty(List<AtkAndDef> attacks,List<AtkAndDef> defends, 
-			List<Askings> askings, List<Answers> answers) {
-		
-		// 答
-		CombatUtil.putAnswer( attr.getAnswers(), answers );
-		// 问
-		CombatUtil.putAsking( attr.getAskings(), askings );
-		
-		return 0;
-	}
-
 	
 
 	

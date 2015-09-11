@@ -51,6 +51,9 @@ public class Player extends IPlayer implements ITransformStream{
 	// 酒馆数据
 	private TavernControl 		taverns			= new TavernControl( this );
 	
+	// 舰队
+	private FleetControl		fleets			= new FleetControl( this );
+	
 	
 	//////////////////////////////////////////////////////////////////////
 	// 所有道具唯一ID基础值 
@@ -61,9 +64,6 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 船坞
 	private DockControl 		docks 			= new DockControl( this );
-	
-	// 舰队
-	private FleetControl		fleets			= new FleetControl( this );
 	
 	/**
 	 * 创建一个
@@ -102,6 +102,8 @@ public class Player extends IPlayer implements ITransformStream{
 		depots.fromDB();
 		// 在数据库取出 玩家船坞数据
 		docks.fromDB();
+		// 舰队数据 这个必须要取出全部舰船才能调用
+		fleets.fromBytes( dto.getFleets() );
 	}
 
 	@Override
@@ -115,6 +117,8 @@ public class Player extends IPlayer implements ITransformStream{
 		dto.setChatAxns( chatAxns.toBytes() );
 		// 酒馆
 		dto.setTaverns( taverns.toBytes() );
+		// 舰队
+		dto.setFleets( fleets.toBytes() );
 	}
 	
 	@Override

@@ -34,7 +34,9 @@ public class LuaUtil {
 	 * @return
 	 */
 	public static Lua getEctypeCombat() {
-		return new Lua( SystemCfg.FILE_NAME + "lua/EctypeCombat.lua" );
+		Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/EctypeCombat.lua" );
+		lua.registerObject( CsvGen.class, "CsvGen" );
+		return lua;
 	}
 
 	/**

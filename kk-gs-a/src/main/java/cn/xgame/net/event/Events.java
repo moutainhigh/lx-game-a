@@ -22,7 +22,6 @@ import cn.xgame.net.event.all.pl.chat.InviteTempAxnEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
-import cn.xgame.net.event.all.pl.ectype.ApplyEctypeInfoEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
@@ -115,7 +114,6 @@ public enum Events {
 	//-----------------副本
 	APPLY_ACCECTYPE				( 1201, 	new ApplyEctypeEvent() ),
 	START_ATTACK				( 1202, 	new StartAttackEvent() ),
-	APPLY_ECTYPEINFO			( 1203, 	new ApplyEctypeInfoEvent() ),
 	OVER_ATTACK					( 1211, 	new OverAttackEvent() ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent() ),

@@ -50,4 +50,7 @@ public interface PlayerData {
 	/** 酒馆数据 */
 	byte[] taverns();
 	
+	/** 舰队数据 */
+	byte[] fleets();
+	
 }

@@ -690,6 +690,7 @@ public class HomePlanet extends IPlanet {
 				qutlook += Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) );
 				scopes.clear();
 				scopes.addAll( WorldManager.o.getDistanceConfineTo( qutlook, templet().x, templet().y, templet().z ) );
+				Logs.debug( "添加了瞭望距离 - " + scopes );
 				break;
 			case 2:// 领地
 				canBuyManor.add( Integer.parseInt( StringUtil.convertNumberString( tech.templet().value ) ) );

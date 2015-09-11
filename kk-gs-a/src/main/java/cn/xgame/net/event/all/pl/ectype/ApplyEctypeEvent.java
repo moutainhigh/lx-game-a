@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
+import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Time;
 import x.javaplus.util.lua.Lua;
 
@@ -12,11 +13,13 @@ import x.javaplus.util.lua.Lua;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.ChapterEctype;
 import cn.xgame.a.player.ectype.o.IEctype;
+import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -41,12 +44,20 @@ public class ApplyEctypeEvent extends IEvent{
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		
-		// 获取副本列表
-		List<List<ChapterEctype>> chapters = control.getEctypeList(planet);
+		// 获取星球副本列表
+		List<StarEctype> starectypes = control.getEctypeList(planet);
+		Logs.debug( player, "申请副本信息 " + starectypes );
+		
+		// 这里分别把 常规副本和普通限时副本 筛选出来
+		List<ChapterEctype> general = Lists.newArrayList();
+		List<ChapterEctype> normals = Lists.newArrayList();
+		for( StarEctype se : starectypes ){
+			general.addAll( se.getGeneral() );
+			normals.addAll( se.getNormal() );
+		}
 		
 		// 常规副本
 		int endtime = (int) (Time.refTimeInMillis( 24, 0, 0 )/1000);
-		List<ChapterEctype> general = chapters.get(0);
 		response.writeByte( general.size() );
 		for( ChapterEctype o : general ){
 			o.buildTransformStream(response);
@@ -56,11 +67,10 @@ public class ApplyEctypeEvent extends IEvent{
 			for( IEctype x : ectypes ){
 				response.writeInt( x.getNid() );
 				Lua lua = LuaUtil.getEctypeCombat();
-				lua.getField( "arithmeticShowData" ).call( 0, x, fleet, response );
+				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, response );
 			}
 		}
 		// 普通限时副本
-		List<ChapterEctype> normals = chapters.get(1);
 		response.writeByte( normals.size() );
 		for( ChapterEctype o : normals ){
 			o.buildTransformStream(response);
@@ -70,7 +80,7 @@ public class ApplyEctypeEvent extends IEvent{
 			for( IEctype x : ectypes ){
 				response.writeInt( x.getNid() );
 				Lua lua = LuaUtil.getEctypeCombat();
-				lua.getField( "arithmeticShowData" ).call( 0, x, fleet, response );
+				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, response );
 			}
 		}
 		// 特殊限时副本

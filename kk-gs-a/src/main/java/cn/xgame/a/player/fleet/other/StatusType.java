@@ -1,7 +1,14 @@
 package cn.xgame.a.player.fleet.other;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.xgame.a.player.fleet.status.CombatStatus;
+import cn.xgame.a.player.fleet.status.HoverStatus;
+import cn.xgame.a.player.fleet.status.LeisureStatus;
+import cn.xgame.a.player.fleet.status.SailStatus;
 
 /**
  * 舰队 状态
@@ -10,13 +17,53 @@ import java.util.Map;
  */
 public enum StatusType {
 	
-	LEISURE(0),
+	LEISURE(0) {
+		@Override
+		public IStatus create( ByteBuf buf ) {
+			return new LeisureStatus( this, buf );
+		}
+
+		@Override
+		public IStatus create() {
+			return new LeisureStatus( this );
+		}
+	},
 	
-	HOVER(1),
+	HOVER(1) {
+		@Override
+		public IStatus create(ByteBuf buf) {
+			return new HoverStatus( this, buf );
+		}
+
+		@Override
+		public IStatus create() {
+			return new HoverStatus( this );
+		}
+	},
 	
-	SAIL(2),
+	SAIL(2) {
+		@Override
+		public IStatus create(ByteBuf buf) {
+			return new SailStatus( this, buf );
+		}
+
+		@Override
+		public IStatus create() {
+			return new SailStatus( this );
+		}
+	},
 	
-	COMBAT(3);
+	COMBAT(3) {
+		@Override
+		public IStatus create(ByteBuf buf) {
+			return new CombatStatus( this, buf );
+		}
+
+		@Override
+		public IStatus create() {
+			return new CombatStatus( this );
+		}
+	};
 	
 	private final byte	number;
 	private static final Map<Byte, StatusType> numToEnum = new HashMap<Byte, StatusType>();
@@ -35,4 +82,7 @@ public enum StatusType {
 	public static StatusType fromNumber( int n ){
 		return numToEnum.get( (byte)n );
 	}
+	public abstract IStatus create(ByteBuf buf);
+	
+	public abstract IStatus create();
 }

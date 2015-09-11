@@ -1,13 +1,17 @@
 package cn.xgame.a.player.dock.ship;
 
 
+import java.util.List;
+
 import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.a.prop.ship.ShipAttr;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
@@ -176,6 +180,19 @@ public class ShipInfo implements ITransformStream{
 		if( !weapons.remove(ret) )
 			assists.remove(ret);
 		return ret;
+	}
+	
+	/**
+	 * 包装 攻击防御属性
+	 * @param fighter
+	 */
+	public void wrapAttackattr( Fighter fighter ) {
+		List<IProp> props = weapons.getAll();
+		for( IProp prop : props ){
+			SEquipAttr weapon = (SEquipAttr) prop;
+			fighter.attacks.addAll( weapon.getAtks() );
+			fighter.defends.addAll( weapon.getDefs() );
+		}
 	}
 	
 }

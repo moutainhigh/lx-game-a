@@ -1,4 +1,4 @@
-package cn.xgame.a.ectype.combat.o;
+package cn.xgame.a.fighter.o;
 
 import java.util.List;
 

@@ -21,6 +21,7 @@ import x.javaplus.collections.Lists;
 public class ChapterEctype implements ITransformStream,IBufferStream{
 	
 	private final ChapterPo templet;
+	private final int snid;
 	
 	// 剩余次数
 	private byte times ;
@@ -32,9 +33,10 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	// 副本列表
 	private List<IEctype> ectypes = Lists.newArrayList();
 	
-	public ChapterEctype( int id ) {
+	public ChapterEctype( int snid, int id ) {
 		templet 	= CsvGen.getChapterPo(id);
 		times		= templet.times;
+		this.snid	= snid;
 	}
 	
 	public String toString(){
@@ -61,6 +63,9 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 		buffer.writeByte( times );
 	}
 	
+	public int getSnid(){
+		return snid;
+	}
 	public int getNid() {
 		return templet.id;
 	}
