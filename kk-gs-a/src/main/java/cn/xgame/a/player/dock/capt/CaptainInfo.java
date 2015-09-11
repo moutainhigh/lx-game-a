@@ -42,7 +42,8 @@ public class CaptainInfo implements ITransformStream{
 		attr = (CaptainAttr) IProp.create( dto.getUid(), dto.getNid(), 1, dto.getQuality() );
 		attr.wrapAttachBytes( dto.getAttachAttr() );
 		shipUid	= dto.getShipUid();
-		equip 	= new CEquipAttr( Unpooled.copiedBuffer( dto.getEquips() ) );
+		if( dto.getEquips() != null )
+			equip = new CEquipAttr( Unpooled.copiedBuffer( dto.getEquips() ) );
 	}
 	
 	@Override

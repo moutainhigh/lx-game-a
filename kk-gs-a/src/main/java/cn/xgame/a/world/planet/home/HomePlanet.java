@@ -196,6 +196,8 @@ public class HomePlanet extends IPlanet {
 		buffer.writeByte( institution.toNumber() );
 		// 科技等级
 		buffer.writeByte( techLevel );
+		// 瞭望距离
+		buffer.writeInt( qutlook );
 		// 已建筑数据 and 建筑中数据
 		getBuildingControl().putBuilding(buffer);
 		// 所有科技数据

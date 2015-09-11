@@ -96,7 +96,7 @@ public class CaptainAttr extends IProp {
 		lua.getField( "randomAttachAttr" ).call( 0, this );
 		curIntimacy	= 0;
 		loyalty		= 70;
-		weekTime	= (int)Time.refTimeInMillis( 0, 0, 0 );
+		weekTime	= (int) (Time.refTimeInMillis( 0, 0, 0 )/1000);
 	}
 	
 	@Override

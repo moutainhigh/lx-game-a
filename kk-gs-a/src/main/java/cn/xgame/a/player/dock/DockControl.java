@@ -42,7 +42,6 @@ public class DockControl implements IFromDB{
 	
 	@Override
 	public void fromDB() {
-		apron.clear();
 		wrapApron();
 		wrapCabin();
 	}

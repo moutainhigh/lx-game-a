@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 
 /**
  * 开始攻击
@@ -18,12 +19,13 @@ public class StartAttackEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 
-//		int snid = data.readInt();
-//		int enid = data.readInt();
-//		int suid = data.readInt();
-//		
-//		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
-//		
+		int snid = data.readInt();
+		int enid = data.readInt();
+		int suid = data.readInt();
+		
+		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
+		
+		
 //		ErrorCode code = null;
 //		
 //		int sailTime	= 0;// 航行时间
