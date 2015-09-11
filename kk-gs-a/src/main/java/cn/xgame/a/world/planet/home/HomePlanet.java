@@ -16,7 +16,7 @@ import x.javaplus.util.lua.LuaValue;
 
 
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.captain.o.CaptainInfo;
+import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.tavern.TavernCaptain;
 import cn.xgame.a.player.tavern.TavernData;
 import cn.xgame.a.player.u.Player;
@@ -818,7 +818,7 @@ public class HomePlanet extends IPlanet {
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		
 		// 放入舰长室
-		CaptainInfo ret = player.getCaptains().createCaptain( captain.id, captain.quality );
+		CaptainInfo ret = player.getDocks().createCaptain( getId(), captain.id, captain.quality );
 		
 		// 将舰长从酒馆里面删除掉
 		tavernData.remove( nid );

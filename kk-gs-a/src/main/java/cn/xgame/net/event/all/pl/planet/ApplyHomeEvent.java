@@ -38,7 +38,8 @@ public class ApplyHomeEvent extends IEvent {
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			home.buildTransformStream( response );
-			home.putPlyaerInfo(player, response);
+			home.putPlyaerInfo( player, response );
+			player.getDepots( home.getId() ).buildTransformStream( response );
 		}
 		sendPackage( player.getCtx(), response );
 		

@@ -1,4 +1,4 @@
-package cn.xgame.a.ectype;
+package cn.xgame.a.player.ectype.o;
 
 import io.netty.buffer.ByteBuf;
 
@@ -38,7 +38,7 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	}
 	
 	public String toString(){
-		return templet.id + "- times=" + times + ", rtime=" + getSurplusTime() + ", ectypes=" + ectypes;
+		return templet.id + "- times=" + times + ", rtime=" + getEndTime() + ", ectypes=" + ectypes;
 	}
 	
 	@Override
@@ -79,6 +79,9 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	public int getPersistTime() {
 		return persistTime;
 	}
+	public int getEndTime() {
+		return rtime + persistTime;
+	}
 	public void setPersistTime(int persistTime) {
 		this.persistTime = persistTime;
 	}
@@ -108,15 +111,7 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 		times = templet.times;
 	}
 
-	/**
-	 * 剩余时间
-	 * @return
-	 */
-	public int getSurplusTime() {
-		int t = (int) (System.currentTimeMillis()/1000);
-		int i = persistTime - (t - rtime);
-		return i < 0 ? 0 : i;
-	}
+
 
 	
 }

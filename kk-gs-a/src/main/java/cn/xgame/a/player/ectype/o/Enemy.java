@@ -1,9 +1,10 @@
-package cn.xgame.a.ectype.enemy;
+package cn.xgame.a.player.ectype.o;
 
 
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import cn.xgame.a.award.DropAward;
 import cn.xgame.a.ectype.combat.o.AtkAndDef;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.EnemyPo;

@@ -11,7 +11,7 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.chat.o.v.TeamAxnCrew;
 import cn.xgame.a.chat.o.v.TempAxnCrew;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 
 /**

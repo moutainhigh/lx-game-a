@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -21,27 +21,25 @@ public class UnloadEquipEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int suid = data.readInt();
-		int puid = data.readInt();
+		int suid = data.readInt();// 舰船UID
+		int puid = data.readInt();// 道具UID
 		
-		ErrorCode code = null;
-		IProp ret = null;
+		ErrorCode code 	= null;
+		IProp ret 		= null;
 		try {
 			ShipInfo ship = player.getDocks().getShipOfException(suid);
-			// 检查是否在母星 只有在母星才能操作
-			if( ship.getBerthSnid() != player.getCountryId() )
-				throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
-			// 获取道具
-			IProp prop = ship.getEquips().getPropOfException( puid );
+			ship.isHaveCaptain();
+			// 检测是否空闲状态
+			player.getDocks().isLeisure( ship );
 			
-			// 拷贝一份
-			ret = prop.clone();
+			// 在舰船里面删除道具
+			ret 		= ship.removeEquip( puid );
+			if( ret == null )
+				throw new Exception( ErrorCode.SHIP_NOTEXIST.name() );
+			ship.updateDB( player );
 			
 			// 放入玩家背包
-			player.getDepots(ship.getBerthSnid()).appendProp(prop);
-			
-			// 然后从舰船装备里面删除
-			player.getDocks().removeEquipAtShip( ship, prop );
+			player.getDepots(ship.getBerthSid()).appendProp( ret );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

@@ -6,8 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
@@ -21,21 +20,21 @@ public class UnloadCaptainEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int suid = data.readInt();
+		int suid 	= data.readInt(); // 舰船UID
+		int cuid 	= data.readInt(); // 舰长UID
 		
-		ErrorCode code = null;
-		int cuid = 0;
+		ErrorCode code 	= null;
 		try {
 			
 			ShipInfo ship = player.getDocks().getShipOfException(suid);
+			// 检测是否空闲状态
+			player.getDocks().isLeisure( ship );
 			
+			if( ship.getCaptainUID() != cuid )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+				
 			// 直接卸掉
-			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-			if( captain != null ) {
-				cuid = ship.getCaptainUID();
-				captain.setShipUid( -1 );
-				ship.setCaptainUID( -1 );
-			}
+			player.getDocks().downCaptain( ship );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -49,7 +48,6 @@ public class UnloadCaptainEvent extends IEvent{
 			buffer.writeInt( cuid );
 		}
 		sendPackage( player.getCtx(), buffer );
-		
 	}
 
 }

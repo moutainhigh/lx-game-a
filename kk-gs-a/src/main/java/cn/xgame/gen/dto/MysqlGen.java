@@ -58,12 +58,10 @@
 			setObject( "attachAttr", dto.getAttachAttr() );
 			setObject( "currentHp", dto.getCurrentHp() );
 			setObject( "captainUid", dto.getCaptainUid() );
-			setObject( "fleet", dto.getFleet() );
-			setObject( "teamAxnid", dto.getTeamAxnid() );
-			setObject( "statuss", dto.getStatuss() );
-			setObject( "keepinfos", dto.getKeepinfos() );
+			setObject( "berthSid", dto.getBerthSid() );
 			setObject( "holds", dto.getHolds() );
-			setObject( "equips", dto.getEquips() );
+			setObject( "weapons", dto.getWeapons() );
+			setObject( "assists", dto.getAssists() );
 
 			super.commit( true );		}	}
 
@@ -336,12 +334,10 @@
 		private byte[] attachAttr = null;
 		private Integer currentHp = null;
 		private Integer captainUid = null;
-		private Byte fleet = null;
-		private Integer teamAxnid = null;
-		private byte[] statuss = null;
-		private byte[] keepinfos = null;
+		private Integer berthSid = null;
 		private byte[] holds = null;
-		private byte[] equips = null;
+		private byte[] weapons = null;
+		private byte[] assists = null;
 
 		public ShipsDto() {		}				/**		 * Copy new one		 */		public ShipsDto(ShipsDto src) {			this.gsid = src.gsid;
 			this.uname = src.uname;
@@ -350,12 +346,10 @@
 			this.attachAttr = src.attachAttr;
 			this.currentHp = src.currentHp;
 			this.captainUid = src.captainUid;
-			this.fleet = src.fleet;
-			this.teamAxnid = src.teamAxnid;
-			this.statuss = src.statuss;
-			this.keepinfos = src.keepinfos;
+			this.berthSid = src.berthSid;
 			this.holds = src.holds;
-			this.equips = src.equips;
+			this.weapons = src.weapons;
+			this.assists = src.assists;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
@@ -364,12 +358,10 @@
 		/**  附加属性  */		public byte[] getAttachAttr(){			return this.attachAttr;		}
 		/**  当前血量  */		public Integer getCurrentHp(){			return this.currentHp;		}
 		/**  舰长唯一ID  */		public Integer getCaptainUid(){			return this.captainUid;		}
-		/**  所属舰队  */		public Byte getFleet(){			return this.fleet;		}
-		/**  组队频道ID  */		public Integer getTeamAxnid(){			return this.teamAxnid;		}
-		/**  状态  */		public byte[] getStatuss(){			return this.statuss;		}
-		/**  副本留存信息  */		public byte[] getKeepinfos(){			return this.keepinfos;		}
+		/**  停靠星球ID  */		public Integer getBerthSid(){			return this.berthSid;		}
 		/**  货仓  */		public byte[] getHolds(){			return this.holds;		}
-		/**  装备  */		public byte[] getEquips(){			return this.equips;		}
+		/**  武器  */		public byte[] getWeapons(){			return this.weapons;		}
+		/**  辅助  */		public byte[] getAssists(){			return this.assists;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
@@ -378,12 +370,10 @@
 		/**  附加属性  */		public void setAttachAttr( byte[] attachAttr ){			this.attachAttr = attachAttr;		}
 		/**  当前血量  */		public void setCurrentHp( Integer currentHp ){			this.currentHp = currentHp;		}
 		/**  舰长唯一ID  */		public void setCaptainUid( Integer captainUid ){			this.captainUid = captainUid;		}
-		/**  所属舰队  */		public void setFleet( Byte fleet ){			this.fleet = fleet;		}
-		/**  组队频道ID  */		public void setTeamAxnid( Integer teamAxnid ){			this.teamAxnid = teamAxnid;		}
-		/**  状态  */		public void setStatuss( byte[] statuss ){			this.statuss = statuss;		}
-		/**  副本留存信息  */		public void setKeepinfos( byte[] keepinfos ){			this.keepinfos = keepinfos;		}
+		/**  停靠星球ID  */		public void setBerthSid( Integer berthSid ){			this.berthSid = berthSid;		}
 		/**  货仓  */		public void setHolds( byte[] holds ){			this.holds = holds;		}
-		/**  装备  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
+		/**  武器  */		public void setWeapons( byte[] weapons ){			this.weapons = weapons;		}
+		/**  辅助  */		public void setAssists( byte[] assists ){			this.assists = assists;		}
 
 		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
 		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
@@ -392,12 +382,10 @@
 		public static String attachAttrChangeSql( byte[] x) {			return "attachAttr=" + x;		}
 		public static String currentHpChangeSql( Integer x) {			return "currentHp=" + x;		}
 		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
-		public static String fleetChangeSql( Byte x) {			return "fleet=" + x;		}
-		public static String teamAxnidChangeSql( Integer x) {			return "teamAxnid=" + x;		}
-		public static String statussChangeSql( byte[] x) {			return "statuss=" + x;		}
-		public static String keepinfosChangeSql( byte[] x) {			return "keepinfos=" + x;		}
+		public static String berthSidChangeSql( Integer x) {			return "berthSid=" + x;		}
 		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
-		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
+		public static String weaponsChangeSql( byte[] x) {			return "weapons=" + x;		}
+		public static String assistsChangeSql( byte[] x) {			return "assists=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
@@ -406,13 +394,11 @@
 			attachAttr = o.getBytes( "attachAttr" );
 			currentHp = o.getInt( "currentHp" );
 			captainUid = o.getInt( "captainUid" );
-			fleet = o.getByte( "fleet" );
-			teamAxnid = o.getInt( "teamAxnid" );
-			statuss = o.getBytes( "statuss" );
-			keepinfos = o.getBytes( "keepinfos" );
+			berthSid = o.getInt( "berthSid" );
 			holds = o.getBytes( "holds" );
-			equips = o.getBytes( "equips" );
+			weapons = o.getBytes( "weapons" );
+			assists = o.getBytes( "assists" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"attachAttr="+attachAttr+","+"currentHp="+currentHp+","+"captainUid="+captainUid+","+"fleet="+fleet+","+"teamAxnid="+teamAxnid+","+"statuss="+statuss+","+"keepinfos="+keepinfos+","+"holds="+holds+","+"equips="+equips;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"attachAttr="+attachAttr+","+"currentHp="+currentHp+","+"captainUid="+captainUid+","+"berthSid="+berthSid+","+"holds="+holds+","+"weapons="+weapons+","+"assists="+assists;		}	}
 
 }

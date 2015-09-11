@@ -10,8 +10,8 @@ import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.ectype.ChapterEctype;
-import cn.xgame.a.ectype.StarEctype;
+import cn.xgame.a.player.ectype.o.ChapterEctype;
+import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
@@ -136,6 +136,7 @@ public class EctypeControl implements IArrayStream{
 		for( StarEctype o : sectypes ){
 			if( scope.indexOf( o.getSnid() ) != -1 || o.getSnid() == planet.getId() ){
 				a.addAll( o.getGeneral() );
+				o.updateNormalEctype();
 				b.addAll( o.getNormal() );
 			}
 		}

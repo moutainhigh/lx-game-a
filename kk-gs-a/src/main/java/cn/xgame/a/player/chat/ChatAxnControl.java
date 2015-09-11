@@ -25,6 +25,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
 	// 聊天操作类
 	private final AxnControl chatControl = ChatManager.o.getChatControl();
+	@SuppressWarnings("unused")
 	private final Player root;
 	
 	// 临时频道
@@ -76,7 +77,6 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	 */
 	public List<Integer> getAllAxn(){
 		List<Integer> ret = Lists.newArrayList();
-		ret.addAll(root.getDocks().getAllAxn());
 		ret.addAll(tempaxn);
 		return ret;
 	}
@@ -90,7 +90,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		if( type == ChatType.TEMPAXN )
 			return tempaxn;
 		if( type == ChatType.TEMPAXN ){
-			return root.getDocks().getAllAxn();
+//			return root.getDocks().getAllAxn();
 		}
 		return null;
 	}
@@ -130,7 +130,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 				return;
 			}
 		}
-		root.getDocks().removeAxn( axnId );
+//		root.getDocks().removeAxn( axnId );
 	}
 
 

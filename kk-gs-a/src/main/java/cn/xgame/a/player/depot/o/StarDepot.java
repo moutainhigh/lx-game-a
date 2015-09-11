@@ -1,9 +1,12 @@
-package cn.xgame.a.player.depot;
+package cn.xgame.a.player.depot.o;
+
+import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
+import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
@@ -14,20 +17,28 @@ import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
 
 /**
- * 玩家仓库
+ * 玩家在星球的仓库
  * @author deng		
  * @date 2015-9-7 下午4:16:45
  */
-public class PlayerDepot extends IDepot {
+public class StarDepot extends IDepot implements ITransformStream{
 	
 	private final Player root;
 
 	// 所属星球ID
 	private final int beSnid;
 	
-	public PlayerDepot( Player root, int beSnid ) {
+	public StarDepot( Player root, int beSnid ) {
 		this.root = root;
 		this.beSnid = beSnid;
+	}
+	
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeShort( props.size() );
+		for( IProp o : props ){
+			o.putBuffer(buffer);
+		}
 	}
 	
 	public int getBeSnid() { return beSnid; 	}
@@ -195,5 +206,6 @@ public class PlayerDepot extends IDepot {
 		dao.deleteByExact(sql);
 		dao.commit();
 	}
-	
+
+
 }

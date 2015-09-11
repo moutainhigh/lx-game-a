@@ -4,6 +4,7 @@ package cn.xgame.a.player.depot;
 import java.util.List;
 
 import cn.xgame.a.IFromDB;
+import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.gen.dto.MysqlGen.PropsDao;
@@ -22,7 +23,7 @@ import x.javaplus.mysql.db.Condition;
 public class DepotControl implements IFromDB{
 
 	private Player root;
-	private List<PlayerDepot> depots = Lists.newArrayList();
+	private List<StarDepot> depots = Lists.newArrayList();
 	
 	public DepotControl( Player player ) {
 		this.root = player;
@@ -33,12 +34,12 @@ public class DepotControl implements IFromDB{
 	 * @param beSnid
 	 * @return
 	 */
-	public PlayerDepot getDepot( int beSnid ) {
-		for( PlayerDepot depot : depots ){
+	public StarDepot getDepot( int beSnid ) {
+		for( StarDepot depot : depots ){
 			if( depot.getBeSnid() == beSnid )
 				return depot;
 		}
-		PlayerDepot ret = new PlayerDepot( root, beSnid );
+		StarDepot ret = new StarDepot( root, beSnid );
 		depots.add(ret);
 		return ret;
 	}
@@ -49,7 +50,7 @@ public class DepotControl implements IFromDB{
 	 */
 	public List<IProp> getAll() {
 		List<IProp> ret = Lists.newArrayList();
-		for( PlayerDepot depot : depots )
+		for( StarDepot depot : depots )
 			ret.addAll( depot.getAll() );
 		return ret;
 	}
@@ -62,7 +63,7 @@ public class DepotControl implements IFromDB{
 		List<PropsDto> dtos = dao.getByExact(sql);
 		dao.commit();
 		for( PropsDto dto : dtos ){
-			PlayerDepot depot 	= getDepot( dto.getBeSnid() );
+			StarDepot depot 	= getDepot( dto.getBeSnid() );
 			IProp prop 			= IProp.create( dto );
 			depot.append( prop );
 		}

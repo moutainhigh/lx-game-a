@@ -7,8 +7,8 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.lua.Lua;
 
-import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.depot.PlayerDepot;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -29,8 +29,8 @@ public class EatIntimacyEvent extends IEvent{
 		ErrorCode code = null;
 		
 		try {
-			CaptainInfo captain = player.getCaptains().getCaptainOfException(cuid);
-			PlayerDepot depots = player.getDepots( captain.getSnid() );
+			CaptainInfo captain = player.getDocks().getCaptainOfException(cuid);
+			StarDepot depots = player.getDepots( captain.getSnid() );
 			IProp prop = depots.getPropOfException(puid);
 			if( !prop.isCaptainIntimacy() )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );

@@ -7,7 +7,7 @@ import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.ectype.ChapterEctype;
+import cn.xgame.a.player.ectype.o.ChapterEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;

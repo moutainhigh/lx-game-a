@@ -4,11 +4,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
 
 import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
@@ -56,6 +58,12 @@ public class CreateEvent extends IEvent {
 			// 初始化副本信息
 			player.getEctypes().initialize();
 			
+			// 创建一个舰队
+			player.getFleets().addFleet();
+			player.getFleets().addFleet();
+			player.getFleets().addFleet();
+			player.getFleets().addFleet();
+			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
@@ -70,7 +78,10 @@ public class CreateEvent extends IEvent {
 			home.buildTransformStream( response );
 			home.putPlyaerInfo(player, response);
 			// 舰长数据
-			player.getCaptains().buildTransformStream(response);
+			List<CaptainInfo> capts = player.getDocks().getCabin();
+			response.writeByte( capts.size() );
+			for( CaptainInfo capt : capts )
+				capt.buildTransformStream(response);
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(response);
 		}

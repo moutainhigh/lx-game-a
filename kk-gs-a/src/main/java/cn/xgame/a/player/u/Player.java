@@ -4,13 +4,13 @@ import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.captain.CaptainsControl;
 import cn.xgame.a.player.chat.ChatAxnControl;
 import cn.xgame.a.player.depot.DepotControl;
-import cn.xgame.a.player.depot.PlayerDepot;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.ectype.EctypeControl;
+import cn.xgame.a.player.fleet.FleetControl;
 import cn.xgame.a.player.manor.ManorControl;
-import cn.xgame.a.player.ship.DockControl;
 import cn.xgame.a.player.tavern.TavernControl;
 import cn.xgame.a.player.u.o.DBBaseUID;
 import cn.xgame.a.player.u.o.IPlayer;
@@ -62,8 +62,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 船坞
 	private DockControl 		docks 			= new DockControl( this );
 	
-	// 舰长室
-	private CaptainsControl 	captains 		= new CaptainsControl( this );
+	// 舰队
+	private FleetControl		fleets			= new FleetControl( this );
 	
 	/**
 	 * 创建一个
@@ -100,10 +100,8 @@ public class Player extends IPlayer implements ITransformStream{
 		propBaseUid.fromDB();
 		// 在数据库取出 玩家的所有道具
 		depots.fromDB();
-		// 在数据库取出 玩家舰船数据
+		// 在数据库取出 玩家船坞数据
 		docks.fromDB();
-		// 在数据库取出 玩家舰长数据
-		captains.fromDB();
 	}
 
 	@Override
@@ -139,8 +137,6 @@ public class Player extends IPlayer implements ITransformStream{
 //		depots.update();
 		// 保存所有舰船 信息
 		docks.update();
-		// 保存所有舰长 信息
-		captains.update();
 	}
 
 
@@ -207,14 +203,11 @@ public class Player extends IPlayer implements ITransformStream{
 	public DepotControl getDepots() {
 		return depots;
 	}
-	public PlayerDepot getDepots( int snid ) {
+	public StarDepot getDepots( int snid ) {
 		return depots.getDepot(snid);
 	}
 	public DockControl getDocks() {
 		return docks;
-	}
-	public CaptainsControl getCaptains() {
-		return captains;
 	}
 	public EctypeControl getEctypes() {
 		return ectypes;
@@ -228,9 +221,8 @@ public class Player extends IPlayer implements ITransformStream{
 	public TavernControl getTaverns() {
 		return taverns;
 	}
+	public FleetControl getFleets() {
+		return fleets;
+	}
 	
-
-
-
-
 }

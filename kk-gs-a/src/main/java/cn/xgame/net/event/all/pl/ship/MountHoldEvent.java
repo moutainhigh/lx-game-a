@@ -7,8 +7,9 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.depot.PlayerDepot;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -23,20 +24,19 @@ public class MountHoldEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int suid = data.readInt();
-		int puid = data.readInt();
-		int count = data.readInt();
+		int suid 	= data.readInt();//舰船唯一ID
+		int puid 	= data.readInt();//道具唯一ID
+		int count 	= data.readInt();//道具个数
 		
-		ErrorCode code = null;
-		List<IProp> ret = null;
+		ErrorCode code 		= null;
+		List<IProp> ret 	= null;
 		try {
-			ShipInfo ship = player.getDocks().getShipOfException(suid);
-			// 检查是否在母星 只有在母星才能操作
-			if( ship.getBerthSnid() != player.getCountryId() )
-				throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
-			// 检查道具是否存在
-			PlayerDepot depot = player.getDepots(ship.getBerthSnid());
-			IProp prop = depot.getPropOfException(puid);
+			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
+			ship.isHaveCaptain();
+			// 获取道具
+			StarDepot depot = player.getDepots(ship.getBerthSid());
+			IProp prop 		= depot.getPropOfException(puid);
+			
 			// 判断道具个数是否足够
 			if( prop.getCount() < count )
 				throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() ) ;
@@ -44,9 +44,15 @@ public class MountHoldEvent extends IEvent{
 			// 先拷贝一个出来
 			IProp clone = prop.clone();
 			clone.setCount(count);
-			
-			// 开始放入舰船货仓
-			ret = player.getDocks().putinHold( ship, clone );
+
+			IHold holds = ship.getHolds();
+			// 看货仓是否 还有空间
+			if( !holds.roomIsEnough( clone ) )
+				throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+			// 放入货仓
+			ret = holds.appendProp( clone );
+			// 最后保存数据库
+			ship.updateDB( player );
 			
 			// 成功后 就把道具从玩家仓库扣除相应道具
 			depot.deductProp( puid, count );
@@ -64,7 +70,7 @@ public class MountHoldEvent extends IEvent{
 			response.writeInt( count );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
-				prop.putBaseBuffer(response);
+				prop.putBaseBuffer2(response);
 			}
 		}
 		sendPackage( player.getCtx(), response );

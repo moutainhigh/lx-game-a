@@ -3,23 +3,10 @@ package cn.xgame.net.event.all.pl.ectype;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
-import java.util.List;
 
-import x.javaplus.util.ErrorCode;
-import x.javaplus.util.Util.Random;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
-import cn.xgame.a.award.AwardInfo;
-import cn.xgame.a.ectype.combat.Fighter;
-import cn.xgame.a.player.ship.o.ShipInfo;
-import cn.xgame.a.player.ship.o.status.SailPurpose;
-import cn.xgame.a.player.ship.o.status.ShipStatus;
-import cn.xgame.a.player.ship.o.status.StatusControl;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.utils.Logs;
-import cn.xgame.utils.LuaUtil;
 
 /**
  * 开始攻击

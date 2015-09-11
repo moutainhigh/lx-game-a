@@ -7,7 +7,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -22,20 +22,25 @@ public class UnloadHoldEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int suid 	= data.readInt();
-		int puid 	= data.readInt();
-		int count 	= data.readInt();
+		int suid 	= data.readInt();//舰船唯一ID
+		int puid 	= data.readInt();//道具唯一ID
+		int count 	= data.readInt();//道具个数
 		
-		ErrorCode code = null;
+		ErrorCode code 	= null;
 		List<IProp> ret = null;
 		try {
-			// 检查舰船是否存在
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			//检查道具是否存在
-			IProp prop 		= player.getDocks().unloadHoldProp( ship, puid, count );
+			ship.isHaveCaptain();
+			
+			// 执行扣除
+			IProp prop 		= ship.getHolds().deductProp( puid, count );
+			if( prop == null )
+				throw new Exception( ErrorCode.PROP_NOTEXIST.name() ) ;
+			// 保存一下数据库
+			ship.updateDB( player );
 			
 			// 成功后 就把道具放入玩家仓库
-			ret 			= player.getDepots(ship.getBerthSnid()).appendProp( prop );
+			ret 			= player.getDepots(ship.getBerthSid()).appendProp( prop );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -50,7 +55,7 @@ public class UnloadHoldEvent extends IEvent{
 			response.writeInt( count );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
-				prop.putBaseBuffer(response);
+				prop.putBaseBuffer2(response);
 			}
 		}
 		sendPackage( player.getCtx(), response );

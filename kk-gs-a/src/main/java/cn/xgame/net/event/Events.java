@@ -11,9 +11,6 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
-import cn.xgame.net.event.all.pl.ApplyBagEvent;
-import cn.xgame.net.event.all.pl.ApplyCaptainEvent;
-import cn.xgame.net.event.all.pl.ApplyDockEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
@@ -83,9 +80,6 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN				( 1001,		new LoginEvent() ),
 	PLAYER_CREATE				( 1002, 	new CreateEvent() ),
-	APPLY_BAGS					( 1011, 	new ApplyBagEvent() ),
-	APPLY_DOCKS					( 1012, 	new ApplyDockEvent() ),
-	APPLY_CAPTAINS				( 1013, 	new ApplyCaptainEvent() ),
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
 	// 舰船
 	SHIP_MOUNT_HOLD				( 1021, 	new MountHoldEvent() ),

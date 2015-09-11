@@ -62,7 +62,7 @@ public class Init {
 		for( String x : ls ){
 			if( x.isEmpty() ) continue;
 			try {
-				ret.getDocks().createShip( Integer.parseInt( x ) );
+				ret.getDocks().createShip( ret.getCountryId(), Integer.parseInt( x ) );
 			} catch (Exception e) {
 				Logs.error( "Init.initShip  at=" + x , e );
 			}
@@ -74,7 +74,7 @@ public class Init {
 		for( String x : ls ){
 			if( x.isEmpty() ) continue;
 			try {
-				ret.getCaptains().createCaptain( Integer.parseInt( x ), (byte) 1 );
+				ret.getDocks().createCaptain( ret.getCountryId(), Integer.parseInt( x ), (byte) 1 );
 			} catch (Exception e) {
 				Logs.error( "Init.initCaptain  at=" + x , e );
 			}

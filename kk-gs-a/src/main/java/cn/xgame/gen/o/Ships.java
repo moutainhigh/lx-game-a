@@ -28,22 +28,15 @@ public interface Ships {
 	/** 舰长唯一ID */
 	int captainUid();
 	
-	/** 所属舰队 */
-	byte fleet();
-	
-	/** 组队频道ID */
-	int teamAxnid();
-	
-	/** 状态 */
-	byte[] statuss();
-	
-	/** 副本留存信息 */
-	byte[] keepinfos();
+	/** 停靠星球ID */
+	int berthSid();
 	
 	/** 货仓 */
 	byte[] holds();
 	
-	/** 装备 */
-	byte[] equips();
+	/** 武器 */
+	byte[] weapons();
 	
+	/** 辅助 */
+	byte[] assists();
 }

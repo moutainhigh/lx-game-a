@@ -4,11 +4,9 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
-import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 
 /**
@@ -53,25 +51,25 @@ public class Update_3021 extends IEvent{
 //			equNid		: Int( 舰长装备NID )
 //		}
 		try {
-			ByteBuf response = buildEmptyPackage( ipla.getCtx(), 30 );
-			
-			response.writeByte( isAgree );
-			RW.writeString( response, player.getNickname() );
-			response.writeInt(isuid);
-			if( isAgree == 1 ){
-				response.writeInt(axnId);
-				RW.writeString( response, player.getUID() );
-				response.writeInt( player.getHeadIco() );
-				response.writeInt( ship.getuId() );
-				response.writeInt( ship.getnId() );
-				response.writeInt( ship.getStatus().getCurrentSnid() );
-				ship.getEquips().putBaseBuffer(response);
-				CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-				if( captain != null )
-					captain.buildTransformStream(response);
-			}
-
-			sendPackage( ipla.getCtx(), response );
+//			ByteBuf response = buildEmptyPackage( ipla.getCtx(), 30 );
+//			
+//			response.writeByte( isAgree );
+//			RW.writeString( response, player.getNickname() );
+//			response.writeInt(isuid);
+//			if( isAgree == 1 ){
+//				response.writeInt(axnId);
+//				RW.writeString( response, player.getUID() );
+//				response.writeInt( player.getHeadIco() );
+//				response.writeInt( ship.getuId() );
+//				response.writeInt( ship.getnId() );
+//				response.writeInt( ship.getStatus().getCurrentSnid() );
+//				ship.getEquips().putBaseBuffer(response);
+//				CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
+//				if( captain != null )
+//					captain.buildTransformStream(response);
+//			}
+//
+//			sendPackage( ipla.getCtx(), response );
 		} catch (Exception e) {
 			Logs.error( "Update_3021 ", e );
 		}

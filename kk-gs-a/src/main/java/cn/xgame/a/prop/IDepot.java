@@ -107,17 +107,19 @@ public class IDepot {
 	 * 删除一个道具 - 主要是根据道具唯一ID来删除
 	 * @param prop
 	 */
-	public boolean remove( IProp prop ){
-		if( prop == null ) return false;
+	public boolean remove( int uid ){
 		Iterator<IProp> ls = props.iterator();
 		while( ls.hasNext() ){
 			IProp next = ls.next();
-			if( next.getUid() == prop.getUid() ){
+			if( next.getUid() == uid ){
 				ls.remove();
 				return true;
 			}
 		}
 		return false;
+	}
+	public boolean remove( IProp prop ){
+		return remove( prop.getUid() );
 	}
 	
 }

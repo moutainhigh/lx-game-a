@@ -6,10 +6,12 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.depot.PlayerDepot;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -21,43 +23,40 @@ public class MountEquipEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		int suid 	= data.readInt();
-		int atsuid 	= data.readInt();
-		int puid	= data.readInt();
 		
-		ErrorCode code = null;
-		IProp ret = null;
+		int suid 	= data.readInt(); // 舰船UID
+		int puid	= data.readInt(); // 道具UID
+		
+		ErrorCode code 	= null;
+		IProp ret 		= null;
 		try {
-			if( suid == atsuid )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			if( !ship.isLevitation() )
-				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+			ship.isHaveCaptain();
+			// 检测是否空闲状态
+			player.getDocks().isLeisure( ship );
+			
 			// 获取道具
-			IProp prop 		= null;
-			ShipInfo atship = null;
-			PlayerDepot depot = player.getDepots(ship.getBerthSnid());
-			if( atsuid == -1 ){
-				prop		= getPlayerProp( depot, puid );
-			}else{
-				atship 		= player.getDocks().getShipOfException(atsuid);
-				if( !atship.isLevitation() )
-					throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
-				prop		= getShipProp( player, ship, atship, puid );
-			}
+			StarDepot depot = player.getDepots( ship.getBerthSid() );
+			IProp prop		= depot.getPropOfException(puid);
 			
 			// 先拷贝一个出来
-			IProp clone = prop.clone();
+			IProp clone 	= prop.clone();
+			if( !clone.isShipEquip() )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
+			IHold hold 		= ((SEquipAttr)clone).isWeapon() ? ship.getWeapons() : ship.getAssists();
+			
+			// 看货仓是否 还有空间
+			if( !hold.roomIsEnough( clone ) )
+				throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+			// 检测复杂度是否足够
+			// TODO
 			// 开始放入舰船货仓
-			ret 		= player.getDocks().mountEquip( ship, clone );
+			ret 			= hold.put(clone);
+			ship.updateDB( player );
 			
-			// 成功后 直接删除道具
-			if( atsuid == -1 ){
-				depot.remove( prop );
-			}else{
-				player.getDocks().removeEquipAtShip( atship, prop );
-			}
+			// 从玩家仓库中删除掉
+			depot.remove( prop );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -68,30 +67,11 @@ public class MountEquipEvent extends IEvent{
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeInt( suid );
-			buffer.writeInt( atsuid );
 			buffer.writeInt( puid );
 			buffer.writeInt( ret.getUid() );
 		}
 		sendPackage( player.getCtx(), buffer );
 		
-	}
-
-	// 从舰船上面获取道具
-	private IProp getShipProp(Player player, ShipInfo ship, ShipInfo atship, int puid) throws Exception {
-		// 判断两个舰船是否在一个星球
-		if( ship.getBerthSnid() != atship.getBerthSnid() )
-			throw new Exception( ErrorCode.NOT_ATSAMESTAR.name() ) ;
-		// 取出装备
-		return atship.getEquips().getPropOfException(puid);
-	}
-
-	// 从玩家身上获取道具
-	private IProp getPlayerProp( PlayerDepot depot, int puid) throws Exception {
-		IProp prop = depot.getPropOfException(puid);
-		// 判断是否舰船装备
-		if( !prop.isShipEquip() )
-			throw new Exception( ErrorCode.NOT_SHIPEQUIP.name() ) ;
-		return prop;
 	}
 
 }

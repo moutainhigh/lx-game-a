@@ -1,4 +1,4 @@
-package cn.xgame.a.ectype;
+package cn.xgame.a.player.ectype.o;
 
 
 import io.netty.buffer.ByteBuf;
@@ -101,6 +101,19 @@ public class StarEctype implements IBufferStream{
 		}
 	}
 
+	/**
+	 * 更新一下普通限时副本
+	 */
+	public void updateNormalEctype() {
+		List<ChapterEctype> removes = Lists.newArrayList();
+		int curtime = (int) (System.currentTimeMillis()/1000);
+		// 找出已经过期的副本
+		for( ChapterEctype cha : normal ){
+			if( curtime >= cha.getEndTime() )
+				removes.add(cha);
+		}
+		// 然后统一删除掉
+		normal.removeAll(removes);
+	}
 
-	
 }

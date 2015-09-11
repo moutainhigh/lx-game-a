@@ -1,8 +1,7 @@
-package cn.xgame.a.ectype.enemy;
+package cn.xgame.a.award;
 
 import x.javaplus.util.Util.Random;
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.award.AwardInfo;
 
 /**
  * 掉落

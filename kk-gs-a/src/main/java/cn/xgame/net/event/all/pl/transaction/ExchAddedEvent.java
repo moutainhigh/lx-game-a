@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.depot.PlayerDepot;
+import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -32,7 +32,7 @@ public class ExchAddedEvent extends IEvent{
 		try {
 			
 			// 仓库是否有这个道具
-			PlayerDepot depot = player.getDepots(player.getCountryId());
+			StarDepot depot = player.getDepots(player.getCountryId());
 			IProp prop = depot.getProp(uid);
 			if( prop == null )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );

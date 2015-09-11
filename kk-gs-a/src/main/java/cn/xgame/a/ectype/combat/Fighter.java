@@ -5,12 +5,11 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.ectype.IEctype;
 import cn.xgame.a.ectype.combat.o.Answers;
 import cn.xgame.a.ectype.combat.o.Askings;
 import cn.xgame.a.ectype.combat.o.AtkAndDef;
-import cn.xgame.a.player.captain.o.CaptainInfo;
-import cn.xgame.a.player.ship.o.ShipInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -115,12 +114,12 @@ public class Fighter {
 		
 		hp = ship.getCurrentHp();
 		// 
-		totalDur = ship.warpFightProperty( attacks, defends, askings, answers );
+//		totalDur = ship.warpFightProperty( attacks, defends, askings, answers );
 		// 如果有舰长 那么还要塞入舰长的数据
-		if( ship.getCaptainUID() != -1 ){
-			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
-			totalDur += captain.warpFightProperty( attacks, defends, askings, answers );
-		}
+//		if( ship.getCaptainUID() != -1 ){
+//			CaptainInfo captain = player.getCaptains().getCaptain( ship.getCaptainUID() );
+//			totalDur += captain.warpFightProperty( attacks, defends, askings, answers );
+//		}
 		
 		// 自后整理一下 
 		systemize();

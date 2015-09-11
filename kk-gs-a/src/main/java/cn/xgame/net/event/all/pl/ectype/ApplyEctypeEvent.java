@@ -9,10 +9,10 @@ import x.javaplus.util.Util.Time;
 import x.javaplus.util.lua.Lua;
 
 
-import cn.xgame.a.ectype.ChapterEctype;
-import cn.xgame.a.ectype.IEctype;
 import cn.xgame.a.player.ectype.EctypeControl;
-import cn.xgame.a.player.ship.o.FleetInfo;
+import cn.xgame.a.player.ectype.o.ChapterEctype;
+import cn.xgame.a.player.ectype.o.IEctype;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
@@ -29,13 +29,13 @@ public class ApplyEctypeEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		byte fleetId	= data.readByte();
-		int snid 		= data.readInt();
+		byte fleetId	= data.readByte();//舰队ID
+		int snid 		= data.readInt();//星球ID
 		
 		IPlanet planet = WorldManager.o.getPlanet(snid);
 		if( planet == null ) return;
 		
-		FleetInfo fleet 		= player.getDocks().getFleetInfo( fleetId );
+		FleetInfo fleet 		= player.getFleets().getFleetInfo( fleetId );
 		EctypeControl control 	= player.getEctypes();
 		
 		
@@ -45,11 +45,12 @@ public class ApplyEctypeEvent extends IEvent{
 		List<List<ChapterEctype>> chapters = control.getEctypeList(planet);
 		
 		// 常规副本
+		int endtime = (int) (Time.refTimeInMillis( 24, 0, 0 )/1000);
 		List<ChapterEctype> general = chapters.get(0);
 		response.writeByte( general.size() );
 		for( ChapterEctype o : general ){
 			o.buildTransformStream(response);
-			response.writeInt( (int) (Time.toWeehoursTime()/1000) );
+			response.writeInt( endtime );
 			List<IEctype> ectypes = o.getEctypes();
 			response.writeByte( ectypes.size() );
 			for( IEctype x : ectypes ){
@@ -63,7 +64,7 @@ public class ApplyEctypeEvent extends IEvent{
 		response.writeByte( normals.size() );
 		for( ChapterEctype o : normals ){
 			o.buildTransformStream(response);
-			response.writeInt( o.getSurplusTime() );
+			response.writeInt( o.getEndTime() );
 			List<IEctype> ectypes = o.getEctypes();
 			response.writeByte( ectypes.size() );
 			for( IEctype x : ectypes ){

@@ -105,7 +105,7 @@ public class PlayerManager {
 		player.getEctypes().initAllTimes();
 		
 		// 结算舰长周薪
-		player.getCaptains().balanceWeekly();
+		player.getDocks().balanceWeekly();
 		
 	}
 

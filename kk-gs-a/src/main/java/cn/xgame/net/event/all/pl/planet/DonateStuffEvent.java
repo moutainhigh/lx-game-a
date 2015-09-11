@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.depot.PlayerDepot;
+import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -74,7 +74,7 @@ public class DonateStuffEvent extends IEvent{
 	// 扣除道具
 	private IProp deductProp( int id, Player player, int uid, int count) throws Exception {
 		
-		PlayerDepot depot = player.getDepots(id);
+		StarDepot depot = player.getDepots(id);
 		IProp prop = depot.getProp( uid );
 		if( prop == null )
 			throw new Exception( ErrorCode.STUFF_NOTEXIST.name() );
