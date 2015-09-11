@@ -11,6 +11,9 @@ import x.javaplus.util.Util.Key;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.fleet.FleetControl;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
@@ -72,18 +75,33 @@ public class CreateEvent extends IEvent {
 		ByteBuf response = buildEmptyPackage( ctx, 6 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			FleetControl fleetCtr = player.getFleets();
 			// 基本数据
 			player.buildTransformStream( response );
 			// 发送自己母星数据
 			home.buildTransformStream( response );
-			home.putPlyaerInfo(player, response);
+			home.putPlyaerInfo( player, response );
+			player.getDepots( home.getId() ).buildTransformStream( response );
 			// 舰长数据
 			List<CaptainInfo> capts = player.getDocks().getCabin();
 			response.writeByte( capts.size() );
 			for( CaptainInfo capt : capts )
 				capt.buildTransformStream(response);
-			// 聊天频道信息
-			player.getChatAxns().buildTransformStream(response);
+			// 舰船数据
+			List<ShipInfo> ships = player.getDocks().getApron();
+			response.writeByte( ships.size() );
+			for( ShipInfo ship : ships ){
+				ship.buildTransformStream(response);
+				response.writeByte( fleetCtr.getIndex( ship ) );
+			}
+			// 舰队数据
+			List<FleetInfo> fleets = fleetCtr.getFleet();
+			response.writeByte( fleets.size() );
+			for( int i = 0; i < fleets.size(); i++ ){
+				FleetInfo fleet = fleets.get(i);
+				response.writeByte( i );
+				fleet.buildTransformStream(response);
+			}
 		}
 		sendPackage( ctx, response );
 	

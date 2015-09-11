@@ -80,7 +80,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
-		return create( uid, nid, count, Quality.DEFAULT );
+		return create( uid, nid, count, Quality.WHITE );
 	}
 	public static IProp create( int uid, int nid, int count, Byte quality ) {
 		return create( uid, nid, count, Quality.fromNumber( quality ) );
