@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
+import x.javaplus.collections.Lists;
+
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
@@ -23,17 +25,17 @@ public class ApplyGenrsEvent extends IEvent {
 		
 		int nid = data.readInt();
 		
-		List<Child> ls = null;
-		IPlanet planet = WorldManager.o.getPlanet( nid );
-		if( planet != null ) 
-			ls = planet.getAllGenrs();
+		List<Child> ret = Lists.newArrayList();
+		try {
+			IPlanet planet 	= WorldManager.o.getPlanet( nid );
+			ret 			= planet.getAllGenrs();
+		} catch (Exception e) {
+		}
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-		response.writeByte( ls == null ? 0 : ls.size() );
-		if( ls != null ){
-			for( Child o : ls ){
-				o.buildTransformStream(response);
-			}
+		response.writeByte( ret.size() );
+		for( Child o : ret ){
+			o.buildTransformStream(response);
 		}
 		sendPackage( player.getCtx(), response );
 		

@@ -31,11 +31,35 @@ public class ShopBuyEvent extends IEvent{
 		ErrorCode code = null;
 		List<IProp> ret = null;
 		try {
-			HomePlanet planet = WorldManager.o.getHomePlanet(id);
-			if( planet == null )
-				throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
 			
-			ret = planet.runShopBuy( player, nid, count );
+			HomePlanet planet = WorldManager.o.getHomePlanet( id );
+			
+			// 获取道具
+			IProp prop = planet.getShopProp( nid );
+			
+			// 数量是否足够 只有特产 才做这个判断
+			if( prop.getCount() < count && prop.getUid() == 1 )
+				throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
+			
+			// 算出货币
+			int needGold = prop.getSellgold();
+			//先判断 玩家是否该星球的
+			if( planet.getChild( player.getUID() ) == null )
+				needGold += 100;
+			
+			// 看金币是否足够
+			if( player.changeCurrency( -needGold ) == -1 )
+				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+			
+			// 加入玩家背包
+			ret = player.getDepots( id ).appendProp( nid, count );
+			
+			// 如果是特产 那么就要对应扣除数量
+			if( prop.getUid() == 1 ){
+				planet.getSpecialtyControl().deduct( nid, count );
+				// 同步给其他玩家
+				// TODO
+			}
 			
 			Logs.debug( player, "在商店购买道具 nid=" + nid );
 			code = ErrorCode.SUCCEED;
@@ -46,13 +70,12 @@ public class ShopBuyEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			response.writeInt( player.getCurrency() );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
-				response.writeInt( prop.getUid() );
-				response.writeInt( prop.getNid() );
-				response.writeInt( prop.getCount() );
+				prop.putBaseBuffer(response);
+				prop.buildTransformStream(response);
 			}
-			response.writeInt( player.getCurrency() );
 		}
 		sendPackage( player.getCtx(), response );
 		

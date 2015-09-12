@@ -81,7 +81,13 @@ public class ChatManager{
 	private void synPlanetMsg( int axnId, Player sponsor, String content ) {
 		
 		// 获取玩家母星
-		HomePlanet home = WorldManager.o.getHPlanetInPlayer(sponsor);
+		HomePlanet home;
+		try {
+			home = WorldManager.o.getHPlanetInPlayer(sponsor);
+		} catch (Exception e) {
+			return;
+		}
+		
 		List<Child> ls = home.getPeoples();
 		for( Child child : ls ){
 			Player o = PlayerManager.o.getPlayerFmOnline( child.getUID() );

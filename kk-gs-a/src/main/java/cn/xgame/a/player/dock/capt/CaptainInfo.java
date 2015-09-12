@@ -51,6 +51,7 @@ public class CaptainInfo implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
+		buffer.writeByte( attr.getQuality().toNumber() );
 		attr.buildTransformStream( buffer );
 		buffer.writeInt( equip == null ? -1 : equip.getUid() );
 		if( equip != null ){
@@ -124,12 +125,12 @@ public class CaptainInfo implements ITransformStream{
 	/**
 	 * 是否到发工资的时候了
 	 * 7 * 24 * 60 * 60 = 604800 一周
-	 * 1 * 60 * 60 = 3600 一小时
+	 * 24 * 60 * 60 = 3600 一小时
 	 * @return
 	 */
 	public boolean isWantPayoff() {
 		int t 		= (int) (System.currentTimeMillis()/1000);
-		boolean ret = t - attr.getWeekTime() >= 3600;
+		boolean ret = t - attr.getWeekTime() >= 86400;
 		if( ret ) 
 			attr.setWeekTime( (int) (Time.refTimeInMillis( 0, 0, 0 )/1000) );
 		return ret;

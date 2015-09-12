@@ -45,9 +45,10 @@ public class StartAttackEvent extends IEvent{
 			
 			// 获取副本
 			IEctype ectype = player.getEctypes().getEctype( snid, cnid, enid );
-//			if( ectype == null )
-//				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
-//			
+			if( ectype == null )
+				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+			
+			
 //			ShipInfo ship 			= player.getDocks().getShipOfException(suid);
 //			// 检测舰船是否可以战斗
 //			if( !ship.isCanFighting() )

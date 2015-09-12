@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
+import x.javaplus.collections.Lists;
+
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.PropType;
@@ -24,16 +26,24 @@ public class ApplyExchEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		byte type		= data.readByte();
-		int page 		= data.readInt();
+		byte type			= data.readByte();
+		int page 			= data.readInt();
 		
-		HomePlanet home = WorldManager.o.getHPlanetInPlayer(player);
+		List<ExchGoods> ret = Lists.newArrayList();
+		try {
+			
+			HomePlanet home = WorldManager.o.getHPlanetInPlayer(player);
+			
+			ret.addAll( home.getExchange().getGoodsByPage( PropType.fromNumber(type), page ) );
+			
+		} catch (Exception e) {
+			
+		}
 		
 		ByteBuf response 	= buildEmptyPackage( player.getCtx(), 1024 );
-		List<ExchGoods> ls 	= home.getExchange().getGoodsByPage( PropType.fromNumber(type), page );
-		response.writeByte( ls.size() );
-		for( ExchGoods goods : ls ){
-			RW.writeString(response, goods.getSellName());
+		response.writeByte( ret.size() );
+		for( ExchGoods goods : ret ){
+			RW.writeString( response, goods.getSellName() );
 			goods.buildTransformStream(response);
 		}
 		sendPackage( player.getCtx(), response );

@@ -7,6 +7,7 @@ import java.util.List;
 
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.IPlanet;
@@ -118,8 +119,9 @@ public class WorldManager {
 	 * 获取玩家所属母星
 	 * @param player
 	 * @return
+	 * @throws Exception 
 	 */
-	public HomePlanet getHPlanetInPlayer( Player player ) {
+	public HomePlanet getHPlanetInPlayer( Player player ) throws Exception {
 		return getHomePlanet( player.getCountryId() );
 	}
 
@@ -127,13 +129,14 @@ public class WorldManager {
 	 * 获取母星 根据星球ID
 	 * @param nid
 	 * @return
+	 * @throws Exception 
 	 */
-	public HomePlanet getHomePlanet( int nid ) {
+	public HomePlanet getHomePlanet( int nid ) throws Exception {
 		for( HomePlanet home : homes ){
 			if( home.getId() == nid )
 				return home;
 		}
-		return null;
+		throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
 	}
 
 	/**
@@ -166,11 +169,12 @@ public class WorldManager {
 	 * 获取星球 - 根据表格ID
 	 * @param nid
 	 * @return
+	 * @throws Exception 
 	 */
-	public IPlanet getPlanet( int nid ) {
+	public IPlanet getPlanet( int nid ) throws Exception {
 		StarsPo star = CsvGen.getStarsPo( nid );
 		if( star == null )
-			return null;
+			throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
 		if( star.type == 1 ){
 			return getHomePlanet( nid );
 		}else if( star.type == 2 ){
@@ -178,7 +182,7 @@ public class WorldManager {
 		}else if( star.type == 3 ){
 			return getEctypePlanet( nid );
 		}
-		return null;
+		throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
 	}
 
 	public List<IPlanet> getAllPlanet(){

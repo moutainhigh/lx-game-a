@@ -23,11 +23,10 @@ public class ApplyHomeEvent extends IEvent {
 		
 		int nid = data.readInt();
 		
-		HomePlanet home = WorldManager.o.getHomePlanet( nid );
-		ErrorCode code = null;
+		HomePlanet home = null;
+		ErrorCode code 	= null;
 		try {
-			if( home == null )
-				throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
+			home = WorldManager.o.getHomePlanet( nid );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -39,7 +38,7 @@ public class ApplyHomeEvent extends IEvent {
 		if( code == ErrorCode.SUCCEED ){
 			home.buildTransformStream( response );
 			home.putPlyaerInfo( player, response );
-			player.getDepots( home.getId() ).buildTransformStream( response );
+			player.getDepots( nid ).buildTransformStream( response );
 		}
 		sendPackage( player.getCtx(), response );
 		

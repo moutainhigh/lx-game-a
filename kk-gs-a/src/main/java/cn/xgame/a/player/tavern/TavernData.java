@@ -117,7 +117,7 @@ public class TavernData implements IBufferStream,ITransformStream{
 		String ret 			= value[0].getString();
 		if( ret.isEmpty() ) return;
 		
-		Logs.debug( "更新酒馆  星球"+snid+ " " + ret );
+		Logs.debug( "星球"+snid+ " 更新酒馆 " + ret );
 		
 		rtime				= (int) (System.currentTimeMillis()/1000);
 		intervalTime		= LXConstants.TAVERN_UPDATE_TIME;// 这里到时候根据星球普惠改变

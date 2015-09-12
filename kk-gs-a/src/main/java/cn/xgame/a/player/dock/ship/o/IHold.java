@@ -36,7 +36,8 @@ public class IHold extends IDepot implements ITransformStream,IArrayStream{
 			super.append( prop );
 			
 			// 得出最大的唯一ID
-			if( prop.getUid() > propUID ) propUID = prop.getUid();
+			if( prop.getUid() > propUID ) 
+				propUID = prop.getUid();
 		}
 	}
 

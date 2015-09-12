@@ -35,8 +35,12 @@ public class ApplyEctypeEvent extends IEvent{
 		byte fleetId	= data.readByte();//舰队ID
 		int snid 		= data.readInt();//星球ID
 		
-		IPlanet planet = WorldManager.o.getPlanet(snid);
-		if( planet == null ) return;
+		IPlanet planet;
+		try {
+			planet = WorldManager.o.getPlanet(snid);
+		} catch (Exception e) {
+			return;
+		}
 		
 		FleetInfo fleet 		= player.getFleets().getFleetInfo( fleetId );
 		EctypeControl control 	= player.getEctypes();

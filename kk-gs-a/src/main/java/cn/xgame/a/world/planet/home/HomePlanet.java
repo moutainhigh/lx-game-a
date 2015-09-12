@@ -16,9 +16,6 @@ import x.javaplus.util.lua.LuaValue;
 
 
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.tavern.TavernCaptain;
-import cn.xgame.a.player.tavern.TavernData;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -35,7 +32,6 @@ import cn.xgame.a.world.planet.home.o.Institution;
 import cn.xgame.a.world.planet.home.o.OustChild;
 import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.config.o.StarshopPo;
@@ -731,8 +727,9 @@ public class HomePlanet extends IPlanet {
 	 * 根据道具表格ID 获取道具
 	 * @param nid
 	 * @return
+	 * @throws Exception 
 	 */
-	public IProp getShopProp( int nid ){
+	public IProp getShopProp( int nid ) throws Exception{
 		List<IProp> scty = specialtyControl.toProps();
 		// 特产
 		for( IProp o : scty ){
@@ -744,92 +741,7 @@ public class HomePlanet extends IPlanet {
 			if( o.getNid() == nid )
 				return o;
 		}
-		return null;
-	}
-	
-	/**
-	 * 玩家购买商店道具
-	 * @param player 
-	 * @param nid 
-	 * @param count  
-	 * @return
-	 * @throws Exception 
-	 */
-	public List<IProp> runShopBuy( Player player, int nid, int count ) throws Exception {
-		// 道具是否存在
-		IProp prop = getShopProp( nid );
-		if( prop == null )
-			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
-		
-		// 数量是否足够 只有特产 才做这个判断
-		if( prop.getCount() < count && prop.getUid() == 1 )
-			throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
-		
-		int needGold = prop.getSellgold();
-		//先判断 玩家是否该星球的
-		if( getChild( player.getUID() ) == null ){
-			needGold += 1;
-		}
-	
-		// 看金币是否足够
-		if( player.changeCurrency( -needGold ) == -1 )
-			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
-		
-		// 加入玩家背包
-		List<IProp> ret = player.getDepots(getId()).appendProp( nid, count );
-		if( ret.isEmpty() )
-			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		
-		// 如果是特产 那么就要对应扣除数量
-		if( prop.getUid() == 1 ){
-			specialtyControl.deduct( nid, count );
-			// 同步给其他玩家
-			
-		}
-		
-		// 及时更新数据库
-		PlayerManager.o.update(player);
-		
-		return ret;
-	}
-	
-	/**
-	 * 玩家购买酒馆舰长
-	 * @param player
-	 * @param nid
-	 * @return
-	 * @throws Exception 
-	 */
-	public CaptainInfo runTavernBuy( Player player, int nid ) throws Exception {
-		// 舰长是否存在
-		TavernData tavernData = player.getTaverns().get( getId() );
-		if( tavernData == null )
-			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
-		TavernCaptain captain = tavernData.getCaptain( nid );
-		if( captain == null )
-			throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
-		
-		ItemPo item = CsvGen.getItemPo( nid );
-		int needGold = item.buygold <= 0 ? 1 : item.buygold;
-		//先判断 玩家是否该星球的
-		if( getChild( player.getUID() ) == null ){
-			needGold += 1000;
-		}
-		
-		// 看金币是否足够
-		if( player.changeCurrency( -needGold ) == -1 )
-			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
-		
-		// 放入舰长室
-		CaptainInfo ret = player.getDocks().createCaptain( getId(), captain.id, captain.quality );
-		
-		// 将舰长从酒馆里面删除掉
-		tavernData.remove( nid );
-		
-		// 及时更新数据库
-		PlayerManager.o.update(player);
-		
-		return ret;
+		throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 	}
 	
 }

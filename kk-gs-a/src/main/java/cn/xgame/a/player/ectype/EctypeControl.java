@@ -34,25 +34,8 @@ public class EctypeControl implements IArrayStream{
 	// 特殊限时副本次数记录
 	private List<ChapterEctype> special = Lists.newArrayList();
 	
-	
 	public EctypeControl( Player player ) {
 		root = player;
-	}
-	
-	/** 初始化副本信息 */
-	public void initialize() {
-		List<IPlanet> all = WorldManager.o.getAllPlanet();
-		for( IPlanet planet : all ){
-			StarEctype o = new StarEctype( planet.getId() );
-			List<Integer> ls = planet.getItselfEctype();
-			for( int id : ls ){
-				ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
-				ectype.generateNextEctype();
-				o.getGeneral().add(ectype);
-			}
-			o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
-			sectypes.add( o );
-		}
 	}
 	
 	@Override
@@ -78,6 +61,40 @@ public class EctypeControl implements IArrayStream{
 		return buf.array();
 	}
 	
+	//--------------------------------------------公共函数--------------------------------------------------
+	/** 初始化副本信息 */
+	public void initialize() {
+		// 星球副本
+		List<IPlanet> all = WorldManager.o.getAllPlanet();
+		for( IPlanet planet : all ){
+			StarEctype o = new StarEctype( planet.getId() );
+			List<Integer> ls = planet.getItselfEctype();
+			for( int id : ls ){
+				ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
+				ectype.generateNextEctype();
+				o.getGeneral().add(ectype);
+			}
+			o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
+			sectypes.add( o );
+		}
+		// 特殊限时副本
+		// TODO
+	}
+	
+	/**
+	 * 精确获取 指定副本
+	 * @param snid
+	 * @param enid
+	 * @param enid2 
+	 * @return
+	 */
+	public IEctype getEctype( int snid, int cnid, int enid ) {
+		if( snid == -1 )
+			return getSpecialEctype( cnid, enid );
+		return getSEctype( snid, cnid, enid );
+	}
+	
+	//--------------------------------------------星球副本--------------------------------------------------
 	public StarEctype getStarEctype(int snid) {
 		for( StarEctype o : sectypes ){
 			if( o.getSnid() == snid )
@@ -85,7 +102,6 @@ public class EctypeControl implements IArrayStream{
 		}
 		return null;
 	}
-	
 	
 	/**
 	 * 初始所有副本次数
@@ -142,6 +158,16 @@ public class EctypeControl implements IArrayStream{
 		return ret;
 	}
 	
+	private IEctype getSEctype( int snid, int cnid, int enid ) {
+		
+//		StarEctype star = getStarEctype( snid );
+		
+		
+		
+		return null;
+	}
+	
+	//--------------------------------------------特殊限时副本--------------------------------------------------
 	/**
 	 * 获取特殊限时副本
 	 * @return
@@ -170,19 +196,6 @@ public class EctypeControl implements IArrayStream{
 		return cha.getEctype( enid );
 	}
 
-	/**
-	 * 精确获取 指定副本
-	 * @param snid
-	 * @param enid
-	 * @param enid2 
-	 * @return
-	 */
-	public IEctype getEctype( int snid, int cnid, int enid ) {
-		if( snid == -1 )
-			return getSpecialEctype( cnid, enid );
-		
-		return null;
-	}
 
 
 	

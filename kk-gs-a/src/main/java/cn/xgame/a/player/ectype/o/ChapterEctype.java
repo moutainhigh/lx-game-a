@@ -42,7 +42,7 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	}
 	
 	public String toString(){
-		return templet.id + "- times=" + times + ", endtime=" + Time.refFormatDate(endtime*1000) + ", ectypes=" + ectypes;
+		return templet.id + "- times=" + times + ", endtime=" + Time.refFormatDate( endtime*1000l ) + ", ectypes=" + ectypes;
 	}
 	
 	@Override

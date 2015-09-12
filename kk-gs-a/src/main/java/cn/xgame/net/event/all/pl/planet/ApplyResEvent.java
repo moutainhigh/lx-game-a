@@ -22,11 +22,10 @@ public class ApplyResEvent extends IEvent{
 	public void run( Player player, ByteBuf data ) throws IOException {
 		int nid = data.readInt();
 		
-		IPlanet planet = WorldManager.o.getPlanet( nid );
+		IPlanet planet = null;
 		ErrorCode code = null;
 		try {
-			if( planet == null )
-				throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
+			planet = WorldManager.o.getPlanet( nid );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
