@@ -74,7 +74,7 @@ public class ApplyEctypeEvent extends IEvent{
 		response.writeByte( normals.size() );
 		for( ChapterEctype o : normals ){
 			o.buildTransformStream(response);
-			response.writeInt( o.getEndTime() );
+			response.writeInt( o.getEndtime() );
 			List<IEctype> ectypes = o.getEctypes();
 			response.writeByte( ectypes.size() );
 			for( IEctype x : ectypes ){

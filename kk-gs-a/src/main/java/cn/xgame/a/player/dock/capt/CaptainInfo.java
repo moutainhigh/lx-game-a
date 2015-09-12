@@ -2,6 +2,7 @@ package cn.xgame.a.player.dock.capt;
 
 
 import x.javaplus.mysql.db.Condition;
+import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.ITransformStream;
@@ -56,6 +57,7 @@ public class CaptainInfo implements ITransformStream{
 			equip.buildTransformStream(buffer);
 		}
 		buffer.writeInt( shipUid );
+		buffer.writeInt( snid );
 	}
 
 	//TODO------------数据库相关
@@ -121,22 +123,17 @@ public class CaptainInfo implements ITransformStream{
 	
 	/**
 	 * 是否到发工资的时候了
-	 * 7 * 24 * 60 * 60 = 604800
+	 * 7 * 24 * 60 * 60 = 604800 一周
+	 * 1 * 60 * 60 = 3600 一小时
 	 * @return
 	 */
 	public boolean isWantPayoff() {
-		int t = (int) (System.currentTimeMillis()/1000);
-		return t - attr.getWeekTime() >= 86400;
+		int t 		= (int) (System.currentTimeMillis()/1000);
+		boolean ret = t - attr.getWeekTime() >= 3600;
+		if( ret ) 
+			attr.setWeekTime( (int) (Time.refTimeInMillis( 0, 0, 0 )/1000) );
+		return ret;
 	}
-	
-
-	
 
 
-
-
-	
-
-
-	
 }

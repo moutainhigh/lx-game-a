@@ -45,8 +45,7 @@ public class StarEctype implements IBufferStream{
 		for( ChapterEctype ectype : normal ){
 			buf.writeInt( ectype.getNid() );
 			buf.writeByte( ectype.getTimes() );
-			buf.writeInt( ectype.getRtime() );
-			buf.writeInt( ectype.getPersistTime() );
+			buf.writeInt( ectype.getEndtime() );
 			ectype.putBuffer(buf);
 		}
 	}
@@ -64,8 +63,7 @@ public class StarEctype implements IBufferStream{
 		for( int j = 0; j < count; j++ ){
 			ChapterEctype ectype = new ChapterEctype( snid, buf.readInt() );
 			ectype.setTimes( buf.readByte() );
-			ectype.setRtime( buf.readInt() );
-			ectype.setPersistTime( buf.readInt() );
+			ectype.setEndtime( buf.readInt() );
 			ectype.wrapBuffer( buf );
 			normal.add(ectype);
 		}
@@ -100,9 +98,10 @@ public class StarEctype implements IBufferStream{
 	 * 初始化常规副本次数
 	 */
 	public void initGeneralTimes() {
-		for( ChapterEctype ectype : general ){
+		for( ChapterEctype ectype : general )
 			ectype.initTimes();
-		}
+		for( ChapterEctype ectype : normal )
+			ectype.initTimes();
 	}
 
 	/**
@@ -113,7 +112,7 @@ public class StarEctype implements IBufferStream{
 		int curtime = (int) (System.currentTimeMillis()/1000);
 		// 找出已经过期的副本
 		for( ChapterEctype cha : normal ){
-			if( curtime >= cha.getEndTime() )
+			if( curtime >= cha.getEndtime() )
 				removes.add(cha);
 		}
 		// 然后统一删除掉

@@ -11,6 +11,7 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.ectype.o.ChapterEctype;
+import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
@@ -90,18 +91,19 @@ public class EctypeControl implements IArrayStream{
 	 * 初始所有副本次数
 	 */
 	public void initAllTimes() {
-		for( StarEctype stare : sectypes ){
+		for( StarEctype stare : sectypes )
 			stare.initGeneralTimes();
-			stare.getNormal().clear();
-			stare.getNormal().addAll( updateNormalEctype( stare.getSnid() ) );
-		}
 	}
 	
 	/**
 	 * 刷新普通限时副本
-	 * @param snid
-	 * @return
 	 */
+	public void updateNormalEctype(){
+		for( StarEctype stare : sectypes ){
+			stare.getNormal().clear();
+			stare.getNormal().addAll( updateNormalEctype( stare.getSnid() ) );
+		}
+	}
 	private List<ChapterEctype> updateNormalEctype( int snid ) {
 		List<ChapterEctype> ret = Lists.newArrayList();
 		Lua lua = LuaUtil.getEctypeInfo();
@@ -114,17 +116,17 @@ public class EctypeControl implements IArrayStream{
 				String[] o = x.split( ";" );
 				ChapterEctype ectype = new ChapterEctype( snid, Integer.parseInt( o[0] ) );
 				ectype.generateNextEctype();
-				ectype.setPersistTime( Integer.parseInt( o[1] ) );
-				ectype.setRtime( (int) (System.currentTimeMillis()/1000) );
+				int t = (int) (System.currentTimeMillis()/1000);
+				ectype.setEndtime( t + Integer.parseInt( o[1] ) );
 				ret.add(ectype);
 			}
 		}
-		Logs.debug( root, "刷新普通限时副本 " + ret );
+		Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
 		return ret;
 	}
 	
 	/**
-	 * 根据星球获取对应星球的副本列表
+	 * 根据星球获取对应星球的副本列表 包括瞭望副本
 	 * @param snid
 	 * @return
 	 */
@@ -147,5 +149,41 @@ public class EctypeControl implements IArrayStream{
 	public List<ChapterEctype> getSpecial() {
 		return special;
 	}
+	
+	private ChapterEctype getSpecialChapter( int cnid ) {
+		for( ChapterEctype cha : special ){
+			if( cha.getNid() == cnid )
+				return cha;
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取 指定特殊副本
+	 * @param cnid
+	 * @param enid
+	 * @return
+	 */
+	private IEctype getSpecialEctype( int cnid, int enid ) {
+		ChapterEctype cha = getSpecialChapter( cnid );
+		if( cha == null ) return null;
+		return cha.getEctype( enid );
+	}
+
+	/**
+	 * 精确获取 指定副本
+	 * @param snid
+	 * @param enid
+	 * @param enid2 
+	 * @return
+	 */
+	public IEctype getEctype( int snid, int cnid, int enid ) {
+		if( snid == -1 )
+			return getSpecialEctype( cnid, enid );
+		
+		return null;
+	}
+
+
 	
 }

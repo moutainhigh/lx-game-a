@@ -8,6 +8,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
+import x.javaplus.util.Util.Time;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
@@ -20,6 +21,7 @@ import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
+import cn.xgame.utils.Logs;
 
 /**
  * 玩家登录 
@@ -33,6 +35,8 @@ public class LoginEvent extends IEvent{
 	}
 
 	public void run( ChannelHandlerContext ctx, ByteBuf data ) throws IOException {
+		
+		Time.beginTimer();
 		
 		String UID 	= RW.readString(data);
 		String key	= RW.readString(data);
@@ -105,7 +109,7 @@ public class LoginEvent extends IEvent{
 			player.rLastGsid();
 		}
 		
+		Logs.debug( player, "登录游戏 code=" + code + ", 逻辑耗时：" + Time.endTimer() + "毫秒" );
 	}
-
 
 }

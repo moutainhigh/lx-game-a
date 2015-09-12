@@ -46,6 +46,8 @@ public class FleetControl implements IArrayStream{
 				ships.add( ship );
 			}
 			fleet.setStatus( IStatus.create( buf ) );
+			
+			fleets.add( fleet );
 		}
 	}
 	

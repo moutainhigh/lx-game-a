@@ -4,7 +4,11 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+import x.javaplus.util.ErrorCode;
 
+
+import cn.xgame.a.player.ectype.o.IEctype;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
@@ -19,23 +23,28 @@ public class StartAttackEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 
-		int snid = data.readInt();
-		int enid = data.readInt();
-		int suid = data.readInt();
+		int snid 	= data.readInt();// 星球ID
+		int cnid 	= data.readInt();// 章节ID
+		int enid 	= data.readInt();// 副本ID
+		int fid 	= data.readByte();// 舰队ID
 		
-		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 副本ID=" + enid + ", 舰船UID=" + suid );
+		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 章节ID=" + cnid + ", 副本ID=" + enid + ", 舰队ID=" + fid );
 		
 		
-//		ErrorCode code = null;
+		ErrorCode code = null;
 //		
 //		int sailTime	= 0;// 航行时间
 //		int combatTime 	= 0;// 战斗时间
 //		byte isWin 		= 0;// 是否胜利
 //		List<AwardInfo> awards = null;
-//		try {
-//			
-//			// 判断副本是否可以打
-//			IEctype ectype = player.getEctypes().getEctype( snid, enid );
+		try {
+			// 获取舰队
+			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
+			if( fleet == null )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			
+			// 获取副本
+			IEctype ectype = player.getEctypes().getEctype( snid, cnid, enid );
 //			if( ectype == null )
 //				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 //			
@@ -100,18 +109,18 @@ public class StartAttackEvent extends IEvent{
 //				status.levitation();
 //			}
 //			
-//			code = ErrorCode.SUCCEED;
-//		} catch (Exception e) {
-//			code = ErrorCode.valueOf( e.getMessage() );
-//		}
-//		
-//		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
+			code = ErrorCode.SUCCEED;
+		} catch (Exception e) {
+			code = ErrorCode.valueOf( e.getMessage() );
+		}
+		
+		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 //		response.writeInt( suid );
-//		response.writeShort( code.toNumber() );
-//		if( code == ErrorCode.SUCCEED ){
+		response.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
 //			response.writeInt( combatTime );
 //			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin + ", awards=" + awards );
-//		}
+		}
 //		// 该船不在目标星球  这里叫他航行
 //		if( code == ErrorCode.SHIP_NOTINSTAR ){
 //			response.writeInt( snid );
@@ -122,7 +131,7 @@ public class StartAttackEvent extends IEvent{
 //		if( code == ErrorCode.AWAIT_OTHERPLAYER ){
 //			response.writeInt( 30 );
 //		}
-//		sendPackage( player.getCtx(), response );
+		sendPackage( player.getCtx(), response );
 	}
 
 	

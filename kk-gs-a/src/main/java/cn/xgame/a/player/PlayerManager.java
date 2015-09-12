@@ -101,7 +101,7 @@ public class PlayerManager {
 	 */
 	private void dailyHandle( Player player, int day ) {
 		
-		// 更新一下偶发副本
+		// 初始所有副本次数
 		player.getEctypes().initAllTimes();
 		
 		// 结算舰长周薪
@@ -132,7 +132,14 @@ public class PlayerManager {
 		
 		// 判断是否过天
 		int day = ret.strideDay();
-		if( day >= 0 ) dailyHandle( ret, day );
+		if( day >= 0 ) {
+			dailyHandle( ret, day );
+			// 刷新一下 普通限时副本 根据玩家登录限时
+			ret.getEctypes().updateNormalEctype();
+		}else{
+			// 这里是为了方便测试 让每次登录都 刷新副本
+			ret.getEctypes().updateNormalEctype();
+		}
 		
 		return ret;
 	}

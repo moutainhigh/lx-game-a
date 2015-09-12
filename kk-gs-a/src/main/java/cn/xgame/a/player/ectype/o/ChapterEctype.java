@@ -10,6 +10,7 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ChapterPo;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Time;
 
 
 
@@ -26,9 +27,10 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	// 剩余次数
 	private byte times ;
 	
-	// 记录时间
-	private int rtime;
-	private int persistTime;
+	// 开启时间 暂时不用
+//	private int starttime;
+	// 结束时间
+	private int endtime;
 	
 	// 副本列表
 	private List<IEctype> ectypes = Lists.newArrayList();
@@ -40,7 +42,7 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	}
 	
 	public String toString(){
-		return templet.id + "- times=" + times + ", rtime=" + getEndTime() + ", ectypes=" + ectypes;
+		return templet.id + "- times=" + times + ", endtime=" + Time.refFormatDate(endtime*1000) + ", ectypes=" + ectypes;
 	}
 	
 	@Override
@@ -75,23 +77,22 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	public void setTimes(byte times) {
 		this.times = times;
 	}
-	public int getRtime() {
-		return rtime;
+	public int getEndtime() {
+		return endtime;
 	}
-	public void setRtime(int rtime) {
-		this.rtime = rtime;
-	}
-	public int getPersistTime() {
-		return persistTime;
-	}
-	public int getEndTime() {
-		return rtime + persistTime;
-	}
-	public void setPersistTime(int persistTime) {
-		this.persistTime = persistTime;
+	public void setEndtime(int endtime) {
+		this.endtime = endtime;
 	}
 	public List<IEctype> getEctypes() {
 		return ectypes;
+	}
+	
+	public IEctype getEctype( int enid ) {
+		for( IEctype ectype : ectypes ){
+			if( ectype.getNid() == enid )
+				return ectype;
+		}
+		return null;
 	}
 	
 	/**
@@ -115,6 +116,8 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	public void initTimes() {
 		times = templet.times;
 	}
+
+
 
 
 
