@@ -36,6 +36,8 @@ public class UnloadCaptainEvent extends IEvent{
 			// 直接卸掉
 			player.getDocks().downCaptain( ship );
 			
+			ship.updateDB(player);
+			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

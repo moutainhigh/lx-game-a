@@ -15,7 +15,6 @@ import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.utils.Logs;
 
 /**
  * 酒馆 购买
@@ -27,8 +26,8 @@ public class TavernBuyEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int id 	= data.readInt();
-		int nid = data.readInt();
+		int id 	= data.readInt(); // 星球ID 
+		int nid = data.readInt(); // 舰长NID
 	
 		ErrorCode code 	= null;
 		CaptainInfo ret = null;
@@ -61,7 +60,6 @@ public class TavernBuyEvent extends IEvent{
 			// 将舰长从酒馆里面删除掉
 			tavernData.remove( nid );
 			
-			Logs.debug( player, "在酒馆购买舰长 nid=" + ret.getnId() + ", uid=" + ret.getuId() );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

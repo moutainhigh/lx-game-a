@@ -183,6 +183,32 @@ public class ShipInfo implements ITransformStream{
 	}
 	
 	/**
+	 * 获取该船所有占用能量
+	 * @return
+	 */
+	public int allOccupyEnergy() {
+		int ret = 0;
+		for( IProp o : weapons.getAll() )
+			ret += ((SEquipAttr)o).getEnergy();
+		for( IProp o : assists.getAll() )
+			ret += ((SEquipAttr)o).getEnergy();
+		return ret;
+	}
+	
+	/**
+	 * 获取所有装备的复杂度
+	 * @return
+	 */
+	public int allEctypeComplexity(){
+		int ret = 0;
+		for( IProp o : weapons.getAll() )
+			ret += ((SEquipAttr)o).getPerplexity();
+		for( IProp o : assists.getAll() )
+			ret += ((SEquipAttr)o).getPerplexity();
+		return ret;
+	}
+	
+	/**
 	 * 包装 攻击防御属性
 	 * @param fighter
 	 */
@@ -194,5 +220,5 @@ public class ShipInfo implements ITransformStream{
 			fighter.defends.addAll( weapon.getDefs() );
 		}
 	}
-	
+
 }

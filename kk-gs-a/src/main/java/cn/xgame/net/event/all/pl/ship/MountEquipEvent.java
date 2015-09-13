@@ -31,7 +31,7 @@ public class MountEquipEvent extends IEvent{
 		IProp ret 		= null;
 		try {
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			ship.isHaveCaptain();
+
 			// 检测是否空闲状态
 			player.getDocks().isLeisure( ship );
 			
@@ -44,15 +44,19 @@ public class MountEquipEvent extends IEvent{
 			if( !clone.isShipEquip() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
-			IHold hold 		= ((SEquipAttr)clone).isWeapon() ? ship.getWeapons() : ship.getAssists();
+			SEquipAttr equip 	= (SEquipAttr)clone;
+			IHold hold 			= equip.isWeapon() ? ship.getWeapons() : ship.getAssists();
 			
 			// 看货仓是否 还有空间
 			if( !hold.roomIsEnough( clone ) )
 				throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
-			// 检测复杂度是否足够
-			// TODO
+			// 看能量是否足够
+			int needEnergy 		= equip.getEnergy() + ship.allOccupyEnergy();
+			if( needEnergy > ship.attr().getMaxEnergy() )
+				throw new Exception( ErrorCode.ENERGY_LAZYWEIGHT.name() );
+			
 			// 开始放入舰船货仓
-			ret 			= hold.put(clone);
+			ret = hold.put(clone);
 			ship.updateDB( player );
 			
 			// 从玩家仓库中删除掉

@@ -30,7 +30,6 @@ public class UnloadHoldEvent extends IEvent{
 		List<IProp> ret = null;
 		try {
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			ship.isHaveCaptain();
 			
 			// 执行扣除
 			IProp prop 		= ship.getHolds().deductProp( puid, count );

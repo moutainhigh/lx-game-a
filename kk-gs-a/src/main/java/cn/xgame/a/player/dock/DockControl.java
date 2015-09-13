@@ -142,7 +142,7 @@ public class DockControl implements IFromDB{
 		CaptainInfo capt = getCaptain( ship.getCaptainUID() );
 		if( capt == null ) return;
 		capt.setShipUid( -1 );
-		ship.setCaptainUID( - 1 );
+		ship.setCaptainUID( -1 );
 	}
 	
 	////////////////////////////////////////// 舰长  ////////////////////////////////////////////////////////////

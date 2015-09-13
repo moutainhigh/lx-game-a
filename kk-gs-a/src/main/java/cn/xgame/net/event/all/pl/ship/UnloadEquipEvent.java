@@ -28,7 +28,6 @@ public class UnloadEquipEvent extends IEvent{
 		IProp ret 		= null;
 		try {
 			ShipInfo ship = player.getDocks().getShipOfException(suid);
-			ship.isHaveCaptain();
 			// 检测是否空闲状态
 			player.getDocks().isLeisure( ship );
 			

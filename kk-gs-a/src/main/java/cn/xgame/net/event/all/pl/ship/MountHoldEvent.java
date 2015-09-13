@@ -32,7 +32,6 @@ public class MountHoldEvent extends IEvent{
 		List<IProp> ret 	= null;
 		try {
 			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-			ship.isHaveCaptain();
 			// 获取道具
 			StarDepot depot = player.getDepots(ship.getBerthSid());
 			IProp prop 		= depot.getPropOfException(puid);
@@ -49,6 +48,7 @@ public class MountHoldEvent extends IEvent{
 			// 看货仓是否 还有空间
 			if( !holds.roomIsEnough( clone ) )
 				throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+			
 			// 放入货仓
 			ret = holds.appendProp( clone );
 			// 最后保存数据库

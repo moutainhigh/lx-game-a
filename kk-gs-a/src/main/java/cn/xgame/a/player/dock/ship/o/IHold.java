@@ -44,7 +44,10 @@ public class IHold extends IDepot implements ITransformStream,IArrayStream{
 	@Override
 	public byte[] toBytes() {
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buildTransformStream( buf );
+		buf.writeShort( room );
+		buf.writeByte( props.size() );
+		for( IProp o : props )
+			o.putBuffer(buf);
 		return buf.array();
 	}
 
@@ -53,7 +56,8 @@ public class IHold extends IDepot implements ITransformStream,IArrayStream{
 		buffer.writeShort( room );
 		buffer.writeByte( props.size() );
 		for( IProp o : props ){
-			o.putBuffer(buffer);
+			o.putBaseBuffer(buffer);
+			o.buildTransformStream(buffer);
 		}
 	}
 	

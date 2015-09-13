@@ -42,6 +42,8 @@ public class MountCaptainEvent extends IEvent{
 			ship.setCaptainUID( ccapt.getuId() );
 			ccapt.setShipUid( ship.getuId() );
 			
+			ship.updateDB(player);
+			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

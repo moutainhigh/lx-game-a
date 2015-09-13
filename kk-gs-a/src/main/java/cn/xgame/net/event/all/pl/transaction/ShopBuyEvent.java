@@ -12,7 +12,6 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.utils.Logs;
 
 /**
  * 商店 购买 
@@ -24,9 +23,9 @@ public class ShopBuyEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int id 		= data.readInt();
-		int nid 	= data.readInt();
-		int count 	= data.readInt();
+		int id 		= data.readInt(); // 星球ID
+		int nid 	= data.readInt(); // 物品ID
+		int count 	= data.readInt(); // 购买数量
 		
 		ErrorCode code = null;
 		List<IProp> ret = null;
@@ -42,7 +41,7 @@ public class ShopBuyEvent extends IEvent{
 				throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
 			
 			// 算出货币
-			int needGold = prop.getSellgold();
+			int needGold = prop.getSellgold() * count;
 			//先判断 玩家是否该星球的
 			if( planet.getChild( player.getUID() ) == null )
 				needGold += 100;
@@ -61,7 +60,6 @@ public class ShopBuyEvent extends IEvent{
 				// TODO
 			}
 			
-			Logs.debug( player, "在商店购买道具 nid=" + nid );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -71,6 +69,7 @@ public class ShopBuyEvent extends IEvent{
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt( player.getCurrency() );
+			response.writeInt( id );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				prop.putBaseBuffer(response);
