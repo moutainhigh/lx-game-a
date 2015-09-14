@@ -123,8 +123,7 @@ public class TavernData implements IBufferStream,ITransformStream{
 		intervalTime		= LXConstants.TAVERN_UPDATE_TIME;// 这里到时候根据星球普惠改变
 		String[] content 	= ret.split("\\|");
 		for( String str : content ){
-			if( str.isEmpty() ) continue;
-			String[] v = str.split(",");
+			String[] v 		= str.split(";");
 			push( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
 		}
 	}

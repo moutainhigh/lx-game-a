@@ -19,10 +19,16 @@ public class FightEctype extends IPurpose{
 	// 副本ID
 	private int ectypeId;
 	
-	public FightEctype( byte _type ) {
-		super( _type );
+	public FightEctype( byte type, int cnid, int enid ) {
+		super( (byte) 1 );
+		this.type 		= type;
+		this.chapterId 	= cnid;
+		this.ectypeId 	= enid;
 	}
-	
+	public FightEctype() {
+		super( (byte) 1 );
+	}
+
 	@Override
 	public void putBuffer(ByteBuf buf) {
 		buf.writeByte( type );
@@ -39,7 +45,7 @@ public class FightEctype extends IPurpose{
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		putBuffer(buffer);
+		buffer.writeByte( type() );
 		buffer.writeByte( type );
 		buffer.writeInt( chapterId );
 		buffer.writeInt( ectypeId );

@@ -78,6 +78,8 @@ public class Player extends IPlayer implements ITransformStream{
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		taverns.init();
+		// 初始化副本信息
+		ectypes.initialize();
 	}
 	
 	/**

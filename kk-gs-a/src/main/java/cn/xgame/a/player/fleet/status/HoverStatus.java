@@ -11,8 +11,8 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class HoverStatus extends IStatus{
 
-	public HoverStatus(StatusType type) {
-		super(type);
+	public HoverStatus() {
+		super( StatusType.HOVER );
 	}
 
 	@Override
@@ -28,18 +28,12 @@ public class HoverStatus extends IStatus{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		
-	}
-	
-	@Override
-	public boolean canFighting() throws Exception {
-		return true;
+		buffer.writeByte( type().toNumber() );
 	}
 	
 	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 

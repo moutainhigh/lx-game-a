@@ -84,11 +84,12 @@ public class EctypeControl implements IArrayStream{
 	/**
 	 * 精确获取 指定副本
 	 * @param snid
-	 * @param enid
-	 * @param enid2 
+	 * @param type
+	 * @param cnid 
+	 * @param enid 
 	 * @return
 	 */
-	public IEctype getEctype( int snid, int cnid, int enid ) {
+	public IEctype getEctype( int snid, byte type, int cnid, int enid ) {
 		if( snid == -1 )
 			return getSpecialEctype( cnid, enid );
 		return getSEctype( snid, cnid, enid );
@@ -151,7 +152,7 @@ public class EctypeControl implements IArrayStream{
 		List<Integer> scope 	= planet.getScopePlanet();
 		for( StarEctype o : sectypes ){
 			if( scope.indexOf( o.getSnid() ) != -1 || o.getSnid() == planet.getId() ){
-				o.updateNormalEctype();
+				o.removeCrapNormalEctype();
 				ret.add(o);
 			}
 		}

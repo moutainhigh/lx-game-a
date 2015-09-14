@@ -19,7 +19,7 @@ public enum StatusType {
 	LEISURE(0) {
 		@Override
 		public IStatus create() {
-			return new LeisureStatus( this );
+			return new LeisureStatus();
 		}
 	},
 	
@@ -27,7 +27,7 @@ public enum StatusType {
 	HOVER(1) {
 		@Override
 		public IStatus create() {
-			return new HoverStatus( this );
+			return new HoverStatus();
 		}
 	},
 	
@@ -35,7 +35,7 @@ public enum StatusType {
 	SAIL(2) {
 		@Override
 		public IStatus create() {
-			return new SailStatus( this );
+			return new SailStatus();
 		}
 	},
 	
@@ -43,7 +43,7 @@ public enum StatusType {
 	COMBAT(3) {
 		@Override
 		public IStatus create() {
-			return new CombatStatus( this );
+			return new CombatStatus();
 		}
 	};
 	

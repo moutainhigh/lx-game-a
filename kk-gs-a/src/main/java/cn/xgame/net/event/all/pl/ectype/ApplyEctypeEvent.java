@@ -44,7 +44,9 @@ public class ApplyEctypeEvent extends IEvent{
 		
 		FleetInfo fleet 		= player.getFleets().getFleetInfo( fleetId );
 		EctypeControl control 	= player.getEctypes();
-		
+		// 如果没有舰船直接返回
+		if( fleet.getBerthSnid() == -1 )
+			return;
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		
@@ -64,6 +66,8 @@ public class ApplyEctypeEvent extends IEvent{
 		int endtime = (int) (Time.refTimeInMillis( 24, 0, 0 )/1000);
 		response.writeByte( general.size() );
 		for( ChapterEctype o : general ){
+			response.writeByte( 1 );
+			response.writeInt( o.getSnid() );
 			o.buildTransformStream(response);
 			response.writeInt( endtime );
 			List<IEctype> ectypes = o.getEctypes();
@@ -77,6 +81,8 @@ public class ApplyEctypeEvent extends IEvent{
 		// 普通限时副本
 		response.writeByte( normals.size() );
 		for( ChapterEctype o : normals ){
+			response.writeByte( 2 );
+			response.writeInt( o.getSnid() );
 			o.buildTransformStream(response);
 			response.writeInt( o.getEndtime() );
 			List<IEctype> ectypes = o.getEctypes();

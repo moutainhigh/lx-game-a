@@ -1,6 +1,5 @@
 package cn.xgame.a.player.fleet.status;
 
-import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.fleet.other.IPurpose;
 import cn.xgame.a.player.fleet.other.IStatus;
@@ -22,8 +21,8 @@ public class SailStatus extends IStatus{
 	// 航行目的
 	private IPurpose purpose;
 	
-	public SailStatus(StatusType type) {
-		super(type);
+	public SailStatus() {
+		super( StatusType.SAIL );
 	}
 	
 	@Override
@@ -44,24 +43,16 @@ public class SailStatus extends IStatus{
 
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-//		buffer.writeInt(aimId);
-//		buffer.writeInt(endtime);
-//		purpose.buildTransformStream(buffer);
-	}
-	
-	@Override
-	public boolean canFighting() throws Exception{
-//		int t = (int) (System.currentTimeMillis()/1000);
-		
-		throw new Exception( ErrorCode.SHIP_NOTINSTAR.name() );
+		buffer.writeByte( type().toNumber() );
+		buffer.writeInt(aimId);
+		buffer.writeInt(endtime);
+		purpose.buildTransformStream(buffer);
 	}
 	
 	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return (int) (System.currentTimeMillis()/1000) >= endtime;
 	}
-	
 	
 	public int getAimId() {
 		return aimId;

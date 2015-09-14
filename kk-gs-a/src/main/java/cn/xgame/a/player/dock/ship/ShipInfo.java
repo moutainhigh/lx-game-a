@@ -135,6 +135,9 @@ public class ShipInfo implements ITransformStream{
 	public void setCurrentHp(int currentHp) { 
 		this.currentHp = currentHp; 
 	}
+	public void addCurrentHp(int damaged) {
+		this.currentHp += damaged;
+	}
 	public int getCaptainUID() { 
 		return captainUID; 
 	}
@@ -155,7 +158,7 @@ public class ShipInfo implements ITransformStream{
 	 */
 	public boolean isHaveCaptain() throws Exception {
 		if( captainUID == -1 )
-			throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			throw new Exception( ErrorCode.CAPTAIN_NOTEXIST.name() );
 		return true;
 	}
 
@@ -206,6 +209,18 @@ public class ShipInfo implements ITransformStream{
 		for( IProp o : assists.getAll() )
 			ret += ((SEquipAttr)o).getPerplexity();
 		return ret;
+	}
+	
+	/** 装满弹药  */
+	public void fillupAmmo( ) {
+		
+	}
+	
+	/**
+	 * 减少弹药
+	 */
+	public void toreduceAmmo( int value ){
+		
 	}
 	
 	/**

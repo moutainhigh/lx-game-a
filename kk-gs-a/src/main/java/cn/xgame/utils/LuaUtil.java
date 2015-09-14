@@ -1,5 +1,6 @@
 package cn.xgame.utils;
 
+import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.system.SystemCfg;
 import x.javaplus.util.lua.Lua;
@@ -61,6 +62,16 @@ public class LuaUtil {
 	 */
 	public static Lua getInit() {
 		return new Lua( SystemCfg.FILE_NAME + "lua/Init.lua" );
+	}
+
+	/**
+	 * 星球商店
+	 * @return
+	 */
+	public static Lua getStarshop() {
+		Lua lua = new Lua( SystemCfg.FILE_NAME + "lua/Starshop.lua" );
+		lua.registerObject( IProp.class, "IProp" );
+		return lua;
 	}
 	
 }

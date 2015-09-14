@@ -10,25 +10,25 @@ import cn.xgame.a.player.fleet.other.IPurpose;
  */
 public class Setsail extends IPurpose{
 
-	public Setsail( byte _type ) {
-		super(_type);
+	public Setsail() {
+		super((byte) 2);
 	}
 
 	@Override
 	public void putBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		putBuffer(buffer);
+		buffer.writeByte( type() );
+		
+		
 	}
 
 

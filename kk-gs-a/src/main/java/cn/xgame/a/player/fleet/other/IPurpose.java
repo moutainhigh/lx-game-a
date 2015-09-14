@@ -35,13 +35,13 @@ public abstract class IPurpose implements ITransformStream, IBufferStream{
 		switch( type ){
 			case 1:
 			{
-				FightEctype o = new FightEctype( type );
+				FightEctype o = new FightEctype();
 				o.wrapBuffer(buf);
 				return o;
 			}
 			case 2:
 			{
-				Setsail o = new Setsail( type );
+				Setsail o = new Setsail();
 				o.wrapBuffer(buf);
 				return o;
 			}

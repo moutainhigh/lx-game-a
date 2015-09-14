@@ -107,7 +107,7 @@ public class StarEctype implements IBufferStream{
 	/**
 	 * 更新一下普通限时副本
 	 */
-	public void updateNormalEctype() {
+	public void removeCrapNormalEctype() {
 		List<ChapterEctype> removes = Lists.newArrayList();
 		int curtime = (int) (System.currentTimeMillis()/1000);
 		// 找出已经过期的副本

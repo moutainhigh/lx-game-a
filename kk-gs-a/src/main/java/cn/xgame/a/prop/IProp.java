@@ -1,5 +1,6 @@
 package cn.xgame.a.prop;
 
+import x.javaplus.util.Util.Random;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
@@ -80,15 +81,28 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
-		return create( uid, nid, count, Quality.COLOR01 );
+		// 随机品质
+		ItemPo item 		= CsvGen.getItemPo(nid);
+		String[] content 	= item.quality.split( "\\|" );
+		byte quality		= 0;
+		for( String str : content ){
+			String[] x 		= str.split( ";" );
+			int rand		= Random.get( 0, 10000 );
+			if( rand <= Integer.parseInt( x[1] ) ){
+				quality		= Byte.parseByte( x[0] );
+				break;
+			}
+		}
+		return create( item, uid, nid, count, Quality.fromNumber( quality ) );
 	}
-	public static IProp create( int uid, int nid, int count, Byte quality ) {
-		return create( uid, nid, count, Quality.fromNumber( quality ) );
+	public static IProp create( int uid, int nid, int count, byte quality ) {
+		return create( CsvGen.getItemPo(nid), uid, nid, count, Quality.fromNumber( quality ) );
 	}
 	public static IProp create( int uid, int nid, int count, Quality quality ) {
-		ItemPo item 	= CsvGen.getItemPo(nid);
-		if( item == null ) return null;
-		PropType type 	= PropType.fromNumber( item.bagtype );
+		return create( CsvGen.getItemPo(nid), uid, nid, count, quality );
+	}
+	private static IProp create( ItemPo item, int uid, int nid, int count, Quality quality ){
+		PropType type = PropType.fromNumber( item.bagtype );
 		return type.create( item, uid, nid, count, quality );
 	}
 	

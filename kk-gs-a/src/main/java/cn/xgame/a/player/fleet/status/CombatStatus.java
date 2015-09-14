@@ -34,8 +34,8 @@ public class CombatStatus extends IStatus{
 	// 奖励列表
 	private List<AwardInfo> awards = Lists.newArrayList();
 	
-	public CombatStatus(StatusType type) {
-		super(type);
+	public CombatStatus() {
+		super( StatusType.COMBAT );
 	}
 	
 	@Override
@@ -64,22 +64,16 @@ public class CombatStatus extends IStatus{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-//		buffer.writeByte( type );
-//		buffer.writeInt( chapterId );
-//		buffer.writeInt( ectypeId );
-//		buffer.writeInt( endtime );
-//		buffer.writeByte( isWin );
-	}
-	
-	@Override
-	public boolean canFighting() {
-		return false;
+		buffer.writeByte( type().toNumber() );
+		buffer.writeByte( type );
+		buffer.writeInt( chapterId );
+		buffer.writeInt( ectypeId );
+		buffer.writeInt( endtime );
 	}
 	
 	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return (int) (System.currentTimeMillis()/1000) >= endtime;
 	}
 	
 	public byte getType() {

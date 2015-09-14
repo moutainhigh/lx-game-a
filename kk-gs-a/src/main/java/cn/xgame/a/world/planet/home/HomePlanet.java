@@ -33,7 +33,6 @@ import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.config.o.StarsPo;
-import cn.xgame.config.o.StarshopPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -77,7 +76,7 @@ public class HomePlanet extends IPlanet {
 	// 交易所
 	private ExchangeControl exchangeControl;
 
-	public HomePlanet(StarsPo clone) {
+	public HomePlanet( StarsPo clone ) {
 		super(clone);
 		techControl 	= new TechControl( getId() );
 		exchangeControl	= new ExchangeControl( getId() );
@@ -556,15 +555,9 @@ public class HomePlanet extends IPlanet {
 	
 	////////////------------------------------交易
 	
-	
 	private void updateShop() {
-		StarshopPo shop = CsvGen.getStarshopPo( getId() );
-		if( shop == null ) return;
-		String[] content = shop.item.split(";");
-		for( String str : content ){
-			IProp porp = IProp.create( 0, Integer.parseInt( str ), 1 );
-			shops.add(porp);
-		}
+		Lua lua = LuaUtil.getStarshop();
+		lua.getField("generateShopData").call( 0, getId(), shops );
 	}
 	
 	/**

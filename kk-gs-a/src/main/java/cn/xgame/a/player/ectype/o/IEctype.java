@@ -4,10 +4,12 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.award.DropAward;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.EctypePo;
+import cn.xgame.system.LXConstants;
 
 /**
  * 一个副本信息
@@ -66,11 +68,26 @@ public class IEctype{
 	 * 获取奖励的金币
 	 * @return
 	 */
-	public int getRewardMoney(){
+	private int getRewardMoney(){
 		if( templet.money.isEmpty() )
 			return 0;
 		String[] str = templet.money.split(";");
 		return Random.get( Integer.parseInt( str[0] ), Integer.parseInt( str[1] ) );
+	}
+	
+	/**
+	 * 随机奖励出来
+	 * @return
+	 */
+	public List<AwardInfo> randomAward() {
+		List<AwardInfo> ret = Lists.newArrayList();
+		ret.add( new AwardInfo( LXConstants.CURRENCY_NID, getRewardMoney() ) );
+		for( DropAward drop : drops ){
+			int rand = Random.get( 0, 10000 );
+			if( rand > drop.getRand() ) continue;
+			ret.add( new AwardInfo( drop.getId(), drop.getCount() ) );
+		}
+		return ret;
 	}
 	
 	/**
@@ -85,4 +102,5 @@ public class IEctype{
 		}
 		return fighter;
 	}
+
 }

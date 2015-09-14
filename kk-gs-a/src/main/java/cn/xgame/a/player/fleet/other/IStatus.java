@@ -34,15 +34,9 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 	}
 
 	/**
-	 * 是否可以战斗
-	 * @return
-	 */
-	public abstract boolean canFighting() throws Exception;
-	
-	/**
 	 * 是否完成
 	 */
 	public abstract boolean isComplete() ;
-	
+
 	
 }

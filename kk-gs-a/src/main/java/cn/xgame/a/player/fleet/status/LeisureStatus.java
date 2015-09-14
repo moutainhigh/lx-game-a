@@ -1,6 +1,5 @@
 package cn.xgame.a.player.fleet.status;
 
-import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
@@ -12,8 +11,8 @@ import cn.xgame.a.player.fleet.other.StatusType;
  */
 public class LeisureStatus extends IStatus{
 
-	public LeisureStatus( StatusType type ) {
-		super(type);
+	public LeisureStatus(  ) {
+		super( StatusType.LEISURE );
 	}
 	public LeisureStatus(StatusType type, ByteBuf buf) {
 		super(type);
@@ -33,16 +32,12 @@ public class LeisureStatus extends IStatus{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+		buffer.writeByte( type().toNumber() );
 	}
 	
 	@Override
-	public boolean canFighting() throws Exception {
-		throw new Exception( ErrorCode.SHIP_CANNOT_FIGHT.name() );
-	}
-	@Override
 	public boolean isComplete() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

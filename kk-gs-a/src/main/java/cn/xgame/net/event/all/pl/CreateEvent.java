@@ -58,9 +58,6 @@ public class CreateEvent extends IEvent {
 			// 加入星球
 			home.appendPlayer(player);
 			
-			// 初始化副本信息
-			player.getEctypes().initialize();
-			
 			// 创建一个舰队
 			player.getFleets().addFleet();
 			player.getFleets().addFleet();
