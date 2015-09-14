@@ -15,7 +15,6 @@ import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
 
-import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
@@ -35,12 +34,9 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.config.o.StarshopPo;
-import cn.xgame.config.o.TechPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
-import cn.xgame.net.event.Events;
-import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
@@ -98,6 +94,7 @@ public class HomePlanet extends IPlanet {
 	public List<Integer> getScopePlanet(){ return scopes; }
 	public void setQutlook(int qutlook) { this.qutlook = qutlook; }
 	public ExchangeControl getExchange(){ return this.exchangeControl; }
+	public TechControl getTech(){ return techControl; }
 	
 	@Override
 	public boolean isCanDonate() { return true; }
@@ -105,6 +102,7 @@ public class HomePlanet extends IPlanet {
 	@Override
 	public int getPeople() { return childs.size(); }
 	public List<Child> getPeoples() { return childs; }
+	public List<OustChild> getOustChild(){ return oustChilds; }
 	
 	@Override
 	public void init( PlanetDataDto dto ) {
@@ -287,10 +285,10 @@ public class HomePlanet extends IPlanet {
 		List<UnTechs> waitTech = techControl.getWaitTech();
 		for( UnTechs unTech : waitTech ){
 			if( getDepotControl().deductProp( unTech.templet().needres ) ){
-				unTech.setrTime( (int) (System.currentTimeMillis()/1000) );
+				unTech.setEndtime( (int) (System.currentTimeMillis()/1000) + unTech.templet().needtime );
 			}
 		}
-			
+		
 		// 添加玩家的贡献度
 		Child child = getChild( player.getUID() );
 		child.addContribution( prop.getContributions() );
@@ -440,132 +438,21 @@ public class HomePlanet extends IPlanet {
 	}
 	
 	/////////////////// =================科技====================
-	@Override
-	public void sponsorTechVote( Player player, int nid, int time ) throws Exception { 
-		// 判断 有没有权限
-		Child child = getChild( player.getUID() );
-		if( child == null || !child.isSenator() )
-			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
-		
-		// 判断是否能研究
-		if( !techControl.isCanStudy( nid, techLevel ) )
-			throw new Exception( ErrorCode.CON_DISSATISFY.name() );
-		
-		// 添加到投票列表
-		UnTechs unTechs = techControl.appendVote( player, nid, time );
-		
-		// 记录玩家发起数
-		child.addSponsors( 1 );
-		
-		// 下面同步消息给玩家
-		Syn.tech( childs, 1, unTechs );
-	}
-	
-	@Override
-	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { 
-		// 判断是否有权限投票 只要有话语权都可以投票
-		Child child = getChild( player.getUID() );
-		if( child == null || child.getPrivilege() == 0 )
-			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
-
-		// 判断是否已经参与投票了
-		UnTechs unTech = techControl.getVoTech( nid );
-		if( unTech == null )
-			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
-		
-		// 这里先将玩家已经投过的票清除
-		unTech.getVote().purgeVote( child );
-		
-		// 设置投票
-		byte status = unTech.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
-		// 说明投票完成
-		if( status != -1 ){
-			if( status == 1 ) // 同意建筑
-				startStudy( unTech.templet(), unTech.getVote().getSponsorUid() );
-			if( status == 0 ){ // 反对建筑
-				//...暂时没有处理
-			}
-			// 最后不管怎样都要删掉的
-			techControl.removeVoTech( unTech );
-			
-			// 同步
-			Syn.tech( childs, status+3, unTech );
-		}else{
-			Syn.tech( childs, 2, unTech );
-		}
-		
-		Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
-	}
-	// 开始研究科技
-	private void startStudy( TechPo templet, String sprUid ) throws Exception {
-		if( templet == null )
-			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		
-		int time = -1;
-		
-		// 判断资源是否够 - 开始扣资源
-		if( getDepotControl().deductProp( templet.needres ) )
-			time = (int) (System.currentTimeMillis()/1000);
-		
-		UnTechs unTech = new UnTechs( templet );
-		unTech.setrTime(time);
-		
-		// 放入建筑中 列表
-		techControl.appendUnTech( unTech );
-		// 设置发起人的通过数
-		Child sponsor = getChild( sprUid );
-		if( sponsor != null )
-			sponsor.addPasss( 1 );
-		
-		Logs.debug( "开始研究科技 " + templet.id );
-	}
 	
 	// 刷新科技等级
 	private void updateTechData() {
 		techLevel = techControl.getMaxTechLevel();
-		
 	}
 	
 	/////////////////// =================元老====================
-	@Override
-	public void sponsorGenrVote( Player player, String uid, String explain ) throws Exception { 
-		
-		// 判断 有没有权限
-		Child child = getChild( player.getUID() );
-		if( child == null || !child.isSenator() )
-			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
-		// 判断 被驱逐的是不是 元老
-		child = getChild( uid );
-		if( child == null || !child.isSenator() )
-			throw new Exception( ErrorCode.NOT_SENATOR.name() );
-		// 在看是不是已经在投票列表中
-		OustChild oust = getOustChild( uid );
-		if( oust != null )
-			throw new Exception( ErrorCode.YET_ATLIST.name() );
-		
-		oust = new OustChild( player, uid, explain );
-		oustChilds.add(oust);
-		
-		synchronizeGenrVote( childs, 1, oust );
-	}
-	
-	private void synchronizeGenrVote( List<Child> childs, int isAdd, OustChild oust) {
-		for( Child child : childs ){
-			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
-			if( player == null || !player.isOnline() ) continue;
-			Child x = getChild( oust.getUid() );
-			((Update_2252)Events.UPDATE_2252.getEventInstance()).run( player, isAdd, oust, x );
-		}
-	}
-	
-	private OustChild getOustChild( String uid ) {
+	public OustChild getOustChild( String uid ) {
 		for( OustChild o : oustChilds ){
 			if( o.getUid().equals( uid ) )
 				return o;
 		}
 		return null;
 	}
-	private void removeVoteGenr( OustChild oust ) {
+	public void removeVoteGenr( OustChild oust ) {
 		Iterator<OustChild> it = oustChilds.iterator();
 		while( it.hasNext() ){
 			OustChild next = it.next();
@@ -575,36 +462,6 @@ public class HomePlanet extends IPlanet {
 			}
 		}
 	}
-	@Override
-	public void participateGenrVote( Player player, String uid, byte isAgree ) throws Exception {
-		
-		// 判断是否有权限投票  只有元老才能投票
-		Child child = getChild( player.getUID() );
-		if( child == null || child.isSenator() )
-			throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
-		
-		// 判断是否已经参与投票了
-		OustChild oust = getOustChild( uid );
-		if( oust == null )
-			throw new Exception( ErrorCode.VOTE_NOTEXIST.name() );
-		
-		// 这里先将玩家已经投过的票清除
-		oust.getVote().purgeVote( child );
-		
-		// 设置投票
-		byte status = oust.getVote().setIsAgrees( new VotePlayer( child ), isAgree );
-		// 说明投票完成
-		if( status != -1 ){
-			child.setExpel( status == 1 ? true : false );
-			// 最后不管怎样都要删掉的
-			removeVoteGenr( oust );
-			// 同步
-			synchronizeGenrVote( childs, 0, oust );
-		}
-		
-		Logs.debug( player, "参与元老投票 当前票数 " + oust.getVote() + " at=" + uid );
-	}
-	
 	/////////////////// =================线程====================
 
 	/** 线程 */

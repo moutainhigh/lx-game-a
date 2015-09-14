@@ -63,7 +63,7 @@ public class TechControl implements IArrayStream{
 		for( int i = 0; i < size; i++ ){
 			int id = buf.readInt();
 			UnTechs o = new UnTechs( id );
-			o.setrTime( buf.readInt() );
+			o.setEndtime( buf.readInt() );
 			unTechs.add(o);
 		}
 	}
@@ -86,11 +86,10 @@ public class TechControl implements IArrayStream{
 		buf.writeByte( unTechs.size() );
 		for( UnTechs o : unTechs ){
 			buf.writeInt( o.templet().id );
-			buf.writeInt( o.getrTime() );
+			buf.writeInt( o.getEndtime() );
 		}
 		return buf.array();
 	}
-
 
 	public void putTechs(ByteBuf buffer) {
 		buffer.writeByte( techs.size() );
@@ -103,7 +102,7 @@ public class TechControl implements IArrayStream{
 		buffer.writeByte( unTechs.size() );
 		for( UnTechs o : unTechs ){
 			o.buildTransformStream(buffer);
-			buffer.writeInt( o.getPastTime() );
+			buffer.writeInt( o.getEndtime() );
 		}
 	}
 	
@@ -123,7 +122,7 @@ public class TechControl implements IArrayStream{
 	public List<UnTechs> getWaitTech() {
 		List<UnTechs> ret = Lists.newArrayList();
 		for( UnTechs o : unTechs ){
-			if( o.getrTime() == -1 )
+			if( o.getEndtime() == -1 )
 				ret.add(o);
 		}
 		return ret;
@@ -200,12 +199,12 @@ public class TechControl implements IArrayStream{
 	public boolean isCanStudy( int nid, byte techLevel ) {
 		TechPo t = CsvGen.getTechPo(nid);
 		if( t == null ) return false;
-		return getVoTech( nid ) == null 
-				&& getTech( nid ) == null
-				&& getUnTech( nid ) == null
-				&& isHavePre( t.prevtech ) 
-				&& !isHaveMutex( t.Mutualtech ) 
-				&& t.needlevel <= techLevel;
+		return getVoTech( nid ) == null // 正在参与投票的
+				&& getTech( nid ) == null// 已经研究好的
+				&& getUnTech( nid ) == null// 正在研究中的
+				&& isHavePre( t.prevtech )  // 是否需要前置科技
+				&& !isHaveMutex( t.Mutualtech ) // 是否有互斥科技
+				&& t.needlevel <= techLevel; // 需要等级是否满足
 	}
 
 	/**

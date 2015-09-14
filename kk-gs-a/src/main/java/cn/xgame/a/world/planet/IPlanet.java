@@ -87,11 +87,6 @@ public abstract class IPlanet implements ITransformStream{
 	/** 参与 建筑 投票*/
 	public void participateBuildVote(Player player, int nid, byte isAgree) throws Exception { }
 	
-	/** 发起 科技 投票 */
-	public void sponsorTechVote( Player player, int nid, int time ) throws Exception { }
-	/** 参与 科技 投票 */
-	public void participateTechVote(Player player, int nid, byte isAgree) throws Exception { }
-	
 	/** 发起 驱逐元老 投票 */
 	public void sponsorGenrVote( Player player, String uid, String explain ) throws Exception { }
 	/** 参与 驱逐元老 投票 */

@@ -54,5 +54,13 @@ public class LuaUtil {
 	public static Lua getDatabaseBufferForm() {
 		return new Lua( SystemCfg.FILE_NAME + "lua/DatabaseBufferForm.lua" );
 	}
+
+	/**
+	 * 初始数据
+	 * @return
+	 */
+	public static Lua getInit() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/Init.lua" );
+	}
 	
 }

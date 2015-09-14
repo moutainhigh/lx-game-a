@@ -11,8 +11,8 @@ import cn.xgame.config.o.TechPo;
  */
 public class UnTechs extends Techs{
 
-	// 记录时间 - 用于建筑中的
-	private int rTime;
+	// 结束时间 - 用于建筑中的
+	private int endtime;
 	
 	// 投票器 - 用于投票的
 	private Vote vote = null;
@@ -25,29 +25,17 @@ public class UnTechs extends Techs{
 		super(templet);
 	}
 
-	public int getrTime() {
-		return rTime;
-	}
-	public void setrTime(int rTime) {
-		this.rTime = rTime;
-	}
 	public Vote getVote() {
 		return vote;
 	}
 	public void setVote(Vote vote) {
 		this.vote = vote;
 	}
-
-	/**
-	 * 获取已经过去的时间 - 单位秒
-	 * @return
-	 */
-	public int getPastTime() {
-		if( rTime == -1 )
-			return -1;
-		if( templet().needtime == 0 ) 
-			return 0;
-		return (int) (System.currentTimeMillis()/1000 - rTime);
+	public int getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(int endtime) {
+		this.endtime = endtime;
 	}
 
 	/**
@@ -55,10 +43,7 @@ public class UnTechs extends Techs{
 	 * @return
 	 */
 	public boolean isComplete() {
-		return getPastTime() >= templet().needtime || templet().needtime == 0;
+		return endtime != -1 && (int)(System.currentTimeMillis()/1000) >= endtime;
 	}
 
-	public void runEffect() {
-		
-	}
 }

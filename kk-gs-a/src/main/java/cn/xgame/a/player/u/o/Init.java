@@ -1,9 +1,8 @@
 package cn.xgame.a.player.u.o;
 
+import x.javaplus.util.lua.Lua;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.PlayerInitPo;
-import cn.xgame.utils.Logs;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 玩家初始化
@@ -12,8 +11,6 @@ import cn.xgame.utils.Logs;
  */
 public class Init {
 
-	private static final PlayerInitPo o = CsvGen.playerinitpos.get(0);
-	
 	/**
 	 * 玩家初始化
 	 * @param uID 玩家唯一ID
@@ -28,57 +25,11 @@ public class Init {
 		Player ret = new Player( uID, headIco, name );
 		ret.setAdjutantId( adjutantId );
 		ret.setCountryId( countryId );
-		ret.setCurrency( o.currency );
-		ret.setGold( o.gold );
 		
-		// 添加 初始道具
-		initItem( ret );
-		
-		// 添加 初始舰船
-		initShip( ret );
-		
-		// 添加 初始舰长
-		initCaptain( ret );
+		Lua lua = LuaUtil.getInit();
+		lua.getField( "createPlayerData" ).call( 0, ret );
 		
 		return ret;
 	}
 
-	private static void initItem( Player ret ) {
-		String[] items = o.item.split("\\|");
-		if( items == null ) return ;
-		for( String x : items ){
-			if( x.isEmpty() ) continue;
-			try {
-				String[] v = x.split(";");
-				ret.getDepots(ret.getCountryId()).appendProp( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
-			} catch (Exception e) {
-				Logs.error( "Init.initItem  at=" + x , e );
-			}
-		}
-	}
-	
-	private static void initShip( Player ret ) {
-		String[] ls = o.ship.split(";");
-		for( String x : ls ){
-			if( x.isEmpty() ) continue;
-			try {
-				ret.getDocks().createShip( ret.getCountryId(), Integer.parseInt( x ) );
-			} catch (Exception e) {
-				Logs.error( "Init.initShip  at=" + x , e );
-			}
-		}
-	}
-	
-	private static void initCaptain( Player ret ) {
-		String[] ls = o.captain.split(";");
-		for( String x : ls ){
-			if( x.isEmpty() ) continue;
-			try {
-				ret.getDocks().createCaptain( ret.getCountryId(), Integer.parseInt( x ), (byte) 1 );
-			} catch (Exception e) {
-				Logs.error( "Init.initCaptain  at=" + x , e );
-			}
-		}
-	}
-	
 }

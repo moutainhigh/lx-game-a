@@ -10,7 +10,11 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
-import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.data.tech.TechControl;
+import cn.xgame.a.world.planet.data.tech.UnTechs;
+import cn.xgame.a.world.planet.home.HomePlanet;
+import cn.xgame.a.world.planet.home.o.Child;
+import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
@@ -37,10 +41,26 @@ public class SponsorTechVoEvent extends IEvent{
 			int time = ret[0].getInt();
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
-			IPlanet planet = WorldManager.o.getHPlanetInPlayer(player);
+			HomePlanet planet = WorldManager.o.getHPlanetInPlayer(player);
 			
-			// 开始发起投票
-			planet.sponsorTechVote(player, nid, time);
+			// 判断 有没有权限
+			Child child = planet.getChild( player.getUID() );
+			if( child == null || !child.isSenator() )
+				throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+			
+			// 判断是否能研究
+			TechControl techmanage = planet.getTech();
+			if( !techmanage.isCanStudy( nid, planet.getTechLevel() ) )
+				throw new Exception( ErrorCode.CON_DISSATISFY.name() );
+			
+			// 添加到投票列表
+			UnTechs unTechs = techmanage.appendVote( player, nid, time );
+			
+			// 记录玩家发起数
+			child.addSponsors( 1 );
+			
+			// 下面同步消息给玩家
+			Syn.tech( planet.getPeoples(), 1, unTechs );
 			
 			Logs.debug( player, " 发起科技投票 nid=" + nid + ", time=" + time );
 			code = ErrorCode.SUCCEED;

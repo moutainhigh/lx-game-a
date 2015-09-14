@@ -33,7 +33,7 @@ public class Update_2231 extends IEvent{
 				response.writeByte( tech.getVote().getDisagreePrivileges()/100 );
 			}
 			if( status == 3 )
-				response.writeInt( tech.getPastTime() );
+				response.writeInt( tech.getEndtime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
 			Logs.error( player, "Update_2231.run at " + e.getMessage() );

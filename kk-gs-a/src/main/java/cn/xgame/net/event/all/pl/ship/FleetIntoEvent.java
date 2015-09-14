@@ -45,7 +45,7 @@ public class FleetIntoEvent extends IEvent{
 				throw new Exception( ErrorCode.CAPT_CONTROL_LAZYWEIGHT.name() );
 			
 			// 如果不在同一个星球 那就不能 实装
-			if( fleet.getBerthSnid() != ship.getBerthSid() && ship.getBerthSid() != -1 )
+			if( fleet.getBerthSnid() != ship.getBerthSid() && fleet.getBerthSnid() != -1 )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 实装 到舰队上
