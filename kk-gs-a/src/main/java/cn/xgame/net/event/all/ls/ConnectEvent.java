@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.Launch;
-import cn.xgame.a.Launch.LSClientAgency;
+import cn.xgame.a.Startup;
+import cn.xgame.a.Startup.LSClientAgency;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
@@ -21,7 +21,7 @@ public class ConnectEvent extends IEvent {
 		
 		ErrorCode code = ErrorCode.fromNum( data.readShort() );
 		
-		Launch.handleConnect( code );
+		Startup.handleConnect( code );
 	}
 
 	// 发送 登录

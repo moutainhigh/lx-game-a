@@ -22,6 +22,7 @@ import x.javaplus.ip.IPSeeker;
 import x.javaplus.mysql.App;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
+import x.javaplus.util.Util.Time;
 import x.javaplus.util.lua.Lua;
 
 
@@ -32,7 +33,7 @@ import x.javaplus.util.lua.Lua;
  * @author deng		
  * @date 2015-6-11 下午2:36:38
  */
-public class Launch {
+public class Startup {
 
 	/** 一个简单的 客户端 */
 	public static class LSClientAgency{
@@ -58,6 +59,7 @@ public class Launch {
 	public static void main(String[] args) {
 		
 		try {
+			Time.beginTimer();
 			
 			// 0.构建数据库
 			buildDB( "sql" );
@@ -93,11 +95,11 @@ public class Launch {
 			Logs.debug( "星图初始化完成" );
 			
 			// 3.启动游戏服务器
-			startServer();
+			new NettyServer( SystemCfg.GS_PORT ).start();
 			
 			// 4.启动线程
 			ThreadManager.start();
-			Logs.debug( "线程启动完成 -- 服务器启动完成!" );
+			Logs.debug( "Server startup in " + Time.toEndTime() + " ms!" );
 			
 		} catch (Exception e) {
 			Logs.error( "Launch.handleConnect", e );
@@ -141,11 +143,5 @@ public class Launch {
 			App.generateMysql( SystemCfg.getDatabaseName(), path );
 	}
 	
-	private static void startServer() {
-		
-		// 启动 服务器
-		if( new NettyServer( SystemCfg.GS_PORT ).start() )
-			Logs.debug( "服务器 启动完成" );
-	}
 
 }

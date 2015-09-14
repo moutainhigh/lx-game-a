@@ -36,7 +36,7 @@ public class FleetInfo implements ITransformStream{
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
 			buffer.writeInt( ship.getuId() );
-		status.buildTransformStream( buffer );
+		status.buildTransformStream(buffer);
 	}
 	
 	public List<ShipInfo> getShips() { return ships; }

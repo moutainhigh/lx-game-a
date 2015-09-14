@@ -36,17 +36,17 @@ public class FleetControl implements IArrayStream{
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			FleetInfo fleet = new FleetInfo();
-			List<ShipInfo> ships = fleet.getShips();
+			FleetInfo fleet 		= new FleetInfo();
+			List<ShipInfo> ships 	= fleet.getShips();
 			fleet.setBerthSnid( buf.readInt() );
-			byte count = buf.readByte();
+			byte count 				= buf.readByte();
 			for( int j = 0; j < count; j++ ){
 				ShipInfo ship = root.getDocks().getShip( buf.readInt() );
 				if( ship == null ) continue;
 				ships.add( ship );
 			}
-			fleet.setStatus( IStatus.create( buf ) );
-			
+			byte type = buf.readByte();
+			fleet.setStatus( IStatus.create( type, buf ) );
 			fleets.add( fleet );
 		}
 	}
@@ -57,7 +57,14 @@ public class FleetControl implements IArrayStream{
 		ByteBuf buf = Unpooled.buffer();
 		buf.writeByte( fleets.size() );
 		for( FleetInfo fleet : fleets ){
-			fleet.buildTransformStream(buf);
+			buf.writeInt( fleet.getBerthSnid() );
+			List<ShipInfo> ships = fleet.getShips();
+			buf.writeByte( ships.size() );
+			for( ShipInfo ship : ships )
+				buf.writeInt( ship.getuId() );
+			IStatus status = fleet.getStatus();
+			buf.writeByte( status.type().toNumber() );
+			status.putBuffer(buf);
 		}
 		return buf.array();
 	}

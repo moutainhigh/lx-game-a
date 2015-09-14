@@ -5,7 +5,7 @@ import io.netty.channel.AbstractChannel;
 
 import java.io.IOException;
 
-import cn.xgame.a.Launch.LSClientAgency;
+import cn.xgame.a.Startup.LSClientAgency;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;

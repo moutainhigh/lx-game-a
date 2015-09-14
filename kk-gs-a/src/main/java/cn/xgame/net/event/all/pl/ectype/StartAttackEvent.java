@@ -9,6 +9,7 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
@@ -30,18 +31,17 @@ public class StartAttackEvent extends IEvent{
 		
 		Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 章节ID=" + cnid + ", 副本ID=" + enid + ", 舰队ID=" + fid );
 		
-		
-		ErrorCode code = null;
-//		
-//		int sailTime	= 0;// 航行时间
-//		int combatTime 	= 0;// 战斗时间
-//		byte isWin 		= 0;// 是否胜利
-//		List<AwardInfo> awards = null;
+		ErrorCode code 	= null;
+		IStatus status 	= null;
 		try {
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			status = fleet.getStatus();
+			
+			// 是否可以直接战斗
+			status.canFighting();
 			
 			// 获取副本
 			IEctype ectype = player.getEctypes().getEctype( snid, cnid, enid );
@@ -116,24 +116,10 @@ public class StartAttackEvent extends IEvent{
 		}
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-//		response.writeInt( suid );
 		response.writeShort( code.toNumber() );
-		if( code == ErrorCode.SUCCEED ){
-//			response.writeInt( combatTime );
-//			Logs.debug(player, "申请出击副本 出击成功 combatTime=" + combatTime + ", isWin=" + isWin + ", awards=" + awards );
-		}
-//		// 该船不在目标星球  这里叫他航行
-//		if( code == ErrorCode.SHIP_NOTINSTAR ){
-//			response.writeInt( snid );
-//			response.writeInt( sailTime );
-//			Logs.debug(player, "申请出击副本 不在目标星球 sailTime=" + sailTime );
-//		}
-//		// 等待其他玩家
-//		if( code == ErrorCode.AWAIT_OTHERPLAYER ){
-//			response.writeInt( 30 );
-//		}
+		status.buildTransformStream( response );
 		sendPackage( player.getCtx(), response );
 	}
-
 	
 }
+

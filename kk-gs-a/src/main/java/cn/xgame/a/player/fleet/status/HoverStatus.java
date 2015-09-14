@@ -14,13 +14,34 @@ public class HoverStatus extends IStatus{
 	public HoverStatus(StatusType type) {
 		super(type);
 	}
-	public HoverStatus(StatusType type, ByteBuf buf) {
-		super(type);
-	}
 
 	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		putBuffer( buffer );		
+	public void putBuffer(ByteBuf buf) {
+		// TODO Auto-generated method stub
+		
 	}
+	@Override
+	public void wrapBuffer(ByteBuf buf) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void buildTransformStream(ByteBuf buffer) {
+		
+	}
+	
+	@Override
+	public boolean canFighting() throws Exception {
+		return true;
+	}
+	
+	@Override
+	public boolean isComplete() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 }

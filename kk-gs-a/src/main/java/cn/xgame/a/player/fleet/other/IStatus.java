@@ -1,6 +1,7 @@
 package cn.xgame.a.player.fleet.other;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 
 /**
@@ -8,7 +9,7 @@ import cn.xgame.a.ITransformStream;
  * @author deng		
  * @date 2015-9-11 上午12:35:31
  */
-public abstract class IStatus implements ITransformStream{
+public abstract class IStatus implements ITransformStream, IBufferStream{
 
 	private final StatusType type;
 	
@@ -23,14 +24,25 @@ public abstract class IStatus implements ITransformStream{
 	public StatusType type(){ return type; }
 	
 
-	public static IStatus create( ByteBuf buf ) {
-		StatusType type = StatusType.fromNumber( buf.readByte() );
-		return type.create( buf );
+	public static IStatus create( byte _type, ByteBuf buf ) {
+		StatusType type = StatusType.fromNumber( _type );
+		if( type == null )
+			throw new RuntimeException( "创建舰队状态出错 type=null!" );
+		IStatus status = type.create();
+		status.wrapBuffer(buf);
+		return status;
 	}
+
+	/**
+	 * 是否可以战斗
+	 * @return
+	 */
+	public abstract boolean canFighting() throws Exception;
 	
-	public void putBuffer(ByteBuf buffer) {
-		buffer.writeByte( type.toNumber() );
-	}
+	/**
+	 * 是否完成
+	 */
+	public abstract boolean isComplete() ;
 	
 	
 }

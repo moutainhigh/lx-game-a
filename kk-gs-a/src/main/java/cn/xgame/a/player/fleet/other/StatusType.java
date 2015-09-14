@@ -1,7 +1,5 @@
 package cn.xgame.a.player.fleet.other;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,48 +15,32 @@ import cn.xgame.a.player.fleet.status.SailStatus;
  */
 public enum StatusType {
 	
+	/** 空闲 */
 	LEISURE(0) {
-		@Override
-		public IStatus create( ByteBuf buf ) {
-			return new LeisureStatus( this, buf );
-		}
-
 		@Override
 		public IStatus create() {
 			return new LeisureStatus( this );
 		}
 	},
 	
+	/** 悬停 */
 	HOVER(1) {
-		@Override
-		public IStatus create(ByteBuf buf) {
-			return new HoverStatus( this, buf );
-		}
-
 		@Override
 		public IStatus create() {
 			return new HoverStatus( this );
 		}
 	},
 	
+	/** 航行 */
 	SAIL(2) {
-		@Override
-		public IStatus create(ByteBuf buf) {
-			return new SailStatus( this, buf );
-		}
-
 		@Override
 		public IStatus create() {
 			return new SailStatus( this );
 		}
 	},
 	
+	/** 战斗 */
 	COMBAT(3) {
-		@Override
-		public IStatus create(ByteBuf buf) {
-			return new CombatStatus( this, buf );
-		}
-
 		@Override
 		public IStatus create() {
 			return new CombatStatus( this );
@@ -82,7 +64,5 @@ public enum StatusType {
 	public static StatusType fromNumber( int n ){
 		return numToEnum.get( (byte)n );
 	}
-	public abstract IStatus create(ByteBuf buf);
-	
 	public abstract IStatus create();
 }
