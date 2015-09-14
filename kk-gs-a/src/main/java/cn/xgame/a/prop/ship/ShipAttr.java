@@ -129,14 +129,14 @@ public class ShipAttr extends IProp{
 		CsvGen.load();
 		ItemPo item = CsvGen.getItemPo( 20001 );
 		
-		ShipAttr attr = new ShipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		ShipAttr attr = new ShipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		attr.randomAttachAttr();
 		
 		System.out.println( "1----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
 		
 		byte[] bytes = attr.toAttachBytes();
 		
-		attr = new ShipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		attr = new ShipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		System.out.println( "2----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
 		
 		attr.wrapAttachBytes(bytes);

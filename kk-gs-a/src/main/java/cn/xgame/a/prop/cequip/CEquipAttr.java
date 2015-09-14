@@ -108,14 +108,14 @@ public class CEquipAttr extends IProp{
 		CsvGen.load();
 		ItemPo item = CsvGen.getItemPo( 50001 );
 		
-		CEquipAttr attr = new CEquipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		CEquipAttr attr = new CEquipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		attr.randomAttachAttr();
 		
 		System.out.println( "1----- control=" + attr.getControl() + ", perception=" + attr.getPerception() );
 		
 		byte[] bytes = attr.toAttachBytes();
 		
-		attr = new CEquipAttr( item, 1, item.id, 1, Quality.DEFAULT );
+		attr = new CEquipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		System.out.println( "2----- control=" + attr.getControl() + ", perception=" + attr.getPerception() );
 		
 		attr.wrapAttachBytes(bytes);

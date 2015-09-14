@@ -10,11 +10,35 @@ import java.util.Map;
  */
 public enum Quality {
 	
-	// 默认
-	DEFAULT(0),
+	/** 灰 */
+	COLOR00(0),
 	
-	// 白
-	WHITE(1);
+	/** 白 */
+	COLOR01(1),
+	
+	/** 绿 */
+	COLOR02(2),
+	
+	/** 蛋蓝 */
+	COLOR03(3),
+	
+	/** 深蓝 */
+	COLOR04(4),
+	
+	/** 紫 */
+	COLOR05(5),
+
+	/** 大红 */
+	COLOR06(6),
+	
+	/** 橙 */
+	COLOR07(7),
+	
+	/** 粉 */
+	COLOR08(8),
+	
+	/** 金黄 */
+	COLOR09(9);
 	
 	
 	private final byte	number;

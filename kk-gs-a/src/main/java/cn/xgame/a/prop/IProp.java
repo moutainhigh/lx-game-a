@@ -26,7 +26,7 @@ public abstract class IProp implements ITransformStream{
 	// 数量
 	private int count;
 	// 品质
-	private Quality quality = Quality.DEFAULT;
+	private Quality quality = Quality.COLOR00;
 	
 	/**
 	 * 创建一个 并保存到数据库
@@ -80,7 +80,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
-		return create( uid, nid, count, Quality.WHITE );
+		return create( uid, nid, count, Quality.COLOR01 );
 	}
 	public static IProp create( int uid, int nid, int count, Byte quality ) {
 		return create( uid, nid, count, Quality.fromNumber( quality ) );
