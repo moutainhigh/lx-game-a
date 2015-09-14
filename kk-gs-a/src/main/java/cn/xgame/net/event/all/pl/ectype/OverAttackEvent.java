@@ -20,7 +20,7 @@ import cn.xgame.utils.Logs;
 
 /**
  * 申请结束副本
- * @author deng		
+ * @author deng
  * @date 2015-7-31 上午7:43:03
  */
 public class OverAttackEvent extends IEvent{

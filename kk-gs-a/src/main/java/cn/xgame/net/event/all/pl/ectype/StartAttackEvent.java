@@ -27,7 +27,7 @@ import cn.xgame.utils.LuaUtil;
 
 /**
  * 开始攻击
- * @author deng		
+ * @author deng
  * @date 2015-7-13 下午7:27:11
  */
 public class StartAttackEvent extends IEvent{

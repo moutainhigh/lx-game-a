@@ -133,7 +133,7 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	public String toString(){
-		return type().name() + ", uId=" + uid + ", nId=" + nid + ", count=" + count; 
+		return type().name() + ",u=" + uid + ",n=" + nid + ",c=" + count + ",q=" + quality.toNumber(); 
 	}
 	
 	/**
