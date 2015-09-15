@@ -14,6 +14,7 @@ import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
 import cn.xgame.a.player.fleet.status.CombatStatus;
 import cn.xgame.a.player.fleet.status.SailStatus;
+import cn.xgame.a.player.u.Player;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
@@ -36,10 +37,10 @@ public class FleetInfo implements ITransformStream{
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		buffer.writeInt( berthSnid );
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
 			buffer.writeInt( ship.getuId() );
+		buffer.writeInt( berthSnid );
 		status.buildTransformStream(buffer);
 	}
 	
@@ -108,17 +109,27 @@ public class FleetInfo implements ITransformStream{
 	}
 	
 	/**
+	 * 执行状态 一般在登录的时候调用
+	 * @param player
+	 */
+	public void executeStatus( Player player ) {
+		if( !status.isComplete() ) return;
+		status = status.execut( this, player );
+	}
+	
+	/**
 	 * 切换为航行状态
 	 * @param aimId
 	 * @param stime
 	 * @param purpose 
 	 */
-	public void changeSail( int aimId, int stime, IPurpose purpose ) {
+	public IStatus changeSail( int aimId, int stime, IPurpose purpose ) {
 		SailStatus o = new SailStatus();
 		o.setAimId(aimId);
 		o.setEndtime( (int)(System.currentTimeMillis()/1000) + stime );
 		o.setPurpose( purpose );
 		status = o;
+		return status;
 	}
 
 	/**
@@ -131,12 +142,13 @@ public class FleetInfo implements ITransformStream{
 	 * @param iswin
 	 * @param awards
 	 */
-	public void changeCombat( int snid, byte type, int cnid, int enid, int ctime, byte iswin, List<AwardInfo> awards) {
+	public IStatus changeCombat( int snid, byte type, int cnid, int enid, int ctime, byte iswin, List<AwardInfo> awards) {
 		CombatStatus o = new CombatStatus();
 		o.setType(type);
 		o.setChapterId(cnid);
 		o.setEctypeId(enid);
 		o.setEndtime( (int)(System.currentTimeMillis()/1000) + ctime );
+		o.setCtime( ctime );
 		o.setIsWin(iswin);
 		if( awards != null )
 			o.getAwards().addAll( awards );
@@ -144,6 +156,7 @@ public class FleetInfo implements ITransformStream{
 		status 		= o;
 		// 这里还要设置停靠星球ID
 		setBerthSnid( snid );
+		return status;
 	}
 	
 	/**
@@ -158,6 +171,5 @@ public class FleetInfo implements ITransformStream{
 		}
 		return fighter;
 	}
-
 
 }

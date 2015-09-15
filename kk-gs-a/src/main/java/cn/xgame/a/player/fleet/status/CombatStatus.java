@@ -6,8 +6,11 @@ import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 战斗状态
@@ -27,6 +30,7 @@ public class CombatStatus extends IStatus{
 	
 	// 战斗结束时间
 	private int endtime;
+	private int ctime;
 	
 	// 是否胜利
 	private byte isWin;
@@ -44,6 +48,7 @@ public class CombatStatus extends IStatus{
 		buf.writeInt( chapterId );
 		buf.writeInt( ectypeId );
 		buf.writeInt( endtime );
+		buf.writeInt( ctime );
 		buf.writeByte( isWin );
 		buf.writeByte( awards.size() );
 		for( AwardInfo award : awards )
@@ -56,6 +61,7 @@ public class CombatStatus extends IStatus{
 		this.chapterId 	= buf.readInt();
 		this.ectypeId 	= buf.readInt();
 		this.endtime 	= buf.readInt();
+		this.ctime 		= buf.readInt();
 		this.isWin 		= buf.readByte();
 		byte size		= buf.readByte();
 		for( int i = 0; i < size; i++ )
@@ -68,12 +74,23 @@ public class CombatStatus extends IStatus{
 		buffer.writeByte( type );
 		buffer.writeInt( chapterId );
 		buffer.writeInt( ectypeId );
-		buffer.writeInt( endtime );
+		buffer.writeInt( ctime );
 	}
 	
 	@Override
 	public boolean isComplete() {
 		return (int) (System.currentTimeMillis()/1000) >= endtime;
+	}
+	
+	@Override
+	public IStatus execut( FleetInfo fleetInfo, Player player ) {
+		// 发送奖励
+		for( AwardInfo award : awards ){
+			StarDepot depot = player.getDepots(fleetInfo.getBerthSnid());
+			depot.appendProp( award.getId(), award.getCount() );
+		}
+		// 设置悬停
+		return new HoverStatus();
 	}
 	
 	public byte getType() {
@@ -111,6 +128,12 @@ public class CombatStatus extends IStatus{
 	}
 	public void setAwards(List<AwardInfo> awards) {
 		this.awards = awards;
+	}
+	public int getCtime() {
+		return ctime;
+	}
+	public void setCtime(int ctime) {
+		this.ctime = ctime;
 	}
 
 

@@ -33,6 +33,7 @@ public class ConnectEvent extends IEvent {
 		
 		buffer.writeShort( SystemCfg.ID );
 		RW.writeString( buffer, SystemCfg.GS_NAME );
+		RW.writeString( buffer, SystemCfg.GS_IP );
 		buffer.writeInt( SystemCfg.GS_PORT );
 		
 		sendPackage( socket, buffer );

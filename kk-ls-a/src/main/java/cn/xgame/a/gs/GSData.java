@@ -1,7 +1,6 @@
 package cn.xgame.a.gs;
 
 import cn.xgame.net.netty.Netty.Attr;
-import cn.xgame.net.netty.Netty.IP;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -35,6 +34,7 @@ public class GSData {
 	public short getId() { return id; }
 	
 	public String getIp() { return ip; }
+	public void setIp( String ip ){ this.ip = ip; }
 
 	public int getPort() { return port; }
 	public void setPort(int port) { this.port = port; }
@@ -53,7 +53,7 @@ public class GSData {
 		this.ctx = ctx;
 		if( ctx != null ){
 			Attr.setAttachment( ctx, getUID() );
-			ip 				= IP.formAddress(ctx);
+//			ip 				= IP.formAddress(ctx);
 			peopleNum 		= 0;
 			onlinePeople 	= 0;
 		}

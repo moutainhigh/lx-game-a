@@ -1,9 +1,11 @@
 package cn.xgame.a.player.fleet.status;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.IPurpose;
 import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 航行状态
@@ -52,6 +54,14 @@ public class SailStatus extends IStatus{
 	@Override
 	public boolean isComplete() {
 		return (int) (System.currentTimeMillis()/1000) >= endtime;
+	}
+	
+	@Override
+	public IStatus execut(FleetInfo fleetInfo, Player player) {
+		// 先设置悬停星球ID
+		fleetInfo.setBerthSnid(aimId);
+		// 先暂时直接设置成悬停状态
+		return new HoverStatus();
 	}
 	
 	public int getAimId() {

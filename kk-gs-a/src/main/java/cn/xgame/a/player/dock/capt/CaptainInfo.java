@@ -125,7 +125,7 @@ public class CaptainInfo implements ITransformStream{
 	/**
 	 * 是否到发工资的时候了
 	 * 7 * 24 * 60 * 60 = 604800 一周
-	 * 24 * 60 * 60 = 3600 一小时
+	 * 24 * 60 * 60 = 86400 一天
 	 * @return
 	 */
 	public boolean isWantPayoff() {

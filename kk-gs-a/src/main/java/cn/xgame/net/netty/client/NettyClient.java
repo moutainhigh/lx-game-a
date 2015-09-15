@@ -67,7 +67,7 @@ public class NettyClient {
 	public static void main( String[] args ) throws InterruptedException, NumberFormatException, IOException{
 		
 		NettyClient client = new NettyClient(  );
-		if( client.connect( "192.168.1.144", 9000 ) ){
+		if( client.connect( "119.147.137.167", 8100 ) ){
 //			int i = 0;
 //			while( true ){
 //				

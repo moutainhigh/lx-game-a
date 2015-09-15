@@ -33,6 +33,9 @@ public class SystemCfg {
 	public static String 		GS_NAME 	;
 	
 	/** 服务器 端口 */
+	public static String 		GS_IP 		;
+
+	/** 服务器 端口 */
 	public static int 			GS_PORT 	;
 	
 	/** 服务器 数据库名字 */
@@ -58,6 +61,7 @@ public class SystemCfg {
 			
 			ID				= Short.parseShort( root.getChildText( "gsId" ) );
 			GS_NAME 		= root.getChildText( "gsName" ) ;
+			GS_IP			= root.getChildText( "gsIp" );
 			GS_PORT 		= Integer.parseInt( root.getChildText( "gsPort" ) );
 			GS_DATABASENAME	= root.getChildText( "gsDatabaseName" ) ;
 			

@@ -8,6 +8,8 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.lua.Lua;
+import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.planet.IPlanet;
@@ -21,6 +23,7 @@ import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 世界银河 星图  管理中心
@@ -260,21 +263,12 @@ public class WorldManager {
 		List<Integer> ret = Lists.newArrayList();
 		List<IPlanet> ls = getAllPlanet();
 		for( IPlanet planet : ls ){
-			int distance = conversionDistance( planet.templet().x, planet.templet().y, planet.templet().z, x, y, z );
-			if( distance <= qutlook )
+			Lua lua = LuaUtil.getEctypeCombat();
+			LuaValue[] value = lua.getField("conversionDistance").call( 1, planet.templet().x, planet.templet().y, planet.templet().z, x, y, z );
+			if( value[0].getInt() <= qutlook )
 				ret.add(planet.getId());
 		}
 		return ret;
 	}
-	// 换算两点之间的距离
-	private int conversionDistance( int x, int y, int z, int x2, int y2, int z2 ) {
-		int a = Math.abs( x - x2 );
-		int b = Math.abs( y - y2 );
-		int c = (int) Math.sqrt( a*a + b*b );
-		int d = Math.abs( z - z2 );
-		int e = (int) Math.sqrt( c*c + d*d );
-		return e;
-	}
-	
 
 }

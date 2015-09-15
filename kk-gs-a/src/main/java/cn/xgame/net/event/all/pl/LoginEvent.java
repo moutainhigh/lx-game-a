@@ -64,11 +64,13 @@ public class LoginEvent extends IEvent{
 			code	= ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		
 		ByteBuf response = buildEmptyPackage( ctx, 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			FleetControl fleetCtr = player.getFleets();
+			List<FleetInfo> fleets = fleetCtr.getFleet();
+			for( FleetInfo fleet : fleets )// 发送数据之前先处理一下舰队状态
+				fleet.executeStatus( player );
 			
 			// 基本数据
 			player.buildTransformStream( response );
@@ -89,7 +91,6 @@ public class LoginEvent extends IEvent{
 				response.writeByte( fleetCtr.getIndex( ship ) );
 			}
 			// 舰队数据
-			List<FleetInfo> fleets = fleetCtr.getFleet();
 			response.writeByte( fleets.size() );
 			for( int i = 0; i < fleets.size(); i++ ){
 				FleetInfo fleet = fleets.get(i);

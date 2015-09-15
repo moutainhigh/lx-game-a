@@ -119,4 +119,15 @@ public class StarEctype implements IBufferStream{
 		normal.removeAll(removes);
 	}
 
+	/**
+	 * 获取指定章节
+	 * @param type
+	 * @param cnid
+	 * @param enid
+	 * @return
+	 */
+	public ChapterEctype getChapter( int type, int cnid ) {
+		return type == 2 ? getNormalEctype( cnid ) : getGeneralEctype( cnid );
+	}
+
 }

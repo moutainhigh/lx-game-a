@@ -45,11 +45,12 @@ public class GSManager {
 	 * 服务器 连接
 	 * @param gsid
 	 * @param name
+	 * @param ip 
 	 * @param port
 	 * @param ctx
 	 * @return
 	 */
-	public ErrorCode connect( short gsid, String name, int port, ChannelHandlerContext ctx ) {
+	public ErrorCode connect( short gsid, String name, String ip, int port, ChannelHandlerContext ctx ) {
 		
 		GSData gs = getGs( gsid );
 		
@@ -66,6 +67,7 @@ public class GSManager {
 		gs.setCtx( ctx );
 		gs.setName( name );
 		gs.setPort( port );
+		gs.setIp( ip );
 		
 		return ErrorCode.SUCCEED;
 	}

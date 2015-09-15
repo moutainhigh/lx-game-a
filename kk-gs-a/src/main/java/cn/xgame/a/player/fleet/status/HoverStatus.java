@@ -1,8 +1,10 @@
 package cn.xgame.a.player.fleet.status;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 悬停状态
@@ -36,6 +38,10 @@ public class HoverStatus extends IStatus{
 		return true;
 	}
 
+	@Override
+	public IStatus execut(FleetInfo fleetInfo, Player player) {
+		return this;
+	}
 
 
 }

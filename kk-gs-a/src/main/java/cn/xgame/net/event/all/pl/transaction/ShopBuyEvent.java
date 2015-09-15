@@ -70,6 +70,7 @@ public class ShopBuyEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			response.writeInt( player.getCurrency() );
 			response.writeInt( id );
+			response.writeInt( count );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				prop.putBaseBuffer(response);

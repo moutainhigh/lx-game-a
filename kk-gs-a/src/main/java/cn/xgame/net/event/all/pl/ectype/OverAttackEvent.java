@@ -13,6 +13,7 @@ import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.StatusType;
 import cn.xgame.a.player.fleet.status.CombatStatus;
+import cn.xgame.a.player.fleet.status.HoverStatus;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -50,6 +51,9 @@ public class OverAttackEvent extends IEvent{
 					throw new Exception( ErrorCode.COMBATTIME_NOTOVER.name() );
 			}
 			
+			// 完了后设置悬停状态
+			fleet.setStatus( new HoverStatus() );
+			
 			// 发放奖励
 			List<AwardInfo> awards = status.getAwards();
 			for( AwardInfo award : awards ){
@@ -64,6 +68,7 @@ public class OverAttackEvent extends IEvent{
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
+		response.writeByte( fid );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			response.writeByte( status.getIsWin() );

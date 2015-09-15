@@ -3,6 +3,8 @@ package cn.xgame.a.player.fleet.other;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 舰队状态基类
@@ -38,5 +40,11 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 	 */
 	public abstract boolean isComplete() ;
 
-	
+	/**
+	 * 执行状态
+	 * @param fleetInfo 
+	 * @param player
+	 * @return
+	 */
+	public abstract IStatus execut( FleetInfo fleetInfo, Player player ) ;
 }

@@ -25,10 +25,12 @@ public class ConnectEvent extends IEvent{
 		short gsid 	= data.readShort();
 		// 服务器 名字 
 		String name = RW.readString(data);
+		// 服务器 IP
+		String ip	= RW.readString(data);
 		// 服务器 端口
 		int port	= data.readInt();
 		
-		ErrorCode code = GSManager.o.connect( gsid, name, port, ctx );
+		ErrorCode code = GSManager.o.connect( gsid, name, ip, port, ctx );
 		
 		ByteBuf respond = buildEmptyPackage( ctx, 2 );
 		respond.writeShort( code.toNumber() );

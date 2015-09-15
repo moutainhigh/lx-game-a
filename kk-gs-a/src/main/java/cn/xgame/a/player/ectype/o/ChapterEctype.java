@@ -108,7 +108,8 @@ public class ChapterEctype implements ITransformStream,IBufferStream{
 	private int getEctypeToIndex( int index ) {
 		if( templet.node.isEmpty() ) return 0;
 		String[] str = templet.node.split(";");
-		if( index >= str.length ) index = str.length;
+		if( index < 0 || index >= str.length ) 
+			return 0;
 		return Integer.parseInt( str[index] );
 	}
 

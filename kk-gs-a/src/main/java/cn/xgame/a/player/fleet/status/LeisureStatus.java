@@ -1,8 +1,10 @@
 package cn.xgame.a.player.fleet.status;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.IStatus;
 import cn.xgame.a.player.fleet.other.StatusType;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 空闲状态
@@ -38,6 +40,11 @@ public class LeisureStatus extends IStatus{
 	@Override
 	public boolean isComplete() {
 		return true;
+	}
+	
+	@Override
+	public IStatus execut(FleetInfo fleetInfo, Player player) {
+		return this;
 	}
 
 }

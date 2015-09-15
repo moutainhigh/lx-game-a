@@ -11,7 +11,6 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.ectype.o.ChapterEctype;
-import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
@@ -82,17 +81,19 @@ public class EctypeControl implements IArrayStream{
 	}
 	
 	/**
-	 * 精确获取 指定副本
+	 * 精确获取 指定章节
 	 * @param snid
 	 * @param type
 	 * @param cnid 
 	 * @param enid 
 	 * @return
 	 */
-	public IEctype getEctype( int snid, byte type, int cnid, int enid ) {
-		if( snid == -1 )
-			return getSpecialEctype( cnid, enid );
-		return getSEctype( snid, cnid, enid );
+	public ChapterEctype getChapter( int snid, byte type, int cnid ) {
+		// 特殊限时副本
+		if( type == 3 ) return getSpecialEctype( cnid );
+		// 常规和普通限时
+		StarEctype star = getStarEctype( snid );
+		return star == null ? null : star.getChapter( type, cnid );
 	}
 	
 	//--------------------------------------------星球副本--------------------------------------------------
@@ -159,15 +160,6 @@ public class EctypeControl implements IArrayStream{
 		return ret;
 	}
 	
-	private IEctype getSEctype( int snid, int cnid, int enid ) {
-		
-//		StarEctype star = getStarEctype( snid );
-		
-		
-		
-		return null;
-	}
-	
 	//--------------------------------------------特殊限时副本--------------------------------------------------
 	/**
 	 * 获取特殊限时副本
@@ -191,10 +183,8 @@ public class EctypeControl implements IArrayStream{
 	 * @param enid
 	 * @return
 	 */
-	private IEctype getSpecialEctype( int cnid, int enid ) {
-		ChapterEctype cha = getSpecialChapter( cnid );
-		if( cha == null ) return null;
-		return cha.getEctype( enid );
+	private ChapterEctype getSpecialEctype( int cnid ) {
+		return getSpecialChapter( cnid );
 	}
 
 

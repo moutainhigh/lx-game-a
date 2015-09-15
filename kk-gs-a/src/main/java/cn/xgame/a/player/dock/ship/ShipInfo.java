@@ -110,6 +110,7 @@ public class ShipInfo implements ITransformStream{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
+		buffer.writeByte( attr.getQuality().toNumber() );
 		attr.buildTransformStream(buffer);
 		buffer.writeInt( currentHp );
 		buffer.writeInt( captainUID );
@@ -137,6 +138,10 @@ public class ShipInfo implements ITransformStream{
 	}
 	public void addCurrentHp(int damaged) {
 		this.currentHp += damaged;
+		if( this.currentHp < 0 )
+			this.currentHp = 0;
+		if( this.currentHp > attr.getMaxHp() )
+			this.currentHp = attr.getMaxHp();
 	}
 	public int getCaptainUID() { 
 		return captainUID; 
@@ -213,14 +218,21 @@ public class ShipInfo implements ITransformStream{
 	
 	/** 装满弹药  */
 	public void fillupAmmo( ) {
-		
+		for( IProp o : weapons.getAll() ){
+			SEquipAttr weapon = (SEquipAttr) o;
+			weapon.setCurAmmo( weapon.getMaxAmmo() );
+		}
 	}
 	
 	/**
 	 * 减少弹药
 	 */
 	public void toreduceAmmo( int value ){
-		
+		for( IProp o : weapons.getAll() ){
+			SEquipAttr weapon = (SEquipAttr) o;
+			int cur = weapon.getCurAmmo() + value;
+			weapon.setCurAmmo(cur);
+		}
 	}
 	
 	/**

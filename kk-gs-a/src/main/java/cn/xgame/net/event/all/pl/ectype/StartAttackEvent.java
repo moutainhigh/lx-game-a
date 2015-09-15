@@ -14,6 +14,7 @@ import x.javaplus.util.lua.LuaValue;
 import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.ectype.o.ChapterEctype;
 import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.IStatus;
@@ -43,18 +44,22 @@ public class StartAttackEvent extends IEvent{
 		
 		ErrorCode code 	= null;
 		IStatus status 	= null;
+		FleetInfo fleet	= null;
 		try {
 			
-			Logs.debug( player, "申请攻打副本 星球ID=" + snid + "类型=" + type + ", 章节ID=" + cnid + ", 副本ID=" + enid + ", 舰队ID=" + fid );
+			Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 副本ID=" + enid + ", 舰队ID=" + fid );
 			
 			// 获取舰队
-			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
+			fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null || fleet.getShips().isEmpty() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			status 			= fleet.getStatus();
+			status = fleet.getStatus();
 			
 			// 获取副本
-			IEctype ectype = player.getEctypes().getEctype( snid, type, cnid, enid );
+			ChapterEctype chapter = player.getEctypes().getChapter( snid, type, cnid );
+			if( chapter == null )
+				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+			IEctype ectype = chapter.getEctype(enid);
 			if( ectype == null )
 				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 			
@@ -65,14 +70,14 @@ public class StartAttackEvent extends IEvent{
 			// 没有在同一个星球的话 就让他航行
 			if( fleet.getBerthSnid() != snid ){
 				Lua lua = LuaUtil.getEctypeCombat();
-				LuaValue[] value = lua.getField( "sailingTime" ).call( 1, CsvGen.getStarsPo( fleet.getBerthSnid() ), CsvGen.getStarsPo( snid ) );
-				fleet.changeSail( snid, value[0].getInt(), new FightEctype( type, cnid, enid ) );
+				LuaValue[] value = lua.getField( "getSailingTime" ).call( 1, CsvGen.getStarsPo( fleet.getBerthSnid() ), CsvGen.getStarsPo( snid ) );
+				status = fleet.changeSail( snid, value[0].getInt(), new FightEctype( type, cnid, enid ) );
 				throw new Exception( ErrorCode.SUCCEED.name() );
 			}
 			
 			// 全军出击 ...
 			Lua lua 		= LuaUtil.getEctypeCombat();
-			LuaValue[] ret 	= lua.getField("arithmeticFight").call( 1, fleet.fighter(), ectype.fighter(), ectype.templet().btime, ectype.templet().maxran );
+			LuaValue[] ret 	= lua.getField("arithmeticFight").call( 4, fleet.fighter(), ectype.fighter(), ectype.templet().btime, ectype.templet().maxran );
 			int combatTime	= ret[0].getInt();
 			int winRate 	= ret[1].getInt();
 			int damaged 	= ret[2].getInt();
@@ -84,7 +89,7 @@ public class StartAttackEvent extends IEvent{
 			// 根据胜负算出奖励
 			List<AwardInfo> awards = (iswin == 1 ? ectype.randomAward() : null);
 			// 切换战斗状态
-			fleet.changeCombat( snid, type, cnid, enid, combatTime, iswin, awards );
+			status 			= fleet.changeCombat( snid, type, cnid, enid, combatTime, iswin, awards );
 			// 计算舰队船的 战损 和 结算所有舰长的忠诚度
 			List<ShipInfo> ships = fleet.getShips();
 			for( ShipInfo ship : ships ){
@@ -102,6 +107,11 @@ public class StartAttackEvent extends IEvent{
 				}
 			}
 			
+			// 暂时在这里取出下一个副本
+			if( iswin == 1 ){
+				chapter.generateNextEctype();
+			}
+			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -110,7 +120,8 @@ public class StartAttackEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			response.writeInt( fid );
+			response.writeByte( fid );
+			response.writeInt( fleet.getBerthSnid() );
 			status.buildTransformStream( response );
 		}
 		sendPackage( player.getCtx(), response );
