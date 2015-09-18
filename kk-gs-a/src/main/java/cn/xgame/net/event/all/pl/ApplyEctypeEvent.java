@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl.ectype;
+package cn.xgame.net.event.all.pl;
 
 import io.netty.buffer.ByteBuf;
 
@@ -45,7 +45,7 @@ public class ApplyEctypeEvent extends IEvent{
 		FleetInfo fleet 		= player.getFleets().getFleetInfo( fleetId );
 		EctypeControl control 	= player.getEctypes();
 		// 如果没有舰船直接返回
-		if( fleet.getBerthSnid() == -1 )
+		if( fleet.getShips().isEmpty() )
 			return;
 		
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );

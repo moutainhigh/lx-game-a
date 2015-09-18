@@ -63,6 +63,7 @@ public class ExchBuyEvent extends IEvent{
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				prop.putBaseBuffer(response);
+				prop.buildTransformStream(response);
 			}
 		}
 		sendPackage( player.getCtx(), response );

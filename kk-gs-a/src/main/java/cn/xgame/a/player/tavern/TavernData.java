@@ -7,7 +7,8 @@ import java.util.List;
 
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.system.LXConstants;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
@@ -23,21 +24,21 @@ import x.javaplus.util.lua.LuaValue;
 public class TavernData implements IBufferStream,ITransformStream{
 
 	// 星球ID
-	private int snid;
+	private final int snid;
 	
-	// 记录时间
-	private int rtime = -1;
-	// 更新时间 
-	private int intervalTime = -1;
+	// 记录结束时间
+	private int endtime = -1;
 	
 	// 舰长列表
 	private List<TavernCaptain> caps = Lists.newArrayList();
 
+	public TavernData( int snid ) {
+		this.snid = snid;
+	}
+
 	@Override
 	public void putBuffer(ByteBuf buf) {
-		buf.writeInt( snid );
-		buf.writeInt( intervalTime );
-		buf.writeInt( rtime );
+		buf.writeInt( endtime );
 		buf.writeByte( caps.size() );
 		for( TavernCaptain o : caps ){
 			buf.writeInt( o.id );
@@ -47,9 +48,7 @@ public class TavernData implements IBufferStream,ITransformStream{
 
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		snid 			= buf.readInt();
-		intervalTime 	= buf.readInt();
-		rtime 			= buf.readInt();
+		endtime 		= buf.readInt();
 		byte size 		= buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			push( buf.readInt(), buf.readByte() );
@@ -102,61 +101,43 @@ public class TavernData implements IBufferStream,ITransformStream{
 	 * 获取剩余时间
 	 */
 	public int getSurplusTime(){
-		return intervalTime - ((int) (System.currentTimeMillis()/1000) - rtime);
+		return endtime == -1 ? 0 : endtime - ((int) (System.currentTimeMillis()/1000));
 	}
 	
 	/**
 	 * 更新一下数据
 	 */
 	public void updateCaptain() {
+		if( getSurplusTime() > 0 ) 
+			return;
 		caps.clear();
-		rtime				= -1;
-		intervalTime		= -1;
+		endtime				= -1;
 		Lua lua 			= LuaUtil.getGameData();
 		LuaValue[] value 	= lua.getField( "updateTavern" ).call( 1, snid );
 		String ret 			= value[0].getString();
 		if( ret.isEmpty() ) return;
 		
-		Logs.debug( "星球"+snid+ " 更新酒馆 " + ret );
-		
-		rtime				= (int) (System.currentTimeMillis()/1000);
-		intervalTime		= LXConstants.TAVERN_UPDATE_TIME;// 这里到时候根据星球普惠改变
-		String[] content 	= ret.split("\\|");
-		for( String str : content ){
-			String[] v 		= str.split(";");
-			push( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+		try {
+			IPlanet planet		= WorldManager.o.getPlanet(snid);
+			endtime				= (int) (System.currentTimeMillis()/1000) + planet.getTavernUpdateTime();
+			String[] content 	= ret.split("\\|");
+			for( String str : content ){
+				String[] v 		= str.split(";");
+				push( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
+			}
+			
+			Logs.debug( "星球"+snid+ " 更新酒馆 " + ret );
+		} catch (Exception e) {
+			Logs.error( "更新酒馆出错", e );
 		}
-	}
-	
-	/**
-	 * 是否需要更新
-	 * @return
-	 */
-	public boolean isUpdate() {
-		return getSurplusTime() <= 0;
 	}
 	
 	public int getSnid() {
 		return snid;
 	}
-	public void setSnid(int snid) {
-		this.snid = snid;
+	public int getEndtime() {
+		return endtime;
 	}
-	public int getRtime() {
-		return rtime;
-	}
-	public void setRtime(int rtime) {
-		this.rtime = rtime;
-	}
-	public int getIntervalTime() {
-		return intervalTime;
-	}
-	public void setIntervalTime(int intervalTime) {
-		this.intervalTime = intervalTime;
-	}
-
-
-	
 	
 }
 

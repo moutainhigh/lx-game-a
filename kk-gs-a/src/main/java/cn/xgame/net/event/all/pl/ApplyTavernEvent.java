@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl.planet;
+package cn.xgame.net.event.all.pl;
 
 import io.netty.buffer.ByteBuf;
 
@@ -32,9 +32,7 @@ public class ApplyTavernEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 这里更新一下酒馆
-			if( tavernData.isUpdate() ){
-				tavernData.updateCaptain();
-			}
+			tavernData.updateCaptain();
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

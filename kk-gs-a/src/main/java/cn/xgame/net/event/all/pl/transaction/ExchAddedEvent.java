@@ -56,6 +56,8 @@ public class ExchAddedEvent extends IEvent{
 		ByteBuf response = buildEmptyPackage( player.getCtx(), 20 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
+			response.writeInt(uid);
+			response.writeInt(count);
 			response.writeInt(retUid);
 		}
 		sendPackage( player.getCtx(), response );

@@ -39,7 +39,7 @@ public class ThreadManager {
 		
 		// 每日处理线程  24*60*60*1000
 		dailyHandleImp = new DailyHandleImp();
-		dailyHandleImp.start( Time.toWeehoursTime(), 86400000l );
+		dailyHandleImp.start( Time.toWeehoursTime(), Time.DAY_OF_MS );
 
 		// 每1分钟  1*60*1000
 		oneMinuteHandleImp = new OneMinuteHandleImp();
@@ -63,7 +63,7 @@ public class ThreadManager {
 		
 		// 每小时 1 * 60 * 60 * 1000
 		oneHourHandleImp = new OneHourHandleImp();
-		oneHourHandleImp.start( 3600000l, 3600000l );
+		oneHourHandleImp.start( Time.HOUR_OF_MS, Time.DAY_OF_MS );
 		
 	}
 	

@@ -56,9 +56,6 @@ public class LoginEvent extends IEvent{
 			// 获取母星 信息
 			home 	= WorldManager.o.getHPlanetInPlayer( player );
 			
-			// 这里结算 舰长周薪
-			player.getDocks().balanceWeekly();
-			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
@@ -74,7 +71,7 @@ public class LoginEvent extends IEvent{
 			
 			// 基本数据
 			player.buildTransformStream( response );
-			// 发送自己母星数据
+			// 母星数据
 			home.buildTransformStream( response );
 			home.putPlyaerInfo( player, response );
 			player.getDepots( home.getId() ).buildTransformStream( response );

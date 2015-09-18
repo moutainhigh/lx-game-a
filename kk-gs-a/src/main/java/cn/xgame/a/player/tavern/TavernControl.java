@@ -9,8 +9,6 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.StarsPo;
 
 /**
  * 酒馆
@@ -29,35 +27,15 @@ public class TavernControl implements IArrayStream{
 		this.root = player;
 	}
 
-	/** 初始化 */
-	public void init() {
-		
-		for( StarsPo star : CsvGen.starspos ){
-			
-			TavernData o = new TavernData();
-			
-			o.setSnid( star.id );
-			o.updateCaptain();
-			
-			datas.add( o );
-		}
-	}
-
 	@Override
 	public void fromBytes(byte[] data) {
-		if( data == null ){
-			init();
-			return;
-		}
+		if( data == null ) return;
 		datas.clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			TavernData o = new TavernData();
+			TavernData o = new TavernData( buf.readInt() );
 			o.wrapBuffer(buf);
-			if( o.isUpdate() ){
-				o.updateCaptain();
-			}
 			datas.add(o);
 		}
 	}
@@ -65,10 +43,12 @@ public class TavernControl implements IArrayStream{
 	@Override
 	public byte[] toBytes() {
 		if( datas.isEmpty() ) return null;
-		ByteBuf buf = Unpooled.buffer( 1024 );
+		ByteBuf buf = Unpooled.buffer(  );
 		buf.writeByte( datas.size() );
-		for( TavernData o : datas )
+		for( TavernData o : datas ){
+			buf.writeInt( o.getSnid() );
 			o.putBuffer(buf);
+		}
 		return buf.array();
 	}
 
@@ -78,11 +58,13 @@ public class TavernControl implements IArrayStream{
 	 */
 	public TavernData get( int snid ) {
 		for( TavernData data : datas ){
-			if( data.getSnid() == snid ){
+			if( data.getSnid() == snid )
 				return data;
-			}
 		}
-		return null;
+		TavernData o = new TavernData( snid );
+		o.updateCaptain();
+		datas.add(o);
+		return o;
 	}
 
 }

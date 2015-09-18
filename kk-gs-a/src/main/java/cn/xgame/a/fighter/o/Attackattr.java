@@ -23,7 +23,7 @@ public class Attackattr {
 
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( type );
-		buffer.writeFloat( value );
+		buffer.writeInt( (int) value );
 	}
 
 	public byte getType() {

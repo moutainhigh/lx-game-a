@@ -7,7 +7,6 @@ import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.ectype.o.ChapterEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
@@ -17,6 +16,7 @@ import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
+import cn.xgame.system.LXConstants;
 
 /**
  * 星球基类
@@ -137,30 +137,14 @@ public abstract class IPlanet implements ITransformStream{
 	}
 	
 	/**
-	 * 获取偶发副本
+	 * 获取星球的酒馆更新时间  单位秒
 	 * @return
 	 */
-	public List<ChapterEctype> getAccidentalEctype() {
-		
-//		Lua lua = LuaUtil.getEctype();
-//		LuaValue[] ret = lua.getField( "getStarAccEctype" ).call( 1, templet.id );
-//		String[] content = ret[0].getString().split(",");
-//		
-//		List<AccEctype> retAcc = Lists.newArrayList();
-//		for( String v : content ){
-//			if( v.isEmpty() ) continue;
-//			EctypePo e = CsvGen.getEctypePo( Integer.parseInt(v) );
-//			if( e == null ) continue;
-//			AccEctype acc = new AccEctype(templet.id,e);
-//			if( !acc.isClose() ){
-//				retAcc.add( acc );
-//			}
-//		}
-		return null;
+	public int getTavernUpdateTime() {
+		// TODO 这里暂时 写死 到时候根据星球的普惠 改变值
+		return LXConstants.TAVERN_UPDATE_TIME;
 	}
 
-
-	
 
 
 

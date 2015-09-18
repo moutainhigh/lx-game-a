@@ -77,7 +77,6 @@ public class Player extends IPlayer implements ITransformStream{
 		setHeadIco( headIco );
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
-		taverns.init();
 		// 初始化副本信息
 		ectypes.initialize();
 	}
@@ -152,7 +151,7 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public int strideDay() {
 		long t = System.currentTimeMillis() - Time.refTimeInMillis( getLastLogoutTime(), 24, 0, 0 );
-		return t >= 0 ? (int) (t / 86400000l) : -1;
+		return t >= 0 ? (int) (t / Time.DAY_OF_MS) : -1;
 	}
 	
 	/** 记录 最后一次登录的服务器ID */
