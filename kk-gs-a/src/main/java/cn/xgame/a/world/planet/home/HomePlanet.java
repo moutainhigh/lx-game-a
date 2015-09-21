@@ -294,7 +294,7 @@ public class HomePlanet extends IPlanet {
 		// 先排个序
 		updateChildSequence();
 		// 下面算出话语权 顺便对玩家进行排序
-		int allcont = updateAllContribution();
+		int allcont = getAllContribution();
 		short privilege = (short) (((float)child.getContribution() / (float)allcont) * 10000f);
 		child.setPrivilege( privilege );
 		// 更新一下是否元老
@@ -308,7 +308,7 @@ public class HomePlanet extends IPlanet {
 	 * 获取该星球的 所有贡献值总和 - 对玩家进行标记是否可以发起投票
 	 * @return
 	 */
-	public int updateAllContribution() {
+	public int getAllContribution() {
 		// 下面标记是否可以发起投票
 		int ret = 0;
 		for( int i = 0; i < childs.size(); i++ ){

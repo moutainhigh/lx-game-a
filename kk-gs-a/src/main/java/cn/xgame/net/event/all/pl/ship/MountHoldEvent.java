@@ -70,7 +70,7 @@ public class MountHoldEvent extends IEvent{
 			response.writeInt( count );
 			response.writeByte( ret.size() );
 			for( IProp prop : ret ){
-				prop.putBaseBuffer2(response);
+				prop.putBaseBuffer(response);
 			}
 		}
 		sendPackage( player.getCtx(), response );

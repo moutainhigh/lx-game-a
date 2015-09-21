@@ -137,21 +137,13 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	/**
-	 * 写入基础数据到buffer 这个没有品质 用于发送前端
-	 * @param buffer
-	 */
-	public void putBaseBuffer2( ByteBuf buffer ) {
-		buffer.writeInt(uid);
-		buffer.writeInt(nid);
-		buffer.writeInt(count);
-	}
-	
-	/**
 	 * 写入基础数据到buffer
 	 * @param buffer
 	 */
 	public void putBaseBuffer( ByteBuf buffer ) {
-		putBaseBuffer2( buffer );
+		buffer.writeInt( uid );
+		buffer.writeInt( nid );
+		buffer.writeInt( count );
 		buffer.writeByte( quality.toNumber() );
 	}
 	

@@ -3,12 +3,12 @@ package cn.xgame.a.world.planet.data.exchange;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.collections.Maps;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.u.Player;
@@ -31,7 +31,7 @@ public class ExchangeControl implements IArrayStream{
 	private int GOODS_UID = 0;
 	
 	// 交易所 物品集合
-	private Map<PropType, List<ExchGoods>> goodsSet = Maps.newHashMap();
+	private Map<PropType, List<ExchGoods>> goodsSet = new HashMap<PropType, List<ExchGoods>>();
 	
 	
 	public ExchangeControl( int id ) {
@@ -48,6 +48,7 @@ public class ExchangeControl implements IArrayStream{
 		for( int i = 0; i < size; i++ ){
 			ExchGoods g = new ExchGoods();
 			g.wrapBuffer(buf);
+			putExchGoods( g );
 			if( g.getUid() > GOODS_UID ) 
 				GOODS_UID = g.getUid() ;
 		}
@@ -56,7 +57,7 @@ public class ExchangeControl implements IArrayStream{
 	@Override
 	public byte[] toBytes() {
 		if( goodsSet.isEmpty() ) return null;
-		ByteBuf buf = Unpooled.buffer( 1024 );
+		ByteBuf buf = Unpooled.buffer(  );
 		List<ExchGoods> ls = getAll();
 		buf.writeInt( ls.size() );
 		for( ExchGoods g : ls ){
