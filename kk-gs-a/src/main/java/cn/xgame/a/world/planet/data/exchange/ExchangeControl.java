@@ -144,6 +144,7 @@ public class ExchangeControl implements IArrayStream{
 			ret.add( egs.get(i) );
 		}
 		Logs.debug( "星球" + SNID + " 交易所" + ret );
+		
 		return ret;
 	}
 
