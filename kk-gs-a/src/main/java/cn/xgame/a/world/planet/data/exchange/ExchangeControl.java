@@ -25,6 +25,7 @@ public class ExchangeControl implements IArrayStream{
 
 	// 一页最大个数
 	private final static int MAX_NUM = 20;
+	
 	private final int SNID;
 	
 	// 物品唯一ID
@@ -138,9 +139,9 @@ public class ExchangeControl implements IArrayStream{
 		if( maxPage == 0 ) return ret;
 		int curPage 		= page > maxPage ? maxPage : page;
 		curPage				= curPage <= 0 ? 1 : curPage;
-		List<ExchGoods> g 	= getEGoodsList(type);
-		for( int i = (page-1)*MAX_NUM; i < MAX_NUM && i < g.size(); i++ ){
-			ret.add( g.get(i) );
+		List<ExchGoods> egs 	= getEGoodsList(type);
+		for( int i = (page-1)*MAX_NUM; i < MAX_NUM && i < egs.size(); i++ ){
+			ret.add( egs.get(i) );
 		}
 		Logs.debug( "星球" + SNID + " 交易所" + ret );
 		return ret;
