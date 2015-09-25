@@ -29,8 +29,6 @@ public class EntrepotPlanet extends IPlanet{
 	}
 
 	@Override
-	public boolean isCanDonate() { return true; }
-	@Override
 	public void donateResource(Player player, IProp prop) {
 		// TODO Auto-generated method stub
 		

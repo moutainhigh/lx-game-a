@@ -100,8 +100,6 @@ public abstract class IPlanet implements ITransformStream{
 	/** 捐献资源 */
 	public void donateResource( Player player, IProp prop ){}
 	
-	/** 是否可以捐献 */
-	public abstract boolean isCanDonate();
 	/** 保存数据库 */
 	public abstract void updateDB();
 	/** 获取瞭望的星球ID列表 */

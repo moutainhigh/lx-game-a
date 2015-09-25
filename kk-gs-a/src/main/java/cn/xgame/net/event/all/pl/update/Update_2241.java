@@ -35,7 +35,7 @@ public class Update_2241 extends IEvent{
 				response.writeByte( build.getVote().getDisagreePrivileges()/100 );
 			}
 			if( status == 3 )
-				response.writeInt( build.getPastTime() );
+				response.writeInt( build.getEndtime() );
 			sendPackage( player.getCtx(), response );
 		} catch (IOException e) {
 			Logs.error( player, "Update_2241 " + e.getMessage() );

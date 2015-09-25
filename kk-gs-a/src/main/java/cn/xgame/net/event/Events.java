@@ -25,6 +25,7 @@ import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
+import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchMeEvent;
@@ -94,6 +95,9 @@ public enum Events {
 	// 舰长
 	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),
+	// 领地
+	BUY_MANOR					( 1041, 	new BuyManorEvent() ),
+	
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),

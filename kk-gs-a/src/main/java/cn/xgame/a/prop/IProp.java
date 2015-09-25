@@ -112,7 +112,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( PropsDto o ) {
-		IProp prop 	= create( o.getUid(), o.getNid(), o.getCount(), o.getQuality() );
+		IProp prop = create( o.getUid(), o.getNid(), o.getCount(), o.getQuality() );
 		prop.wrapAttachBytes( o.getAttach() );
 		return prop;
 	}
@@ -228,10 +228,10 @@ public abstract class IProp implements ITransformStream{
 	public boolean isCurrency() { return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID; }
 	
 	/** 是否舰船装备 */
-	public boolean isShipEquip() { return type == PropType.SEQUIP; }
+	public boolean isShipEquip() { return type == PropType.EQUIP && item.itemtype != 4; }
 	
 	/** 是否舰长装备 */
-	public boolean isCaptainEquip() { return type == PropType.CEQUIP; }
+	public boolean isCaptainEquip() { return type == PropType.EQUIP && item.itemtype == 4; }
 	
 	/** 是否舰长食用亲密豆 */
 	public boolean isCaptainIntimacy() { return type == PropType.STUFF && item.itemtype == 5; }

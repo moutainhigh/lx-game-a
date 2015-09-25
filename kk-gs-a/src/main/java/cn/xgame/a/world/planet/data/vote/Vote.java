@@ -29,8 +29,7 @@ public class Vote implements ITransformStream {
 	private String sponsorName;
 	
 	// 时间限制 单位-秒
-	private int timeRestrict;
-	private int rTime;
+	private int endtime;
 	
 	// 临时变量
 	private short agreePrivileges = 0; // 同意的所有 话语权总和
@@ -43,8 +42,7 @@ public class Vote implements ITransformStream {
 	public Vote( Player player, int time ) {
 		this.sponsorUid = player.getUID();
 		this.sponsorName = player.getNickname();
-		this.timeRestrict = time;
-		this.rTime = (int) (System.currentTimeMillis()/1000);
+		this.endtime = time;
 		agrees = Lists.newArrayList();
 		disagrees = Lists.newArrayList();
 	}
@@ -56,8 +54,7 @@ public class Vote implements ITransformStream {
 	public Vote( ByteBuf buf ) {
 		sponsorUid = RW.readString(buf);
 		sponsorName = RW.readString(buf);
-		timeRestrict = buf.readInt();
-		rTime = buf.readInt();
+		endtime = buf.readInt();
 		agrees = Lists.newArrayList();
 		disagrees = Lists.newArrayList();
 		short size = buf.readShort();
@@ -77,8 +74,7 @@ public class Vote implements ITransformStream {
 	public void putBuffer( ByteBuf buf ) {
 		RW.writeString( buf, sponsorUid );
 		RW.writeString( buf, sponsorName );
-		buf.writeInt( timeRestrict );
-		buf.writeInt( rTime );
+		buf.writeInt( endtime );
 		buf.writeShort( agrees.size() );
 		for( VotePlayer vote : agrees ){
 			vote.putBuffer( buf );
@@ -162,9 +158,14 @@ public class Vote implements ITransformStream {
 		return false;
 	}
 
-	public int getTimeRestrict() {
-		return timeRestrict;
+	/**
+	 * 时间是否到
+	 * @return
+	 */
+	public boolean isComplete() {
+		return (int) (System.currentTimeMillis()/1000) >= endtime;
 	}
+	
 	public String getSponsorUid() {
 		return sponsorUid;
 	}
@@ -177,16 +178,8 @@ public class Vote implements ITransformStream {
 	public short getDisagreePrivileges(){
 		return disagreePrivileges;
 	}
-	
-	/**
-	 * 时间是否到
-	 * @return
-	 */
-	public boolean isComplete() {
-		int t = (int) (System.currentTimeMillis()/1000 - rTime);
-		return t >= timeRestrict;
+	public int getEndtime() {
+		return endtime;
 	}
-
-
 
 }

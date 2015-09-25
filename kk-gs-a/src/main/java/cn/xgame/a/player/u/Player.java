@@ -131,6 +131,7 @@ public class Player extends IPlayer implements ITransformStream{
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );
 		buffer.writeByte( 1 );
+		manors.buildTransformStream(buffer);
 	}
 	
 

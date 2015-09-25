@@ -31,9 +31,6 @@ public class EctypePlanet extends IPlanet{
 	
 	
 	@Override
-	public boolean isCanDonate() { return false; }
-
-	@Override
 	public List<Integer> getScopePlanet() {
 		return Lists.newArrayList();
 	}

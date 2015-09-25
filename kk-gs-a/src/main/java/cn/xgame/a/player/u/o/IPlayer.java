@@ -95,12 +95,20 @@ public abstract class IPlayer {
 	public void setHeadIco(int headIco) {
 		this.headIco = headIco;
 	}
+	/**
+	 * 母星ID
+	 * @return
+	 */
 	public int getCountryId() {
 		return countryId;
 	}
 	public void setCountryId(int countryId) {
 		this.countryId = countryId;
 	}
+	/**
+	 * 货币
+	 * @return
+	 */
 	public int getCurrency() {
 		return currency;
 	}

@@ -33,10 +33,12 @@ public enum PropType {
 		}
 	},
 	
-	/** 舰船装备 */
-	SEQUIP( 3 ) {
+	/** 装备 - 舰长装备 and 舰船装备 */
+	EQUIP( 3 ) {
 		@Override
 		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
+			if( item.itemtype == 4 )// 舰长装备
+				return new CEquipAttr( item, uid, nid, count, quality );
 			return new SEquipAttr( item, uid, nid, count, quality );
 		}
 	},
@@ -48,17 +50,9 @@ public enum PropType {
 			return new CaptainAttr( item, uid, nid, count, quality );
 		}
 	},
-	
-	/** 舰长装备 */
-	CEQUIP( 5 ) {
-		@Override
-		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
-			return new CEquipAttr( item, uid, nid, count, quality );
-		}
-	},
-	
+		
 	/** 材料 */
-	STUFF( 6 ) {
+	STUFF( 5 ) {
 		@Override
 		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
 			return new StuffAttr( item, uid, nid, count, quality );

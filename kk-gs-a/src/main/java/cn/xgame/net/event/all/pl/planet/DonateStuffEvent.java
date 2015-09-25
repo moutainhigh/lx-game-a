@@ -3,6 +3,7 @@ package cn.xgame.net.event.all.pl.planet;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
@@ -10,7 +11,11 @@ import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
-import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.data.building.UnBuildings;
+import cn.xgame.a.world.planet.data.resource.ResourceControl;
+import cn.xgame.a.world.planet.data.tech.UnTechs;
+import cn.xgame.a.world.planet.home.HomePlanet;
+import cn.xgame.a.world.planet.home.o.Syn;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
@@ -34,18 +39,36 @@ public class DonateStuffEvent extends IEvent{
 		try {
 			if( count <= 0 )
 				throw new Exception( ErrorCode.STUFF_LAZYWEIGHT.name() );
-			
-			IPlanet planet = WorldManager.o.getPlanet( id );
-			if( planet == null )
-				throw new Exception( ErrorCode.PLANET_NOTEXIST.name() );
-			if( !planet.isCanDonate() )
-				throw new Exception( ErrorCode.CANNOT_DONATE.name() );
+			HomePlanet planet = WorldManager.o.getHomePlanet(id);
 			
 			// 扣除捐献的道具  uid=-1代表 是捐献货币
 			IProp prop = uid == -1 ? deductCurrency(player, count) : deductProp( id, player, uid, count );
 			
-			// 开始捐献
-			planet.donateResource( player, prop );
+			// 添加资源
+			ResourceControl depotControl = planet.getDepotControl();
+			List<IProp> update = depotControl.appendProp(prop);
+			
+			// 这里检查  建筑中列表 里面是否有材料不足而暂停的建筑中建筑
+			List<UnBuildings> waitBuild = planet.getBuildingControl().getWaitBuild();
+			for( UnBuildings unBuild : waitBuild ){
+				if( depotControl.deductProp( unBuild.templet().needres ) ){
+					unBuild.setEndtime( (int) (System.currentTimeMillis()/1000) + unBuild.templet().needtime );
+				}
+			}
+			
+			// 检测科技
+			List<UnTechs> waitTech = planet.getTech().getWaitTech();
+			for( UnTechs unTech : waitTech ){
+				if( depotControl.deductProp( unTech.templet().needres ) ){
+					unTech.setEndtime( (int) (System.currentTimeMillis()/1000) + unTech.templet().needtime );
+				}
+			}
+			
+			// 处理一下捐献后的操作
+			planet.handleDonateLater(player, prop);
+			
+			// 捐献成功后 同步消息
+			Syn.res( planet.getPeoples(), update );
 			
 			Logs.debug( player, "捐献资源  星球ID="+id+",uid="+uid+",count="+count );
 			code = ErrorCode.SUCCEED;
@@ -60,10 +83,6 @@ public class DonateStuffEvent extends IEvent{
 		
 	}
 
-	
-	
-	
-	
 	// 扣除货币
 	private IProp deductCurrency(Player player, int count) throws Exception {
 		if( player.changeCurrency( -count ) == -1 )

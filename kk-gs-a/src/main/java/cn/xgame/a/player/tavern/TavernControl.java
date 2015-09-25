@@ -8,6 +8,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
+import cn.xgame.a.player.tavern.o.TavernData;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -17,14 +18,10 @@ import cn.xgame.a.player.u.Player;
  */
 public class TavernControl implements IArrayStream{
 
-	@SuppressWarnings("unused")
-	private final Player root;
-	
 	// 酒馆列表 - 每个星球一个
 	private List<TavernData> datas = Lists.newArrayList();
 	
 	public TavernControl( Player player ) {
-		this.root = player;
 	}
 
 	@Override

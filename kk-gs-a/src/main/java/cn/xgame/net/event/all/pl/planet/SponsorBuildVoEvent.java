@@ -10,7 +10,13 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
-import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.a.world.planet.data.building.BuildingControl;
+import cn.xgame.a.world.planet.data.building.UnBuildings;
+import cn.xgame.a.world.planet.home.HomePlanet;
+import cn.xgame.a.world.planet.home.o.Child;
+import cn.xgame.a.world.planet.home.o.Syn;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
@@ -34,13 +40,34 @@ public class SponsorBuildVoEvent extends IEvent{
 			// 先将时间转换
 			Lua lua = LuaUtil.getGameData();
 			LuaValue[] ret = lua.getField( "getVoteTime" ).call( 1, type );
-			int time = ret[0].getInt();
+			int time = ret[0].getInt() + (int)(System.currentTimeMillis()/1000);
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
-			IPlanet planet = WorldManager.o.getHPlanetInPlayer(player);
+			HomePlanet planet = WorldManager.o.getHPlanetInPlayer(player);
 			
-			// 开始发起投票
-			planet.sponsorBuivote( player, nid, index, time );
+			// 判断是否有权限发起投票
+			Child child = planet.getChild( player.getUID() );
+			if( child == null || !child.isSenator() )
+				throw new Exception( ErrorCode.NOT_PRIVILEGE.name() );
+			
+			// 判断位置是否占用
+			BuildingControl buildingControl = planet.getBuildingControl();
+			SbuildingPo templet = CsvGen.getSbuildingPo(nid);
+			if( buildingControl.isOccupyInIndex( index, templet.usegrid ) )
+				throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
+			
+			// 判断该建筑能不能建
+			if( !buildingControl.isCanBuild( nid ) )
+				throw new Exception( ErrorCode.YET_ATLIST.name() );
+			
+			// 添加到投票中
+			UnBuildings voteBuild = buildingControl.appendVoteBuild( player, nid, index, time );
+			
+			// 记录玩家发起数
+			child.addSponsors( 1 );
+			
+			// 下面同步消息给玩家
+			Syn.build( planet.getPeoples(), 1, voteBuild );
 			
 			Logs.debug( player, " 发起建筑投票 nid=" + nid + ", index=" + index + ", time=" + time );
 			code = ErrorCode.SUCCEED;

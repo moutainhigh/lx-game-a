@@ -79,7 +79,7 @@ public class BuildingControl implements IArrayStream{
 			int id = buf.readInt();
 			UnBuildings o = new UnBuildings( id );
 			o.wrapBuffer(buf);
-			o.setrTime( buf.readInt() );
+			o.setEndtime( buf.readInt() );
 			unBuildings.add(o);
 		}
 	}
@@ -105,7 +105,7 @@ public class BuildingControl implements IArrayStream{
 		for( UnBuildings o : unBuildings ){
 			buf.writeInt( o.templet().id );
 			o.putBuffer( buf );
-			buf.writeInt( o.getrTime() );
+			buf.writeInt( o.getEndtime() );
 		}
 		return buf.array();
 	}
@@ -120,7 +120,7 @@ public class BuildingControl implements IArrayStream{
 		}
 		for( UnBuildings o : unBuildings ){
 			o.buildTransformStream( buffer );
-			buffer.writeInt( o.getPastTime() );
+			buffer.writeInt( o.getEndtime() );
 		}
 	}
 	/** 塞入 投票建筑 
@@ -133,14 +133,6 @@ public class BuildingControl implements IArrayStream{
 			buffer.writeByte( o.getVote().isParticipateVote( player.getUID() ) );
 		}
 	}
-	/** 塞入 建筑中 */
-//	public void putUnBuilding( ByteBuf buffer ) {
-//		buffer.writeByte( unBuildings.size() );
-//		for( UnBuildings o : unBuildings ){
-//			o.buildTransformStream( buffer );
-//			buffer.writeInt( o.getrTime() );
-//		}
-//	}
 
 	// 获取所有 已建筑+建筑中+投票中
 	private List<Buildings> getAllBuilding() {
@@ -158,7 +150,7 @@ public class BuildingControl implements IArrayStream{
 	public List<UnBuildings> getWaitBuild() {
 		List<UnBuildings> ret = Lists.newArrayList();
 		for( UnBuildings o : unBuildings ){
-			if( o.getrTime() == -1 )
+			if( o.getEndtime() == -1 )
 				ret.add(o);
 		}
 		return ret;

@@ -11,8 +11,8 @@ import cn.xgame.config.o.SbuildingPo;
  */
 public class UnBuildings extends Buildings{
 
-	// 记录时间 - 用于建筑中的
-	private int rTime;
+	// 结束时间 - 用于建筑中的
+	private int endtime;
 	
 	// 投票器 - 用于投票的
 	private Vote vote = null;
@@ -25,11 +25,11 @@ public class UnBuildings extends Buildings{
 		super( templet, index );
 	}
 
-	public int getrTime() {
-		return rTime;
+	public int getEndtime() {
+		return endtime;
 	}
-	public void setrTime(int rTime) {
-		this.rTime = rTime;
+	public void setEndtime(int endtime) {
+		this.endtime = endtime;
 	}
 	public Vote getVote() {
 		return vote;
@@ -39,24 +39,12 @@ public class UnBuildings extends Buildings{
 	}
 
 	/**
-	 * 获取已经过去的时间 - 单位秒
-	 * @return
-	 */
-	public int getPastTime() {
-		if( rTime == -1 )
-			return -1;
-		if( templet().needtime == 0 ) 
-			return 0;
-		return (int) (System.currentTimeMillis()/1000 - rTime);
-	}
-
-	/**
 	 * 是否建筑完成
 	 * @return
 	 */
 	public boolean isComplete() {
-		return getPastTime() >= templet().needtime || templet().needtime == 0;
+		return endtime != -1 && (int)(System.currentTimeMillis()/1000) >= endtime;
 	}
-	
+
 	
 }

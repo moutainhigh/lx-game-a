@@ -38,7 +38,7 @@ public class SponsorTechVoEvent extends IEvent{
 			// 先将时间转换
 			Lua lua = LuaUtil.getGameData();
 			LuaValue[] ret = lua.getField( "getVoteTime" ).call( 1, type );
-			int time = ret[0].getInt();
+			int time = ret[0].getInt() + (int)(System.currentTimeMillis()/1000);
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
 			HomePlanet planet = WorldManager.o.getHPlanetInPlayer(player);
