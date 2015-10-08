@@ -82,6 +82,7 @@ public class StartAttackEvent extends IEvent{
 			int winRate 	= ret[1].getInt();
 			int damaged 	= ret[2].getInt();
 			int ammoExpend	= ret[3].getInt();
+			int score		= ret[4].getInt();
 			
 			// 算出胜负
 			int rand 		= Random.get( 0, 10000 );
@@ -89,7 +90,7 @@ public class StartAttackEvent extends IEvent{
 			// 根据胜负算出奖励
 			List<AwardInfo> awards = (iswin == 1 ? ectype.randomAward() : null);
 			// 切换战斗状态
-			status 			= fleet.changeCombat( snid, type, cnid, enid, combatTime, iswin, awards );
+			status 			= fleet.changeCombat( snid, type, cnid, enid, combatTime, iswin, awards, score );
 			// 计算舰队船的 战损 和 结算所有舰长的忠诚度
 			List<ShipInfo> ships = fleet.getShips();
 			for( ShipInfo ship : ships ){

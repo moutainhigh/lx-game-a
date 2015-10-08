@@ -11,6 +11,7 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
+import cn.xgame.net.event.all.pl.AppManorEvent;
 import cn.xgame.net.event.all.pl.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.ApplyTavernEvent;
@@ -50,6 +51,8 @@ import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchBuyEvent;
+import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
+import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_2101;
@@ -96,8 +99,8 @@ public enum Events {
 	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),
 	// 领地
+	APP_MANOR					( 1040, 	new AppManorEvent() ),
 	BUY_MANOR					( 1041, 	new BuyManorEvent() ),
-	
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),
@@ -128,6 +131,8 @@ public enum Events {
 	TAVERN_BUY					( 1311, 	new TavernBuyEvent() ),
 	EXCH_ADDED					( 1321, 	new ExchAddedEvent() ),
 	EXCH_BUY					( 1322, 	new ExchBuyEvent() ),
+	EXCH_COLLECT				( 1323, 	new ExchCollectEvent() ),
+	EXCH_SOLDOUT				( 1324, 	new ExchSoldoutEvent() ),
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent() ),

@@ -141,17 +141,19 @@ public class FleetInfo implements ITransformStream{
 	 * @param ctime
 	 * @param iswin
 	 * @param awards
+	 * @param score 
 	 */
-	public IStatus changeCombat( int snid, byte type, int cnid, int enid, int ctime, byte iswin, List<AwardInfo> awards) {
+	public IStatus changeCombat( int snid, byte type, int cnid, int enid, int ctime, byte iswin, List<AwardInfo> awards, int score) {
 		CombatStatus o = new CombatStatus();
-		o.setType(type);
-		o.setChapterId(cnid);
-		o.setEctypeId(enid);
+		o.setType( type );
+		o.setChapterId( cnid );
+		o.setEctypeId( enid );
 		o.setEndtime( (int)(System.currentTimeMillis()/1000) + ctime );
 		o.setCtime( ctime );
-		o.setIsWin(iswin);
+		o.setIsWin( iswin );
 		if( awards != null )
 			o.getAwards().addAll( awards );
+		o.setScore( score );
 		// 最后设置状态
 		status 		= o;
 		// 这里还要设置停靠星球ID

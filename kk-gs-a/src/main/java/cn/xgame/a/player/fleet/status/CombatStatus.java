@@ -38,6 +38,9 @@ public class CombatStatus extends IStatus{
 	// 奖励列表
 	private List<AwardInfo> awards = Lists.newArrayList();
 	
+	// 评分
+	private int score;
+	
 	public CombatStatus() {
 		super( StatusType.COMBAT );
 	}
@@ -53,6 +56,7 @@ public class CombatStatus extends IStatus{
 		buf.writeByte( awards.size() );
 		for( AwardInfo award : awards )
 			award.buildTransformStream(buf);
+		buf.writeInt( score );
 	}
 	
 	@Override
@@ -66,6 +70,7 @@ public class CombatStatus extends IStatus{
 		byte size		= buf.readByte();
 		for( int i = 0; i < size; i++ )
 			awards.add( new AwardInfo(buf) );
+		score 			= buf.readInt();
 	}
 	
 	@Override
@@ -89,6 +94,9 @@ public class CombatStatus extends IStatus{
 			StarDepot depot = player.getDepots(fleetInfo.getBerthSnid());
 			depot.appendProp( award.getId(), award.getCount() );
 		}
+		// 计算评星奖励
+		// TODO
+		
 		// 设置悬停
 		return new HoverStatus();
 	}
@@ -134,6 +142,12 @@ public class CombatStatus extends IStatus{
 	}
 	public void setCtime(int ctime) {
 		this.ctime = ctime;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 

@@ -10,6 +10,7 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.manor.o.Bbuilding;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ReclaimcapacityPo;
 
 /**
@@ -32,21 +33,38 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
-		
+		builds.clear();
+		ByteBuf buff = Unpooled.copiedBuffer(data);
+		territory = CsvGen.getReclaimcapacityPo( buff.readInt() );
+		byte size = buff.readByte();
+		for( int i = 0; i < size; i++ ){
+			Bbuilding build = new Bbuilding( buff.readInt() );
+			build.setIndex( buff.readByte() );
+			builds.add(build);
+		}
 	}
 
 	@Override
 	public byte[] toBytes() {
 		if( territory == null ) return null;
 		ByteBuf buff = Unpooled.buffer();
-		
+		buff.writeInt( territory.id );
+		buff.writeByte( builds.size() );
+		for( Bbuilding build : builds ){
+			buff.writeInt( build.templet().id );
+			buff.writeByte( build.getIndex() );
+		}
 		return buff.array();
 	}
 
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		// TODO Auto-generated method stub
-		
+		buffer.writeInt( getNid() );
+		buffer.writeByte( builds.size() );
+		for( Bbuilding o : builds ){
+			buffer.writeInt( o.templet().id );
+			buffer.writeByte( o.getIndex() );
+		}
 	}
 
 	public ReclaimcapacityPo getTerritory() {

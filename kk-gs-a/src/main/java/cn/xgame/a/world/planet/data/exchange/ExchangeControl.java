@@ -14,6 +14,7 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.PropType;
+import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 
 /**
@@ -34,6 +35,10 @@ public class ExchangeControl implements IArrayStream{
 	// 交易所 物品集合
 	private Map<PropType, List<ExchGoods>> goodsSet = new HashMap<PropType, List<ExchGoods>>();
 	
+	// 每个玩家卖出的金币 - 在这里记录
+	private Map<String, Integer> earnCurrency = new HashMap<String, Integer>();
+	
+	
 	
 	public ExchangeControl( int id ) {
 		SNID = id;
@@ -43,6 +48,7 @@ public class ExchangeControl implements IArrayStream{
 	public void fromBytes(byte[] data) {
 		if( data == null ) return ;
 		goodsSet.clear();
+		earnCurrency.clear();
 		GOODS_UID	= 0;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		int size = buf.readInt();
@@ -52,6 +58,12 @@ public class ExchangeControl implements IArrayStream{
 			putExchGoods( g );
 			if( g.getUid() > GOODS_UID ) 
 				GOODS_UID = g.getUid() ;
+		}
+		size = buf.readShort();
+		for( int i = 0; i < size; i++ ){
+			String key = RW.readString(buf);
+			int value = buf.readInt();
+			earnCurrency.put( key, value );
 		}
 	}
 
@@ -63,6 +75,11 @@ public class ExchangeControl implements IArrayStream{
 		buf.writeInt( ls.size() );
 		for( ExchGoods g : ls ){
 			g.putBuffer(buf);
+		}
+		buf.writeShort( earnCurrency.size() );
+		for( Map.Entry<String, Integer> entry : earnCurrency.entrySet() ) {
+			RW.writeString( buf, entry.getKey() );
+			buf.writeInt( entry.getValue() );
 		}
 		return buf.array();
 	}
@@ -186,7 +203,25 @@ public class ExchangeControl implements IArrayStream{
 		return newPorp.getUid();
 	}
 
+	/**
+	 * 记录交易的货币
+	 * @param sellUid
+	 * @param needmoney
+	 */
+	public void record( String sellUid, int needmoney ) {
+		Integer money 	= earnCurrency.get(sellUid);
+		money 			= (money == null ? needmoney : (needmoney + money));
+		earnCurrency.put( sellUid, needmoney );
+	}
 
-	
+	/**
+	 * 获取玩家的收入
+	 * @param player
+	 * @return
+	 */
+	public int receipt(Player player) {
+		Integer money = earnCurrency.get(player.getUID());
+		return money == null ? 0 : money;
+	}
 	
 }

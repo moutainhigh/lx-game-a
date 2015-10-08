@@ -54,7 +54,6 @@ public class Player extends IPlayer implements ITransformStream{
 	// 舰队
 	private FleetControl		fleets			= new FleetControl( this );
 	
-	
 	//////////////////////////////////////////////////////////////////////
 	// 所有道具唯一ID基础值 
 	private DBBaseUID 			propBaseUid 	= new DBBaseUID( this );
