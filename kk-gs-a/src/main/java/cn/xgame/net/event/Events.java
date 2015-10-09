@@ -11,10 +11,6 @@ import cn.xgame.net.event.all.TestEevet;
 import cn.xgame.net.event.all.ls.ConnectEvent;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
-import cn.xgame.net.event.all.pl.AppManorEvent;
-import cn.xgame.net.event.all.pl.ApplyEctypeEvent;
-import cn.xgame.net.event.all.pl.ApplyStaratlasEvent;
-import cn.xgame.net.event.all.pl.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.captain.EatEquipEvent;
@@ -24,8 +20,10 @@ import cn.xgame.net.event.all.pl.chat.InviteTeamEvent;
 import cn.xgame.net.event.all.pl.chat.InviteTempAxnEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
+import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
+import cn.xgame.net.event.all.pl.manor.AppManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
@@ -34,6 +32,7 @@ import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyShopEvent;
+import cn.xgame.net.event.all.pl.planet.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateExpelEvent;
@@ -49,6 +48,9 @@ import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
+import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
+import cn.xgame.net.event.all.pl.staratlas.ModifyAirlineEvent;
+import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
@@ -85,7 +87,10 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN				( 1001,		new LoginEvent() ),
 	PLAYER_CREATE				( 1002, 	new CreateEvent() ),
+	// 星图
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
+	SAIL_OUT					( 1015, 	new SailoutEvent() ),
+	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent() ),
 	// 舰船
 	MOUNT_HOLD					( 1021, 	new MountHoldEvent() ),
 	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent() ),

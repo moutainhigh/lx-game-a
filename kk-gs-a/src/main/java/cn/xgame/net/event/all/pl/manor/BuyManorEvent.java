@@ -24,6 +24,7 @@ public class BuyManorEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
+		int snid = data.readInt();
 		int mnid = data.readInt();
 		
 		ErrorCode code = null;
@@ -40,7 +41,7 @@ public class BuyManorEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 判断科技等级是否达到
-			HomePlanet home = WorldManager.o.getHPlanetInPlayer(player);
+			HomePlanet home = WorldManager.o.getHomePlanet(snid);
 			if( home.getTechLevel() < reclaim.techlv )
 				throw new Exception( ErrorCode.CON_DISSATISFY.name() );
 			

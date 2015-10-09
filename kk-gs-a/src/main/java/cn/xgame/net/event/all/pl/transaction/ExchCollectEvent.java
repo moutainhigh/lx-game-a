@@ -27,7 +27,7 @@ public class ExchCollectEvent extends IEvent {
 			
 			HomePlanet home = WorldManager.o.getHPlanetInPlayer(player);
 			
-			collect = home.getExchange().receipt( player );
+			collect = home.getExchange().getEarnCurrency( player );
 			
 			// 加入到玩家身上
 			player.changeCurrency( collect );

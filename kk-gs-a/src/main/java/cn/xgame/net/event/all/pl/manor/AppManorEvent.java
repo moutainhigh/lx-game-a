@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl;
+package cn.xgame.net.event.all.pl.manor;
 
 import io.netty.buffer.ByteBuf;
 

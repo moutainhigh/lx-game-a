@@ -139,7 +139,8 @@ public class EctypeControl implements IArrayStream{
 				ret.add(ectype);
 			}
 		}
-		Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
+		if( !ret.isEmpty() )
+			Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
 		return ret;
 	}
 	

@@ -8,6 +8,7 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.Util.Random;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
@@ -115,7 +116,8 @@ public class WorldManager {
 	
 	// 根据ip获取 对应母星
 	private HomePlanet getHomePlanetInIP( String ip ) {
-		return homes.get(0);
+		int index = Random.get( 0, homes.size()-1 );
+		return homes.get(index);
 	}
 	
 	/**

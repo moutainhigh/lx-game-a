@@ -219,7 +219,7 @@ public class ExchangeControl implements IArrayStream{
 	 * @param player
 	 * @return
 	 */
-	public int receipt(Player player) {
+	public int getEarnCurrency( Player player ) {
 		Integer money = earnCurrency.get(player.getUID());
 		return money == null ? 0 : money;
 	}

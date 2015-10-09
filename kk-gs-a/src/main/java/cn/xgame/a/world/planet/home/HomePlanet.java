@@ -356,7 +356,8 @@ public class HomePlanet extends IPlanet {
 		// 这里处理 特产
 		List<Specialty> ls = getSpecialtyControl().getSpecialtys();
 		for( Specialty spe : ls ){
-			spe.run();
+			if( spe.run() )
+				Logs.debug( "星球"+getId()+" 特产"+spe.toProp().getNid()+" 生产 "+spe.toProp().getCount()+"个" );
 		}
 	}
 	

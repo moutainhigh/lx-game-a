@@ -11,7 +11,7 @@ import cn.xgame.a.player.fleet.other.IPurpose;
 public class FightEctype extends IPurpose{
 	
 	// 副本类型 1.常规副本 2.普通限时 3.特殊限时
-	private byte type;
+	private byte etype;
 	
 	// 章节ID
 	private int chapterId;
@@ -19,9 +19,9 @@ public class FightEctype extends IPurpose{
 	// 副本ID
 	private int ectypeId;
 	
-	public FightEctype( byte type, int cnid, int enid ) {
+	public FightEctype( byte etype, int cnid, int enid ) {
 		super( (byte) 1 );
-		this.type 		= type;
+		this.etype 		= etype;
 		this.chapterId 	= cnid;
 		this.ectypeId 	= enid;
 	}
@@ -30,15 +30,15 @@ public class FightEctype extends IPurpose{
 	}
 
 	@Override
-	public void putBuffer(ByteBuf buf) {
-		buf.writeByte( type );
+	public void putBuffer( ByteBuf buf ) {
+		buf.writeByte( etype );
 		buf.writeInt( chapterId );
 		buf.writeInt( ectypeId );
 	}
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		this.type 		= buf.readByte();
+		this.etype 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
 		this.ectypeId 	= buf.readInt();		
 	}
@@ -46,31 +46,17 @@ public class FightEctype extends IPurpose{
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( type() );
-		buffer.writeByte( type );
-		buffer.writeInt( chapterId );
-		buffer.writeInt( ectypeId );
+		putBuffer( buffer );
 	}
 
 	public int getEctypeId() {
 		return ectypeId;
 	}
-	public void setEctypeId(int ectypeId) {
-		this.ectypeId = ectypeId;
-	}
-	public byte getType() {
-		return type;
-	}
-	public void setType(byte type) {
-		this.type = type;
+	public byte getEtype() {
+		return etype;
 	}
 	public int getChapterId() {
 		return chapterId;
 	}
-	public void setChapterId(int chapterId) {
-		this.chapterId = chapterId;
-	}
-
-
-
 
 }

@@ -3,7 +3,6 @@ package cn.xgame.a.world.planet.data.specialty;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.utils.Logs;
 
 /**
  * 特产
@@ -75,7 +74,6 @@ public class Specialty implements ITransformStream{
 			
 			prop.addCount( yieldNum );
 			
-			Logs.debug( "星球特产"+prop.getNid()+" 生产 "+prop.getCount()+"个" );
 			return true;
 		}
 		return false;

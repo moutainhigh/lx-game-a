@@ -23,13 +23,15 @@ public class FiveMinuteHandleImp extends IThread{
 			// 给登录服务器 更新 服务器人数
 			((UpdatePeopleEvent)Events.UPDATA_PEOPLE.getEventInstance()).run();
 			
-			// 
+			// *暂时在这里更新体制  最后要放到每日那里
 			WorldManager.o.runUpdateInstitution();
 			
 			
 			// 这里测试用于打印星球仓库信息
 			List<IPlanet> ls = WorldManager.o.getAllPlanet();
 			for( IPlanet p : ls ){
+				if( p.getDepotControl().getAll().isEmpty() )
+					continue;
 				Logs.debug( "星球" + p.getId() + " 仓库信息" + p.getDepotControl().toMessage() );
 			}
 			
