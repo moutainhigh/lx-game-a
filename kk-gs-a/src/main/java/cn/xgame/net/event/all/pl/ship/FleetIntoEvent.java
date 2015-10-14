@@ -7,7 +7,6 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.dock.DockControl;
-import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
@@ -37,12 +36,7 @@ public class FleetIntoEvent extends IEvent{
 			// 获取舰船
 			DockControl docks 	= player.getDocks();
 			ShipInfo ship 		= docks.getShipOfException(suid);
-			ship.isHaveCaptain();
 			docks.isLeisure( ship );
-			CaptainInfo capt	= docks.getCaptainOfException( ship.getCaptainUID() );
-			// 检测复杂度
-			if( ship.allEctypeComplexity() > capt.attr().getControl() )
-				throw new Exception( ErrorCode.CAPT_CONTROL_LAZYWEIGHT.name() );
 			
 			// 如果不在同一个星球 那就不能 实装
 			if( fleet.getBerthSnid() != ship.getBerthSid() && fleet.getBerthSnid() != -1 )

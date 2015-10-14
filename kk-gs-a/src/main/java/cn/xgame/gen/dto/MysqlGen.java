@@ -40,6 +40,7 @@
 			setObject( "chatAxns", dto.getChatAxns() );
 			setObject( "taverns", dto.getTaverns() );
 			setObject( "fleets", dto.getFleets() );
+			setObject( "mails", dto.getMails() );
 
 			super.commit( true );		}	}
 	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( id );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -102,14 +103,14 @@
 		/**  所属舰船UID  */		public void setShipUid( Integer shipUid ){			this.shipUid = shipUid;		}
 		/**  装备信息  */		public void setEquips( byte[] equips ){			this.equips = equips;		}
 
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String qualityChangeSql( Byte x) {			return "quality=" + x;		}
-		public static String attachAttrChangeSql( byte[] x) {			return "attachAttr=" + x;		}
-		public static String shipUidChangeSql( Integer x) {			return "shipUid=" + x;		}
-		public static String equipsChangeSql( byte[] x) {			return "equips=" + x;		}
+		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x ) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x ) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x ) {			return "nid=" + x;		}
+		public static String qualityChangeSql( Byte x ) {			return "quality=" + x;		}
+		public static String attachAttrChangeSql( byte[] x ) {			return "attachAttr=" + x;		}
+		public static String shipUidChangeSql( Integer x ) {			return "shipUid=" + x;		}
+		public static String equipsChangeSql( byte[] x ) {			return "equips=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
@@ -161,15 +162,15 @@
 		/**  星球科技  */		public void setTechs( byte[] techs ){			this.techs = techs;		}
 		/**  交易所  */		public void setExchanges( byte[] exchanges ){			this.exchanges = exchanges;		}
 
-		public static String idChangeSql( Integer x) {			return "id=" + x;		}
-		public static String maxSpaceChangeSql( Short x) {			return "maxSpace=" + x;		}
-		public static String playersChangeSql( byte[] x) {			return "players=" + x;		}
-		public static String expelGenrChangeSql( byte[] x) {			return "expelGenr=" + x;		}
-		public static String buildingsChangeSql( byte[] x) {			return "buildings=" + x;		}
-		public static String depotsChangeSql( byte[] x) {			return "depots=" + x;		}
-		public static String specialtysChangeSql( byte[] x) {			return "specialtys=" + x;		}
-		public static String techsChangeSql( byte[] x) {			return "techs=" + x;		}
-		public static String exchangesChangeSql( byte[] x) {			return "exchanges=" + x;		}
+		public static String idChangeSql( Integer x ) {			return "id=" + x;		}
+		public static String maxSpaceChangeSql( Short x ) {			return "maxSpace=" + x;		}
+		public static String playersChangeSql( byte[] x ) {			return "players=" + x;		}
+		public static String expelGenrChangeSql( byte[] x ) {			return "expelGenr=" + x;		}
+		public static String buildingsChangeSql( byte[] x ) {			return "buildings=" + x;		}
+		public static String depotsChangeSql( byte[] x ) {			return "depots=" + x;		}
+		public static String specialtysChangeSql( byte[] x ) {			return "specialtys=" + x;		}
+		public static String techsChangeSql( byte[] x ) {			return "techs=" + x;		}
+		public static String exchangesChangeSql( byte[] x ) {			return "exchanges=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			id = o.getInt( "id" );
 			maxSpace = o.getShort( "maxSpace" );
@@ -197,6 +198,7 @@
 		private byte[] chatAxns = null;
 		private byte[] taverns = null;
 		private byte[] fleets = null;
+		private byte[] mails = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -213,6 +215,7 @@
 			this.chatAxns = src.chatAxns;
 			this.taverns = src.taverns;
 			this.fleets = src.fleets;
+			this.mails = src.mails;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  唯一ID  */		public String getUid(){			return this.uid;		}
@@ -229,6 +232,7 @@
 		/**  聊天频道ID列表  */		public byte[] getChatAxns(){			return this.chatAxns;		}
 		/**  酒馆数据  */		public byte[] getTaverns(){			return this.taverns;		}
 		/**  舰队数据  */		public byte[] getFleets(){			return this.fleets;		}
+		/**  邮件数据  */		public byte[] getMails(){			return this.mails;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -245,22 +249,24 @@
 		/**  聊天频道ID列表  */		public void setChatAxns( byte[] chatAxns ){			this.chatAxns = chatAxns;		}
 		/**  酒馆数据  */		public void setTaverns( byte[] taverns ){			this.taverns = taverns;		}
 		/**  舰队数据  */		public void setFleets( byte[] fleets ){			this.fleets = fleets;		}
+		/**  邮件数据  */		public void setMails( byte[] mails ){			this.mails = mails;		}
 
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String uidChangeSql( String x) {			return "uid=" + "'"+x+"'";		}
-		public static String createTimeChangeSql( Long x) {			return "createTime=" + x;		}
-		public static String lastLogoutTimeChangeSql( Long x) {			return "lastLogoutTime=" + x;		}
-		public static String nicknameChangeSql( String x) {			return "nickname=" + "'"+x+"'";		}
-		public static String headIcoChangeSql( Integer x) {			return "headIco=" + x;		}
-		public static String adjutantIdChangeSql( Integer x) {			return "adjutantId=" + x;		}
-		public static String countryIdChangeSql( Integer x) {			return "countryId=" + x;		}
-		public static String currencyChangeSql( Integer x) {			return "currency=" + x;		}
-		public static String goldChangeSql( Integer x) {			return "gold=" + x;		}
-		public static String ectypesChangeSql( byte[] x) {			return "ectypes=" + x;		}
-		public static String manorsChangeSql( byte[] x) {			return "manors=" + x;		}
-		public static String chatAxnsChangeSql( byte[] x) {			return "chatAxns=" + x;		}
-		public static String tavernsChangeSql( byte[] x) {			return "taverns=" + x;		}
-		public static String fleetsChangeSql( byte[] x) {			return "fleets=" + x;		}
+		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
+		public static String uidChangeSql( String x ) {			return "uid=" + "'"+x+"'";		}
+		public static String createTimeChangeSql( Long x ) {			return "createTime=" + x;		}
+		public static String lastLogoutTimeChangeSql( Long x ) {			return "lastLogoutTime=" + x;		}
+		public static String nicknameChangeSql( String x ) {			return "nickname=" + "'"+x+"'";		}
+		public static String headIcoChangeSql( Integer x ) {			return "headIco=" + x;		}
+		public static String adjutantIdChangeSql( Integer x ) {			return "adjutantId=" + x;		}
+		public static String countryIdChangeSql( Integer x ) {			return "countryId=" + x;		}
+		public static String currencyChangeSql( Integer x ) {			return "currency=" + x;		}
+		public static String goldChangeSql( Integer x ) {			return "gold=" + x;		}
+		public static String ectypesChangeSql( byte[] x ) {			return "ectypes=" + x;		}
+		public static String manorsChangeSql( byte[] x ) {			return "manors=" + x;		}
+		public static String chatAxnsChangeSql( byte[] x ) {			return "chatAxns=" + x;		}
+		public static String tavernsChangeSql( byte[] x ) {			return "taverns=" + x;		}
+		public static String fleetsChangeSql( byte[] x ) {			return "fleets=" + x;		}
+		public static String mailsChangeSql( byte[] x ) {			return "mails=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -277,8 +283,9 @@
 			chatAxns = o.getBytes( "chatAxns" );
 			taverns = o.getBytes( "taverns" );
 			fleets = o.getBytes( "fleets" );
+			mails = o.getBytes( "mails" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"mails="+mails;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer beSnid = null;
@@ -315,14 +322,14 @@
 		/**  品质  */		public void setQuality( Byte quality ){			this.quality = quality;		}
 		/**  附加数据  */		public void setAttach( byte[] attach ){			this.attach = attach;		}
 
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String beSnidChangeSql( Integer x) {			return "beSnid=" + x;		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String countChangeSql( Integer x) {			return "count=" + x;		}
-		public static String qualityChangeSql( Byte x) {			return "quality=" + x;		}
-		public static String attachChangeSql( byte[] x) {			return "attach=" + x;		}
+		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x ) {			return "uname=" + "'"+x+"'";		}
+		public static String beSnidChangeSql( Integer x ) {			return "beSnid=" + x;		}
+		public static String uidChangeSql( Integer x ) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x ) {			return "nid=" + x;		}
+		public static String countChangeSql( Integer x ) {			return "count=" + x;		}
+		public static String qualityChangeSql( Byte x ) {			return "quality=" + x;		}
+		public static String attachChangeSql( byte[] x ) {			return "attach=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );
@@ -382,17 +389,17 @@
 		/**  武器  */		public void setWeapons( byte[] weapons ){			this.weapons = weapons;		}
 		/**  辅助  */		public void setAssists( byte[] assists ){			this.assists = assists;		}
 
-		public static String gsidChangeSql( Short x) {			return "gsid=" + x;		}
-		public static String unameChangeSql( String x) {			return "uname=" + "'"+x+"'";		}
-		public static String uidChangeSql( Integer x) {			return "uid=" + x;		}
-		public static String nidChangeSql( Integer x) {			return "nid=" + x;		}
-		public static String attachAttrChangeSql( byte[] x) {			return "attachAttr=" + x;		}
-		public static String currentHpChangeSql( Integer x) {			return "currentHp=" + x;		}
-		public static String captainUidChangeSql( Integer x) {			return "captainUid=" + x;		}
-		public static String berthSidChangeSql( Integer x) {			return "berthSid=" + x;		}
-		public static String holdsChangeSql( byte[] x) {			return "holds=" + x;		}
-		public static String weaponsChangeSql( byte[] x) {			return "weapons=" + x;		}
-		public static String assistsChangeSql( byte[] x) {			return "assists=" + x;		}
+		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x ) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x ) {			return "uid=" + x;		}
+		public static String nidChangeSql( Integer x ) {			return "nid=" + x;		}
+		public static String attachAttrChangeSql( byte[] x ) {			return "attachAttr=" + x;		}
+		public static String currentHpChangeSql( Integer x ) {			return "currentHp=" + x;		}
+		public static String captainUidChangeSql( Integer x ) {			return "captainUid=" + x;		}
+		public static String berthSidChangeSql( Integer x ) {			return "berthSid=" + x;		}
+		public static String holdsChangeSql( byte[] x ) {			return "holds=" + x;		}
+		public static String weaponsChangeSql( byte[] x ) {			return "weapons=" + x;		}
+		public static String assistsChangeSql( byte[] x ) {			return "assists=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uname = o.getString( "uname" );

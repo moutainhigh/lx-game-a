@@ -148,7 +148,7 @@ public abstract class IProp implements ITransformStream{
 	}
 	
 	/**
-	 * 写入全部数据到buffer
+	 * 写入全部数据到buffer - 只用于数据库保存
 	 * @param buf
 	 */
 	public void putBuffer( ByteBuf buffer ) {

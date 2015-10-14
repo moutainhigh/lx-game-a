@@ -61,15 +61,13 @@ public class CreateEvent extends IEvent {
 			// 创建一个舰队
 			player.getFleets().addFleet();
 			player.getFleets().addFleet();
-			player.getFleets().addFleet();
-			player.getFleets().addFleet();
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf response = buildEmptyPackage( ctx, 6 );
+		ByteBuf response = buildEmptyPackage( ctx, 1024 );
 		response.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			FleetControl fleetCtr = player.getFleets();

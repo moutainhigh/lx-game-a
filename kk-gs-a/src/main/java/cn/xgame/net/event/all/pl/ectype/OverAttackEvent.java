@@ -108,16 +108,16 @@ public class OverAttackEvent extends IEvent{
 					prop.putBaseBuffer(response);
 					prop.buildTransformStream(response);
 				}
-			}
-			// 下面是发送关系评分的
-			response.writeByte( starLevel );
-			response.writeByte( awards1.size() );
-			for( AwardInfo award : awards1 )
-				award.buildTransformStream(response);
-			response.writeByte( ret1.size() );
-			for( IProp prop : ret1 ){
-				prop.putBaseBuffer(response);
-				prop.buildTransformStream(response);
+				// 下面是发送关系评分的
+				response.writeByte( starLevel );
+				response.writeByte( awards1.size() );
+				for( AwardInfo award : awards1 )
+					award.buildTransformStream(response);
+				response.writeByte( ret1.size() );
+				for( IProp prop : ret1 ){
+					prop.putBaseBuffer(response);
+					prop.buildTransformStream(response);
+				}
 			}
 		}
 		if( code == ErrorCode.COMBATTIME_NOTOVER ){

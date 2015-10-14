@@ -1,4 +1,4 @@
-package cn.xgame.a.player.u.o;
+package cn.xgame.a.player.u.classes;
 
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.utils.Logs;
@@ -67,6 +67,7 @@ public abstract class IPlayer {
 	/**
 	 * 改变货币
 	 * @param value 添加用正号  减少用负号
+	 * @return 返回当前货币 -1表示货币不足
 	 */
 	public int changeCurrency( int value ) {
 		if( currency + value < 0  )

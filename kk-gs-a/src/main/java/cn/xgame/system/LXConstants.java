@@ -12,6 +12,8 @@ public class LXConstants {
 	
 	/** 聊天ID位数 */
 	public static final int CHAT_UID 			= 1000000;
+
+	
 	
 
 	
@@ -34,6 +36,8 @@ public class LXConstants {
 	/** 队伍频道人数上限 */
 	public static int TEAMAXN_MAXMEMBER		= 4;
 	
+	/** 邮件持续时间 */
+	public static int MAIL_DURATION  		= 86400;
 	
 	
 	/**

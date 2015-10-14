@@ -1,4 +1,4 @@
-package cn.xgame.a.player.u.o;
+package cn.xgame.a.player.u.classes;
 
 import x.javaplus.util.lua.Lua;
 import cn.xgame.a.player.u.Player;

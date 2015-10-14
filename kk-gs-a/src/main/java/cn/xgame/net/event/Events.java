@@ -23,6 +23,10 @@ import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
+import cn.xgame.net.event.all.pl.mail.ApplyMailEvent;
+import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
+import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
+import cn.xgame.net.event.all.pl.mail.SendMailEvent;
 import cn.xgame.net.event.all.pl.manor.AppManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
@@ -106,6 +110,11 @@ public enum Events {
 	// 领地
 	APP_MANOR					( 1040, 	new AppManorEvent() ),
 	BUY_MANOR					( 1041, 	new BuyManorEvent() ),
+	// 邮件
+	APPLY_MAIL					( 1051, 	new ApplyMailEvent() ),
+	SEND_MAIL					( 1052, 	new SendMailEvent() ),
+	READ_MAIL					( 1053, 	new ReadMailEvent() ),
+	EXTRACT_ADJUNCT				( 1054, 	new ExtractAdjunctEvent() ),
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),

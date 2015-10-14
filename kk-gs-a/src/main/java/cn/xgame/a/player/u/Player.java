@@ -10,10 +10,11 @@ import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.fleet.FleetControl;
+import cn.xgame.a.player.mail.MailControl;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.tavern.TavernControl;
-import cn.xgame.a.player.u.o.DBBaseUID;
-import cn.xgame.a.player.u.o.IPlayer;
+import cn.xgame.a.player.u.classes.DBBaseUID;
+import cn.xgame.a.player.u.classes.IPlayer;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -53,6 +54,10 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 舰队
 	private FleetControl		fleets			= new FleetControl( this );
+	
+	// 邮件
+	private MailControl			mails			= new MailControl( this );
+	
 	
 	//////////////////////////////////////////////////////////////////////
 	// 所有道具唯一ID基础值 
@@ -94,6 +99,8 @@ public class Player extends IPlayer implements ITransformStream{
 		chatAxns.fromBytes( dto.getChatAxns() );
 		// 酒馆数据
 		taverns.fromBytes( dto.getTaverns() );
+		// 邮件
+		mails.fromBytes( dto.getMails() );
 		
 		////-------------------------下面不是玩家数据库的  但是需要在获取玩家的时候一起取出来
 		// 取出所有道具类型的基础UID
@@ -119,6 +126,8 @@ public class Player extends IPlayer implements ITransformStream{
 		dto.setTaverns( taverns.toBytes() );
 		// 舰队
 		dto.setFleets( fleets.toBytes() );
+		// 邮件
+		dto.setMails( mails.toBytes() );
 	}
 	
 	@Override
@@ -228,5 +237,9 @@ public class Player extends IPlayer implements ITransformStream{
 	public FleetControl getFleets() {
 		return fleets;
 	}
+	public MailControl getMails() {
+		return mails;
+	}
+
 	
 }
