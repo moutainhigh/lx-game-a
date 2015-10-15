@@ -67,11 +67,26 @@ public class IDepot {
 	 * @param nid
 	 * @return
 	 */
-	public List<IProp> getPropListInNid( int nid ) {
+	public List<IProp> getPropsByNid( int nid ) {
 		List<IProp> ret = Lists.newArrayList();
 		for( IProp prop : props ){
 			if( prop.getNid() == nid ){
 				ret.add( prop );
+			}
+		}
+		return ret;
+	}
+	
+	/**
+	 * 根据表格ID 获取道具列表 （这里是拷贝一份）
+	 * @param nid
+	 * @return
+	 */
+	public List<IProp> getPropsByNidClone( int nid ) {
+		List<IProp> ret = Lists.newArrayList();
+		for( IProp prop : props ){
+			if( prop.getNid() == nid ){
+				ret.add( prop.clone() );
 			}
 		}
 		return ret;

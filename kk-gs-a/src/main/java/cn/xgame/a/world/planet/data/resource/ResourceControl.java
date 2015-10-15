@@ -121,7 +121,7 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 			int nid 	= Integer.parseInt( o[0] );
 			int count	= Integer.parseInt( o[1] );
 			// 获取 对应ID的 所有道具列表
-			List<IProp> props = getPropInClone( nid );
+			List<IProp> props = getPropsByNidClone( nid );
 			if( props.isEmpty() ) return false;
 			// 下面开始扣除 拷贝的数据
 			for( IProp prop : props ){
@@ -142,23 +142,6 @@ public class ResourceControl extends IDepot implements IArrayStream,ITransformSt
 		}
 		return true;
 	}
-
-	// 获取一份拷贝的道具
-	private List<IProp> getPropInClone( int nid ) {
-		List<IProp> ret = Lists.newArrayList();
-		List<IProp> ls = getAll();
-		for( IProp prop : ls ){
-			if( prop.getNid() == nid ){
-				ret.add( prop.clone() );
-			}
-		}
-		return ret;
-	}
-
-
-	
-	
-	
 
 
 }

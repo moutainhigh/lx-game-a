@@ -14,13 +14,15 @@ public class LXConstants {
 	public static final int CHAT_UID 			= 1000000;
 
 	
+
+	
 	
 
 	
 	
 	//--------------------------通过配置获取
 	
-	/** 酒馆刷新时间 单位秒 */
+	/** 酒馆刷新时间 (单位秒) */
 	public static int TAVERN_UPDATE_TIME 	= 600;
 
 	/** 货币表格ID */
@@ -36,8 +38,11 @@ public class LXConstants {
 	/** 队伍频道人数上限 */
 	public static int TEAMAXN_MAXMEMBER		= 4;
 	
-	/** 邮件持续时间 */
+	/** 邮件持续时间 (单位秒)*/
 	public static int MAIL_DURATION  		= 86400;
+	
+	/** 玩家领地建筑产出时间  (单位秒)*/
+	public static int BUILDING_PRODUCE_TIME = 60;
 	
 	
 	/**

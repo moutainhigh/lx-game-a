@@ -27,8 +27,12 @@ import cn.xgame.net.event.all.pl.mail.ApplyMailEvent;
 import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
 import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
 import cn.xgame.net.event.all.pl.mail.SendMailEvent;
-import cn.xgame.net.event.all.pl.manor.AppManorEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyGoodsEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
+import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
+import cn.xgame.net.event.all.pl.manor.DestroyBuildingEvent;
+import cn.xgame.net.event.all.pl.manor.UpgradeBuildingEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchMeEvent;
@@ -108,8 +112,12 @@ public enum Events {
 	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),
 	// 领地
-	APP_MANOR					( 1040, 	new AppManorEvent() ),
+	APP_MANOR					( 1040, 	new ApplyManorEvent() ),
 	BUY_MANOR					( 1041, 	new BuyManorEvent() ),
+	APPLY_GOODS					( 1042, 	new ApplyGoodsEvent() ),
+	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent() ),
+	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent() ),
+	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent() ),
 	// 邮件
 	APPLY_MAIL					( 1051, 	new ApplyMailEvent() ),
 	SEND_MAIL					( 1052, 	new SendMailEvent() ),

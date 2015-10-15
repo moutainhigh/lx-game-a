@@ -213,11 +213,14 @@ public class Player extends IPlayer implements ITransformStream{
 	public DBBaseUID getPropBaseUid() {
 		return propBaseUid;
 	}
-	public DepotControl getDepots() {
+	public DepotControl getAllDepots() {
 		return depots;
 	}
 	public StarDepot getDepots( int snid ) {
 		return depots.getDepot(snid);
+	}
+	public StarDepot getDepots() {
+		return depots.getDepot(getCountryId());
 	}
 	public DockControl getDocks() {
 		return docks;
