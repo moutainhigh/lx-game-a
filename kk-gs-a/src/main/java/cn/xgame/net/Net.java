@@ -5,7 +5,6 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.netty.Netty.Attr;
-import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.utils.Logs;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -16,9 +15,9 @@ public class Net {
 	
 	public void packageRun( ChannelHandlerContext ctx, short packageNo, byte[] data) {
 		
-		Events event 		= Events.fromNum( packageNo );
+		Events event 		= Events.fromNumber( packageNo );
 		
-		Logs.debug( ctx, "申请包 " + packageNo );
+		Logs.debug( ctx, "请求包 " + buildPrefixStr(event) );
 		try{
 			if( event == null ) throw new Exception( "event为空" );
 	
@@ -29,11 +28,11 @@ public class Net {
 			switch( event ){
 			case PLAYER_LOGIN: // 是登陆游戏
 				if( UID != null ) throw new Exception( "已经登陆游戏" );
-				((LoginEvent)event.getEventInstance()).run( ctx, bufferData );
+				((LoginEvent)event.toInstance()).run( ctx, bufferData );
 				break;
 			case PLAYER_CREATE:// 是创建角色
 				if( UID != null ) throw new Exception( "已经登陆游戏" );
-				((CreateEvent)event.getEventInstance()).run( ctx, bufferData );
+				((CreateEvent)event.toInstance()).run( ctx, bufferData );
 				break;
 			default:// 游戏其他操作
 				if( UID == null ) throw new Exception( "还没登陆游戏" );
@@ -42,9 +41,8 @@ public class Net {
 			}
 				
 		} catch (Exception e) {
-			Logs.error( "分发包错误 包号("+packageNo+") IP(" + IP.formAddress(ctx)+ ") " + e.getMessage() );
+			Logs.error( ctx, "请求包失败  包号("+buildPrefixStr(event)+")" + e.getMessage() );
 		}
-		
 	}
 
 	//有用户退出
@@ -54,5 +52,11 @@ public class Net {
 		PlayerManager.o.exit( UID );
 	}
 	
+	
+	//针对此类 做一个输出前缀包装
+	private static String buildPrefixStr( Events event ) {
+		if( event == null ) return "null";
+		return event.toNumber() + " " + event.toDesc();
+	}
 	
 }

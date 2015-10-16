@@ -79,7 +79,7 @@ public class ParticipateExpelEvent extends IEvent{
 		for( Child child : childs ){
 			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( player == null || !player.isOnline() ) continue;
-			((Update_2252)Events.UPDATE_2252.getEventInstance()).run( player, isAdd, oust, x );
+			((Update_2252)Events.UPDATE_2252.toInstance()).run( player, isAdd, oust, x );
 		}
 	}
 }

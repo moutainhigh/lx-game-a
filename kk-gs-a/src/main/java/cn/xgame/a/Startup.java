@@ -114,7 +114,7 @@ public class Startup {
 		Logs.debug( "登录服 连接成功" );
 		
 		// 这里开始 登录 登录服务器
-		((ConnectEvent)Events.GS_CONNECT.getEventInstance()).run(  );
+		((ConnectEvent)Events.GS_CONNECT.toInstance()).run(  );
 	}
 
 	private static void initSystemProperties() {

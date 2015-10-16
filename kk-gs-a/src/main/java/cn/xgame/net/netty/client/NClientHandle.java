@@ -35,7 +35,7 @@ public class NClientHandle extends ChannelInboundHandlerAdapter {
 				if ( !checkInputData(head, foot) ) //
 					throw new Exception( "包头包尾错误" );
 
-				Events event = Events.fromNum( packageNo );
+				Events event = Events.fromNumber( packageNo );
 				if( event == null ) throw new Exception( "event为空" );
 				ByteBuf bufferData 	= Unpooled.copiedBuffer(data);
 					

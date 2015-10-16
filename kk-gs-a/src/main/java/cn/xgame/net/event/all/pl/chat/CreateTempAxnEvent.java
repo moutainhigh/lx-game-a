@@ -67,7 +67,7 @@ public class CreateTempAxnEvent extends IEvent{
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED && to != null ){
-			((Update_3010)Events.UPDATE_3010.getEventInstance()).run( to, axn.getAxnId() );
+			((Update_3010)Events.UPDATE_3010.toInstance()).run( to, axn.getAxnId() );
 		}
 		
 	}

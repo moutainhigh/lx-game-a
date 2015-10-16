@@ -15,7 +15,6 @@ import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
-import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -25,7 +24,7 @@ import cn.xgame.utils.LuaUtil;
  */
 public class EctypeControl implements IArrayStream{
 
-	private Player root;
+//	private Player root;
 	
 	// 各个星球副本
 	private List<StarEctype> sectypes 	= Lists.newArrayList();
@@ -34,7 +33,7 @@ public class EctypeControl implements IArrayStream{
 	private List<ChapterEctype> special = Lists.newArrayList();
 	
 	public EctypeControl( Player player ) {
-		root = player;
+//		root = player;
 	}
 	
 	@Override
@@ -76,8 +75,6 @@ public class EctypeControl implements IArrayStream{
 			o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
 			sectypes.add( o );
 		}
-		// 特殊限时副本
-		// TODO
 	}
 	
 	/**
@@ -118,8 +115,9 @@ public class EctypeControl implements IArrayStream{
 	 */
 	public void updateNormalEctype(){
 		for( StarEctype stare : sectypes ){
-			stare.getNormal().clear();
-			stare.getNormal().addAll( updateNormalEctype( stare.getSnid() ) );
+			List<ChapterEctype> normal = stare.getNormal();
+			normal.clear();
+			normal.addAll( updateNormalEctype( stare.getSnid() ) );
 		}
 	}
 	private List<ChapterEctype> updateNormalEctype( int snid ) {
@@ -139,8 +137,8 @@ public class EctypeControl implements IArrayStream{
 				ret.add(ectype);
 			}
 		}
-		if( !ret.isEmpty() )
-			Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
+//		if( !ret.isEmpty() )
+//			Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
 		return ret;
 	}
 	

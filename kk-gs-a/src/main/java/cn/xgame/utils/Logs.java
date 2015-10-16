@@ -24,6 +24,7 @@ public class Logs {
 	public static void error( Object log, Exception e ) { logger.error( "[ systen ]: "+log, e ); }
 	public static void error( IPlayer player, Object log ) { logger.error( buildPrefixStr( player ) + log ); }
 	public static void error( IPlayer player, Object log, Exception e ) { logger.error( buildPrefixStr( player ) + log , e ); }
+	public static void error( ChannelHandlerContext ctx, Object log ) { logger.error( "[ "+IP.formAddress(ctx)+" ]: " + log ); }
 	
 	/** debug输出 */
 	public static void debug( Object log ) { if( SystemCfg.DEBUG ) logger.debug( "[ systen ]: "+log ); }

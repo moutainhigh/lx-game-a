@@ -111,7 +111,7 @@ public class LoginEvent extends IEvent{
 			player.rLastGsid();
 		}
 		
-		Logs.debug( player, "登录游戏 code=" + code + ", 逻辑耗时：" + Time.endTimer() + "毫秒" );
+		Logs.debug( ctx, "登录游戏 " + code + ", 逻辑耗时：" + Time.endTimer() + "毫秒" );
 	}
 
 }

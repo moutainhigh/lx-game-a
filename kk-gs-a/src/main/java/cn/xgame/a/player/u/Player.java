@@ -164,7 +164,7 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	/** 记录 最后一次登录的服务器ID */
 	public void rLastGsid() {
-		((RLastGsidEvent)Events.RLAST_GSID.getEventInstance()).run( getUID() );
+		((RLastGsidEvent)Events.RLAST_GSID.toInstance()).run( getUID() );
 	}
 
 	

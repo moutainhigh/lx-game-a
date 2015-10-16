@@ -123,7 +123,7 @@ public class ChatManager{
 	private void sendMsg( int axnId, ChannelHandlerContext socket, Player sponsor, String content) {
 		if( content.isEmpty() || socket == null || !socket.channel().isActive() )
 			return;
-		((Update_3000)Events.UPDATE_3000.getEventInstance()).run( axnId, socket, sponsor, content );
+		((Update_3000)Events.UPDATE_3000.toInstance()).run( axnId, socket, sponsor, content );
 	}
 
 

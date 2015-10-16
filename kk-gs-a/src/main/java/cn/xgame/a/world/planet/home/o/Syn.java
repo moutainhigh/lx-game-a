@@ -32,7 +32,7 @@ public class Syn {
 			if( player == null || !player.isOnline() )
 				continue;
 			
-			((Update_2211)Events.UPDATE_2211.getEventInstance()).run( player, spe );
+			((Update_2211)Events.UPDATE_2211.toInstance()).run( player, spe );
 		}
 	}
 	
@@ -46,7 +46,7 @@ public class Syn {
 		for( Child child : childs ){
 			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( player == null || !player.isOnline() ) continue;
-			((Update_2241)Events.UPDATE_2241.getEventInstance()).run( player, status, voteBuild );
+			((Update_2241)Events.UPDATE_2241.toInstance()).run( player, status, voteBuild );
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class Syn {
 		for( Child child : childs ){
 			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( player == null || !player.isOnline() ) continue;
-			((Update_2231)Events.UPDATE_2231.getEventInstance()).run( player, status, unTechs );
+			((Update_2231)Events.UPDATE_2231.toInstance()).run( player, status, unTechs );
 		}	
 	}
 	
@@ -73,7 +73,7 @@ public class Syn {
 		for( Child child : childs ){
 			Player player = PlayerManager.o.getPlayerFmOnline( child.getUID() );
 			if( player == null || !player.isOnline() ) continue;
-			((Update_2221)Events.UPDATE_2221.getEventInstance()).run( player, update );
+			((Update_2221)Events.UPDATE_2221.toInstance()).run( player, update );
 		}
 	}
 

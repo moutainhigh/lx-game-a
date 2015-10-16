@@ -8,6 +8,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
+import x.javaplus.util.Util.Time;
 
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
@@ -20,6 +21,7 @@ import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
+import cn.xgame.utils.Logs;
 
 /**
  * 创建角色
@@ -33,6 +35,8 @@ public class CreateEvent extends IEvent {
 	}
 
 	public void run( ChannelHandlerContext ctx, ByteBuf data ) throws IOException {
+		
+		Time.beginTimer();
 		
 		String UID 	= RW.readString(data);
 		String key	= RW.readString(data);
@@ -109,6 +113,8 @@ public class CreateEvent extends IEvent {
 			// 保存数据库一次
 //			PlayerManager.o.update(player);
 		}
+		
+		Logs.debug( ctx, "创建角色 " + code + ", 逻辑耗时：" + Time.endTimer() + "毫秒" );
 	}
 
 }

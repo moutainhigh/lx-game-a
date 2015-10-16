@@ -87,101 +87,101 @@ import cn.xgame.net.event.all.pl.update.Update_3021;
 public enum Events {
 
 	//-----------------登录服务器
-	GS_CONNECT					( 201, 		new ConnectEvent() ),
-	UPDATA_PEOPLE				( 210, 		new UpdatePeopleEvent() ),
-	RLAST_GSID					( 220, 		new RLastGsidEvent() ),
+	GS_CONNECT					( 201, 		new ConnectEvent()				, "" ),
+	UPDATA_PEOPLE				( 210, 		new UpdatePeopleEvent()			, "" ),
+	RLAST_GSID					( 220, 		new RLastGsidEvent()			, "" ),
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//-----------------玩家
-	PLAYER_LOGIN				( 1001,		new LoginEvent() ),
-	PLAYER_CREATE				( 1002, 	new CreateEvent() ),
+	PLAYER_LOGIN				( 1001,		new LoginEvent() 				, "登录游戏" ),
+	PLAYER_CREATE				( 1002, 	new CreateEvent() 				, "创建角色" ),
 	// 星图
-	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent() ),
-	SAIL_OUT					( 1015, 	new SailoutEvent() ),
-	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent() ),
+	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "申请星图信息" ),
+	SAIL_OUT					( 1015, 	new SailoutEvent()				, "出航" ),
+	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent()		, "修改航线" ),
 	// 舰船
-	MOUNT_HOLD					( 1021, 	new MountHoldEvent() ),
-	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent() ),
-	MOUNT_EQUIP					( 1023, 	new MountEquipEvent() ),
-	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent() ),
-	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() ),
-	UNLOAD_CAPTAIN				( 1026, 	new UnloadCaptainEvent() ),
-	FLEET_INTO					( 1027, 	new FleetIntoEvent() ),
-	FLEET_AWAY					( 1028, 	new FleetAwayEvent() ),
+	MOUNT_HOLD					( 1021, 	new MountHoldEvent()			, "舰船操作-放入船仓" ),
+	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
+	MOUNT_EQUIP					( 1023, 	new MountEquipEvent()			, "舰船操作-装上装备" ),
+	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent()			, "舰船操作-取下装备" ),
+	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() 		, "舰船操作-指派舰长" ),
+	UNLOAD_CAPTAIN				( 1026, 	new UnloadCaptainEvent()		, "舰船操作-卸下舰长" ),
+	FLEET_INTO					( 1027, 	new FleetIntoEvent()			, "舰船操作-实装舰队" ),
+	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰船操作-实装舰队" ),
 	// 舰长
-	EAT_EQUIP					( 1031, 	new EatEquipEvent() ),
-	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent() ),
+	EAT_EQUIP					( 1031, 	new EatEquipEvent()				, "舰长操作-装上装备" ),
+	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent()			, "舰长操作-吃亲密度丹" ),
 	// 领地
-	APP_MANOR					( 1040, 	new ApplyManorEvent() ),
-	BUY_MANOR					( 1041, 	new BuyManorEvent() ),
-	APPLY_GOODS					( 1042, 	new ApplyGoodsEvent() ),
-	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent() ),
-	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent() ),
-	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent() ),
-	TAKE_GOODS					( 1046, 	new TakeGoodsEvent() ),
+	APP_MANOR					( 1040, 	new ApplyManorEvent() 			, "领地操作-申请领地信息" ),
+	BUY_MANOR					( 1041, 	new BuyManorEvent()				, "领地操作-购买领地" ),
+	APPLY_GOODS					( 1042, 	new ApplyGoodsEvent()			, "领地操作-申请产出" ),
+	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent()		, "领地操作-建造建筑" ),
+	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent()		, "领地操作-建造升级" ),
+	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建造销毁" ),
+	TAKE_GOODS					( 1046, 	new TakeGoodsEvent()			, "领地操作-收取产出" ),
 	// 邮件
-	APPLY_MAIL					( 1051, 	new ApplyMailEvent() ),
-	SEND_MAIL					( 1052, 	new SendMailEvent() ),
-	READ_MAIL					( 1053, 	new ReadMailEvent() ),
-	EXTRACT_ADJUNCT				( 1054, 	new ExtractAdjunctEvent() ),
+	APPLY_MAIL					( 1051, 	new ApplyMailEvent()			, "邮件操作-申请邮件列表" ),
+	SEND_MAIL					( 1052, 	new SendMailEvent()				, "邮件操作-发送邮件" ),
+	READ_MAIL					( 1053, 	new ReadMailEvent()				, "邮件操作-读取邮件" ),
+	EXTRACT_ADJUNCT				( 1054, 	new ExtractAdjunctEvent()		, "邮件操作-提取附件" ),
 	
 	//-----------------星球
-	APPLY_PLANET				( 1101, 	new ApplyHomeEvent() ),
-	APPLY_PLANET_RES			( 1111, 	new ApplyResEvent() ),
-	APPLY_PLANET_SPE			( 1112, 	new ApplyShopEvent() ),
-	APPLY_ALLLAFFAIR			( 1113, 	new ApplyAlllAffairEvent() ),
-	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent() ),
-	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent() ),
-	APPLY_EXCH					( 1116, 	new ApplyExchEvent() ),
-	APPLY_EXCHME				( 1117, 	new ApplyExchMeEvent() ),
-	DONATE_STUFF				( 1121, 	new DonateStuffEvent() ),
+	APPLY_PLANET				( 1101, 	new ApplyHomeEvent()			, "星球操作-申请基础数据" ),
+	APPLY_PLANET_RES			( 1111, 	new ApplyResEvent()				, "星球操作-申请资源" ),
+	APPLY_PLANET_SPE			( 1112, 	new ApplyShopEvent()			, "星球操作-申请商店" ),
+	APPLY_ALLLAFFAIR			( 1113, 	new ApplyAlllAffairEvent()		, "星球操作-申请政务" ),
+	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent()			, "星球操作-申请元老数据" ),
+	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent()			, "星球操作-申请酒馆" ),
+	APPLY_EXCH					( 1116, 	new ApplyExchEvent()			, "星球操作-申请交易所数据" ),
+	APPLY_EXCHME				( 1117, 	new ApplyExchMeEvent()			, "星球操作-申请交易所自己的数据" ),
+	DONATE_STUFF				( 1121, 	new DonateStuffEvent()			, "星球操作-捐献资源" ),
 	
 	// 建筑
-	SPONSOR_BUILDVOTE			( 1131, 	new SponsorBuildVoEvent() ),
-	PARTICIPATE_BUILDVOTE		( 1132, 	new ParticipateBuildVoEvent() ),
+	SPONSOR_BUILDVOTE			( 1131, 	new SponsorBuildVoEvent()		, "星球操作-发起建筑投票" ),
+	PARTICIPATE_BUILDVOTE		( 1132, 	new ParticipateBuildVoEvent()	, "星球操作-参与建筑投票" ),
 	// 科技
-	SPONSOR_TECHVOTE			( 1141, 	new SponsorTechVoEvent() ),
-	PARTICIPATE_TECHVOTE		( 1142, 	new ParticipateTechVoEvent() ),
+	SPONSOR_TECHVOTE			( 1141, 	new SponsorTechVoEvent()		, "星球操作-发起科技投票" ),
+	PARTICIPATE_TECHVOTE		( 1142, 	new ParticipateTechVoEvent()	, "星球操作-参与科技投票" ),
 	// 元老
-	SPONSOR_EXPEL				( 1151, 	new SponsorExpelEvent() ),
-	PARTICIPATE_EXPEL			( 1152, 	new ParticipateExpelEvent() ),
+	SPONSOR_EXPEL				( 1151, 	new SponsorExpelEvent()			, "星球操作-驱逐元老投票" ),
+	PARTICIPATE_EXPEL			( 1152, 	new ParticipateExpelEvent()		, "星球操作-参与驱逐元老投票" ),
 	//-----------------副本
-	APPLY_ACCECTYPE				( 1201, 	new ApplyEctypeEvent() ),
-	START_ATTACK				( 1202, 	new StartAttackEvent() ),
-	OVER_ATTACK					( 1211, 	new OverAttackEvent() ),
+	APPLY_ACCECTYPE				( 1201, 	new ApplyEctypeEvent()			, "副本操作-申请副本列表" ),
+	START_ATTACK				( 1202, 	new StartAttackEvent()			, "副本操作-出击" ),
+	OVER_ATTACK					( 1211, 	new OverAttackEvent()			, "副本操作-申请结束" ),
 	//-----------------交易
-	SHOP_BUY					( 1301, 	new ShopBuyEvent() ),
-	TAVERN_BUY					( 1311, 	new TavernBuyEvent() ),
-	EXCH_ADDED					( 1321, 	new ExchAddedEvent() ),
-	EXCH_BUY					( 1322, 	new ExchBuyEvent() ),
-	EXCH_COLLECT				( 1323, 	new ExchCollectEvent() ),
-	EXCH_SOLDOUT				( 1324, 	new ExchSoldoutEvent() ),
+	SHOP_BUY					( 1301, 	new ShopBuyEvent()				, "星球操作-购买商店道具" ),
+	TAVERN_BUY					( 1311, 	new TavernBuyEvent()			, "星球操作-购买酒馆道具" ),
+	EXCH_ADDED					( 1321, 	new ExchAddedEvent()			, "交易所-上架" ),
+	EXCH_BUY					( 1322, 	new ExchBuyEvent()				, "交易所-购买" ),
+	EXCH_COLLECT				( 1323, 	new ExchCollectEvent()			, "交易所-收款" ),
+	EXCH_SOLDOUT				( 1324, 	new ExchSoldoutEvent()			, "交易所-下架" ),
 	
 	//-----------------聊天
-	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent() ),
-	CREATE_TEMPAXN				( 3011, 	new CreateTempAxnEvent() ),
-	INVITE_TEMPAXN				( 3012, 	new InviteTempAxnEvent() ),
+	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent()			, "聊天系统-发起聊天" ),
+	CREATE_TEMPAXN				( 3011, 	new CreateTempAxnEvent()		, "聊天系统-创建一个临时频道" ),
+	INVITE_TEMPAXN				( 3012, 	new InviteTempAxnEvent()		, "聊天系统-邀请玩家加入临时频道" ),
 	// 组队
-	INVITE_TEAM					( 3022, 	new InviteTeamEvent() ),
-	ANSWER_TEAM					( 3023, 	new AnswerTeamEvent() ),
+	INVITE_TEAM					( 3022, 	new InviteTeamEvent()			, "聊天系统-邀请组队" ),
+	ANSWER_TEAM					( 3023, 	new AnswerTeamEvent()			, "聊天系统-是否同意加入队伍" ),
 	
 	
 	//-----------------更新包
-	UPDATE_2101					( 2101, 	new Update_2101() ),
-	UPDATE_2111					( 2111, 	new Update_2111() ),
+	UPDATE_2101					( 2101, 	new Update_2101()				, "更新包-" ),
+	UPDATE_2111					( 2111, 	new Update_2111()				, "更新包-" ),
 	
-	UPDATE_2201					( 2201, 	new Update_2201() ),
-	UPDATE_2211					( 2211, 	new Update_2211() ),
-	UPDATE_2221					( 2221, 	new Update_2221() ),
-	UPDATE_2231					( 2231, 	new Update_2231() ),
-	UPDATE_2241					( 2241, 	new Update_2241() ),
-	UPDATE_2252					( 2252, 	new Update_2252() ),
+	UPDATE_2201					( 2201, 	new Update_2201()				, "更新包-" ),
+	UPDATE_2211					( 2211, 	new Update_2211()				, "更新包-" ),
+	UPDATE_2221					( 2221, 	new Update_2221()				, "更新包-" ),
+	UPDATE_2231					( 2231, 	new Update_2231()				, "更新包-" ),
+	UPDATE_2241					( 2241, 	new Update_2241()				, "更新包-" ),
+	UPDATE_2252					( 2252, 	new Update_2252()				, "更新包-" ),
 	// 聊天
-	UPDATE_3000					( 3000, 	new Update_3000() ),
-	UPDATE_3010					( 3010, 	new Update_3010() ),
-	UPDATE_3020					( 3020, 	new Update_3020() ),
-	UPDATE_3021					( 3021, 	new Update_3021() ),
+	UPDATE_3000					( 3000, 	new Update_3000()				, "更新包-" ),
+	UPDATE_3010					( 3010, 	new Update_3010()				, "更新包-" ),
+	UPDATE_3020					( 3020, 	new Update_3020()				, "更新包-" ),
+	UPDATE_3021					( 3021, 	new Update_3021()				, "更新包-" ),
 	
 
 	
@@ -189,18 +189,29 @@ public enum Events {
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	TEST						( Short.MAX_VALUE-1, 	new TestEevet() );
+	TEST						( Short.MAX_VALUE-1, 	new TestEevet()		, "测试包" );
 	
 	
 	private final short			number;
 	private final IEvent 		eventInstance;
+	private final String		desc;
 	
+	Events( int value, IEvent eventInstance, String desc ) {
+		if( value >= Short.MAX_VALUE || value < 0 ){
+			throw new IllegalArgumentException( "包号不符合规范：" + value );
+		}
+		this.number 		= (short) value;
+		this.eventInstance 	= eventInstance;
+		this.desc			= desc;
+		this.eventInstance.setEventId( number );
+	}
 	Events( int value, IEvent eventInstance ) {
 		if( value >= Short.MAX_VALUE || value < 0 ){
 			throw new IllegalArgumentException( "包号不符合规范：" + value );
 		}
 		this.number 		= (short) value;
 		this.eventInstance 	= eventInstance;
+		this.desc			= "";
 		this.eventInstance.setEventId( number );
 	}
 	
@@ -216,13 +227,16 @@ public enum Events {
 		}
 	}
 	
-	public IEvent getEventInstance() {
+	public IEvent toInstance() {
 		return eventInstance;
 	}
-	public short toNum() {
+	public short toNumber() {
 		return number;
 	}
-	public static Events fromNum( int n ){
+	public String toDesc(){
+		return desc;
+	}
+	public static Events fromNumber( int n ){
 		return numToEnum.get( (short)n );
 	}
 	

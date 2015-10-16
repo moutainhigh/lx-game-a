@@ -73,7 +73,7 @@ public class InviteTempAxnEvent extends IEvent {
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED && to != null ){
-			((Update_3010)Events.UPDATE_3010.getEventInstance()).run( to, axnId );
+			((Update_3010)Events.UPDATE_3010.toInstance()).run( to, axnId );
 			AxnInfo axn 		= ChatManager.o.getChatControl().getAXNInfo(axnId);
 			List<IAxnCrew> crews = axn.getAxnCrews();
 			for( IAxnCrew crew : crews ){
@@ -81,7 +81,7 @@ public class InviteTempAxnEvent extends IEvent {
 					continue;
 				if( crew.getUid().equals( player.getUID() ) )
 					continue;
-				((Update_3010)Events.UPDATE_3010.getEventInstance()).run( crew.getSocket(), axnId, to );
+				((Update_3010)Events.UPDATE_3010.toInstance()).run( crew.getSocket(), axnId, to );
 			}
 		}
 	}

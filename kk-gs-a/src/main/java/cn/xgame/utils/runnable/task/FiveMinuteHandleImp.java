@@ -21,7 +21,7 @@ public class FiveMinuteHandleImp extends IThread{
 		try {
 			
 			// 给登录服务器 更新 服务器人数
-			((UpdatePeopleEvent)Events.UPDATA_PEOPLE.getEventInstance()).run();
+			((UpdatePeopleEvent)Events.UPDATA_PEOPLE.toInstance()).run();
 			
 			// *暂时在这里更新体制  最后要放到每日那里
 			WorldManager.o.runUpdateInstitution();
