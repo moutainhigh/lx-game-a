@@ -74,7 +74,6 @@ public class BuildBuildingEvent extends IEvent {
 			}
 		}
 		sendPackage( player.getCtx(), buffer );
-		
 	}
 
 	/**

@@ -12,6 +12,7 @@ import cn.xgame.a.player.manor.classes.BuildingType;
 import cn.xgame.a.player.manor.classes.Goods;
 import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.system.LXConstants;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -36,6 +37,26 @@ public class Building extends IBuilding{
 		setEndtime( (int) (System.currentTimeMillis()/1000 + LXConstants.BUILDING_PRODUCE_TIME) );
 	}
 
+	@Override
+	public void putBuffer(ByteBuf buf) {
+		buf.writeByte( produces.size() );
+		for( Goods g : produces ){
+			buf.writeInt( g.getId() );
+			buf.writeFloat( g.getCount() );
+		}
+	}
+	@Override
+	public void wrapBuffer(ByteBuf buf) {
+		produces.clear();
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			Goods g = new Goods();
+			g.setId( buf.readInt() );
+			g.addCount( buf.readFloat() );
+			produces.add(g);
+		}
+	}
+	
 	/**
 	 * 塞入产出 - 前端
 	 * @param buffer
@@ -96,6 +117,8 @@ public class Building extends IBuilding{
 		// 通过lua算出产出
 		Lua lua = LuaUtil.getGameData();
 		lua.getField( "manorBuildingProduce" ).call( 0, this, count, getSumScale(), getProduceTemplet() );
+		
+		Logs.debug( "当前建筑总产出" + produces );
 	}
 
 	/**

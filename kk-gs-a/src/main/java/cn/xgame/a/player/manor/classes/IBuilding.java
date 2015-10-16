@@ -1,9 +1,12 @@
 package cn.xgame.a.player.manor.classes;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.BbuildingPo;
@@ -14,7 +17,7 @@ import cn.xgame.system.LXConstants;
  * @author deng		
  * @date 2015-10-15 上午11:19:30
  */
-public class IBuilding implements ITransformStream{
+public class IBuilding implements ITransformStream,IBufferStream{
 
 	private BbuildingPo templet ;
 	// 产出列表模板
@@ -51,9 +54,24 @@ public class IBuilding implements ITransformStream{
 			sumScale	+= goods.getCount();
 		}
 		// 排个序  个数从小到大
-		
+		Collections.sort( produceTemplet, new Comparator<Goods>() {
+			@Override
+			public int compare( Goods o1, Goods o2 ) {
+				return (int) (o1.getCount() - o2.getCount());
+			}
+		} );
 	}
 	
+	@Override
+	public void putBuffer(ByteBuf buf) {
+		buf.writeByte( index );
+		buf.writeInt( endtime );
+	}
+	@Override
+	public void wrapBuffer(ByteBuf buf) {
+		index	= buf.readByte();
+		endtime	= buf.readInt();
+	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {

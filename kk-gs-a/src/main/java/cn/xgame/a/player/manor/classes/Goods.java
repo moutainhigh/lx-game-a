@@ -27,4 +27,7 @@ public class Goods {
 		this.count = 0;
 	}
 	
+	public String toString(){
+		return "["+id+"-"+count+"]";
+	}
 }

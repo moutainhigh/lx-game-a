@@ -3,8 +3,12 @@ package cn.xgame.a.player.manor;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
+import x.javaplus.util.Resources;
+import x.javaplus.util.lua.Lua;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,6 +21,7 @@ import cn.xgame.a.player.manor.info.UnBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ReclaimcapacityPo;
+import cn.xgame.utils.Logs;
 
 /**
  * 玩家领地 操作中心
@@ -41,24 +46,36 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		builds.clear();
 		ByteBuf buff = Unpooled.copiedBuffer(data);
 		territory = CsvGen.getReclaimcapacityPo( buff.readInt() );
-//		byte size = buff.readByte();
-//		for( int i = 0; i < size; i++ ){
-//			IBuilding build = new IBuilding( buff.readInt() );
-//			build.setIndex( buff.readByte() );
-//			builds.add(build);
-//		}
+		BuildingType[] values = BuildingType.values();
+		byte size = buff.readByte();
+		for( int i = 0; i < size; i++ ){
+			BuildingType type = values[buff.readByte()];
+			int id = buff.readInt();
+			IBuilding build = null;
+			if( type == BuildingType.IMBAU ){
+				build = new UnBuilding(id);
+			} else {
+				build = new Building(id);
+			}
+			build.setType(type);
+			build.wrapBuffer(buff);
+			builds.add(build);
+		}
+		update();
 	}
 
 	@Override
 	public byte[] toBytes() {
 		if( territory == null ) return null;
+		update();
 		ByteBuf buff = Unpooled.buffer();
 		buff.writeInt( territory.id );
-//		buff.writeByte( builds.size() );
-//		for( IBuilding build : builds ){
-//			buff.writeInt( build.templet().id );
-//			buff.writeByte( build.getIndex() );
-//		}
+		buff.writeByte( builds.size() );
+		for( IBuilding build : builds ){
+			buff.writeByte( build.getType().ordinal() );
+			buff.writeInt( build.templet().id );
+			build.putBuffer( buff );
+		}
 		return buff.array();
 	}
 
@@ -168,4 +185,17 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		return territory == null ? 0 : territory.id;
 	}
 
+	public static void main(String[] args) {
+		PropertyConfigurator.configureAndWatch( Resources.getResource("log4j.properties") );
+		Lua.setLogClass(Logs.class);
+		CsvGen.load();
+		
+		Building building = new Building( 20001 );
+		building.setIndex((byte) 1);
+		building.setType( BuildingType.INSERVICE );
+		building.setEndtime( (int) (System.currentTimeMillis()/1000 ) );
+		ManorControl as = new ManorControl(null);
+		as.addBuilding(building);
+		as.update();
+	}
 }
