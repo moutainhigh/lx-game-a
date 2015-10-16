@@ -32,6 +32,7 @@ import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.manor.DestroyBuildingEvent;
+import cn.xgame.net.event.all.pl.manor.TakeGoodsEvent;
 import cn.xgame.net.event.all.pl.manor.UpgradeBuildingEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyExchEvent;
@@ -118,6 +119,7 @@ public enum Events {
 	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent() ),
 	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent() ),
 	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent() ),
+	TAKE_GOODS					( 1046, 	new TakeGoodsEvent() ),
 	// 邮件
 	APPLY_MAIL					( 1051, 	new ApplyMailEvent() ),
 	SEND_MAIL					( 1052, 	new SendMailEvent() ),

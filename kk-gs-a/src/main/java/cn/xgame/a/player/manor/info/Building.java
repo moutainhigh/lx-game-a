@@ -67,17 +67,59 @@ public class Building extends IBuilding{
 	}
 	
 	/**
-	 * 更新产出
+	 * 获取当前总数量
+	 * @return
+	 */
+	private int curSumCount() {
+		int ret = 0;
+		for( Goods g : produces )
+			ret += g.getCount();
+		return ret;
+	}
+	
+	/*
+  	 * 更新产出
 	 */
 	public void update() {
+		
+		int curCount = curSumCount();
+		if( curCount >= templet().ram )
+			return;
+		
 		int past 	= (int)(System.currentTimeMillis()/1000) - getEndtime();
 		// 根据已过去的时间算出 次数
 		int times	= past/LXConstants.BUILDING_PRODUCE_TIME + 1;
 		// 根据次数算出总个数
 		float count = times * templet().ProduceValue;
+		// 这里如果超出总容量 那么减掉多余的
+		count		= curCount+count > templet().ram ? templet().ram-curCount : count;
 		// 通过lua算出产出
 		Lua lua = LuaUtil.getGameData();
 		lua.getField( "manorBuildingProduce" ).call( 0, this, count, getSumScale(), getProduceTemplet() );
+	}
+
+	/**
+	 * 扣除资源 
+	 * @param goods
+	 * @return 真真扣除的资源
+	 */
+	public List<Goods> deductGoods( List<Goods> goods ) {
+		List<Goods> ret = Lists.newArrayList();
+		for( Goods g : goods ){
+			Goods o = getGoods( g.getId() );
+			if( o == null ) continue;
+			Goods x = new Goods();
+			x.setId( g.getId() );
+			if( o.getCount() >= g.getCount() ){
+				x.addCount( g.getCount() );
+				o.addCount( -g.getCount() );
+			}else{
+				x.addCount( o.getCount() );
+				o.clear();
+			}
+			ret.add( x );
+		}
+		return ret;
 	}
 
 	@Override
@@ -93,5 +135,7 @@ public class Building extends IBuilding{
 		// 这里要把产出全部删除掉
 		produces.clear();
 	}
+
+
 	
 }

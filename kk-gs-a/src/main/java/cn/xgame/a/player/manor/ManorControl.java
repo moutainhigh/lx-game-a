@@ -41,12 +41,12 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		builds.clear();
 		ByteBuf buff = Unpooled.copiedBuffer(data);
 		territory = CsvGen.getReclaimcapacityPo( buff.readInt() );
-		byte size = buff.readByte();
-		for( int i = 0; i < size; i++ ){
-			IBuilding build = new IBuilding( buff.readInt() );
-			build.setIndex( buff.readByte() );
-			builds.add(build);
-		}
+//		byte size = buff.readByte();
+//		for( int i = 0; i < size; i++ ){
+//			IBuilding build = new IBuilding( buff.readInt() );
+//			build.setIndex( buff.readByte() );
+//			builds.add(build);
+//		}
 	}
 
 	@Override
@@ -54,11 +54,11 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		if( territory == null ) return null;
 		ByteBuf buff = Unpooled.buffer();
 		buff.writeInt( territory.id );
-		buff.writeByte( builds.size() );
-		for( IBuilding build : builds ){
-			buff.writeInt( build.templet().id );
-			buff.writeByte( build.getIndex() );
-		}
+//		buff.writeByte( builds.size() );
+//		for( IBuilding build : builds ){
+//			buff.writeInt( build.templet().id );
+//			buff.writeByte( build.getIndex() );
+//		}
 		return buff.array();
 	}
 

@@ -23,5 +23,8 @@ public class Goods {
 	public void addCount(float count) {
 		this.count += count;
 	}
+	public void clear() {
+		this.count = 0;
+	}
 	
 }
