@@ -59,6 +59,10 @@ public class LoginEvent extends IEvent{
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
+			if( code == null ){
+				code = ErrorCode.OTHER_ERROR;
+				Logs.error( "玩家登录错误 " + e.getMessage() );
+			}
 		}
 		
 		ByteBuf response = buildEmptyPackage( ctx, 1024 );
