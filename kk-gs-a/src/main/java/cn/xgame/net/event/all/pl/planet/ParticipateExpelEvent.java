@@ -63,7 +63,7 @@ public class ParticipateExpelEvent extends IEvent{
 				synchronizeGenrVote( planet.getPeoples(), 0, oust, planet.getChild( uid ) );
 			}
 			
-			Logs.debug( player, "参与元老投票 当前票数 " + oust.getVote() + " at=" + uid );
+			Logs.debug( player.getCtx(), "参与元老投票 当前票数 " + oust.getVote() + " at=" + uid );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

@@ -62,7 +62,7 @@ public class SponsorTechVoEvent extends IEvent{
 			// 下面同步消息给玩家
 			Syn.tech( planet.getPeoples(), 1, unTechs );
 			
-			Logs.debug( player, " 发起科技投票 nid=" + nid + ", time=" + time );
+			Logs.debug( player.getCtx(), " 发起科技投票 nid=" + nid + ", time=" + time );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

@@ -22,6 +22,7 @@ import cn.xgame.net.netty.Netty.Attr;
 import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.SystemCfg;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.PackageCheck;
 
 public class Player extends IPlayer implements ITransformStream{
@@ -167,6 +168,19 @@ public class Player extends IPlayer implements ITransformStream{
 		((RLastGsidEvent)Events.RLAST_GSID.toInstance()).run( getUID() );
 	}
 
+	/**
+	 * 改变货币
+	 * @param value 添加用正号  减少用负号
+	 * @return 返回当前货币 -1表示货币不足
+	 */
+	public int changeCurrency( int value, String explain ) {
+		if( currency + value < 0  )
+			return -1;
+		currency += value;
+		
+		Logs.debug( ctx, "货币改变 " + (currency - value) + (value>=0?" + ":" - ") + Math.abs(value) + " = " + currency + " " + explain );
+		return currency;
+	}
 	
 	public int generatorPropUID() {
 		return propBaseUid.generatorPropUID();

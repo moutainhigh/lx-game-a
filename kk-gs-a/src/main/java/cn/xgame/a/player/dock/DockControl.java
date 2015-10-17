@@ -19,7 +19,6 @@ import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
 import cn.xgame.system.SystemCfg;
-import cn.xgame.utils.Logs;
 
 /**
  * 船坞 操作类
@@ -216,8 +215,7 @@ public class DockControl implements IFromDB{
 	public void balanceWeekly() {
 		for( CaptainInfo captain : cabin ){
 			if( captain.isWantPayoff() ){
-				root.changeCurrency( -captain.attr().getWeekpay() );
-				Logs.debug( root, "结算舰长周薪 weekpay=" + captain.attr().getWeekpay() );
+				root.changeCurrency( -captain.attr().getWeekpay(), "结算舰长周薪" );
 			}
 		}
 	}

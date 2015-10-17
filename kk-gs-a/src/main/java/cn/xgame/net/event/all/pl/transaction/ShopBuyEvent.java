@@ -47,7 +47,7 @@ public class ShopBuyEvent extends IEvent{
 				needGold += 100;
 			
 			// 看金币是否足够
-			if( player.changeCurrency( -needGold ) == -1 )
+			if( player.changeCurrency( -needGold, "在商店购买" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 加入玩家背包

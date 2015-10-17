@@ -110,7 +110,7 @@ public class BuildBuildingEvent extends IEvent {
 			}
 		}
 		// 这里执行扣除
-		player.changeCurrency( -needMoney );
+		player.changeCurrency( -needMoney, "建造领地建筑扣除" );
 		for( IProp prop : materials ){
 			if( prop.isEmpty() )
 				depots.remove( prop );

@@ -107,7 +107,7 @@ public class UpgradeBuildingEvent extends IEvent {
 			}
 		}
 		// 这里执行扣除
-		player.changeCurrency( -needMoney );
+		player.changeCurrency( -needMoney, "升级领地建筑" );
 		for( IProp prop : materials ){
 			if( prop.isEmpty() )
 				depots.remove( prop );

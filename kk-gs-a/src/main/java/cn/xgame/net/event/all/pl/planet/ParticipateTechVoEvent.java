@@ -68,7 +68,7 @@ public class ParticipateTechVoEvent extends IEvent{
 				Syn.tech( planet.getPeoples(), 2, unTech );
 			}
 			
-			Logs.debug( player, "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
+			Logs.debug( player.getCtx(), "参与科技投票 当前票数 " + unTech.getVote() + " at=" + nid );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -99,7 +99,7 @@ public class ParticipateTechVoEvent extends IEvent{
 		if( sponsor != null )
 			sponsor.addPasss( 1 );
 		
-		Logs.debug( "开始研究科技 " + templet.id );
+		Logs.debug( "星球"+planet.getId()+"开始研究科技 " + templet.id );
 	}
 
 }

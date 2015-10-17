@@ -32,7 +32,7 @@ public class ExtractAdjunctEvent extends IEvent{
 			
 			// 如果不是交易类型的邮件 那么就可以直接领取货币
 			if( mail.getType() != MailType.TRADE ){
-				player.changeCurrency( mail.getMoney() );
+				player.changeCurrency( mail.getMoney(), "邮件提取" );
 				mail.setMoney(0);
 			}
 			// 这里领取附件道具

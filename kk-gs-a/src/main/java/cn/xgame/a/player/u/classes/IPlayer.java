@@ -1,7 +1,6 @@
 package cn.xgame.a.player.u.classes;
 
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
-import cn.xgame.utils.Logs;
 
 /**
  * 玩家 基础 数据结构 （数据库相关）
@@ -26,7 +25,7 @@ public abstract class IPlayer {
 	private int 			countryId;
 	
 	// 游戏币
-	private int 			currency;
+	protected int 			currency;
 	// 充值币
 	private int 			gold;
 	
@@ -62,20 +61,6 @@ public abstract class IPlayer {
 		dto.setGold(gold);
 		dto.setCreateTime(createTime);
 		dto.setLastLogoutTime(lastLogoutTime);
-	}
-	
-	/**
-	 * 改变货币
-	 * @param value 添加用正号  减少用负号
-	 * @return 返回当前货币 -1表示货币不足
-	 */
-	public int changeCurrency( int value ) {
-		if( currency + value < 0  )
-			return -1;
-		currency += value;
-		
-		Logs.debug( this, "货币改变 " + (currency - value) + (value>=0?" + ":" - ") + Math.abs(value) + " = " + currency );
-		return currency;
 	}
 	
 	public String getUID() {

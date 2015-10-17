@@ -162,7 +162,7 @@ public class PlayerManager {
 			throw new Exception( ErrorCode.HAVE_ILLEGALITY.name() );
 		
 		// 判断是否重复
-		if( isRepeat( name ) )
+		if( isRepeatName( name ) )
 			throw new Exception( ErrorCode.NAME_REPEAT.name() );
 		
 		Player ret = null;
@@ -249,7 +249,7 @@ public class PlayerManager {
 	 * @param name
 	 * @return
 	 */
-	private boolean isRepeat( String name ) {
+	public boolean isRepeatName( String name ) {
 		PlayerDataDao dao = SqlUtil.getPlayerDataDao();
 		List<PlayerDataDto> dto = dao.getByExact( PlayerDataDto.nicknameChangeSql(name) );
 		dao.commit();

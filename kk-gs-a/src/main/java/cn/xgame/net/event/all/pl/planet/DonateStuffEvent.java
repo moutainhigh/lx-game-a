@@ -70,7 +70,7 @@ public class DonateStuffEvent extends IEvent{
 			// 捐献成功后 同步消息
 			Syn.res( planet.getPeoples(), update );
 			
-			Logs.debug( player, "捐献资源  星球ID="+id+",uid="+uid+",count="+count );
+			Logs.debug( player.getCtx(), "捐献资源  星球ID="+id+",uid="+uid+",count="+count );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -85,7 +85,7 @@ public class DonateStuffEvent extends IEvent{
 
 	// 扣除货币
 	private IProp deductCurrency(Player player, int count) throws Exception {
-		if( player.changeCurrency( -count ) == -1 )
+		if( player.changeCurrency( -count, "给星球捐献货币" ) == -1 )
 			throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 		return IProp.create( 0, LXConstants.CURRENCY_NID, count );
 	}

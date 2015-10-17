@@ -68,7 +68,7 @@ public class ParticipateBuildVoEvent extends IEvent{
 			// 最后同步给其他玩家
 			Syn.build( planet.getPeoples(), status+3, unBuild );
 			
-			Logs.debug( player, "参与建筑投票 当前票数 " + unBuild.getVote() + " at=" + nid );
+			Logs.debug( player.getCtx(), "参与建筑投票 当前票数 " + unBuild.getVote() + " at=" + nid );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -97,7 +97,7 @@ public class ParticipateBuildVoEvent extends IEvent{
 		if( sponsor != null )
 			sponsor.addPasss( 1 );
 		
-		Logs.debug( "开始修建建筑 " + templet.id + "-" + index );
+		Logs.debug( "星球"+planet.getId()+" 开始修建建筑 " + templet.id + "-" + index );
 	}
 
 }

@@ -57,7 +57,7 @@ public class SponsorExpelEvent extends IEvent{
 			// 同步给其他玩家
 			synchronizeGenrVote( planet.getPeoples(), 1, oust, child );
 			
-			Logs.debug( player, " 发起驱逐元老 uid=" + uid + ", explain=" + explain );
+			Logs.debug( player.getCtx(), " 发起驱逐元老 uid=" + uid + ", explain=" + explain );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

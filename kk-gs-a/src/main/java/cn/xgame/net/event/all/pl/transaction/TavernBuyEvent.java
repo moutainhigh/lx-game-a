@@ -51,7 +51,7 @@ public class TavernBuyEvent extends IEvent{
 				needGold += 1000;
 			
 			// 看金币是否足够
-			if( player.changeCurrency( -needGold ) == -1 )
+			if( player.changeCurrency( -needGold, "在酒馆购买" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 放入舰长室

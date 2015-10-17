@@ -55,7 +55,7 @@ public class StarDepot extends IDepot implements ITransformStream{
 		
 		// 检测是否货币
 		if( nid == LXConstants.CURRENCY_NID ){
-			root.changeCurrency( count );
+			root.changeCurrency( count, "添加道具" );
 			ret.add( IProp.create( 0, nid, count) );
 			return ret;
 		}
@@ -151,7 +151,7 @@ public class StarDepot extends IDepot implements ITransformStream{
 		else
 			updateDB( prop );
 		
-		Logs.debug( root, "扣除道具 ("+uid+","+count+"), 扣除后 (" + prop + ")" );
+		Logs.debug( root.getCtx(), "扣除道具 ("+uid+","+count+"), 扣除后 (" + prop + ")" );
 	}
 	
 	public boolean remove( IProp prop ){

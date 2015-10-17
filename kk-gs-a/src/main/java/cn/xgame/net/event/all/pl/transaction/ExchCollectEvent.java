@@ -30,7 +30,7 @@ public class ExchCollectEvent extends IEvent {
 			collect = home.getExchange().getEarnCurrency( player );
 			
 			// 加入到玩家身上
-			player.changeCurrency( collect );
+			player.changeCurrency( collect, "交易所收款" );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

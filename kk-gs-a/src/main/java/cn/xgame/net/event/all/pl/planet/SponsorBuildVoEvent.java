@@ -69,7 +69,7 @@ public class SponsorBuildVoEvent extends IEvent{
 			// 下面同步消息给玩家
 			Syn.build( planet.getPeoples(), 1, voteBuild );
 			
-			Logs.debug( player, " 发起建筑投票 nid=" + nid + ", index=" + index + ", time=" + time );
+			Logs.debug( player.getCtx(), " 发起建筑投票 nid=" + nid + ", index=" + index + ", time=" + time );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

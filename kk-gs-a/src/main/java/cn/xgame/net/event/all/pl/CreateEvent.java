@@ -8,6 +8,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Key;
+import x.javaplus.util.Util.NumberFilter;
 import x.javaplus.util.Util.Time;
 
 import cn.xgame.a.player.PlayerManager;
@@ -19,6 +20,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.net.netty.Netty.IP;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
@@ -55,6 +57,15 @@ public class CreateEvent extends IEvent {
 			
 			// 分配母星
 			home 	= WorldManager.o.allotHomePlanet( ctx );
+			
+			// 这里加点东西
+			if( IP.formAddress(ctx).equals( "192.168.1.252" ) ){
+				int i = 0;
+				name = "唐乐"+NumberFilter.convertChineseStr(++i)+"号";
+				while( PlayerManager.o.isRepeatName(name) ){
+					name = "唐乐"+NumberFilter.convertChineseStr(++i)+"号";
+				}
+			}
 			
 			// 获取玩家信息
 			player	= PlayerManager.o.create( ctx, UID, headIco, adjutantId, name, home.getId() );

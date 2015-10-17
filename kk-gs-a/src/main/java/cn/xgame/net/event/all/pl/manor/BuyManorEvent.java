@@ -45,7 +45,7 @@ public class BuyManorEvent extends IEvent{
 				throw new Exception( ErrorCode.CON_DISSATISFY.name() );
 			
 			// 执行扣钱 
-			if( player.changeCurrency( -reclaim.money ) == -1 )
+			if( player.changeCurrency( -reclaim.money, "购买领地" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 直接设置领地即可

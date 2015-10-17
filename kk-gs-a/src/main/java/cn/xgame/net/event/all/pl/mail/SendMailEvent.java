@@ -41,7 +41,7 @@ public class SendMailEvent extends IEvent {
 			int factorage = money + 10;
 			
 			// 扣取手续费
-			if( player.changeCurrency(-factorage) == -1 )
+			if( player.changeCurrency( -factorage, "邮件手续费&交易货币" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 创建邮件

@@ -43,7 +43,7 @@ public class ExchBuyEvent extends IEvent{
 			
 			// 检测钱是否足够
 			int needmoney = goods.getUnitprice()*count;
-			if( player.changeCurrency( -needmoney ) == -1 )
+			if( player.changeCurrency( -needmoney, "在交易所购买" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 在交易所扣除对应道具
