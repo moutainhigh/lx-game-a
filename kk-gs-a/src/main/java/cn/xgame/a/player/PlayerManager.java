@@ -190,6 +190,8 @@ public class PlayerManager {
 	public void exit( String uID ) {
 		// 先从内存中直接删除
 		Player player = players.remove(uID);
+		if( player == null )
+			return;
 		// 然后处理退出
 		player.exit();
 		

@@ -19,10 +19,13 @@ public class ApplyManorEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
+		byte No = data.readByte();
+		
 		ManorControl manors = player.getManors();
 		manors.update();
 		
 		ByteBuf buff = buildEmptyPackage( player.getCtx(), 125 );
+		buff.writeByte( No );
 		manors.buildTransformStream(buff);
 		sendPackage( player.getCtx(), buff );
 	}
