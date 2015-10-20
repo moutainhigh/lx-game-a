@@ -56,7 +56,6 @@ import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
-import cn.xgame.net.event.all.pl.ship.UnloadHoldEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.staratlas.ModifyAirlineEvent;
 import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
@@ -102,7 +101,7 @@ public enum Events {
 	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent()		, "修改航线" ),
 	// 舰船
 	MOUNT_HOLD					( 1021, 	new MountHoldEvent()			, "舰船操作-放入船仓" ),
-	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
+//	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
 	MOUNT_EQUIP					( 1023, 	new MountEquipEvent()			, "舰船操作-装上装备" ),
 	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent()			, "舰船操作-取下装备" ),
 	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() 		, "舰船操作-指派舰长" ),
