@@ -1,6 +1,5 @@
 package cn.xgame.a.player.manor;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -17,7 +16,6 @@ import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.manor.classes.BuildingType;
 import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.a.player.manor.info.Building;
-import cn.xgame.a.player.manor.info.UnBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ReclaimcapacityPo;
@@ -53,7 +51,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 			int id = buff.readInt();
 			IBuilding build = null;
 			if( type == BuildingType.IMBAU ){
-				build = new UnBuilding(id);
+				build = new IBuilding(id);
 			} else {
 				build = new Building(id);
 			}
@@ -92,10 +90,9 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	 * 更新一下 每个建筑
 	 */
 	public void update() {
-		Iterator<IBuilding> iter = builds.iterator();
 		List<IBuilding> destroys = Lists.newArrayList();
-		while( iter.hasNext() ){
-			IBuilding o = iter.next();
+		List<IBuilding> inservice = Lists.newArrayList();
+		for( IBuilding o : builds ){
 			if( !o.isComplete() )
 				continue;
 			switch (o.getType()) {
@@ -103,7 +100,8 @@ public class ManorControl implements IArrayStream,ITransformStream{
 				((Building)o).update();
 				break;
 			case IMBAU:
-				o = new Building( o );
+				destroys.add(o);
+				inservice.add( new Building( o ) );
 				break;
 			case UPGRADE:
 				o.upgradeToNext();
@@ -114,6 +112,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 			}
 		}
 		builds.removeAll(destroys);
+		builds.addAll(inservice);
 	}
 	
 	/**
@@ -157,7 +156,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean isCanBuild( UnBuilding building ) throws Exception {
+	public boolean isCanBuild( IBuilding building ) throws Exception {
 		int curGrid = building.templet().usegrid;
 		// 判断位置
 		for( IBuilding o : builds ){

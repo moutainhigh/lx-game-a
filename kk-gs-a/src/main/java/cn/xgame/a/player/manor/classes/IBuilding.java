@@ -148,9 +148,6 @@ public class IBuilding implements ITransformStream,IBufferStream{
 	public boolean isComplete() {
 		return (int)(System.currentTimeMillis()/1000) >= endtime;
 	}
-
-	
-	
 	
 	
 	public BbuildingPo templet() {

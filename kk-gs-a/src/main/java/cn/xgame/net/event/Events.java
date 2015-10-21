@@ -107,7 +107,7 @@ public enum Events {
 	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() 		, "舰船操作-指派舰长" ),
 	UNLOAD_CAPTAIN				( 1026, 	new UnloadCaptainEvent()		, "舰船操作-卸下舰长" ),
 	FLEET_INTO					( 1027, 	new FleetIntoEvent()			, "舰船操作-实装舰队" ),
-	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰船操作-实装舰队" ),
+	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰船操作-停用舰队" ),
 	// 舰长
 	EAT_EQUIP					( 1031, 	new EatEquipEvent()				, "舰长操作-装上装备" ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent()			, "舰长操作-吃亲密度丹" ),
@@ -116,8 +116,8 @@ public enum Events {
 	BUY_MANOR					( 1041, 	new BuyManorEvent()				, "领地操作-购买领地" ),
 	APPLY_GOODS					( 1042, 	new ApplyGoodsEvent()			, "领地操作-申请产出" ),
 	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent()		, "领地操作-建造建筑" ),
-	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent()		, "领地操作-建造升级" ),
-	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建造销毁" ),
+	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent()		, "领地操作-建筑升级" ),
+	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建筑销毁" ),
 	TAKE_GOODS					( 1046, 	new TakeGoodsEvent()			, "领地操作-收取产出" ),
 	// 邮件
 	APPLY_MAIL					( 1051, 	new ApplyMailEvent()			, "邮件操作-申请邮件列表" ),

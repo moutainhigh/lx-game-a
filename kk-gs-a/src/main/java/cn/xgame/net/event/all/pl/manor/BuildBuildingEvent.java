@@ -10,7 +10,7 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.manor.ManorControl;
-import cn.xgame.a.player.manor.info.UnBuilding;
+import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -27,15 +27,15 @@ public class BuildBuildingEvent extends IEvent {
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int bnid = data.readInt();
-		byte index = data.readByte();
+		int bnid 	= data.readInt();
+		byte index 	= data.readByte();
 		
 		ErrorCode code = null;
-		UnBuilding building = null;
+		IBuilding building = null;
 		List<IProp> ret = null;
 		try {
 			// 生成建筑
-			building = new UnBuilding( bnid );
+			building = new IBuilding( bnid );
 			if( building.templet() == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			building.setIndex(index);
@@ -117,7 +117,7 @@ public class BuildBuildingEvent extends IEvent {
 			else
 				depots.getProp( prop ).setCount( prop.getCount() );
 		}
-		Logs.debug( player, "领地建筑 扣除资源 " + materials );
+		Logs.debug( player.getCtx(), "领地建筑 扣除资源 " + materials );
 		return materials;
 	}
 

@@ -9,6 +9,8 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.manor.ManorControl;
+import cn.xgame.a.player.manor.classes.BuildingType;
 import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -34,10 +36,15 @@ public class UpgradeBuildingEvent extends IEvent {
 		IBuilding building = null;
 		List<IProp> ret = null;
 		try {
+			ManorControl manors = player.getManors();
+			manors.update();
+			
 			// 获取建筑 并 判断是否可以升级
-			building = player.getManors().getBuildByIndex( index );
+			building = manors.getBuildByIndex( index );
 			if( building == null || !building.isUpgrade() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			if( building.getType() != BuildingType.INSERVICE )
+				throw new Exception( ErrorCode.MANOR_TIME_ISYET.name() );
 			
 			// 这里根据科技判断是否可以升级
 			// TODO
@@ -68,6 +75,9 @@ public class UpgradeBuildingEvent extends IEvent {
 				buffer.writeInt( prop.getUid() );
 				buffer.writeInt( prop.getCount() );
 			}
+		}
+		if( code == ErrorCode.MANOR_TIME_ISYET ){
+			buffer.writeInt( building.getEndtime() );
 		}
 		sendPackage( player.getCtx(), buffer );
 		
