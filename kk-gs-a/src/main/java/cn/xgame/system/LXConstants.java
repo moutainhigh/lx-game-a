@@ -41,9 +41,6 @@ public class LXConstants {
 	/** 邮件持续时间 (单位秒)*/
 	public static int MAIL_DURATION  		= 86400;
 	
-	/** 玩家领地建筑产出时间  (单位秒)*/
-	public static int BUILDING_PRODUCE_TIME = 60;
-	
 	
 	/**
 	 * 加载配置文件

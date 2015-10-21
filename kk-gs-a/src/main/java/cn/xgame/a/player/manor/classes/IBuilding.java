@@ -10,7 +10,6 @@ import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.BbuildingPo;
-import cn.xgame.system.LXConstants;
 
 /**
  * 玩家领地建筑基类
@@ -112,7 +111,7 @@ public class IBuilding implements ITransformStream,IBufferStream{
 		templet = CsvGen.getBbuildingPo( templet.next );
 		initProduceTemplet();
 		setType( BuildingType.INSERVICE );
-		setEndtime( (int)(System.currentTimeMillis()/1000) + LXConstants.BUILDING_PRODUCE_TIME );
+		setEndtime( (int)(System.currentTimeMillis()/1000) );
 	}
 	
 	/**

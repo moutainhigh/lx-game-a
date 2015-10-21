@@ -11,7 +11,6 @@ import x.javaplus.util.lua.Lua;
 import cn.xgame.a.player.manor.classes.BuildingType;
 import cn.xgame.a.player.manor.classes.Goods;
 import cn.xgame.a.player.manor.classes.IBuilding;
-import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
@@ -34,11 +33,12 @@ public class Building extends IBuilding{
 		super( o.templet().id );
 		setIndex( o.getIndex() );
 		setType( BuildingType.INSERVICE );
-		setEndtime( (int) (System.currentTimeMillis()/1000 + LXConstants.BUILDING_PRODUCE_TIME) );
+		setEndtime( (int) (System.currentTimeMillis()/1000) );
 	}
 
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		super.putBuffer(buf);
 		buf.writeByte( produces.size() );
 		for( Goods g : produces ){
 			buf.writeInt( g.getId() );
@@ -47,6 +47,7 @@ public class Building extends IBuilding{
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		super.wrapBuffer(buf);
 		produces.clear();
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
@@ -109,13 +110,16 @@ public class Building extends IBuilding{
 		
 		int past 	= (int)(System.currentTimeMillis()/1000) - getEndtime();
 		// 根据已过去的时间算出 次数
-		int times	= past/LXConstants.BUILDING_PRODUCE_TIME + 1;
+		int times	= past/templet().producttime;
+		if( times < 1 )
+			return;
+		
 		// 根据次数算出总个数
 		float count = times * templet().ProduceValue;
 		// 这里如果超出总容量 那么减掉多余的
 		count		= curCount+count > templet().ram ? templet().ram-curCount : count;
 		// 通过lua算出产出
-		Lua lua = LuaUtil.getGameData();
+		Lua lua 	= LuaUtil.getGameData();
 		lua.getField( "manorBuildingProduce" ).call( 0, this, count, getSumScale(), getProduceTemplet() );
 		
 		Logs.debug( "当前建筑总产出" + produces );

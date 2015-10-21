@@ -48,7 +48,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		byte size = buff.readByte();
 		for( int i = 0; i < size; i++ ){
 			BuildingType type = values[buff.readByte()];
-			int id = buff.readInt();
+			int id 			= buff.readInt();
 			IBuilding build = null;
 			if( type == BuildingType.IMBAU ){
 				build = new IBuilding(id);
