@@ -59,6 +59,7 @@ public class DestroyBuildingEvent extends IEvent{
 			buffer.writeInt( player.getCurrency() );
 		}
 		if( code == ErrorCode.MANOR_TIME_ISYET ){
+			buffer.writeByte( index );
 			buffer.writeInt( building.getEndtime() );
 		}
 		sendPackage( player.getCtx(), buffer );

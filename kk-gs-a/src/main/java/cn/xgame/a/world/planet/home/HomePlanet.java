@@ -12,7 +12,6 @@ import x.javaplus.collections.Lists;
 import x.javaplus.string.StringUtil;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 
 import cn.xgame.a.player.u.Player;
@@ -123,8 +122,6 @@ public class HomePlanet extends IPlanet {
 		exchangeControl.fromBytes( dto.getExchanges() );
 		// 根据科技获取最大星球科技等级
 		updateTechData( );
-		// 先排个序
-		updateChildSequence();
 		// 从数据库 获取数据后 更新体制 - 顺便更新玩家是否元老
 		updateInstitution();
 	}
@@ -271,8 +268,6 @@ public class HomePlanet extends IPlanet {
 		// 添加玩家的贡献度
 		Child child = getChild( player.getUID() );
 		child.addContribution( prop.getContributions() );
-		// 先排个序
-		updateChildSequence();
 		// 下面算出话语权 顺便对玩家进行排序
 		int allcont = getAllContribution();
 		short privilege = (short) (((float)child.getContribution() / (float)allcont) * 10000f);
@@ -286,7 +281,6 @@ public class HomePlanet extends IPlanet {
 	 * @return
 	 */
 	public int getAllContribution() {
-		// 下面标记是否可以发起投票
 		int ret = 0;
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
@@ -297,6 +291,8 @@ public class HomePlanet extends IPlanet {
 	
 	// 更新是否元老
 	private void updateIsSenator(){
+		// 先排个序
+		updateChildSequence();
 		int privilege = 0;
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
@@ -367,29 +363,39 @@ public class HomePlanet extends IPlanet {
 		updateChildSequence();
 		
 		// 算出体制
-		int status = 0;
+		institution = Institution.REPUBLIC;
 		int privilege = 0;
+		for( int i = 0; i < childs.size() && i < 12; i++ ){
+			Child child = childs.get(i);
+			// 说明后面都是0  为0的是没有话语权的
+			if( child.getPrivilege() == 0 )
+				break;
+			//独裁体质：一个人的话语权>50%，独裁体质形成。
+			if( i == 0 && child.getPrivilege() > 5000 ){
+				institution = Institution.AUTARCHY;
+				break;
+			}
+			privilege += child.getPrivilege();
+			//元老体质：12个话语权最高的人，话语总和权大于50%
+			if( i == 11 && privilege > 5000 ){
+				institution = Institution.SENATOR;
+				break;
+			}
+		}
+		// 更新一下是否元老
 		for( int i = 0; i < childs.size(); i++ ){
 			Child child = childs.get(i);
-			privilege += child.getPrivilege();
-			
-			if( status == 0 ){
-				Lua lua = LuaUtil.getGameData();
-				LuaValue[] ret = lua.getField( "updateInstitution" ).call( 1, child, i, privilege );
-				status = ret[0].getInt();
-			}
-			
 			child.setExpel( false );
+			if( child.getPrivilege() == 0 ){
+				child.setSenator( false );
+				continue;
+			}
+			privilege += child.getPrivilege();
+			child.setSenator( institution.isSenator( i, privilege) );
 		}
-		// 设置体制
-		setInstitution( Institution.fromNumber( status == 0 ? 3 : status ) );
-		// 更新一下是否元老
-		updateIsSenator();
-		
 		Logs.debug( "星球" + getId() + " 更新体制 " + institution );
 	}
 	
-
 	/**
 	 * 研发-投票 线程 - 包括科技研究 建筑建造
 	 */

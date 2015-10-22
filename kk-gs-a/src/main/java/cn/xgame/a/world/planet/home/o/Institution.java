@@ -28,7 +28,7 @@ public enum Institution {
 	SENATOR( 2 ) {
 		@Override
 		public boolean isSenator( int i, int privilege ) {
-			//b)元老体质：12个话语权最高的人，话语总和权大于50%
+			//元老体质：12个话语权最高的人，话语总和权大于50%
 			return i <= 11;
 		}
 	},

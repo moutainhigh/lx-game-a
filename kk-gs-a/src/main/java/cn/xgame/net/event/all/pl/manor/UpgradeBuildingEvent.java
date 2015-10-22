@@ -77,6 +77,7 @@ public class UpgradeBuildingEvent extends IEvent {
 			}
 		}
 		if( code == ErrorCode.MANOR_TIME_ISYET ){
+			buffer.writeByte( index );
 			buffer.writeInt( building.getEndtime() );
 		}
 		sendPackage( player.getCtx(), buffer );

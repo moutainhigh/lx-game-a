@@ -2,6 +2,7 @@ package cn.xgame.utils.runnable.task;
 
 
 import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.world.WorldManager;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.runnable.IThread;
 
@@ -21,7 +22,8 @@ public class DailyHandleImp extends IThread{
 			// 刷新每个玩家的 每日数据
 			PlayerManager.o.allDailyHandle();
 			
-			
+			// 更新星球体制
+			WorldManager.o.runUpdateInstitution();
 			
 		} catch (Exception e) {
 			Logs.error( "DailyHandleImp:" , e );
