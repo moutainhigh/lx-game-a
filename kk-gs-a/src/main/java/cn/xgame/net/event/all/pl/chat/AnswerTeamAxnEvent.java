@@ -21,6 +21,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3021;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 回答是否同意组队
@@ -42,11 +43,11 @@ public class AnswerTeamAxnEvent extends IEvent{
 		
 		ErrorCode code 	= null;
 		AxnInfo axn		= null;
-		Player ipla		= null;
+		Player sponsor		= null;
 		try {
 			// 获取邀请人
-			ipla = PlayerManager.o.getPlayerFmOnline(iuid);
-			if( ipla == null )
+			sponsor = PlayerManager.o.getPlayerFmOnline(iuid);
+			if( sponsor == null )
 				throw new Exception( ErrorCode.PLAYER_NOTEXIST.name() );
 
 			// 如果不同意 直接返回
@@ -63,7 +64,7 @@ public class AnswerTeamAxnEvent extends IEvent{
 				throw new Exception( ErrorCode.SHIP_ISHAVETEAM.name() );
 			
 			// 获取邀请人舰队
-			FleetInfo ifleet = ipla.getFleets().getFleetInfo(ifid);
+			FleetInfo ifleet = sponsor.getFleets().getFleetInfo(ifid);
 			if( ifleet == null || ifleet.isEmpty() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			ifleet.isLeisure();
@@ -71,7 +72,7 @@ public class AnswerTeamAxnEvent extends IEvent{
 			axn = chatControl.getAXNInfo( ifleet.getAxnId() );
 			if( axn == null ){
 				axn = chatControl.createAxn( ChatType.TEAM );
-				axn.appendTeamCrew( ipla, ifid );
+				axn.appendTeamCrew( sponsor, ifid );
 				ifleet.setAxnId( axn.getAxnId() );
 			}else if( axn.isMaxmember() ) {
 				throw new Exception( ErrorCode.AXN_MAXMEMBER.name() );
@@ -80,6 +81,7 @@ public class AnswerTeamAxnEvent extends IEvent{
 			axn.appendTeamCrew( player, mfid );
 			mfleet.setAxnId( axn.getAxnId() );
 			
+			Logs.debug( player.getCtx(), (isAgree == 1 ? "同意" : "拒绝") + " <" + sponsor.getNickname() + "> 的群聊邀请" );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -112,7 +114,7 @@ public class AnswerTeamAxnEvent extends IEvent{
 		}
 		// 如果是拒绝那么直给邀请者回复
 		if( code == ErrorCode.REJECTPARTY ){
-			((Update_3021)Events.UPDATE_3021.toInstance()).run( isAgree, player, ifid, ipla, 0 );
+			((Update_3021)Events.UPDATE_3021.toInstance()).run( isAgree, player, ifid, sponsor, 0 );
 		}
 		
 	}

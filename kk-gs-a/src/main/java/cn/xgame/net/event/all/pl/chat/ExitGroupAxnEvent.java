@@ -16,6 +16,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3013;
+import cn.xgame.utils.Logs;
 
 /**
  * 退出群聊频道
@@ -41,6 +42,7 @@ public class ExitGroupAxnEvent extends IEvent{
 			axn.removeCrew( player.getUID() );
 			player.getChatAxns().removeAxn( ChatType.GROUP, axnId );
 			
+			Logs.debug( player.getCtx(), "退出 <" + axn.getName() + " 群聊>" );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

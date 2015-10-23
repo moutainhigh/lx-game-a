@@ -30,15 +30,15 @@ public class Update_3000 extends IEvent{
 	 */
 	public void run(int axnId, ChannelHandlerContext socket, Player sponsor, String content) {
 		try {
-			ByteBuf response = buildEmptyPackage( socket, 125 );
+			ByteBuf buffer = buildEmptyPackage( socket, 125 );
 			
-			response.writeInt( axnId );
-			RW.writeString( response, sponsor.getUID() );
-			RW.writeString( response, sponsor.getNickname() );
-			response.writeInt( sponsor.getHeadIco() );
-			RW.writeString( response, content );
+			buffer.writeInt( axnId );
+			RW.writeString( buffer, sponsor.getUID() );
+			RW.writeString( buffer, sponsor.getNickname() );
+			buffer.writeInt( sponsor.getHeadIco() );
+			RW.writeString( buffer, content );
 			
-			sendPackage( socket, response );
+			sendPackage( socket, buffer );
 		} catch (IOException e) {
 			Logs.error( "Update_3000 " + e.getMessage() );
 		}

@@ -1,13 +1,10 @@
 package cn.xgame.a.chat.axn.info;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.ITransformStream;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.player.u.Player;
@@ -17,7 +14,7 @@ import cn.xgame.a.player.u.Player;
  * @author deng		
  * @date 2015-8-2 下午12:53:08
  */
-public class AxnInfo implements ITransformStream{
+public class AxnInfo{
 
 	// 频道唯一ID
 	private int  		axnId;
@@ -34,16 +31,6 @@ public class AxnInfo implements ITransformStream{
 	public AxnInfo(ChatType type, int axnId) {
 		this.type 	= type;
 		this.axnId 	= axnId;
-	}
-	
-	
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( axnId );
-		buffer.writeByte( axnCrews.size() );
-		for( IAxnCrew crew : axnCrews ){
-			crew.buildTransformStream(buffer);
-		}
 	}
 	
 	public int getAxnId() { return axnId; }
@@ -131,5 +118,18 @@ public class AxnInfo implements ITransformStream{
 		axnCrews.add(crew);
 	}
 
-	
+	/**
+	 * 私聊 - 获取另外一个人的名字
+	 * @param uid
+	 * @return
+	 */
+	public String getPrivateName( String uid ) {
+		for( IAxnCrew crew : axnCrews ){
+			if( crew.getUid().equals(uid) )
+				continue;
+			return crew.getName();
+		}
+		return "";
+	}
+
 }

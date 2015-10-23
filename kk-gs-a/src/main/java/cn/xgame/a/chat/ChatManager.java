@@ -67,7 +67,8 @@ public class ChatManager{
 		
 		Collection<Player> values = PlayerManager.o.getOnlinePlayer().values();
 		for( Player o : values ){
-			
+			if( o.getUID().equals( sponsor.getUID() ) )
+				continue;
 			sendMsg( axnId, o.getCtx(), sponsor, content );
 		}
 	}
@@ -92,8 +93,10 @@ public class ChatManager{
 		List<Child> ls = home.getPeoples();
 		for( Child child : ls ){
 			Player o = PlayerManager.o.getPlayerFmOnline( child.getUID() );
-			if( o == null ) continue;
-			
+			if( o == null ) 
+				continue;
+			if( o.getUID().equals( sponsor.getUID() ) )
+				continue;
 			sendMsg( axnId, o.getCtx(), sponsor, content );
 		}
 	}

@@ -41,11 +41,12 @@ public class LookPlayerInfoEvent extends IEvent{
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 512 );
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			RW.writeString( buffer, temp.getUID() );
 			RW.writeString( buffer, temp.getNickname() );
+			RW.writeString( buffer, temp.getUID() );
+			buffer.writeInt( temp.getHeadIco() );
 			buffer.writeInt( temp.getCountryId() );
 			buffer.writeByte( getHonor(temp) );
 			buffer.writeByte( getCapNum(temp) );

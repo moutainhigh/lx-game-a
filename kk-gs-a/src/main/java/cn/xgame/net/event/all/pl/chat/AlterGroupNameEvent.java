@@ -8,7 +8,6 @@ import java.util.List;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.axn.AxnControl;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
@@ -26,8 +25,6 @@ import cn.xgame.net.netty.Netty.RW;
  */
 public class AlterGroupNameEvent extends IEvent{
 
-	private final AxnControl chatControl = ChatManager.o.getChatControl();
-	
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
@@ -37,7 +34,7 @@ public class AlterGroupNameEvent extends IEvent{
 		ErrorCode code 	= null;
 		AxnInfo axn 	= null;
 		try {
-			axn = chatControl.getAXNInfo(axnId);
+			axn = ChatManager.o.getChatControl().getAXNInfo(axnId);
 			if( axn == null )
 				throw new Exception( ErrorCode.AXN_NOEXIST.name() );
 			

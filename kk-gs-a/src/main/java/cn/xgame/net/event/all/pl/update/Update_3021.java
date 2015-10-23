@@ -25,20 +25,20 @@ public class Update_3021 extends IEvent{
 	 * @param isAgree 是否同意
 	 * @param player 被邀请者
 	 * @param fid 邀请者舰队ID
-	 * @param to 邀请者
+	 * @param sponsor 邀请者
 	 * @param axnId 频道ID
 	 */
-	public void run( int isAgree, Player player, byte fid, Player to, int axnId ) {
+	public void run( int isAgree, Player player, byte fid, Player sponsor, int axnId ) {
 		
 		try {
-			ByteBuf buffer = buildEmptyPackage( to.getCtx(), 125 );
+			ByteBuf buffer = buildEmptyPackage( sponsor.getCtx(), 125 );
 			buffer.writeByte( isAgree );
 			RW.writeString( buffer, player.getNickname() );
 			buffer.writeByte( fid );
 			if( isAgree == 1 ){
 				buffer.writeInt( axnId );
 			}
-			sendPackage( to.getCtx(), buffer );
+			sendPackage( sponsor.getCtx(), buffer );
 		} catch (Exception e) {
 			Logs.error( "Update_3021 ", e );
 		}

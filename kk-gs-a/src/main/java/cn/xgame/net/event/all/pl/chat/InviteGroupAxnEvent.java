@@ -16,6 +16,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3010;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 邀请加入群聊
@@ -35,6 +36,7 @@ public class InviteGroupAxnEvent extends IEvent{
 		ErrorCode code 	= null;
 		AxnInfo axn		= null;
 		Player to		= null;
+		String axnName	= "";
 		try {
 			
 			// 获取频道  判断各种条件
@@ -57,15 +59,10 @@ public class InviteGroupAxnEvent extends IEvent{
 			if( to.getChatAxns().axnIsMax( ChatType.GROUP ) )
 				throw new Exception( ErrorCode.AXN_ISMAX.name() );
 			
-//			// 创建一个频道
-//			axn = ChatManager.o.getChatControl().createAxn( ChatType.TEMPAXN );
-//			axn.appendTempCrew(player);
-//			axn.appendTempCrew(to);
-//			
-//			// 记录到玩家身上
-//			player.getChatAxns().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
-//			to.getChatAxns().appendAxn( ChatType.TEMPAXN, axn.getAxnId() );
+			// 设置名字
+			axnName = axn == null ? player.getNickname() : axn.getName();
 			
+			Logs.debug( player.getCtx(), "邀请<" + to.getNickname() + ">加入 <"+axnName+" 群聊>" );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
@@ -77,7 +74,6 @@ public class InviteGroupAxnEvent extends IEvent{
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED ){
-			String axnName = axn == null ? player.getNickname() : axn.getName();
 			((Update_3010)Events.UPDATE_3010.toInstance()).run( to, player, axnId, axnName );
 		}
 		

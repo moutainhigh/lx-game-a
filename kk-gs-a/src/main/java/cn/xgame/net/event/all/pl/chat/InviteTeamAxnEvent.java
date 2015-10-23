@@ -17,6 +17,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3020;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 邀请组队  <br>
@@ -60,6 +61,7 @@ public class InviteTeamAxnEvent extends IEvent {
 			// 然后给对方发送邀请组队信息
 			((Update_3020)Events.UPDATE_3020.toInstance()).run( to, player, fid );
 			
+			Logs.debug( player.getCtx(), "邀请<" + to.getNickname() + ">组队" );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

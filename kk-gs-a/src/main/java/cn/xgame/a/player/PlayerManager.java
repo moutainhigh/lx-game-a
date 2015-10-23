@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.ErrorCode;
 
@@ -24,8 +25,12 @@ public class PlayerManager {
 	private PlayerManager(){}
 	public static PlayerManager o = new PlayerManager();
 	
-	
+	// 在线玩家
 	private Map<String, Player> players = new HashMap<String, Player>();
+	
+	// 离线玩家 - 这里暂时为组队
+	private List<Player> offline = Lists.newArrayList();
+	
 	
 	/**
 	 * 针对玩家 的 消息分发
@@ -75,10 +80,26 @@ public class PlayerManager {
 	 * @return
 	 */
 	public Player getPlayer( String uID, short gsid ) {
-		Player ret = getPlayerFmOnline( uID );
+		Player ret = getPlayerByTeam( uID );
 		if( ret == null )
 			ret = getPlayerFmDB( uID, gsid );
 		return ret;
+	}
+	
+	/**
+	 * 专门为组队开发一个获取接口
+	 * @param uid
+	 * @return
+	 */
+	public Player getPlayerByTeam( String uid ) {
+		Player ret = getPlayerFmOnline( uid );
+		if( ret == null ){
+			for( Player o : offline ){
+				if( o.getUID().equals( uid ) )
+					return o;
+			}
+		}
+		return null;
 	}
 	
 	//===============================================================
@@ -191,14 +212,35 @@ public class PlayerManager {
 		Player player = players.remove(uID);
 		if( player == null )
 			return;
+		player.setLastLogoutTime( System.currentTimeMillis() );
+		
+		// 这里看他是不是有组队  有就伪离线
+		if( player.getFleets().isHaveTeam() ){
+			
+			offline.add( player );
+		}else{
+			
+			// 然后处理退出
+			player.exit();
+			
+			// 最后保存数据库
+			update( player );
+		}
+	}
+
+	/**
+	 * 退出那些离线的
+	 * @param temp
+	 */
+	public void exitByOffline( Player player ) {
 		// 然后处理退出
 		player.exit();
 		
 		// 最后保存数据库
 		update( player );
+		
+		offline.remove(player);
 	}
-
-
 
 	
 	//===============================================================
@@ -275,7 +317,6 @@ public class PlayerManager {
 		
 		
 	}
-
 
 
 }

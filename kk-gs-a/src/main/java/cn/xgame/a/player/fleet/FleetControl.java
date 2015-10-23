@@ -38,6 +38,7 @@ public class FleetControl implements IArrayStream{
 		for( int i = 0; i < size; i++ ){
 			FleetInfo fleet 		= new FleetInfo();
 			List<ShipInfo> ships 	= fleet.getShips();
+			fleet.setNo( buf.readByte() );
 			fleet.setBerthSnid( buf.readInt() );
 			byte count 				= buf.readByte();
 			for( int j = 0; j < count; j++ ){
@@ -57,6 +58,7 @@ public class FleetControl implements IArrayStream{
 		ByteBuf buf = Unpooled.buffer();
 		buf.writeByte( fleets.size() );
 		for( FleetInfo fleet : fleets ){
+			buf.writeByte( fleet.getNo() );
 			buf.writeInt( fleet.getBerthSnid() );
 			List<ShipInfo> ships = fleet.getShips();
 			buf.writeByte( ships.size() );
@@ -72,46 +74,74 @@ public class FleetControl implements IArrayStream{
 	public List<FleetInfo> getFleet(){ return fleets; }
 	
 	/**
-	 * 根据舰队ID获取舰队信息 - 舰队ID就是舰队列表下标
-	 * @param index
+	 * 根据舰队编号获取舰队信息 -
+	 * @param No
 	 * @return
 	 */
-	public FleetInfo getFleetInfo( int index ) {
-		if( index < 0 || index >= fleets.size() )
-			return null;
-		return fleets.get(index);
+	public FleetInfo getFleetInfo( byte No ) {
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getNo() == No )
+				return fleet;
+		}
+		return null;
 	}
-	
 	/**
 	 * 根据舰船获取 舰队信息
 	 * @param ship
 	 * @return
 	 */
 	public FleetInfo getFleetInfo( ShipInfo ship ) {
-		return getFleetInfo( getIndex(ship) );
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getShip( ship.getuId() ) != null )
+				return fleet;
+		}
+		return null;
+	}
+	/**
+	 * 根据频道获取舰队
+	 * @param axnId
+	 * @return
+	 */
+	public FleetInfo getFleetInfo( int axnId ) {
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getAxnId() == axnId )
+				return fleet;
+		}
+		return null;
 	}
 	
 	/**
-	 * 根据舰船 获取 舰船所在那个舰队
-	 * @param ship
+	 * 获取还有队伍的舰队
 	 * @return
 	 */
-	public int getIndex( ShipInfo ship ) {
-		for( int i = 0; i < fleets.size(); i++ ){
-			FleetInfo fleet = fleets.get(i);
-			if( fleet.getShip( ship.getuId() ) != null )
-				return i;
+	public List<FleetInfo> getHaveTeam() {
+		List<FleetInfo> ret = Lists.newArrayList();
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getAxnId() != 0 )
+				ret.add(fleet);
 		}
-		return -1;
+		return ret;
 	}
 	
 	/**
 	 * 添加一个舰队 
 	 */
 	public void addFleet(){
-		fleets.add( new FleetInfo() );
+		FleetInfo e = new FleetInfo();
+		e.setNo( (byte) (fleets.size() + 1) );
+		fleets.add( e );
 	}
 
+	/**
+	 * 是否有队伍
+	 * @return
+	 */
+	public boolean isHaveTeam() {
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getAxnId() != 0 )
+				return true;
+		}
+		return false;
+	}
 
-	
 }

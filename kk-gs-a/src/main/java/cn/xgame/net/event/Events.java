@@ -53,8 +53,10 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
+import cn.xgame.net.event.all.pl.ship.ExitTeamEvent;
 import cn.xgame.net.event.all.pl.ship.FleetAwayEvent;
 import cn.xgame.net.event.all.pl.ship.FleetIntoEvent;
+import cn.xgame.net.event.all.pl.ship.LookTeamEvent;
 import cn.xgame.net.event.all.pl.ship.MountCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
@@ -69,6 +71,7 @@ import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
+import cn.xgame.net.event.all.pl.update.Update_2301;
 import cn.xgame.net.event.all.pl.update.Update_3012;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
@@ -106,6 +109,11 @@ public enum Events {
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "申请星图信息" ),
 	SAIL_OUT					( 1015, 	new SailoutEvent()				, "出航" ),
 	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent()		, "修改航线" ),
+	// 舰队
+	FLEET_INTO					( 1027, 	new FleetIntoEvent()			, "舰队操作-实装舰队" ),
+	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰队操作-停用舰队" ),
+	FLEET_LOOKTEAM				( 1061, 	new LookTeamEvent()				, "舰队操作-查看队伍" ),
+	FLEET_EXITTEAM				( 1062, 	new ExitTeamEvent()				, "舰队操作-退出队伍" ),
 	// 舰船
 	MOUNT_HOLD					( 1021, 	new MountHoldEvent()			, "舰船操作-放入船仓" ),
 //	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
@@ -113,8 +121,6 @@ public enum Events {
 	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent()			, "舰船操作-取下装备" ),
 	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() 		, "舰船操作-指派舰长" ),
 	UNLOAD_CAPTAIN				( 1026, 	new UnloadCaptainEvent()		, "舰船操作-卸下舰长" ),
-	FLEET_INTO					( 1027, 	new FleetIntoEvent()			, "舰船操作-实装舰队" ),
-	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰船操作-停用舰队" ),
 	// 舰长
 	EAT_EQUIP					( 1031, 	new EatEquipEvent()				, "舰长操作-装上装备" ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent()			, "舰长操作-吃亲密度丹" ),
@@ -197,6 +203,7 @@ public enum Events {
 	UPDATE_3013					( 3013, 	new Update_3013()				, "更新包-" ),
 	UPDATE_3020					( 3020, 	new Update_3020()				, "更新包-" ),
 	UPDATE_3021					( 3021, 	new Update_3021()				, "更新包-" ),
+	UPDATE_2301					( 2301, 	new Update_2301()				, "更新包-" ),
 	
 
 	

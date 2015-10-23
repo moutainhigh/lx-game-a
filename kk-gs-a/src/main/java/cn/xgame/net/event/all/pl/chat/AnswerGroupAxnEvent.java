@@ -18,6 +18,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3011;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 是否同意加入群聊
@@ -74,6 +75,7 @@ public class AnswerGroupAxnEvent extends IEvent {
 			axn.appendGroupCrew( player );
 			player.getChatAxns().appendAxn( ChatType.GROUP, axnId );
 			
+			Logs.debug( player.getCtx(), (isAgree == 1 ? "同意" : "拒绝") + " <" + sponsor.getNickname() + "> 的组队邀请" );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

@@ -65,8 +65,8 @@ public class LoginEvent extends IEvent{
 			}
 		}
 		
-		ByteBuf response = buildEmptyPackage( ctx, 1024 );
-		response.writeShort( code.toNumber() );
+		ByteBuf buffer = buildEmptyPackage( ctx, 1024 );
+		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			FleetControl fleetCtr = player.getFleets();
 			List<FleetInfo> fleets = fleetCtr.getFleet();
@@ -74,34 +74,34 @@ public class LoginEvent extends IEvent{
 				fleet.executeStatus( player );
 			
 			// 基本数据
-			player.buildTransformStream( response );
+			player.buildTransformStream( buffer );
 			// 母星数据
-			home.buildTransformStream( response );
-			home.putPlyaerInfo( player, response );
-			player.getDepots( home.getId() ).buildTransformStream( response );
+			home.buildTransformStream( buffer );
+			home.putPlyaerInfo( player, buffer );
+			player.getDepots( home.getId() ).buildTransformStream( buffer );
 			// 舰长数据
 			List<CaptainInfo> capts = player.getDocks().getCabin();
-			response.writeByte( capts.size() );
+			buffer.writeByte( capts.size() );
 			for( CaptainInfo capt : capts )
-				capt.buildTransformStream(response);
+				capt.buildTransformStream(buffer);
 			// 舰船数据
 			List<ShipInfo> ships = player.getDocks().getApron();
-			response.writeByte( ships.size() );
+			buffer.writeByte( ships.size() );
 			for( ShipInfo ship : ships ){
-				ship.buildTransformStream(response);
-				response.writeByte( fleetCtr.getIndex( ship ) );
+				ship.buildTransformStream(buffer);
+				FleetInfo fleetInfo = fleetCtr.getFleetInfo( ship );
+				buffer.writeByte( fleetInfo == null ? 0 : fleetInfo.getNo() );
 			}
 			// 舰队数据
-			response.writeByte( fleets.size() );
-			for( int i = 0; i < fleets.size(); i++ ){
-				FleetInfo fleet = fleets.get(i);
-				response.writeByte( i );
-				fleet.buildTransformStream(response);
+			buffer.writeByte( fleets.size() );
+			for( FleetInfo fleet : fleets ){
+				buffer.writeByte( fleet.getNo() );
+				fleet.buildTransformStream(buffer);
 			}
 			// 聊天频道信息
-			player.getChatAxns().buildTransformStream(response);
+			player.getChatAxns().buildTransformStream(buffer);
 		}
-		sendPackage( ctx, response );
+		sendPackage( ctx, buffer );
 		
 		
 		// 这里表示 已经登录成功了

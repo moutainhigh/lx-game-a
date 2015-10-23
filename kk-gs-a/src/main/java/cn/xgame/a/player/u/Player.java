@@ -145,7 +145,6 @@ public class Player extends IPlayer implements ITransformStream{
 
 	/**  退出处理 */
 	public void exit() {
-		setLastLogoutTime( System.currentTimeMillis() );
 		
 		// 保存所有道具 信息 这里不保存 让道具及时保存
 //		depots.update();

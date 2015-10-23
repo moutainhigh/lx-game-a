@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.NumberFilter;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
@@ -14,7 +15,9 @@ import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.axn.AxnControl;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.info.AxnInfo;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 玩家群聊&私聊
@@ -23,38 +26,42 @@ import cn.xgame.a.player.u.Player;
  */
 public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
+	private Player root;
+	
 	// 聊天操作类
 	private final AxnControl chatControl = ChatManager.o.getChatControl();
 	
 	// 群聊频道ID列表
-	private List<Integer> tempaxn = Lists.newArrayList();
+	private List<Integer> groupaxn = Lists.newArrayList();
 	
 	// 私聊频道ID列表
 	private List<Integer> privateaxn = Lists.newArrayList();
 	
+	
 	public ChatAxnControl(Player player) {
+		root = player;
 	}
 
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null )
 			return;
-		tempaxn.clear();
+		groupaxn.clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			int axnid = buf.readInt();
 			if( chatControl.getAXNInfo(axnid) != null )
-				tempaxn.add( axnid );
+				groupaxn.add( axnid );
 		}
 	}
 	@Override
 	public byte[] toBytes() {
-		if( tempaxn.isEmpty() ) 
+		if( groupaxn.isEmpty() ) 
 			return null;
 		ByteBuf buf = Unpooled.buffer( 1024 );
-		buf.writeByte( tempaxn.size() );
-		for( int i : tempaxn ){
+		buf.writeByte( groupaxn.size() );
+		for( int i : groupaxn ){
 			buf.writeInt(i);
 		}
 		return buf.array();
@@ -62,22 +69,37 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeByte( tempaxn.size() );
-		for( int axnid : tempaxn ){
+		List<FleetInfo> allFleet = root.getFleets().getHaveTeam();
+		
+		buffer.writeByte( groupaxn.size() + privateaxn.size() + allFleet.size() );
+		// 塞入 群聊和私聊的频道
+		for( int axnid : groupaxn ){
 			AxnInfo axn = chatControl.getAXNInfo(axnid);
-			axn.buildTransformStream(buffer);
+			buffer.writeInt( axn.getAxnId() );
+			RW.writeString( buffer, axn.getName() );
+		}
+		// 塞入 私聊的频道
+		for( int axnid : privateaxn ){
+			AxnInfo axn = chatControl.getAXNInfo(axnid);
+			buffer.writeInt( axn.getAxnId() );
+			RW.writeString( buffer, axn.getPrivateName(root.getUID()) );
+		}
+		// 塞入 组队的频道
+		for( FleetInfo fleet : allFleet ){
+			AxnInfo axn = chatControl.getAXNInfo(fleet.getAxnId());
+			buffer.writeInt( axn.getAxnId() );
+			RW.writeString( buffer, NumberFilter.convertChineseStr(fleet.getNo()) );
 		}
 	}
 	
-
 	/**
 	 * 根据频道类型获取 频道ID列表
 	 * @param type
 	 * @return
 	 */
-	public List<Integer> getAxn( ChatType type ){
+	private List<Integer> getAxn( ChatType type ){
 		if( type == ChatType.GROUP )
-			return tempaxn;
+			return groupaxn;
 		if( type == ChatType.PRIVATE ){
 			return privateaxn;
 		}
@@ -89,7 +111,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	 * @param type
 	 * @return
 	 */
-	public boolean axnIsMax(ChatType type) {
+	public boolean axnIsMax( ChatType type ) {
 		List<Integer> axns = getAxn( type );
 		return axns == null ? true : axns.size() >= type.max();
 	}
@@ -99,8 +121,10 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	 * @param type
 	 * @param axnId
 	 */
-	public void appendAxn(ChatType type, int axnId) {
+	public void appendAxn( ChatType type, int axnId ) {
 		List<Integer> axns = getAxn( type );
+		if( axns == null )
+			return;
 		if( axns.indexOf(axnId) == -1 )
 			axns.add( axnId );
 	}
@@ -111,6 +135,8 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	 */
 	public void removeAxn( ChatType type, int axnId ) {
 		List<Integer> axns = getAxn( type );
+		if( axns == null )
+			return;
 		Iterator<Integer> iter = axns.iterator();
 		while( iter.hasNext() ){
 			int next = iter.next();

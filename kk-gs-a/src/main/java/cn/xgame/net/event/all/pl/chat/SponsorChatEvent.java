@@ -12,6 +12,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
+import cn.xgame.utils.Logs;
 
 /**
  * 发起聊天
@@ -32,15 +33,19 @@ public class SponsorChatEvent extends IEvent{
 			
 			// 这里做一些限制的事情
 			// TODO
-			
+			Logs.debug( player.getCtx(), "发起聊天" + axnId + ":" + content  );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf response = buildEmptyPackage( player.getCtx(), 125 );
-		response.writeShort( code.toNumber() );
-		sendPackage( player.getCtx(), response );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+		buffer.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt( axnId );
+			RW.writeString( buffer, content );
+		}
+		sendPackage( player.getCtx(), buffer );
 		
 		// 同步消息
 		if( code == ErrorCode.SUCCEED ){

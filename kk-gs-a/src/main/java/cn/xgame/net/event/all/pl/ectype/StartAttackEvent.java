@@ -40,7 +40,7 @@ public class StartAttackEvent extends IEvent{
 		byte type	= data.readByte(); // 类型
 		int cnid 	= data.readInt();// 章节ID
 		int enid 	= data.readInt();// 副本ID
-		int fid 	= data.readByte();// 舰队ID
+		byte fid 	= data.readByte();// 舰队ID
 		
 		ErrorCode code 	= null;
 		IStatus status 	= null;

@@ -26,6 +26,9 @@ import x.javaplus.util.ErrorCode;
  */
 public class FleetInfo implements ITransformStream{
 	
+	// 舰队编号
+	private byte			No ;
+	
 	// 舰船列表
 	private List<ShipInfo> 	ships 			= Lists.newArrayList();
 	
@@ -53,6 +56,8 @@ public class FleetInfo implements ITransformStream{
 	public int getBerthSnid() { return berthSnid; }
 	public int getAxnId() { return axnId; }
 	public void setAxnId(int axnId) { this.axnId = axnId; }
+	public byte getNo() { return No; }
+	public void setNo(byte no) { No = no; }
 	
 	public void setBerthSnid( int berthSnid ) { 
 		this.berthSnid = berthSnid;
@@ -66,24 +71,6 @@ public class FleetInfo implements ITransformStream{
 				return ship;
 		}
 		return null;
-	}
-	
-	/**
-	 * 是否空闲状态
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean isLeisure() throws Exception {
-		if( status.type() == StatusType.SAIL || status.type() == StatusType.COMBAT )
-			throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
-		return true;
-	}
-	
-	/**
-	 * 舰队是否空
-	 */
-	public boolean isEmpty(){
-		return ships.isEmpty();
 	}
 	
 	/**
@@ -118,6 +105,37 @@ public class FleetInfo implements ITransformStream{
 			status 		= StatusType.LEISURE.create();
 			berthSnid 	= -1;
 		}
+	}
+	
+	/**
+	 * 获取当前耐久和总耐久
+	 * @return
+	 */
+	public int[] getAllDur() {
+		int[] ret = new int[2];
+		for( ShipInfo ship : ships ){
+			ret[0] += ship.getCurrentHp();
+			ret[1] += ship.attr().getMaxHp();
+		}
+		return ret;
+	}
+
+	/**
+	 * 是否空闲状态
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean isLeisure() throws Exception {
+		if( status.type() == StatusType.SAIL || status.type() == StatusType.COMBAT )
+			throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+		return true;
+	}
+	
+	/**
+	 * 舰队是否空
+	 */
+	public boolean isEmpty(){
+		return ships.isEmpty();
 	}
 	
 	/**
@@ -185,6 +203,5 @@ public class FleetInfo implements ITransformStream{
 		}
 		return fighter;
 	}
-
 
 }
