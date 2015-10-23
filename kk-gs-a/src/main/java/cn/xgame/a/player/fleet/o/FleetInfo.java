@@ -43,6 +43,8 @@ public class FleetInfo implements ITransformStream{
 	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
+		buffer.writeByte( No );
+		buffer.writeInt( axnId );
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
 			buffer.writeInt( ship.getuId() );

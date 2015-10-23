@@ -109,7 +109,6 @@ public class CreateEvent extends IEvent {
 			List<FleetInfo> fleets = fleetCtr.getFleet();
 			buffer.writeByte( fleets.size() );
 			for( FleetInfo fleet : fleets ){
-				buffer.writeByte( fleet.getNo() );
 				fleet.buildTransformStream(buffer);
 			}
 		}
