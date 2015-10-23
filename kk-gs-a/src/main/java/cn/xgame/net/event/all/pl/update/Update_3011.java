@@ -10,37 +10,37 @@ import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 
 /**
- * 同意和拒绝组队 通知
+ * 同意和拒绝加入群聊 通知
  * @author deng		
- * @date 2015-8-2 下午11:15:07
+ * @date 2015-10-23 下午2:58:56
  */
-public class Update_3021 extends IEvent{
+public class Update_3011 extends IEvent {
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 	}
-	
+
 	/**
 	 * 通知
 	 * @param isAgree 是否同意
+	 * @param accept 接受者
 	 * @param player 被邀请者
-	 * @param fid 邀请者舰队ID
-	 * @param to 邀请者
+	 * @param axnName 频道名字
 	 * @param axnId 频道ID
 	 */
-	public void run( int isAgree, Player player, byte fid, Player to, int axnId ) {
+	public void run( byte isAgree, Player accept, Player player, String axnName, int axnId ) {
 		
 		try {
-			ByteBuf buffer = buildEmptyPackage( to.getCtx(), 125 );
+			ByteBuf buffer = buildEmptyPackage( accept.getCtx(), 125 );
 			buffer.writeByte( isAgree );
 			RW.writeString( buffer, player.getNickname() );
-			buffer.writeByte( fid );
+			RW.writeString( buffer, axnName );
 			if( isAgree == 1 ){
 				buffer.writeInt( axnId );
 			}
-			sendPackage( to.getCtx(), buffer );
+			sendPackage( accept.getCtx(), buffer );
 		} catch (Exception e) {
-			Logs.error( "Update_3021 ", e );
+			Logs.error( "Update_3011 ", e );
 		}
 	}
 

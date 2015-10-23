@@ -28,13 +28,15 @@ public class LXConstants {
 	/** 货币表格ID */
 	public static int CURRENCY_NID 			= 60000;
 	
+	/** 私聊频道最大拥有个数 */
+	public static int PRIVATEAXN_MAX 		= 2;
 	/** 临时频道最大拥有个数 */
 	public static int TEMPAXN_MAX 			= 3;
 	/** 临时频道人数上限 */
 	public static int TEMPAXN_MAXMEMBER		= 20;
 	
 	/** 队伍频道最大拥有个数 */
-	public static int TEAMAXN_MAX 			= 4;
+	public static int TEAMAXN_MAX 			= 2;
 	/** 队伍频道人数上限 */
 	public static int TEAMAXN_MAXMEMBER		= 4;
 	

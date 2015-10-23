@@ -122,6 +122,7 @@ public class Building extends IBuilding{
 		Lua lua 	= LuaUtil.getGameData();
 		lua.getField( "manorBuildingProduce" ).call( 0, this, count, getSumScale(), getProduceTemplet() );
 		
+		setEndtime( (int)(System.currentTimeMillis()/1000) );
 		Logs.debug( "当前建筑总产出" + produces );
 	}
 

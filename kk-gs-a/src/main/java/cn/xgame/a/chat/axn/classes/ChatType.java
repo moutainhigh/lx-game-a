@@ -1,4 +1,4 @@
-package cn.xgame.a.chat.o;
+package cn.xgame.a.chat.axn.classes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,8 +58,8 @@ public enum ChatType {
 		public void appendUID(int id) { ChatAxnUID.appendTeamUid(id); }
 	},
 	
-	/** 临时频道 */
-	TEMPAXN(4) {
+	/** 群聊频道 */
+	GROUP(4) {
 		@Override
 		public int max() { return LXConstants.TEMPAXN_MAX; }
 		
@@ -69,6 +69,21 @@ public enum ChatType {
 		@Override
 		public int generateUID() throws Exception { return ChatAxnUID.getTempaxnUid(); }
 
+		@Override
+		public void appendUID(int id) { ChatAxnUID.appendTempUid(id); }
+	},
+	
+	/** 私聊频道 */
+	PRIVATE(5) {
+		@Override
+		public int max() { return LXConstants.PRIVATEAXN_MAX; }
+		
+		@Override
+		public int maxmember() { return 2; }
+		
+		@Override
+		public int generateUID() throws Exception { return ChatAxnUID.getTempaxnUid(); }
+		
 		@Override
 		public void appendUID(int id) { ChatAxnUID.appendTempUid(id); }
 	};

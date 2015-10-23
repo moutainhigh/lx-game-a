@@ -22,18 +22,18 @@ public class Update_3020 extends IEvent{
 
 	/**
 	 * 通知
-	 * @param to
-	 * @param player
-	 * @param suid
+	 * @param to 接受人
+	 * @param player 发起人
+	 * @param fid 发起人参战舰队ID
 	 */
-	public void run( Player to, Player player, int suid ) {
+	public void run( Player to, Player player, byte fid ) {
 		
 		try {
-			ByteBuf response = buildEmptyPackage( to.getCtx(), 30 );
+			ByteBuf response = buildEmptyPackage( to.getCtx(), 50 );
 			
 			RW.writeString( response, player.getUID() );
 			RW.writeString( response, player.getNickname() );
-			response.writeInt( suid );
+			response.writeByte( fid );
 			
 			sendPackage( to.getCtx(), response );
 			

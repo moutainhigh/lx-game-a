@@ -7,7 +7,7 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.o.ChatType;
+import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;

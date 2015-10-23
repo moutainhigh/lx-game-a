@@ -47,8 +47,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 副本操作
 	private EctypeControl 		ectypes 		= new EctypeControl( this );
 	
-	// 玩家聊天聊天频道列表
-	private ChatAxnControl		chatAxns 		= new ChatAxnControl( this );
+	// 玩家群聊频道列表&私聊
+	private ChatAxnControl	groupChat 		= new ChatAxnControl( this );
 	
 	// 酒馆数据
 	private TavernControl 		taverns			= new TavernControl( this );
@@ -97,7 +97,7 @@ public class Player extends IPlayer implements ITransformStream{
 		// 副本信息
 		ectypes.fromBytes( dto.getEctypes() );
 		// 取出 聊天频道列表
-		chatAxns.fromBytes( dto.getChatAxns() );
+		groupChat.fromBytes( dto.getChatAxns() );
 		// 酒馆数据
 		taverns.fromBytes( dto.getTaverns() );
 		// 邮件
@@ -122,7 +122,7 @@ public class Player extends IPlayer implements ITransformStream{
 		// 副本
 		dto.setEctypes( ectypes.toBytes() );
 		// 聊天
-		dto.setChatAxns( chatAxns.toBytes() );
+		dto.setChatAxns( groupChat.toBytes() );
 		// 酒馆
 		dto.setTaverns( taverns.toBytes() );
 		// 舰队
@@ -243,7 +243,7 @@ public class Player extends IPlayer implements ITransformStream{
 		return ectypes;
 	}
 	public ChatAxnControl getChatAxns() {
-		return chatAxns;
+		return groupChat;
 	}
 	public ManorControl getManors() {
 		return manors;

@@ -15,11 +15,15 @@ import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.captain.EatEquipEvent;
 import cn.xgame.net.event.all.pl.captain.EatIntimacyEvent;
-import cn.xgame.net.event.all.pl.chat.AnswerTeamEvent;
-import cn.xgame.net.event.all.pl.chat.InviteTeamEvent;
-import cn.xgame.net.event.all.pl.chat.InviteTempAxnEvent;
+import cn.xgame.net.event.all.pl.chat.AlterGroupNameEvent;
+import cn.xgame.net.event.all.pl.chat.AnswerTeamAxnEvent;
+import cn.xgame.net.event.all.pl.chat.ExitGroupAxnEvent;
+import cn.xgame.net.event.all.pl.chat.InviteTeamAxnEvent;
+import cn.xgame.net.event.all.pl.chat.AnswerGroupAxnEvent;
+import cn.xgame.net.event.all.pl.chat.LookGroupInfoEvent;
+import cn.xgame.net.event.all.pl.chat.LookPlayerInfoEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
-import cn.xgame.net.event.all.pl.chat.CreateTempAxnEvent;
+import cn.xgame.net.event.all.pl.chat.InviteGroupAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
@@ -65,6 +69,7 @@ import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
+import cn.xgame.net.event.all.pl.update.Update_3012;
 import cn.xgame.net.event.all.pl.update.Update_2101;
 import cn.xgame.net.event.all.pl.update.Update_2111;
 import cn.xgame.net.event.all.pl.update.Update_2201;
@@ -75,6 +80,8 @@ import cn.xgame.net.event.all.pl.update.Update_2241;
 import cn.xgame.net.event.all.pl.update.Update_2252;
 import cn.xgame.net.event.all.pl.update.Update_3000;
 import cn.xgame.net.event.all.pl.update.Update_3010;
+import cn.xgame.net.event.all.pl.update.Update_3011;
+import cn.xgame.net.event.all.pl.update.Update_3013;
 import cn.xgame.net.event.all.pl.update.Update_3020;
 import cn.xgame.net.event.all.pl.update.Update_3021;
 
@@ -159,11 +166,17 @@ public enum Events {
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent()			, "聊天系统-发起聊天" ),
-	CREATE_TEMPAXN				( 3011, 	new CreateTempAxnEvent()		, "聊天系统-创建一个临时频道" ),
-	INVITE_TEMPAXN				( 3012, 	new InviteTempAxnEvent()		, "聊天系统-邀请玩家加入临时频道" ),
+	LOOK_PLAYERINFO				( 3002, 	new LookPlayerInfoEvent()		, "聊天系统-查看玩家信息" ),
+	// 群聊
+	CREATE_TEMPAXN				( 3015, 	new InviteGroupAxnEvent()		, "聊天系统-邀请加入群聊" ),
+	INVITE_TEMPAXN				( 3016, 	new AnswerGroupAxnEvent()		, "聊天系统-是否同意加入群聊" ),
+	ALTER_GROUPNAME				( 3017, 	new AlterGroupNameEvent()		, "聊天系统-修改群聊名字" ),
+	EXIT_GROUPAXN				( 3018, 	new ExitGroupAxnEvent()			, "聊天系统-退出群聊" ),
+	LOOK_GROUPINFO				( 3019, 	new LookGroupInfoEvent()		, "聊天系统-查看群聊成员" ),
 	// 组队
-	INVITE_TEAM					( 3022, 	new InviteTeamEvent()			, "聊天系统-邀请组队" ),
-	ANSWER_TEAM					( 3023, 	new AnswerTeamEvent()			, "聊天系统-是否同意加入队伍" ),
+	INVITE_TEAM					( 3025, 	new InviteTeamAxnEvent()		, "聊天系统-邀请组队" ),
+	ANSWER_TEAM					( 3026, 	new AnswerTeamAxnEvent()		, "聊天系统-是否同意加入队伍" ),
+	// 私聊
 	
 	
 	//-----------------更新包
@@ -179,6 +192,9 @@ public enum Events {
 	// 聊天
 	UPDATE_3000					( 3000, 	new Update_3000()				, "更新包-" ),
 	UPDATE_3010					( 3010, 	new Update_3010()				, "更新包-" ),
+	UPDATE_3011					( 3011, 	new Update_3011()				, "更新包-" ),
+	UPDATE_3012					( 3012, 	new Update_3012()				, "更新包-" ),
+	UPDATE_3013					( 3013, 	new Update_3013()				, "更新包-" ),
 	UPDATE_3020					( 3020, 	new Update_3020()				, "更新包-" ),
 	UPDATE_3021					( 3021, 	new Update_3021()				, "更新包-" ),
 	

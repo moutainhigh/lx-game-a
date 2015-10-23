@@ -6,7 +6,7 @@ import io.netty.channel.AbstractChannel;
 
 import org.apache.log4j.PropertyConfigurator;
 
-import cn.xgame.a.chat.o.ChatAxnUID;
+import cn.xgame.a.chat.axn.classes.ChatAxnUID;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.Events;

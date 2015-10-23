@@ -31,7 +31,7 @@ public class TakeGoodsEvent extends IEvent{
 		for( int i = 0; i < size; i++ ){
 			Goods g = new Goods();
 			g.setId( data.readInt() );
-			g.setId( data.readInt() );
+			g.addCount( data.readInt() );
 			goods.add(g);
 		}
 		

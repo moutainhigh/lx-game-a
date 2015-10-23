@@ -35,6 +35,9 @@ public class FleetInfo implements ITransformStream{
 	// 当前停靠星球ID
 	private int 			berthSnid		= -1;
 	
+	// 组队频道ID
+	private int 			axnId			= 0;
+	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeByte( ships.size() );
@@ -48,6 +51,8 @@ public class FleetInfo implements ITransformStream{
 	public IStatus getStatus() { return status; }
 	public void setStatus( IStatus status ){ this.status = status; }
 	public int getBerthSnid() { return berthSnid; }
+	public int getAxnId() { return axnId; }
+	public void setAxnId(int axnId) { this.axnId = axnId; }
 	
 	public void setBerthSnid( int berthSnid ) { 
 		this.berthSnid = berthSnid;
@@ -72,6 +77,13 @@ public class FleetInfo implements ITransformStream{
 		if( status.type() == StatusType.SAIL || status.type() == StatusType.COMBAT )
 			throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 		return true;
+	}
+	
+	/**
+	 * 舰队是否空
+	 */
+	public boolean isEmpty(){
+		return ships.isEmpty();
 	}
 	
 	/**
@@ -173,5 +185,6 @@ public class FleetInfo implements ITransformStream{
 		}
 		return fighter;
 	}
+
 
 }

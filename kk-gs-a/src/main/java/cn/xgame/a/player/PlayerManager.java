@@ -10,7 +10,6 @@ import x.javaplus.util.ErrorCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.player.u.classes.Init;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
@@ -195,9 +194,6 @@ public class PlayerManager {
 		// 然后处理退出
 		player.exit();
 		
-		// 更新聊天频道信息
-		ChatManager.o.getChatControl().playerOffline(player);
-
 		// 最后保存数据库
 		update( player );
 	}

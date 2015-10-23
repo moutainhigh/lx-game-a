@@ -1,4 +1,4 @@
-package cn.xgame.a.chat.o;
+package cn.xgame.a.chat.axn.info;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,10 +8,8 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.chat.o.v.TeamAxnCrew;
-import cn.xgame.a.chat.o.v.TempAxnCrew;
-import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.chat.axn.classes.ChatType;
+import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -27,6 +25,9 @@ public class AxnInfo implements ITransformStream{
 	// 频道类型
 	private ChatType 	type;
 	
+	// 频道名字
+	private String		name;
+	
 	// 频道对应玩家列表
 	private List<IAxnCrew> axnCrews = Lists.newArrayList();
 
@@ -35,7 +36,7 @@ public class AxnInfo implements ITransformStream{
 		this.axnId 	= axnId;
 	}
 	
-
+	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( axnId );
@@ -48,7 +49,9 @@ public class AxnInfo implements ITransformStream{
 	public int getAxnId() { return axnId; }
 	public ChatType getType() { return type; }
 	public List<IAxnCrew> getAxnCrews() { return axnCrews; }
-
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	
 	/**
 	 * 人数是否已经满了
 	 * @return
@@ -58,12 +61,15 @@ public class AxnInfo implements ITransformStream{
 	}
 	
 	/**
-	 * 玩家是否有权限
+	 * 玩家是否在该频道
 	 * @param player
 	 * @return
 	 */
-	public boolean isHavePrivilege( Player player ) {
+	public boolean isHave( Player player ) {
 		return getAxnCrew( player.getUID() ) != null;
+	}
+	public boolean isHave( String uid ){
+		return getAxnCrew( uid ) != null;
 	}
 	
 	/**
@@ -80,43 +86,10 @@ public class AxnInfo implements ITransformStream{
 	}
 	
 	/**
-	 * 添加临时频道 组员
-	 * @param player
-	 */
-	public void appendTempCrew( Player player ) {
-		if( getAxnCrew( player.getUID() ) != null )
-			return ;
-		TempAxnCrew crew = new TempAxnCrew();
-		crew.setUid( player.getUID() );
-		crew.setName( player.getNickname() );
-		crew.setHeadIco( player.getHeadIco() );
-		crew.setSocket( player.getCtx() );
-		axnCrews.add(crew);
-	}
-
-	/**
-	 * 添加组队频道 组员
-	 * @param player
-	 * @param mship
-	 */
-	public void appendTeamCrew(Player player, ShipInfo ship) {
-		if( getAxnCrew( player.getUID() ) != null )
-			return ;
-		TeamAxnCrew crew = new TeamAxnCrew();
-		crew.setUid( player.getUID() );
-		crew.setName( player.getNickname() );
-		crew.setHeadIco( player.getHeadIco() );
-		crew.setSocket( player.getCtx() );
-		crew.setShipUid( ship.getuId() );
-		crew.setShipNid( ship.getnId() );
-		axnCrews.add(crew);
-	}
-
-	/**
 	 * 删除一个组员
 	 * @param uid
 	 */
-	private void removeAxnCrew( String uid ) {
+	public void removeCrew( String uid ) {
 		Iterator<IAxnCrew> iter = axnCrews.iterator();
 		while( iter.hasNext() ){
 			if( iter.next().getUid().equals( uid ) ){
@@ -127,29 +100,36 @@ public class AxnInfo implements ITransformStream{
 	}
 	
 	/**
-	 * 玩家退出
+	 * 添加群聊频道 组员
 	 * @param player
-	 * @return
 	 */
-	public boolean exit( Player player ) {
-		player.getChatAxns().removeAxn( axnId );
-		removeAxnCrew( player.getUID() );
-		// 这里还剩最后一个的时候 这个频道就不存在了
-		if( axnCrews.size() == 1 ){
-			Player o = PlayerManager.o.getPlayerFmOnline( axnCrews.get(0).getUid() );
-			if( o != null ) o.getChatAxns().removeAxn(axnId);
-		}
-		return axnCrews.size() <= 1;
+	public void appendGroupCrew( Player player ) {
+		if( getAxnCrew( player.getUID() ) != null )
+			return ;
+		GroupAxnCrew crew = new GroupAxnCrew();
+		crew.setUid( player.getUID() );
+		crew.setName( player.getNickname() );
+		crew.setHeadIco( player.getHeadIco() );
+		crew.setSocket( player.getCtx() );
+		axnCrews.add(crew);
 	}
 
 	/**
-	 * 玩家离线
+	 * 添加组队频道 组员
 	 * @param player
-	 * @return
+	 * @param fid
 	 */
-	public void offline( Player player ) {
-		exit( player );
+	public void appendTeamCrew(Player player, byte fid) {
+		if( getAxnCrew( player.getUID() ) != null )
+			return ;
+		TeamAxnCrew crew = new TeamAxnCrew();
+		crew.setUid( player.getUID() );
+		crew.setName( player.getNickname() );
+		crew.setHeadIco( player.getHeadIco() );
+		crew.setSocket( player.getCtx() );
+		crew.setFid(fid);
+		axnCrews.add(crew);
 	}
-	
+
 	
 }

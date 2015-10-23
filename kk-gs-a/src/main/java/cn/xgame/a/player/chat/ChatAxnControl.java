@@ -10,14 +10,14 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.chat.AxnControl;
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.o.AxnInfo;
-import cn.xgame.a.chat.o.ChatType;
+import cn.xgame.a.chat.axn.AxnControl;
+import cn.xgame.a.chat.axn.classes.ChatType;
+import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.player.u.Player;
 
 /**
- * 玩家聊天信息 操作中心
+ * 玩家群聊&私聊
  * @author deng		
  * @date 2015-8-2 下午4:01:50
  */
@@ -25,15 +25,14 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
 	// 聊天操作类
 	private final AxnControl chatControl = ChatManager.o.getChatControl();
-	@SuppressWarnings("unused")
-	private final Player root;
 	
-	// 临时频道
+	// 群聊频道ID列表
 	private List<Integer> tempaxn = Lists.newArrayList();
 	
+	// 私聊频道ID列表
+	private List<Integer> privateaxn = Lists.newArrayList();
 	
 	public ChatAxnControl(Player player) {
-		root = player;
 	}
 
 	@Override
@@ -72,29 +71,18 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	
 
 	/**
-	 * 获取玩家所有频道
-	 * @return
-	 */
-	public List<Integer> getAllAxn(){
-		List<Integer> ret = Lists.newArrayList();
-		ret.addAll(tempaxn);
-		return ret;
-	}
-	
-	/**
 	 * 根据频道类型获取 频道ID列表
 	 * @param type
 	 * @return
 	 */
 	public List<Integer> getAxn( ChatType type ){
-		if( type == ChatType.TEMPAXN )
+		if( type == ChatType.GROUP )
 			return tempaxn;
-		if( type == ChatType.TEMPAXN ){
-//			return root.getDocks().getAllAxn();
+		if( type == ChatType.PRIVATE ){
+			return privateaxn;
 		}
 		return null;
 	}
-	
 	
 	/**
 	 * 获取频道个数是否满
@@ -121,8 +109,9 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	 * 删除一个频道ID
 	 * @param axnId
 	 */
-	public void removeAxn( int axnId ) {
-		Iterator<Integer> iter = tempaxn.iterator();
+	public void removeAxn( ChatType type, int axnId ) {
+		List<Integer> axns = getAxn( type );
+		Iterator<Integer> iter = axns.iterator();
 		while( iter.hasNext() ){
 			int next = iter.next();
 			if( next == axnId ){
@@ -130,9 +119,6 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 				return;
 			}
 		}
-//		root.getDocks().removeAxn( axnId );
 	}
-
-
 
 }

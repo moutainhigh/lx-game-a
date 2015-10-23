@@ -1,4 +1,4 @@
-package cn.xgame.a.chat.o;
+package cn.xgame.a.chat.axn.classes;
 
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.PlayerManager;

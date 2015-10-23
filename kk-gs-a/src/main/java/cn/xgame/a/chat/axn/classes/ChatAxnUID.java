@@ -1,4 +1,4 @@
-package cn.xgame.a.chat.o;
+package cn.xgame.a.chat.axn.classes;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ChatAxnUID {
 			return TEMP_UIDLS.remove(0);
 		if( ++TEMP_AXNUID >= LXConstants.CHAT_UID )
 			throw new Exception( ErrorCode.OTHER_ERROR.name() );
-		return ChatType.TEMPAXN.toNumber()*LXConstants.CHAT_UID + TEMP_AXNUID;
+		return ChatType.GROUP.toNumber()*LXConstants.CHAT_UID + TEMP_AXNUID;
 	}
 	/** 获取组队频道唯一ID  */
 	public static int getTeamaxnUid() throws Exception{

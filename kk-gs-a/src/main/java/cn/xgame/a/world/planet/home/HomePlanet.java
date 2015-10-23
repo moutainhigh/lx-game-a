@@ -257,6 +257,20 @@ public class HomePlanet extends IPlanet {
 		return null;
 	}
 	
+	/**
+	 * 获取玩家头衔 1.独裁 2.元老 3.平民
+	 * @param temp
+	 * @return
+	 */
+	public int getHonor( Player temp ) {
+		Child child = getChild(temp.getUID());
+		if( child == null ) return 3;
+		if( institution == Institution.AUTARCHY && childs.indexOf(child) == 0 )
+			return 1;
+		if( child.isSenator() )
+			return 2;
+		return 3;
+	}
 	
 	/**
 	 * 处理捐献后的操作
@@ -487,5 +501,6 @@ public class HomePlanet extends IPlanet {
 		}
 		throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 	}
+
 
 }
