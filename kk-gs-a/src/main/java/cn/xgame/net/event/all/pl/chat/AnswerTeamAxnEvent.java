@@ -12,8 +12,8 @@ import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.axn.AxnControl;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
-import cn.xgame.a.chat.axn.info.TeamAxnCrew;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
@@ -30,7 +30,7 @@ import cn.xgame.utils.Logs;
  */
 public class AnswerTeamAxnEvent extends IEvent{
 
-	private final AxnControl chatControl = ChatManager.o.getChatControl();
+	private final AxnControl chatControl = ChatManager.o.axns();
 	
 	
 	@Override
@@ -111,6 +111,8 @@ public class AnswerTeamAxnEvent extends IEvent{
 				
 				((Update_3021)Events.UPDATE_3021.toInstance()).run( isAgree, player, team.getFid(), to, axn.getAxnId() );
 			}
+			
+			ChatManager.o.axns().update(axn);
 		}
 		// 如果是拒绝那么直给邀请者回复
 		if( code == ErrorCode.REJECTPARTY ){

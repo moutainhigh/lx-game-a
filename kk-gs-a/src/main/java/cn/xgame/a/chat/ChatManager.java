@@ -30,7 +30,7 @@ public class ChatManager{
 	
 	// 聊天频道操作
 	private AxnControl chatControl = new AxnControl();
-	public AxnControl getChatControl() {
+	public AxnControl axns() {
 		return chatControl;
 	}
 	
@@ -112,7 +112,10 @@ public class ChatManager{
 		AxnInfo axnInfo 		= chatControl.getAXNInfo( axnId );
 		List<IAxnCrew> peoples 	= axnInfo.getAxnCrews();
 		for( IAxnCrew people : peoples ){
-			
+			if( people.getUid().equals( sponsor.getUID() ) )
+				continue;
+			if( !people.isOnlineAndUpdate() )
+				continue;
 			sendMsg( axnId, people.getSocket(), sponsor, content );
 		}
 	}

@@ -34,7 +34,7 @@ public class ExitGroupAxnEvent extends IEvent{
 		AxnInfo axn		= null;
 		try {
 			
-			axn = ChatManager.o.getChatControl().getAXNInfo(axnId);
+			axn = ChatManager.o.axns().getAXNInfo(axnId);
 			if( axn == null )
 				throw new Exception( ErrorCode.AXN_NOEXIST.name() );
 			
@@ -54,12 +54,28 @@ public class ExitGroupAxnEvent extends IEvent{
 		
 		// 这里同步给其他玩家
 		if( code == ErrorCode.SUCCEED ){
+			
 			List<IAxnCrew> crews = axn.getAxnCrews();
-			for( IAxnCrew crew : crews ){
+
+			// 先检测是否只剩一个人了 如果只有一个人 那么就直接解散群聊
+			if( crews.size() == 1 ){
+				
+				IAxnCrew crew = crews.get(0);
 				Player accept = PlayerManager.o.getPlayerFmOnline( crew.getUid() );
-				if( accept == null ) 
-					continue;
-				((Update_3013)Events.UPDATE_3013.toInstance()).run( axnId, player.getNickname(), accept );
+				if( accept != null ){
+					accept.getChatAxns().removeAxn( axn.getType(), axn.getAxnId() );
+					((Update_3013)Events.UPDATE_3013.toInstance()).run( axnId, player.getNickname(), accept );
+				}
+				
+				ChatManager.o.axns().removeAxn( axn.getAxnId() );
+			}else{
+				
+				for( IAxnCrew crew : crews ){
+					Player accept = PlayerManager.o.getPlayerFmOnline( crew.getUid() );
+					if( accept == null ) 
+						continue;
+					((Update_3013)Events.UPDATE_3013.toInstance()).run( axnId, player.getNickname(), accept );
+				}
 			}
 		}
 	}

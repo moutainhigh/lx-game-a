@@ -8,7 +8,6 @@ import java.util.List;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.chat.ChatManager;
-import cn.xgame.a.chat.axn.AxnControl;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
@@ -27,8 +26,6 @@ import cn.xgame.utils.Logs;
  */
 public class AnswerGroupAxnEvent extends IEvent {
 
-	private final AxnControl chatControl = ChatManager.o.getChatControl();
-
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
@@ -43,7 +40,7 @@ public class AnswerGroupAxnEvent extends IEvent {
 			sponsor = PlayerManager.o.getPlayerFmOnline(ruid);
 			if( sponsor == null )
 				throw new Exception( ErrorCode.PLAYER_NOTEXIST.name() );
-			axn = chatControl.getAXNInfo(axnId);
+			axn = ChatManager.o.axns().getAXNInfo(axnId);
 
 			if( isAgree == 0 )
 				throw new Exception( ErrorCode.REJECTPARTY.name() );
@@ -65,7 +62,7 @@ public class AnswerGroupAxnEvent extends IEvent {
 			} else {
 				
 				// 如果没有频道就创建一个
-				axn = chatControl.createAxn( ChatType.GROUP );
+				axn = ChatManager.o.axns().createAxn( ChatType.GROUP );
 				axn.setName( sponsor.getNickname() );
 				axn.appendGroupCrew( sponsor );
 				sponsor.getChatAxns().appendAxn( ChatType.GROUP, axnId );
@@ -101,6 +98,8 @@ public class AnswerGroupAxnEvent extends IEvent {
 					continue;
 				((Update_3011)Events.UPDATE_3011.toInstance()).run( isAgree, accept, player, axn.getName(), axn.getAxnId() );
 			}
+			
+			ChatManager.o.axns().update(axn);
 		}
 		// 如果是拒绝那么直给邀请者回复
 		if( code == ErrorCode.REJECTPARTY ){

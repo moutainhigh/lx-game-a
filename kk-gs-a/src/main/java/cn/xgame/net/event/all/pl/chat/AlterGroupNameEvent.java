@@ -34,7 +34,7 @@ public class AlterGroupNameEvent extends IEvent{
 		ErrorCode code 	= null;
 		AxnInfo axn 	= null;
 		try {
-			axn = ChatManager.o.getChatControl().getAXNInfo(axnId);
+			axn = ChatManager.o.axns().getAXNInfo(axnId);
 			if( axn == null )
 				throw new Exception( ErrorCode.AXN_NOEXIST.name() );
 			

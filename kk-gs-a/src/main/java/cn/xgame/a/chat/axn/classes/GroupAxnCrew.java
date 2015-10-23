@@ -1,6 +1,5 @@
-package cn.xgame.a.chat.axn.info;
+package cn.xgame.a.chat.axn.classes;
 
-import cn.xgame.a.chat.axn.classes.IAxnCrew;
 
 /**
  * 群聊频道 玩家信息

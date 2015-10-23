@@ -29,7 +29,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	private Player root;
 	
 	// 聊天操作类
-	private final AxnControl chatControl = ChatManager.o.getChatControl();
+	private final AxnControl chatControl = ChatManager.o.axns();
 	
 	// 群聊频道ID列表
 	private List<Integer> groupaxn = Lists.newArrayList();
@@ -47,12 +47,21 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		if( data == null )
 			return;
 		groupaxn.clear();
+		privateaxn.clear();
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			int axnid = buf.readInt();
-			if( chatControl.getAXNInfo(axnid) != null )
+			AxnInfo axnInfo = chatControl.getAXNInfo(axnid);
+			if( axnInfo != null && axnInfo.isHave(root) )
 				groupaxn.add( axnid );
+		}
+		size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			int axnid = buf.readInt();
+			AxnInfo axnInfo = chatControl.getAXNInfo(axnid);
+			if( axnInfo != null && axnInfo.isHave(root) )
+				privateaxn.add( axnid );
 		}
 	}
 	@Override
@@ -62,6 +71,10 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 		ByteBuf buf = Unpooled.buffer( 1024 );
 		buf.writeByte( groupaxn.size() );
 		for( int i : groupaxn ){
+			buf.writeInt(i);
+		}
+		buf.writeByte( privateaxn.size() );
+		for( int i : privateaxn ){
 			buf.writeInt(i);
 		}
 		return buf.array();

@@ -25,7 +25,7 @@ import cn.xgame.utils.Logs;
  */
 public class InviteGroupAxnEvent extends IEvent{
 
-	private final AxnControl chatControl = ChatManager.o.getChatControl();
+	private final AxnControl chatControl = ChatManager.o.axns();
 	
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {

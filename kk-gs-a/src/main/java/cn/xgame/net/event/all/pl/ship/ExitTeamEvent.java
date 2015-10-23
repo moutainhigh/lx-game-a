@@ -31,7 +31,7 @@ public class ExitTeamEvent extends IEvent {
 		
 		byte fid = data.readByte();
 		
-		AxnControl chatControl = ChatManager.o.getChatControl();
+		AxnControl chatControl = ChatManager.o.axns();
 		
 		ErrorCode code  = null;
 		AxnInfo axn		= null;

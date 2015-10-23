@@ -233,13 +233,15 @@ public class PlayerManager {
 	 * @param temp
 	 */
 	public void exitByOffline( Player player ) {
-		// 然后处理退出
-		player.exit();
+		
+		if( offline.remove(player) ){
+			
+			// 然后处理退出
+			player.exit();
+		}
 		
 		// 最后保存数据库
 		update( player );
-		
-		offline.remove(player);
 	}
 
 	

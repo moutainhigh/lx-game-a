@@ -6,7 +6,7 @@ import io.netty.channel.AbstractChannel;
 
 import org.apache.log4j.PropertyConfigurator;
 
-import cn.xgame.a.chat.axn.classes.ChatAxnUID;
+import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.Events;
@@ -90,14 +90,18 @@ public class Startup {
 			CsvGen.load();
 			Logs.debug( "配置表加载完成" );
 			
-			// 2.初始化 星图
+			// 2.初始化聊天信息
+			ChatManager.o.axns().init();
+			Logs.debug( "初始化聊天信息完成" );
+			
+			// 3.初始化 星图
 			WorldManager.o.initialize();
 			Logs.debug( "星图初始化完成" );
 			
-			// 3.启动游戏服务器
+			// 4.启动游戏服务器
 			new NettyServer( SystemCfg.GS_PORT ).start();
 			
-			// 4.启动线程
+			// 5.启动线程
 			ThreadManager.start();
 			Logs.debug( "Server startup in " + Time.toEndTime() + " ms!" );
 			
@@ -130,9 +134,6 @@ public class Startup {
 		
 		// 加载游戏基础配置文件
 		LXConstants.load();
-		
-		// 读取游戏存储的二进制文件
-		ChatAxnUID.readFile();
 		
 		Logs.debug( "系统配置加载完成" );
 	}

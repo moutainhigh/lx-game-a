@@ -1,12 +1,17 @@
 package cn.xgame.a.chat.axn.info;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.chat.axn.classes.ChatType;
+import cn.xgame.a.chat.axn.classes.GroupAxnCrew;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -31,6 +36,7 @@ public class AxnInfo{
 	public AxnInfo(ChatType type, int axnId) {
 		this.type 	= type;
 		this.axnId 	= axnId;
+		this.name	= "";
 	}
 	
 	public int getAxnId() { return axnId; }
@@ -38,6 +44,27 @@ public class AxnInfo{
 	public List<IAxnCrew> getAxnCrews() { return axnCrews; }
 	public String getName() { return name; }
 	public void setName(String name) { this.name = name; }
+	
+	/**
+	 * 获取玩家列表的 byte[]
+	 * @return
+	 */
+	public byte[] getAxnCrewsToBytes() {
+		ByteBuf buf = Unpooled.buffer();
+		buf.writeByte( axnCrews.size() );
+		for( IAxnCrew crew : axnCrews )
+			crew.putBuffer(buf);
+		return buf.array();
+	}
+	public void setAxnCrews( byte[] array ){
+		ByteBuf buf = Unpooled.copiedBuffer(array);
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			IAxnCrew crew = new IAxnCrew();
+			crew.wrapBuffer(buf);
+			axnCrews.add(crew);
+		}
+	}
 	
 	/**
 	 * 人数是否已经满了
@@ -131,5 +158,5 @@ public class AxnInfo{
 		}
 		return "";
 	}
-
+	
 }

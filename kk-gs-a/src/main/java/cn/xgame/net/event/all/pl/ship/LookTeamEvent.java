@@ -9,8 +9,8 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
-import cn.xgame.a.chat.axn.info.TeamAxnCrew;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
@@ -54,7 +54,7 @@ public class LookTeamEvent extends IEvent{
 		FleetInfo fleet = player.getFleets().getFleetInfo(fid);
 		if( fleet == null ) 
 			return Lists.newArrayList();
-		AxnInfo axn = ChatManager.o.getChatControl().getAXNInfo( fleet.getAxnId() );
+		AxnInfo axn = ChatManager.o.axns().getAXNInfo( fleet.getAxnId() );
 		if( axn == null ) 
 			return Lists.newArrayList();
 		return axn.getAxnCrews();

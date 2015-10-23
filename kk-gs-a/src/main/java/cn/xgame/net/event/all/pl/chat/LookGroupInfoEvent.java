@@ -30,7 +30,7 @@ public class LookGroupInfoEvent extends IEvent{
 		AxnInfo axn		= null;
 		try {
 			
-			axn = ChatManager.o.getChatControl().getAXNInfo(axnId);
+			axn = ChatManager.o.axns().getAXNInfo(axnId);
 			if( axn == null )
 				throw new Exception( ErrorCode.AXN_NOEXIST.name() );
 			
