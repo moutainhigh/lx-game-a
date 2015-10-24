@@ -31,7 +31,6 @@ public class ReceiveTaskEvent extends IEvent{
 		int taskid	= data.readInt();
 		
 		ErrorCode code = null;
-		ITask ret = null;
 		try {
 			TaskPo templet = CsvGen.getTaskPo(taskid);
 			if( templet == null )
@@ -50,7 +49,7 @@ public class ReceiveTaskEvent extends IEvent{
 			
 			// 创建一个任务
 			TaskType type = TaskType.fromNumber( templet.type );
-			ret = type.create( templet );
+			ITask ret = type.create( templet );
 			
 			// 添加到已接任务列表
 			tasks.addTask( ret );
@@ -63,8 +62,7 @@ public class ReceiveTaskEvent extends IEvent{
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			buffer.writeInt( ret.getId() );
-			buffer.writeInt( ret.getEndtime() );
+			buffer.writeInt( taskid );
 		}
 		sendPackage( player.getCtx(), buffer );
 	}
