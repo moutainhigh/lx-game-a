@@ -2,7 +2,7 @@ package cn.xgame.a.player.mail.classes;
 
 import io.netty.buffer.ByteBuf;
 
-import cn.xgame.a.IBufferStream;
+import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -10,7 +10,7 @@ import cn.xgame.net.netty.Netty.RW;
  * @author deng		
  * @date 2015-10-14 下午5:25:41
  */
-public abstract class IMail implements IBufferStream{
+public class IMail{
 
 	private int uid;
 	
@@ -41,36 +41,36 @@ public abstract class IMail implements IBufferStream{
 	// 已读 & 已支付
 	private boolean 		isRead = false;
 	
-	/**
-	 * 塞入基础数据 - 用于数据库
-	 * @param buffer
-	 */
-	public void putBufferBase( ByteBuf buffer ){
-		buffer.writeInt( uid );
-		RW.writeString( buffer, title );
-		RW.writeString( buffer, content );
-		buffer.writeInt( money );
-		RW.writeString( buffer, senderUID );
-		RW.writeString( buffer, senderName );
-		buffer.writeInt( sendtime );
-		buffer.writeByte( isRead ? 1 : 0 );
+	// 时效
+	private int 			durationtime = 0;
+	
+	
+	public IMail( MailInfoDto dto ){
+		setUid( dto.getUid() );
+		setType( MailType.fromNumber(dto.getType()) );
+		setTitle( dto.getTitle() );
+		setContent( dto.getContent() );
+		setMoney( dto.getMoney() );
+		setSenderUID( dto.getSenderUID() );
+		setSenderName( dto.getSenderName() );
+		setSendtime( dto.getSendtime() );
+		setRead( dto.getIsRead() == 1 );
+		setDurationtime( dto.getDurationtime() );
 	}
 	
-	/**
-	 * 包装基础数据 - 用于数据库
-	 * @param buffer
-	 */
-	public void wrapBufferBase( ByteBuf buffer ){
-		uid 		= buffer.readInt();
-		title 		= RW.readString(buffer);
-		content 	= RW.readString(buffer);
-		money		= buffer.readInt();
-		senderUID	= RW.readString(buffer);
-		senderName	= RW.readString(buffer);
-		sendtime	= buffer.readInt();
-		isRead		= buffer.readByte() == 1;
+	public IMail( MailType type, String title, String content,
+			int money, String senderUID, String senderName ) {
+		this.type = type;
+		this.title = title;
+		this.content = content;
+		this.money = money;
+		this.senderUID = senderUID;
+		this.senderName = senderName;
+		this.sendtime = (int) (System.currentTimeMillis()/1000);
+		this.isRead = false;
+		this.durationtime = 0;
 	}
-	
+
 	/**
 	 * 塞入标题
 	 * @param buffer
@@ -83,6 +83,7 @@ public abstract class IMail implements IBufferStream{
 		RW.writeString( buffer, senderName );
 		buffer.writeInt( sendtime );
 		buffer.writeByte( isRead ? 1 : 0 );
+		buffer.writeInt( durationtime );
 	}
 	
 	/**
@@ -147,6 +148,12 @@ public abstract class IMail implements IBufferStream{
 	}
 	public void setMoney(int money) {
 		this.money = money;
+	}
+	public int getDurationtime() {
+		return durationtime;
+	}
+	public void setDurationtime(int durationtime) {
+		this.durationtime = durationtime;
 	}
 
 

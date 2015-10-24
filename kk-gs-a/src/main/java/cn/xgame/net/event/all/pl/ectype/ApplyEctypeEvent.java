@@ -45,10 +45,10 @@ public class ApplyEctypeEvent extends IEvent{
 		FleetInfo fleet 		= player.getFleets().getFleetInfo( fleetId );
 		EctypeControl control 	= player.getEctypes();
 		// 如果没有舰船直接返回
-		if( fleet.getShips().isEmpty() )
+		if( fleet.isEmpty() )
 			return;
 		
-		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
 		
 		// 获取星球副本列表
 		List<StarEctype> starectypes = control.getEctypeList(planet);
@@ -64,38 +64,38 @@ public class ApplyEctypeEvent extends IEvent{
 		
 		// 常规副本
 		int endtime = (int) (Time.refTimeInMillis( 24, 0, 0 )/1000);
-		response.writeByte( general.size() );
+		buffer.writeByte( general.size() );
 		for( ChapterEctype o : general ){
-			response.writeByte( 1 );
-			response.writeInt( o.getSnid() );
-			o.buildTransformStream(response);
-			response.writeInt( endtime );
+			buffer.writeByte( 1 );
+			buffer.writeInt( o.getSnid() );
+			o.buildTransformStream(buffer);
+			buffer.writeInt( endtime );
 			List<IEctype> ectypes = o.getEctypes();
-			response.writeByte( ectypes.size() );
+			buffer.writeByte( ectypes.size() );
 			for( IEctype x : ectypes ){
-				response.writeInt( x.getNid() );
+				buffer.writeInt( x.getNid() );
 				Lua lua = LuaUtil.getEctypeCombat();
-				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, response );
+				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
 			}
 		}
 		// 普通限时副本
-		response.writeByte( normals.size() );
+		buffer.writeByte( normals.size() );
 		for( ChapterEctype o : normals ){
-			response.writeByte( 2 );
-			response.writeInt( o.getSnid() );
-			o.buildTransformStream(response);
-			response.writeInt( o.getEndtime() );
+			buffer.writeByte( 2 );
+			buffer.writeInt( o.getSnid() );
+			o.buildTransformStream(buffer);
+			buffer.writeInt( o.getEndtime() );
 			List<IEctype> ectypes = o.getEctypes();
-			response.writeByte( ectypes.size() );
+			buffer.writeByte( ectypes.size() );
 			for( IEctype x : ectypes ){
-				response.writeInt( x.getNid() );
+				buffer.writeInt( x.getNid() );
 				Lua lua = LuaUtil.getEctypeCombat();
-				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, response );
+				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
 			}
 		}
 		// 特殊限时副本
-		response.writeByte( 0 );
-		sendPackage( player.getCtx(), response );
+		buffer.writeByte( 0 );
+		sendPackage( player.getCtx(), buffer );
 	}
 
 	

@@ -112,8 +112,9 @@ public class StarEctype implements IBufferStream{
 		int curtime = (int) (System.currentTimeMillis()/1000);
 		// 找出已经过期的副本
 		for( ChapterEctype cha : normal ){
-			if( curtime >= cha.getEndtime() )
-				removes.add(cha);
+			if( cha.getEndtime() == 0 || curtime < cha.getEndtime() )
+				continue;
+			removes.add(cha);
 		}
 		// 然后统一删除掉
 		normal.removeAll(removes);

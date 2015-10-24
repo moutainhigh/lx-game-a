@@ -53,7 +53,6 @@ public interface PlayerData {
 	/** 舰队数据 */
 	byte[] fleets();
 	
-	/** 邮件数据 */
-	byte[] mails();
-	
+	/** 任务数据 */
+	byte[] tasks();
 }

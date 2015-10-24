@@ -15,6 +15,7 @@ import cn.xgame.a.player.ectype.o.StarEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -65,15 +66,19 @@ public class EctypeControl implements IArrayStream{
 		// 星球副本
 		List<IPlanet> all = WorldManager.o.getAllPlanet();
 		for( IPlanet planet : all ){
-			StarEctype o = new StarEctype( planet.getId() );
-			List<Integer> ls = planet.getItselfEctype();
-			for( int id : ls ){
-				ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
-				ectype.generateNextEctype();
-				o.getGeneral().add(ectype);
+			try {
+				StarEctype o = new StarEctype( planet.getId() );
+				List<Integer> ls = planet.getItselfEctype();
+				for( int id : ls ){
+					ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
+					ectype.generateNextEctype();
+					o.getGeneral().add(ectype);
+				}
+				o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
+				sectypes.add( o );
+			} catch (Exception e) {
+				Logs.error( "初始化副本出错  星球ID=" + planet.getId() );
 			}
-			o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
-			sectypes.add( o );
 		}
 	}
 	

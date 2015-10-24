@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.mail.classes.IMail;
 import cn.xgame.a.player.mail.classes.MailType;
+import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
@@ -26,14 +26,15 @@ public class ExtractAdjunctEvent extends IEvent{
 		ErrorCode code = null;
 		try {
 			
-			IMail mail = player.getMails().getMail( uid );
+			MailInfo mail = player.getMails().getMail( uid );
 			if( mail == null )
-				throw new Exception( ErrorCode.ACCOUNT_EXIST.name() );
+				throw new Exception( ErrorCode.MAIL_NOTEXIST.name() );
 			
 			// 如果不是交易类型的邮件 那么就可以直接领取货币
 			if( mail.getType() != MailType.TRADE ){
 				player.changeCurrency( mail.getMoney(), "邮件提取" );
 				mail.setMoney(0);
+				mail.updateDB( player.getUID() );
 			}
 			// 这里领取附件道具
 			// TODO

@@ -55,9 +55,6 @@ public class CreateEvent extends IEvent {
 			if( !Key.verify( key, UID+LXConstants.PUBLICKEY ) )
 				throw new Exception( ErrorCode.LKEY_ERROR.name() );
 			
-			// 分配母星
-			home 	= WorldManager.o.allotHomePlanet( ctx );
-			
 			// 这里加点东西
 			if( IP.formAddress(ctx).equals( "192.168.1.252" ) ){
 				int i = 0;
@@ -67,10 +64,12 @@ public class CreateEvent extends IEvent {
 				}
 			}
 			
+			// 分配母星
+			home = WorldManager.o.getHomePlanet( LXConstants.INIT_HOMESTAR_NID );
+			
 			// 获取玩家信息
 			player	= PlayerManager.o.create( ctx, UID, headIco, adjutantId, name, home.getId() );
 			
-			// 加入星球
 			home.appendPlayer(player);
 			
 			// 创建一个舰队
@@ -111,6 +110,8 @@ public class CreateEvent extends IEvent {
 			for( FleetInfo fleet : fleets ){
 				fleet.buildTransformStream(buffer);
 			}
+			// 聊天频道 这里强制发0
+			buffer.writeByte( 0 );
 		}
 		sendPackage( ctx, buffer );
 	

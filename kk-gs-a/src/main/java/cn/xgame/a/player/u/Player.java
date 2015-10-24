@@ -12,6 +12,7 @@ import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.fleet.FleetControl;
 import cn.xgame.a.player.mail.MailControl;
 import cn.xgame.a.player.manor.ManorControl;
+import cn.xgame.a.player.task.TaskControl;
 import cn.xgame.a.player.tavern.TavernControl;
 import cn.xgame.a.player.u.classes.DBBaseUID;
 import cn.xgame.a.player.u.classes.IPlayer;
@@ -56,9 +57,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 舰队
 	private FleetControl		fleets			= new FleetControl( this );
 	
-	// 邮件
-	private MailControl			mails			= new MailControl( this );
-	
+	// 任务
+	private TaskControl			tasks			= new TaskControl( this );
 	
 	//////////////////////////////////////////////////////////////////////
 	// 所有道具唯一ID基础值 
@@ -69,6 +69,9 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	// 船坞
 	private DockControl 		docks 			= new DockControl( this );
+	
+	// 邮件
+	private MailControl			mails			= new MailControl( this );
 	
 	/**
 	 * 创建一个
@@ -100,8 +103,8 @@ public class Player extends IPlayer implements ITransformStream{
 		chats.fromBytes( dto.getChatAxns() );
 		// 酒馆数据
 		taverns.fromBytes( dto.getTaverns() );
-		// 邮件
-		mails.fromBytes( dto.getMails() );
+		// 任务
+		tasks.fromBytes( dto.getTasks() );
 		
 		////-------------------------下面不是玩家数据库的  但是需要在获取玩家的时候一起取出来
 		// 取出所有道具类型的基础UID
@@ -112,6 +115,8 @@ public class Player extends IPlayer implements ITransformStream{
 		docks.fromDB();
 		// 舰队数据 这个必须要取出全部舰船才能调用
 		fleets.fromBytes( dto.getFleets() );
+		// 邮件
+		mails.fromDB();
 	}
 
 	@Override
@@ -127,8 +132,8 @@ public class Player extends IPlayer implements ITransformStream{
 		dto.setTaverns( taverns.toBytes() );
 		// 舰队
 		dto.setFleets( fleets.toBytes() );
-		// 邮件
-		dto.setMails( mails.toBytes() );
+		// 任务
+		dto.setTasks( tasks.toBytes() );
 	}
 	
 	@Override
@@ -255,6 +260,9 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 	public MailControl getMails() {
 		return mails;
+	}
+	public TaskControl getTasks() {
+		return tasks;
 	}
 
 	

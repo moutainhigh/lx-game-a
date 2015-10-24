@@ -12,6 +12,7 @@ import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.classes.GroupAxnCrew;
 import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
+import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -157,6 +158,20 @@ public class AxnInfo{
 			return crew.getName();
 		}
 		return "";
+	}
+
+	/**
+	 * 是否还有在线的
+	 * @return
+	 */
+	public boolean isHaveOnline() {
+		PlayerManager o = PlayerManager.o;
+		for( IAxnCrew crew : axnCrews ){
+			Player temp = o.getPlayerFmOnline( crew.getUid() );
+			if( temp != null )
+				return true;
+		}
+		return false;
 	}
 	
 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.mail.classes.IMail;
+import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
@@ -23,22 +23,25 @@ public class ReadMailEvent extends IEvent{
 		int uid = data.readInt();
 		
 		ErrorCode code = null;
-		IMail mail = null;
+		MailInfo mail = null;
 		try {
 			
 			mail = player.getMails().getMail( uid );
 			if( mail == null )
-				throw new Exception( ErrorCode.ACCOUNT_EXIST.name() );
+				throw new Exception( ErrorCode.MAIL_NOTEXIST.name() );
 			
 			// 设置已读
-			mail.setRead(true);
+			mail.setRead( true );
+			
+			// 保存数据库
+			mail.updateDB( player.getUID() );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			mail.putBufferContent( buffer );

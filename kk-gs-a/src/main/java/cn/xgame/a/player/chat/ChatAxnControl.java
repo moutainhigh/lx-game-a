@@ -68,7 +68,7 @@ public class ChatAxnControl implements IArrayStream, ITransformStream{
 	public byte[] toBytes() {
 		if( groupaxn.isEmpty() ) 
 			return null;
-		ByteBuf buf = Unpooled.buffer( 1024 );
+		ByteBuf buf = Unpooled.buffer( );
 		buf.writeByte( groupaxn.size() );
 		for( int i : groupaxn ){
 			buf.writeInt(i);

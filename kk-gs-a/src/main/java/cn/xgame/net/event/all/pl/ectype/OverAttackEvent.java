@@ -17,6 +17,7 @@ import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.fleet.other.StatusType;
 import cn.xgame.a.player.fleet.status.CombatStatus;
 import cn.xgame.a.player.fleet.status.HoverStatus;
+import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
@@ -35,7 +36,6 @@ public class OverAttackEvent extends IEvent{
 	public void run(Player player, ByteBuf data) throws IOException {
 	
 		byte fid = data.readByte();// 出击舰队ID
-		
 
 		ErrorCode code 		= null;
 		CombatStatus status = null;
@@ -125,6 +125,9 @@ public class OverAttackEvent extends IEvent{
 		}
 		sendPackage( player.getCtx(), response );
 		
+		// 下面执行任务
+		if( code == ErrorCode.SUCCEED && status.getIsWin() == 1 )
+			player.getTasks().execute( ConType.WANCHENGFUBEN, status.getChapterId() );
 	}
 
 }

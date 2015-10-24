@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
-import cn.xgame.a.player.mail.classes.IMail;
+import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
@@ -21,12 +21,12 @@ public class ApplyMailEvent extends IEvent{
 		
 		byte page = data.readByte();
 		
-		List<IMail> list = player.getMails().getMailsByPage( page ); 
+		List<MailInfo> list = player.getMails().getMailsByPage( page ); 
 		
 		ByteBuf respon = buildEmptyPackage( player.getCtx(), 256 );
 		respon.writeByte( list.size() );
-		for( IMail mail : list ){
-			mail.putBuffer(respon);
+		for( MailInfo mail : list ){
+			mail.putBufferTitle(respon);
 		}
 		sendPackage( player.getCtx(), respon );
 		

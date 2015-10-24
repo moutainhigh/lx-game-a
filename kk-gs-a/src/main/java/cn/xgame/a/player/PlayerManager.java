@@ -11,6 +11,11 @@ import x.javaplus.util.ErrorCode;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.axn.AxnControl;
+import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.info.AxnInfo;
+import cn.xgame.a.player.fleet.o.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.player.u.classes.Init;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
@@ -127,6 +132,8 @@ public class PlayerManager {
 		// 结算舰长周薪
 		player.getDocks().balanceWeekly();
 		
+		// 刷新任务列表
+		player.getTasks().updateTasks();
 	}
 
 	//===============================================================
@@ -149,6 +156,7 @@ public class PlayerManager {
 		ret.setCtx( ctx );
 		// 放入内存
 		players.put( ret.getUID(), ret );
+		offline.remove( ret );
 		
 		// 判断是否过天
 		int day = ret.strideDay();
@@ -214,17 +222,45 @@ public class PlayerManager {
 			return;
 		player.setLastLogoutTime( System.currentTimeMillis() );
 		
-		// 这里看他是不是有组队  有就伪离线
-		if( player.getFleets().isHaveTeam() ){
+		boolean isAllDissolve = true;
+
+		// 这里看他是不是有组队  
+		List<FleetInfo> allFleet = player.getFleets().getHaveTeam();
+		if( !allFleet.isEmpty() ){
 			
-			offline.add( player );
-		}else{
-			
-			// 然后处理退出
+			AxnControl axns = ChatManager.o.axns();
+			// 如果队友都离线了 那么就自动全部解散
+			for( FleetInfo fleet : allFleet ){
+				
+				AxnInfo axn = axns.getAXNInfo( fleet.getAxnId() );
+				// 如果还有人在线  那就不解散
+				if( axn.isHaveOnline() ){
+					isAllDissolve = false;
+					continue;
+				}
+				// 下面执行 解散队伍
+				List<IAxnCrew> axnCrews = axn.getAxnCrews();
+				for( IAxnCrew crew : axnCrews ){
+					if( crew.getUid().equals( player.getUID() ) )
+						continue;
+					Player temp = getPlayerByTeam( crew.getUid() );
+					FleetInfo f = temp.getFleets().getFleetInfo( axn.getAxnId() );
+					f.setAxnId(0);
+					// 如果还有舰队有队伍 就不退出
+					if( !temp.getFleets().isHaveTeam() )
+						exitByOffline( temp );
+				}
+				fleet.setAxnId( 0 );
+				axns.removeAxn( axn.getAxnId() );
+			}
+		}
+		
+		// 如果所有舰队都解散了 那么就不添加到伪离线中
+		if( isAllDissolve ){
 			player.exit();
-			
-			// 最后保存数据库
 			update( player );
+		}else{
+			offline.add( player );
 		}
 	}
 

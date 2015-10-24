@@ -84,7 +84,13 @@ public class LuaUtil {
 		return lua;
 	}
 	
-	
+	/**
+	 * 任务信息
+	 * @return
+	 */
+	public static Lua getTaskInfo() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/TaskInfo.lua" );
+	}
 	
 	public static void main(String[] args) {
 		Lua.setLogClass(Logs.class);
@@ -97,5 +103,7 @@ public class LuaUtil {
 		System.out.println( s );
 		
 	}
+
+
 	
 }

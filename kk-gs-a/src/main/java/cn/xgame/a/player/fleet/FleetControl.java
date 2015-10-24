@@ -72,6 +72,18 @@ public class FleetControl implements IArrayStream{
 	}
 	
 	public List<FleetInfo> getFleet(){ return fleets; }
+	/**
+	 * 获取拥有舰船的舰队
+	 * @return
+	 */
+	public List<FleetInfo> getFleetHavaShip() {
+		List<FleetInfo> ret = Lists.newArrayList();
+		for( FleetInfo fleet : ret ){
+			if( !fleet.isEmpty() )
+				ret.add(fleet);
+		}
+		return ret;
+	}
 	
 	/**
 	 * 根据舰队编号获取舰队信息 -
@@ -143,5 +155,6 @@ public class FleetControl implements IArrayStream{
 		}
 		return false;
 	}
+
 
 }

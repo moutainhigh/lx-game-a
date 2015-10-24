@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl.mail;
+package cn.xgame.net.event.all.pl.task;
 
 import io.netty.buffer.ByteBuf;
 
@@ -10,30 +10,35 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
 /**
- * 删除邮件
+ * 放弃任务
  * @author deng		
- * @date 2015-10-14 下午8:44:36
+ * @date 2015-10-25 上午2:52:16
  */
-public class DeleteMailEvent extends IEvent{
+public class AbandonTaskEvent extends IEvent {
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int uid = data.readInt();
+		int tid = data.readInt();
 		
 		ErrorCode code = null;
 		try {
 			
-			// 直接删除
-			player.getMails().remove( uid );
+			// 判断
+			
+			// 这里直接删除
+			player.getTasks().removeYetTask( tid );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 12 );
 		buffer.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt(tid);
+		}
 		sendPackage( player.getCtx(), buffer );
 	}
 

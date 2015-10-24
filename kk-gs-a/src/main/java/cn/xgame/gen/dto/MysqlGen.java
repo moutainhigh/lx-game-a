@@ -1,5 +1,6 @@
 package cn.xgame.gen.dto;import java.sql.SQLException;import java.util.List;import cn.xgame.system.SystemCfg;import x.javaplus.collections.Lists;import x.javaplus.mysql.db.DBObject;import x.javaplus.mysql.db.SqlDao;import x.javaplus.mysql.db.SqlDto;public class MysqlGen {		/**	 * Mysql操作类 <br>	 * <br>	 * 列子 <br>	 * <br>	 * =====获取数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao(); <br>	 * XXXDto dto = dao.get( "101" );// 获取单个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getAll( "101" );// 获取多个数据  默认根据id查找 <br>	 * List.XXXDto dto = dao.getByExact( "id="+101 );// 获取多个数据  根据自定义sql语句查找 可以用Condition类方便的生成语句;<br>	 * dao.commit(); // 最后提交 每个操作后 都要调用 commit<br>	 * dao.commit( dto ); // 提交并保存dto  只能保存单个数据<br>	 * <br>	 * =====创建数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * RoleDto dto = dao.create();// 表示创建开始 <br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto <br>	 * <br>	 * =====保存数据===== <br>	 * XXXDao dao = SqlUtil.getXXXDao();<br>	 * XXXDto dto = dao.update();// 保存单个数据 默认根据id来保存 <br>	 * XXXDto dto = dao.update( "id="+101 ); // 保存多个数据  根据自定义语句来保存   这种模式必须设置id<br>	 * dto.setId( "101" );<br>	 * dto.setName( "大峰哥" );<br>	 * dto.setLevel( 99 );<br>	 * dao.commit( dto );// 提交并保存dto 默认根据id保存 <br>	 * <br>	 * =====删除数据===== <br>	 * RoleDao dao = SqlUtil.getRoleDao(); <br>	 * dao.delete( "101" );<br>     * dao.deleteByExact( "id="+101 );<br>     * dao.commit();<br>	 *<br>	 *<br>	 * @author deng	 *	 */	public static final class SqlUtil {				/**		 * 获取数据库某张表的最大id		 * @param tableName		 * @param col		 * @param criteria 条件		 * @return		 * @throws SQLException		 */		public static int getMaxId( String tableName, String col, String criteria ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select max(" + col + ") from `" + SystemCfg.getDatabaseName()+"`." + tableName + " where " + criteria );				db.executeQuery();				if ( db.next())					return db.getInt( 1 );			} catch (Exception e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				/**		 * 获取某张表的数据总数		 * @param tableName		 * @return		 */		public static long getCount( String tableName ) {			DBObject db = DBObject.create();			try {				db.prepareStatement( "select COUNT(*) from `" + SystemCfg.getDatabaseName()+"`." + tableName );				db.executeQuery();				if ( db.next() )					return db.getLong( 1 );			} catch (SQLException e) {				e.printStackTrace();			}finally{				db.close();			}			return 0;		}				@SuppressWarnings("rawtypes")		public static String getClassName( Class clzss ) {			return clzss.getSimpleName().replaceAll("Dto", "").toLowerCase();		}		public static AxnInfoDao getAxnInfoDao() {			return new AxnInfoDao( "`"+SystemCfg.getDatabaseName()+"`.axninfo" );		}
 		public static CaptainsDao getCaptainsDao() {			return new CaptainsDao( "`"+SystemCfg.getDatabaseName()+"`.captains" );		}
+		public static MailInfoDao getMailInfoDao() {			return new MailInfoDao( "`"+SystemCfg.getDatabaseName()+"`.mailinfo" );		}
 		public static PlanetDataDao getPlanetDataDao() {			return new PlanetDataDao( "`"+SystemCfg.getDatabaseName()+"`.planetdata" );		}
 		public static PlayerDataDao getPlayerDataDao() {			return new PlayerDataDao( "`"+SystemCfg.getDatabaseName()+"`.playerdata" );		}
 		public static PropsDao getPropsDao() {			return new PropsDao( "`"+SystemCfg.getDatabaseName()+"`.props" );		}
@@ -20,6 +21,21 @@
 			setObject( "attachAttr", dto.getAttachAttr() );
 			setObject( "shipUid", dto.getShipUid() );
 			setObject( "equips", dto.getEquips() );
+
+			super.commit( true );		}	}
+	public static class MailInfoDao extends SqlDao{				public MailInfoDao( String tableName ) {			super( tableName );		}				public MailInfoDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				MailInfoDto x = new MailInfoDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<MailInfoDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<MailInfoDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<MailInfoDto> getLs() {			List<MailInfoDto> ls = Lists.newArrayList();			while( next() ){				MailInfoDto x = new MailInfoDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public MailInfoDto update(){			_update( );			return new MailInfoDto();		}		public MailInfoDto updateByExact( String arg ){			_updateByExact( arg );			return new MailInfoDto();		}				public MailInfoDto create() {			insert();			return new MailInfoDto();		}				public void delete( String id ){			super.delete( "'"+id+"'" );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( MailInfoDto dto ) {			setObject( "gsid", dto.getGsid() );
+			setObject( "uname", dto.getUname() );
+			setObject( "uid", dto.getUid() );
+			setObject( "type", dto.getType() );
+			setObject( "title", dto.getTitle() );
+			setObject( "content", dto.getContent() );
+			setObject( "money", dto.getMoney() );
+			setObject( "adjuncts", dto.getAdjuncts() );
+			setObject( "senderUID", dto.getSenderUID() );
+			setObject( "senderName", dto.getSenderName() );
+			setObject( "sendtime", dto.getSendtime() );
+			setObject( "isRead", dto.getIsRead() );
+			setObject( "durationtime", dto.getDurationtime() );
 
 			super.commit( true );		}	}
 	public static class PlanetDataDao extends SqlDao{				public PlanetDataDao( String tableName ) {			super( tableName );		}				public PlanetDataDto get( Integer id ) {			super.select( String.valueOf(id), true );			if( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PlanetDataDto> getAll( Integer id ) {			super.select( String.valueOf(id), false );			return getLs();		}		public List<PlanetDataDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PlanetDataDto> getLs() {			List<PlanetDataDto> ls = Lists.newArrayList();			while( next() ){				PlanetDataDto x = new PlanetDataDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PlanetDataDto update(){			_update( );			return new PlanetDataDto();		}		public PlanetDataDto updateByExact( String arg ){			_updateByExact( arg );			return new PlanetDataDto();		}				public PlanetDataDto create() {			insert();			return new PlanetDataDto();		}				public void delete( Integer id ){			super.delete( String.valueOf(id) );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PlanetDataDto dto ) {			setObject( "id", dto.getId() );
@@ -48,7 +64,7 @@
 			setObject( "chatAxns", dto.getChatAxns() );
 			setObject( "taverns", dto.getTaverns() );
 			setObject( "fleets", dto.getFleets() );
-			setObject( "mails", dto.getMails() );
+			setObject( "tasks", dto.getTasks() );
 
 			super.commit( true );		}	}
 	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( "'"+id+"'" );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -167,6 +183,91 @@
 			equips = o.getBytes( "equips" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"nid="+nid+","+"quality="+quality+","+"attachAttr="+attachAttr+","+"shipUid="+shipUid+","+"equips="+equips;		}	}
+	public static class MailInfoDto implements SqlDto{		private Short gsid = null;
+		private String uname = null;
+		private Integer uid = null;
+		private Byte type = null;
+		private String title = null;
+		private String content = null;
+		private Integer money = null;
+		private byte[] adjuncts = null;
+		private String senderUID = null;
+		private String senderName = null;
+		private Integer sendtime = null;
+		private Byte isRead = null;
+		private Integer durationtime = null;
+
+		public MailInfoDto() {		}				/**		 * Copy new one		 */		public MailInfoDto(MailInfoDto src) {			this.gsid = src.gsid;
+			this.uname = src.uname;
+			this.uid = src.uid;
+			this.type = src.type;
+			this.title = src.title;
+			this.content = src.content;
+			this.money = src.money;
+			this.adjuncts = src.adjuncts;
+			this.senderUID = src.senderUID;
+			this.senderName = src.senderName;
+			this.sendtime = src.sendtime;
+			this.isRead = src.isRead;
+			this.durationtime = src.durationtime;
+
+		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
+		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
+		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
+		/**  邮件类型  */		public Byte getType(){			return this.type;		}
+		/**  邮件标题  */		public String getTitle(){			return this.title;		}
+		/**  邮件内容  */		public String getContent(){			return this.content;		}
+		/**  货币  */		public Integer getMoney(){			return this.money;		}
+		/**  附件  */		public byte[] getAdjuncts(){			return this.adjuncts;		}
+		/**  发送人UID  */		public String getSenderUID(){			return this.senderUID;		}
+		/**  发送人名字  */		public String getSenderName(){			return this.senderName;		}
+		/**  发送时间  */		public Integer getSendtime(){			return this.sendtime;		}
+		/**  已读 & 已支付  */		public Byte getIsRead(){			return this.isRead;		}
+		/**  时效 */		public Integer getDurationtime(){			return this.durationtime;		}
+
+		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
+		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
+		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
+		/**  邮件类型  */		public void setType( Byte type ){			this.type = type;		}
+		/**  邮件标题  */		public void setTitle( String title ){			this.title = title;		}
+		/**  邮件内容  */		public void setContent( String content ){			this.content = content;		}
+		/**  货币  */		public void setMoney( Integer money ){			this.money = money;		}
+		/**  附件  */		public void setAdjuncts( byte[] adjuncts ){			this.adjuncts = adjuncts;		}
+		/**  发送人UID  */		public void setSenderUID( String senderUID ){			this.senderUID = senderUID;		}
+		/**  发送人名字  */		public void setSenderName( String senderName ){			this.senderName = senderName;		}
+		/**  发送时间  */		public void setSendtime( Integer sendtime ){			this.sendtime = sendtime;		}
+		/**  已读 & 已支付  */		public void setIsRead( Byte isRead ){			this.isRead = isRead;		}
+		/**  时效 */		public void setDurationtime( Integer durationtime ){			this.durationtime = durationtime;		}
+
+		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
+		public static String unameChangeSql( String x ) {			return "uname=" + "'"+x+"'";		}
+		public static String uidChangeSql( Integer x ) {			return "uid=" + x;		}
+		public static String typeChangeSql( Byte x ) {			return "type=" + x;		}
+		public static String titleChangeSql( String x ) {			return "title=" + "'"+x+"'";		}
+		public static String contentChangeSql( String x ) {			return "content=" + "'"+x+"'";		}
+		public static String moneyChangeSql( Integer x ) {			return "money=" + x;		}
+		public static String adjunctsChangeSql( byte[] x ) {			return "adjuncts=" + x;		}
+		public static String senderUIDChangeSql( String x ) {			return "senderUID=" + "'"+x+"'";		}
+		public static String senderNameChangeSql( String x ) {			return "senderName=" + "'"+x+"'";		}
+		public static String sendtimeChangeSql( Integer x ) {			return "sendtime=" + x;		}
+		public static String isReadChangeSql( Byte x ) {			return "isRead=" + x;		}
+		public static String durationtimeChangeSql( Integer x ) {			return "durationtime=" + x;		}
+
+		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
+			uname = o.getString( "uname" );
+			uid = o.getInt( "uid" );
+			type = o.getByte( "type" );
+			title = o.getString( "title" );
+			content = o.getString( "content" );
+			money = o.getInt( "money" );
+			adjuncts = o.getBytes( "adjuncts" );
+			senderUID = o.getString( "senderUID" );
+			senderName = o.getString( "senderName" );
+			sendtime = o.getInt( "sendtime" );
+			isRead = o.getByte( "isRead" );
+			durationtime = o.getInt( "durationtime" );
+
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uname="+uname+","+"uid="+uid+","+"type="+type+","+"title="+title+","+"content="+content+","+"money="+money+","+"adjuncts="+adjuncts+","+"senderUID="+senderUID+","+"senderName="+senderName+","+"sendtime="+sendtime+","+"isRead="+isRead+","+"durationtime="+durationtime;		}	}
 	public static class PlanetDataDto implements SqlDto{		private Integer id = null;
 		private Short maxSpace = null;
 		private byte[] players = null;
@@ -243,7 +344,7 @@
 		private byte[] chatAxns = null;
 		private byte[] taverns = null;
 		private byte[] fleets = null;
-		private byte[] mails = null;
+		private byte[] tasks = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -260,7 +361,7 @@
 			this.chatAxns = src.chatAxns;
 			this.taverns = src.taverns;
 			this.fleets = src.fleets;
-			this.mails = src.mails;
+			this.tasks = src.tasks;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  唯一ID  */		public String getUid(){			return this.uid;		}
@@ -277,7 +378,7 @@
 		/**  聊天频道ID列表  */		public byte[] getChatAxns(){			return this.chatAxns;		}
 		/**  酒馆数据  */		public byte[] getTaverns(){			return this.taverns;		}
 		/**  舰队数据  */		public byte[] getFleets(){			return this.fleets;		}
-		/**  邮件数据  */		public byte[] getMails(){			return this.mails;		}
+		/**  任务数据  */		public byte[] getTasks(){			return this.tasks;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -294,7 +395,7 @@
 		/**  聊天频道ID列表  */		public void setChatAxns( byte[] chatAxns ){			this.chatAxns = chatAxns;		}
 		/**  酒馆数据  */		public void setTaverns( byte[] taverns ){			this.taverns = taverns;		}
 		/**  舰队数据  */		public void setFleets( byte[] fleets ){			this.fleets = fleets;		}
-		/**  邮件数据  */		public void setMails( byte[] mails ){			this.mails = mails;		}
+		/**  任务数据  */		public void setTasks( byte[] tasks ){			this.tasks = tasks;		}
 
 		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x ) {			return "uid=" + "'"+x+"'";		}
@@ -311,7 +412,7 @@
 		public static String chatAxnsChangeSql( byte[] x ) {			return "chatAxns=" + x;		}
 		public static String tavernsChangeSql( byte[] x ) {			return "taverns=" + x;		}
 		public static String fleetsChangeSql( byte[] x ) {			return "fleets=" + x;		}
-		public static String mailsChangeSql( byte[] x ) {			return "mails=" + x;		}
+		public static String tasksChangeSql( byte[] x ) {			return "tasks=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -328,9 +429,9 @@
 			chatAxns = o.getBytes( "chatAxns" );
 			taverns = o.getBytes( "taverns" );
 			fleets = o.getBytes( "fleets" );
-			mails = o.getBytes( "mails" );
+			tasks = o.getBytes( "tasks" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"mails="+mails;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer beSnid = null;

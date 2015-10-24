@@ -77,7 +77,7 @@ public class StartAttackEvent extends IEvent{
 			
 			// 全军出击 ...
 			Lua lua 		= LuaUtil.getEctypeCombat();
-			LuaValue[] ret 	= lua.getField("arithmeticFight").call( 4, fleet.fighter(), ectype.fighter(), ectype.templet().btime, ectype.templet().maxran );
+			LuaValue[] ret 	= lua.getField("arithmeticFight").call( 5, fleet.fighter(), ectype.fighter(), ectype.templet().btime, ectype.templet().maxran );
 			int combatTime	= ret[0].getInt();
 			int winRate 	= ret[1].getInt();
 			int damaged 	= ret[2].getInt();

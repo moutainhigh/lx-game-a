@@ -28,6 +28,7 @@ import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.mail.ApplyMailEvent;
+import cn.xgame.net.event.all.pl.mail.DeleteMailEvent;
 import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
 import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
 import cn.xgame.net.event.all.pl.mail.SendMailEvent;
@@ -65,12 +66,18 @@ import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.staratlas.ModifyAirlineEvent;
 import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
+import cn.xgame.net.event.all.pl.task.AbandonTaskEvent;
+import cn.xgame.net.event.all.pl.task.ApplyCanTaskEvent;
+import cn.xgame.net.event.all.pl.task.ApplyYetTaskEvent;
+import cn.xgame.net.event.all.pl.task.ReceiveTaskEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
+import cn.xgame.net.event.all.pl.update.Update_1050;
+import cn.xgame.net.event.all.pl.update.Update_1400;
 import cn.xgame.net.event.all.pl.update.Update_2301;
 import cn.xgame.net.event.all.pl.update.Update_3012;
 import cn.xgame.net.event.all.pl.update.Update_2101;
@@ -137,6 +144,7 @@ public enum Events {
 	SEND_MAIL					( 1052, 	new SendMailEvent()				, "邮件操作-发送邮件" ),
 	READ_MAIL					( 1053, 	new ReadMailEvent()				, "邮件操作-读取邮件" ),
 	EXTRACT_ADJUNCT				( 1054, 	new ExtractAdjunctEvent()		, "邮件操作-提取附件" ),
+	DELETE_MAIL					( 1055, 	new DeleteMailEvent()			, "邮件操作-删除邮件" ),
 	
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent()			, "星球操作-申请基础数据" ),
@@ -169,6 +177,12 @@ public enum Events {
 	EXCH_BUY					( 1322, 	new ExchBuyEvent()				, "交易所-购买" ),
 	EXCH_COLLECT				( 1323, 	new ExchCollectEvent()			, "交易所-收款" ),
 	EXCH_SOLDOUT				( 1324, 	new ExchSoldoutEvent()			, "交易所-下架" ),
+	//-----------------任务
+	APPLY_CANTASK				( 1401, 	new ApplyCanTaskEvent()			, "任务系统-申请可接任务列表" ),
+	APPLY_YETTASK				( 1402, 	new ApplyYetTaskEvent()			, "任务系统-申请已接任务列表" ),
+	RECEIVE_TASK				( 1403, 	new ReceiveTaskEvent()			, "任务系统-接任务" ),
+	ABANDON_TASK				( 1404, 	new AbandonTaskEvent()			, "任务系统-放弃任务" ),
+	
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent()			, "聊天系统-发起聊天" ),
@@ -204,7 +218,10 @@ public enum Events {
 	UPDATE_3020					( 3020, 	new Update_3020()				, "更新包-" ),
 	UPDATE_3021					( 3021, 	new Update_3021()				, "更新包-" ),
 	UPDATE_2301					( 2301, 	new Update_2301()				, "更新包-" ),
-	
+	// 邮件
+	UPDATE_1050					( 1050, 	new Update_1050()				, "更新包-" ),
+	// 任务
+	UPDATE_1400					( 1400, 	new Update_1400()				, "更新包-" ),
 
 	
 	

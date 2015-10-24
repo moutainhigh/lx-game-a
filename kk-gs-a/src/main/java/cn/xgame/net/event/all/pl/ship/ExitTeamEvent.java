@@ -71,7 +71,7 @@ public class ExitTeamEvent extends IEvent {
 			
 			do{
 				// 如果还有2个人以上 而且都在线 那么就不用解散
-				if( isHaveOnline( crews ) && crews.size() > 1 )
+				if( axn.isHaveOnline() && crews.size() > 1 )
 					break;
 				
 				// 下面执行 解散队伍
@@ -90,15 +90,5 @@ public class ExitTeamEvent extends IEvent {
 			} while( false );
 		}
 	}
-
-	// 是都有在线的
-	private boolean isHaveOnline(List<IAxnCrew> crews) {
-		for( IAxnCrew crew : crews ){
-			Player temp = PlayerManager.o.getPlayerFmOnline( crew.getUid() );
-			if( temp != null )
-				return true;
-		}
-		return false;
-	}
-
+	
 }
