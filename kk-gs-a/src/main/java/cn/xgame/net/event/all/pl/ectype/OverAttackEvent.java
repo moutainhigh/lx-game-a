@@ -13,10 +13,10 @@ import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.player.depot.o.StarDepot;
-import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.StatusType;
-import cn.xgame.a.player.fleet.status.CombatStatus;
-import cn.xgame.a.player.fleet.status.HoverStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.fleet.info.status.CombatStatus;
+import cn.xgame.a.player.fleet.info.status.HoverStatus;
 import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;

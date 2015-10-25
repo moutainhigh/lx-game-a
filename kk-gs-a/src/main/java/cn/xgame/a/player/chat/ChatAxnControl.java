@@ -15,7 +15,7 @@ import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.axn.AxnControl;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.chat.axn.info.AxnInfo;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.netty.Netty.RW;
 

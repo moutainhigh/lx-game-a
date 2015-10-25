@@ -7,8 +7,8 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.tavern.o.TavernCaptain;
-import cn.xgame.a.player.tavern.o.TavernData;
+import cn.xgame.a.player.tavern.info.TavernCaptain;
+import cn.xgame.a.player.tavern.info.TavernData;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;

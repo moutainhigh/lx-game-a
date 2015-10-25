@@ -1,12 +1,12 @@
-package cn.xgame.a.player.fleet.other;
+package cn.xgame.a.player.fleet.classes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.xgame.a.player.fleet.status.CombatStatus;
-import cn.xgame.a.player.fleet.status.HoverStatus;
-import cn.xgame.a.player.fleet.status.LeisureStatus;
-import cn.xgame.a.player.fleet.status.SailStatus;
+import cn.xgame.a.player.fleet.info.status.CombatStatus;
+import cn.xgame.a.player.fleet.info.status.HoverStatus;
+import cn.xgame.a.player.fleet.info.status.LeisureStatus;
+import cn.xgame.a.player.fleet.info.status.SailStatus;
 
 /**
  * 舰队 状态

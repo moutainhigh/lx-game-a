@@ -15,7 +15,7 @@ import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;

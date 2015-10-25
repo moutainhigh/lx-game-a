@@ -1,9 +1,9 @@
-package cn.xgame.a.player.fleet.status;
+package cn.xgame.a.player.fleet.info.status;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.IStatus;
-import cn.xgame.a.player.fleet.other.StatusType;
+import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 
 /**

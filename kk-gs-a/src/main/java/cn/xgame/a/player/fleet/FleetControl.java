@@ -9,8 +9,8 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.IStatus;
+import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 
 /**

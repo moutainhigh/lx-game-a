@@ -11,7 +11,7 @@ import x.javaplus.util.ErrorCode;
 import cn.xgame.a.IFromDB;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;

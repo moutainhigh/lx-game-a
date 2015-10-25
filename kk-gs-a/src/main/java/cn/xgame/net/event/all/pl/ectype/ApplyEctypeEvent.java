@@ -14,7 +14,7 @@ import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.o.ChapterEctype;
 import cn.xgame.a.player.ectype.o.IEctype;
 import cn.xgame.a.player.ectype.o.StarEctype;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;

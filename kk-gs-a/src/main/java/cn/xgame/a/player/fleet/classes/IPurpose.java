@@ -1,10 +1,10 @@
-package cn.xgame.a.player.fleet.other;
+package cn.xgame.a.player.fleet.classes;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.fleet.purpose.FightEctype;
-import cn.xgame.a.player.fleet.purpose.Setsail;
+import cn.xgame.a.player.fleet.info.purpose.FightEctype;
+import cn.xgame.a.player.fleet.info.purpose.Setsail;
 
 /**
  * 航行目的

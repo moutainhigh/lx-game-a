@@ -1,4 +1,4 @@
-package cn.xgame.a.player.tavern.o;
+package cn.xgame.a.player.tavern.info;
 
 /**
  * 酒馆舰长数据

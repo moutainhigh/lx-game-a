@@ -8,7 +8,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.player.tavern.o.TavernData;
+import cn.xgame.a.player.tavern.info.TavernData;
 import cn.xgame.a.player.u.Player;
 
 /**

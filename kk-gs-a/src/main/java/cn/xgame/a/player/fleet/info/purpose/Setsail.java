@@ -1,11 +1,11 @@
-package cn.xgame.a.player.fleet.purpose;
+package cn.xgame.a.player.fleet.info.purpose;
 
 import java.util.List;
 
 import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
-import cn.xgame.a.player.fleet.other.IPurpose;
+import cn.xgame.a.player.fleet.classes.IPurpose;
 
 /**
  *  出航

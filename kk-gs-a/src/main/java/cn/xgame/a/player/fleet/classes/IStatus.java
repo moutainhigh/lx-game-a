@@ -1,9 +1,9 @@
-package cn.xgame.a.player.fleet.other;
+package cn.xgame.a.player.fleet.classes;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 
 /**

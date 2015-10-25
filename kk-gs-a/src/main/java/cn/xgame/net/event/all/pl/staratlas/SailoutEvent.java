@@ -10,10 +10,10 @@ import x.javaplus.util.ErrorCode;
 import x.javaplus.util.lua.Lua;
 import x.javaplus.util.lua.LuaValue;
 
-import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.IStatus;
-import cn.xgame.a.player.fleet.other.StatusType;
-import cn.xgame.a.player.fleet.purpose.Setsail;
+import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.fleet.info.purpose.Setsail;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.IEvent;

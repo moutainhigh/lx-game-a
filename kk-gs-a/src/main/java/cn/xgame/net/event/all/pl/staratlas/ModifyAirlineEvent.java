@@ -8,10 +8,10 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.fleet.o.FleetInfo;
-import cn.xgame.a.player.fleet.other.StatusType;
-import cn.xgame.a.player.fleet.purpose.Setsail;
-import cn.xgame.a.player.fleet.status.SailStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.fleet.info.purpose.Setsail;
+import cn.xgame.a.player.fleet.info.status.SailStatus;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 

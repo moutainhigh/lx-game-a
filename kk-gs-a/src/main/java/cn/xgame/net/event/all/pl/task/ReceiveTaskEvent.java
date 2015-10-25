@@ -7,7 +7,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.task.TaskControl;
 import cn.xgame.a.player.task.classes.ITask;
 import cn.xgame.a.player.task.classes.TaskType;

@@ -8,7 +8,7 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 

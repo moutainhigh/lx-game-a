@@ -1,23 +1,23 @@
-package cn.xgame.a.player.fleet.o;
+package cn.xgame.a.player.fleet.info;
 
 import io.netty.buffer.ByteBuf;
 
 import java.util.Iterator;
 import java.util.List;
 
+import x.javaplus.collections.Lists;
+import x.javaplus.util.ErrorCode;
+
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.fleet.other.IPurpose;
-import cn.xgame.a.player.fleet.other.IStatus;
-import cn.xgame.a.player.fleet.other.StatusType;
-import cn.xgame.a.player.fleet.status.CombatStatus;
-import cn.xgame.a.player.fleet.status.SailStatus;
+import cn.xgame.a.player.fleet.classes.IPurpose;
+import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.status.CombatStatus;
+import cn.xgame.a.player.fleet.info.status.SailStatus;
 import cn.xgame.a.player.u.Player;
-
-import x.javaplus.collections.Lists;
-import x.javaplus.util.ErrorCode;
 
 /**
  * 一个舰队信息

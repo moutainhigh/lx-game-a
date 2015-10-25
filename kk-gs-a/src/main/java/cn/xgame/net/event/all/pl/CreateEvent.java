@@ -15,7 +15,7 @@ import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.FleetControl;
-import cn.xgame.a.player.fleet.o.FleetInfo;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
