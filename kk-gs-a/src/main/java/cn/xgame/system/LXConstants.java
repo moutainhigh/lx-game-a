@@ -21,7 +21,7 @@ public class LXConstants {
 	//--------------------------通过配置获取
 	
 	/** 初始母星球ID */
-	public static int INIT_HOMESTAR_NID		= 1001;
+	public static int INIT_HOMESTAR_NID		= 1004;
 	
 	/** 酒馆刷新时间 (单位秒) */
 	public static int TAVERN_UPDATE_TIME 	= 600;

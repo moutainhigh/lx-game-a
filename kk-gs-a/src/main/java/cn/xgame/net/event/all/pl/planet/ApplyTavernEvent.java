@@ -27,24 +27,21 @@ public class ApplyTavernEvent extends IEvent{
 		try {
 			
 			// 获取玩家 母星 
-			tavernData = player.getTaverns().get( snid );
+			tavernData = player.getTaverns().getTavern( snid );
 			if( tavernData == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			
-			// 这里更新一下酒馆
-			tavernData.updateCaptain();
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf response = buildEmptyPackage( player.getCtx(), 2 );
-		response.writeShort( code.toNumber() );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			tavernData.buildTransformStream(response);
+			tavernData.buildTransformStream(buffer);
 		}
-		sendPackage( player.getCtx(), response );
+		sendPackage( player.getCtx(), buffer );
 	}
 
 }

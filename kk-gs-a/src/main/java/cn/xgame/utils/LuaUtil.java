@@ -95,8 +95,8 @@ public class LuaUtil {
 	public static void main(String[] args) {
 		Lua.setLogClass(Logs.class);
 		
-		Lua lua = getEctypeGraded();
-		LuaValue[] value = lua.getField("randomAward").call( 1, "60001;10;500|60002;9;500|60003;8;500|" );
+		Lua lua = getTaskInfo();
+		LuaValue[] value = lua.getField("generateTask").call( 1, 1001 );
 		
 		String s = value[0].getString();
 		

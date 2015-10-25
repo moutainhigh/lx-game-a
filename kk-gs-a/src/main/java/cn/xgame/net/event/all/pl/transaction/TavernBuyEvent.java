@@ -36,7 +36,7 @@ public class TavernBuyEvent extends IEvent{
 			HomePlanet planet = WorldManager.o.getHomePlanet( id );
 			
 			// 获取舰长
-			TavernData tavernData = player.getTaverns().get( id );
+			TavernData tavernData = player.getTaverns().getTavern( id );
 			if( tavernData == null )
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 			TavernCaptain captain = tavernData.getCaptain( nid );

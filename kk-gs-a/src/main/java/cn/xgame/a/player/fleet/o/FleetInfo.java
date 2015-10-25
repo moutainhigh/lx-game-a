@@ -110,6 +110,15 @@ public class FleetInfo implements ITransformStream{
 	}
 	
 	/**
+	 * 删除所有舰船
+	 */
+	public void removeAll() {
+		ships.clear();
+		status = StatusType.LEISURE.create();
+		berthSnid = -1;
+	}
+	
+	/**
 	 * 获取当前耐久和总耐久
 	 * @return
 	 */

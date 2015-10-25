@@ -81,20 +81,10 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
-		// 随机品质
 		ItemPo item 		= CsvGen.getItemPo(nid);
-		String[] content 	= item.quality.split( "\\|" );
-		byte quality		= 0;
-		for( String str : content ){
-			String[] x 		= str.split( ";" );
-			int rand		= Random.get( 0, 10000 );
-			if( rand <= Integer.parseInt( x[1] ) ){
-				quality		= Byte.parseByte( x[0] );
-				break;
-			}
-		}
-		return create( item, uid, nid, count, Quality.fromNumber( quality ) );
+		return create( item, uid, nid, count, randomQuality( item.quality ) );
 	}
+	
 	public static IProp create( int uid, int nid, int count, byte quality ) {
 		return create( CsvGen.getItemPo(nid), uid, nid, count, Quality.fromNumber( quality ) );
 	}
@@ -130,6 +120,22 @@ public abstract class IProp implements ITransformStream{
 		IProp prop 	= create( uid, nid, count, q );
 		prop.wrapAttachBytes( RW.readBytes(buf) );
 		return prop;
+	}
+	
+	/**
+	 * 随机品质
+	 * @param quality
+	 * @return
+	 */
+	public static Quality randomQuality( String quality ) {
+		String[] content 	= quality.split( "\\|" );
+		for( String str : content ){
+			String[] x 		= str.split( ";" );
+			int rand		= Random.get( 0, 10000 );
+			if( rand <= Integer.parseInt( x[1] ) )
+				return Quality.fromNumber( Byte.parseByte( x[0] ) );
+		}
+		return Quality.COLOR01;
 	}
 	
 	public String toString(){

@@ -45,7 +45,7 @@ public class ReceiveTaskEvent extends IEvent{
 			// 检测是否有这个任务 并且 在可接任务列表中删除掉
 			TaskControl tasks = player.getTasks();
 			if( !tasks.removeCanTask( snid, npcid, taskid ) )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+				throw new Exception( ErrorCode.TASK_NOTEXIST.name() );
 			
 			// 创建一个任务
 			TaskType type = TaskType.fromNumber( templet.type );

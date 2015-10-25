@@ -5,8 +5,6 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
@@ -19,7 +17,6 @@ import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.SbuildingPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
-import cn.xgame.utils.LuaUtil;
 
 /**
  * 发起建筑投票 
@@ -28,6 +25,8 @@ import cn.xgame.utils.LuaUtil;
  */
 public class SponsorBuildVoEvent extends IEvent{
 
+	private final int[] VoteTime = { 43200, 86400, 172800 };
+	
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		int nid 	= data.readInt();
@@ -38,9 +37,7 @@ public class SponsorBuildVoEvent extends IEvent{
 		
 		try {
 			// 先将时间转换
-			Lua lua = LuaUtil.getGameData();
-			LuaValue[] ret = lua.getField( "getVoteTime" ).call( 1, type );
-			int time = ret[0].getInt() + (int)(System.currentTimeMillis()/1000);
+			int time = VoteTime[type-1] + (int)(System.currentTimeMillis()/1000);
 			
 			// 获取玩家 母星 - 这里暂时 默认在母星发起投票
 			HomePlanet planet = WorldManager.o.getHPlanetInPlayer(player);

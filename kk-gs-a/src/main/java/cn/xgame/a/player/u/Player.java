@@ -87,6 +87,8 @@ public class Player extends IPlayer implements ITransformStream{
 		setCreateTime( System.currentTimeMillis() );
 		// 初始化副本信息
 		ectypes.initialize();
+		// 初始化任务
+		tasks.updateTasks();
 	}
 	
 	/**

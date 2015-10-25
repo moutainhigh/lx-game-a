@@ -7,9 +7,12 @@ import java.util.List;
 
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
-import cn.xgame.utils.Logs;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.ItemPo;
+import cn.xgame.system.LXConstants;
 import cn.xgame.utils.LuaUtil;
 
 import x.javaplus.collections.Lists;
@@ -27,13 +30,21 @@ public class TavernData implements IBufferStream,ITransformStream{
 	private final int snid;
 	
 	// 记录结束时间
-	private int endtime = -1;
+	private int endtime;
 	
 	// 舰长列表
 	private List<TavernCaptain> caps = Lists.newArrayList();
 
 	public TavernData( int snid ) {
 		this.snid = snid;
+	}
+	public void initEndtime() {
+		try {
+			IPlanet planet = WorldManager.o.getPlanet(snid);
+			this.endtime = (int) (System.currentTimeMillis()/1000) + planet.getTavernUpdateTime();
+		} catch (Exception e) {
+			this.endtime = LXConstants.TAVERN_UPDATE_TIME;
+		}
 	}
 
 	@Override
@@ -57,8 +68,7 @@ public class TavernData implements IBufferStream,ITransformStream{
 	
 	@Override
 	public void buildTransformStream( ByteBuf response ) {
-		int surplusTime = getSurplusTime();
-		response.writeInt( surplusTime <= 0 ? 1 : surplusTime );
+		response.writeInt( getSurplusTime() );
 		response.writeByte( caps.size() );
 		for( TavernCaptain o : caps ){
 			response.writeInt( o.id );
@@ -98,38 +108,43 @@ public class TavernData implements IBufferStream,ITransformStream{
 	}
 	
 	/**
-	 * 获取剩余时间
-	 */
-	public int getSurplusTime(){
-		return endtime == -1 ? 0 : endtime - ((int) (System.currentTimeMillis()/1000));
-	}
-	
-	/**
 	 * 更新一下数据
 	 */
-	public void updateCaptain() {
-		if( getSurplusTime() > 0 ) 
+	public void updateTavern() {
+		int curtime = (int) (System.currentTimeMillis()/1000);
+		if( curtime < endtime )
 			return;
+		
+		initEndtime();
+		
+		generateTaverns();
+	}
+	
+	// 生成舰长数据
+	public void generateTaverns() {
 		caps.clear();
-		endtime				= -1;
 		Lua lua 			= LuaUtil.getGameData();
 		LuaValue[] value 	= lua.getField( "updateTavern" ).call( 1, snid );
 		String ret 			= value[0].getString();
 		if( ret.isEmpty() ) return;
 		
-		try {
-			IPlanet planet		= WorldManager.o.getPlanet(snid);
-			endtime				= (int) (System.currentTimeMillis()/1000) + planet.getTavernUpdateTime();
-			String[] content 	= ret.split("\\|");
-			for( String str : content ){
-				String[] v 		= str.split(";");
-				push( Integer.parseInt( v[0] ), Integer.parseInt( v[1] ) );
-			}
-			
-			Logs.debug( "星球"+snid+ " 更新酒馆 " + ret );
-		} catch (Exception e) {
-			Logs.error( "更新酒馆出错", e );
+		String[] content 	= ret.split(";");
+		for( String str : content ){
+			ItemPo templet = CsvGen.getItemPo( Integer.parseInt( str ) );
+			if( templet == null ) 
+				continue;
+			push( templet.id, IProp.randomQuality( templet.quality ).toNumber() );
 		}
+		
+//		Logs.debug( "星球"+snid+ " 更新酒馆 " + ret );
+	}
+	
+	/**
+	 * 获取剩余时间
+	 */
+	public int getSurplusTime(){
+		int i = endtime - ((int) (System.currentTimeMillis()/1000));
+		return i <= 0 ? 1 : i;
 	}
 	
 	public int getSnid() {
@@ -138,6 +153,6 @@ public class TavernData implements IBufferStream,ITransformStream{
 	public int getEndtime() {
 		return endtime;
 	}
-	
+
 }
 

@@ -53,15 +53,30 @@ public class TavernControl implements IArrayStream{
 	 * 获取对应星球 酒馆数据
 	 * @param snid
 	 */
-	public TavernData get( int snid ) {
+	private TavernData get( int snid ) {
 		for( TavernData data : datas ){
 			if( data.getSnid() == snid )
 				return data;
 		}
-		TavernData o = new TavernData( snid );
-		o.updateCaptain();
-		datas.add(o);
-		return o;
+		return null;
 	}
-
+	
+	/**
+	 * 获取对应星球 酒馆数据 并刷新
+	 * @param snid
+	 * @return
+	 */
+	public TavernData getTavern( int snid ){
+		TavernData data = get( snid );
+		if( data == null ){
+			data = new TavernData( snid );
+			data.initEndtime();
+			data.generateTaverns();
+			datas.add( data );
+		}else{
+			data.updateTavern();
+		}
+		return data;
+	}
+	
 }

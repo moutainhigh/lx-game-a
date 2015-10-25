@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.xgame.a.prop.captain.CaptainAttr;
 import cn.xgame.a.prop.cequip.CEquipAttr;
+import cn.xgame.a.prop.other.OtherAttr;
 import cn.xgame.a.prop.sequip.SEquipAttr;
 import cn.xgame.a.prop.ship.ShipAttr;
 import cn.xgame.a.prop.stuff.StuffAttr;
@@ -21,7 +22,7 @@ public enum PropType {
 	OTHER( 1 ) {
 		@Override
 		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
-			return null;
+			return new OtherAttr( item, uid, nid, count, quality );
 		}
 	},
 
