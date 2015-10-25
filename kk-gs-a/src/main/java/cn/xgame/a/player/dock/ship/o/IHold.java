@@ -9,8 +9,8 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.classes.IDepot;
 
 /**
  * 一个舰船仓库基类

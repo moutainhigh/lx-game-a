@@ -1,7 +1,9 @@
-package cn.xgame.a.prop;
+package cn.xgame.a.prop.classes;
 
 import java.util.Iterator;
 import java.util.List;
+
+import cn.xgame.a.prop.IProp;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;

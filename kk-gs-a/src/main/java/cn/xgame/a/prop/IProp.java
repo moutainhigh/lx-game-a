@@ -2,6 +2,8 @@ package cn.xgame.a.prop;
 
 import x.javaplus.util.Util.Random;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.prop.classes.PropType;
+import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;

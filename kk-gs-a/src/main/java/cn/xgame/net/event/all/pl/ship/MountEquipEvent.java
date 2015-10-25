@@ -11,7 +11,7 @@ import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.sequip.SEquipAttr;
+import cn.xgame.a.prop.info.SEquipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**

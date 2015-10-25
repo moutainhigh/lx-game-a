@@ -9,7 +9,7 @@ import x.javaplus.collections.Lists;
 
 
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.prop.PropType;
+import cn.xgame.a.prop.classes.PropType;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.data.exchange.ExchGoods;
 import cn.xgame.a.world.planet.home.HomePlanet;

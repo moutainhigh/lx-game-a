@@ -10,7 +10,7 @@ import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.cequip.CEquipAttr;
+import cn.xgame.a.prop.info.CEquipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**

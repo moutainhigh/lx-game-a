@@ -1,10 +1,10 @@
-package cn.xgame.a.prop.cequip;
+package cn.xgame.a.prop.info;
 
 import x.javaplus.util.lua.Lua;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.Quality;
+import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.TreasurePo;

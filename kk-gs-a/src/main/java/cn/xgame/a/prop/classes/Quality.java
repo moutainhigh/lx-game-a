@@ -1,4 +1,4 @@
-package cn.xgame.a.prop;
+package cn.xgame.a.prop.classes;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,8 +8,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.prop.IDepot;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.classes.IDepot;
 import cn.xgame.utils.Logs;
 
 /**

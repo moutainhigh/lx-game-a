@@ -1,8 +1,8 @@
-package cn.xgame.a.prop.other;
+package cn.xgame.a.prop.info;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.Quality;
+import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.o.ItemPo;
 
 /**

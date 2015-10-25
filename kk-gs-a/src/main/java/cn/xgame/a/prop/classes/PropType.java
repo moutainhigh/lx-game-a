@@ -1,14 +1,15 @@
-package cn.xgame.a.prop;
+package cn.xgame.a.prop.classes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.xgame.a.prop.captain.CaptainAttr;
-import cn.xgame.a.prop.cequip.CEquipAttr;
-import cn.xgame.a.prop.other.OtherAttr;
-import cn.xgame.a.prop.sequip.SEquipAttr;
-import cn.xgame.a.prop.ship.ShipAttr;
-import cn.xgame.a.prop.stuff.StuffAttr;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.info.CEquipAttr;
+import cn.xgame.a.prop.info.CaptainAttr;
+import cn.xgame.a.prop.info.OtherAttr;
+import cn.xgame.a.prop.info.SEquipAttr;
+import cn.xgame.a.prop.info.ShipAttr;
+import cn.xgame.a.prop.info.StuffAttr;
 import cn.xgame.config.o.ItemPo;
 
 /**

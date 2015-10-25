@@ -1,4 +1,4 @@
-package cn.xgame.a.prop.sequip;
+package cn.xgame.a.prop.info;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.xgame.a.fighter.o.Attackattr;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.Quality;
+import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.config.o.WeaponPo;
