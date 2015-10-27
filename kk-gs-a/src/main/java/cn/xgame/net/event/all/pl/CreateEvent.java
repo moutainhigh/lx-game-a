@@ -58,9 +58,9 @@ public class CreateEvent extends IEvent {
 			// 这里加点东西
 			if( IP.formAddress(ctx).equals( "192.168.1.252" ) ){
 				int i = 0;
-				name = "唐乐"+NumberFilter.convertChineseStr(++i)+"号";
+				name = "唐乐大神"+NumberFilter.convertChineseStr(++i)+"号";
 				while( PlayerManager.o.isRepeatName(name) ){
-					name = "唐乐"+NumberFilter.convertChineseStr(++i)+"号";
+					name = "唐乐大神"+NumberFilter.convertChineseStr(++i)+"号";
 				}
 			}
 			

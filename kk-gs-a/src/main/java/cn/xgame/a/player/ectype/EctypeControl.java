@@ -6,15 +6,14 @@ import io.netty.buffer.Unpooled;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
-import cn.xgame.a.player.ectype.o.ChapterEctype;
-import cn.xgame.a.player.ectype.o.StarEctype;
+import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.ChapterPo;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
@@ -25,173 +24,155 @@ import cn.xgame.utils.LuaUtil;
  */
 public class EctypeControl implements IArrayStream{
 
-//	private Player root;
+	// 临时记录 玩家每天第一次的登录时间 (这里为方便计算副本在登录时候 计时)
+	private int logintime;
 	
-	// 各个星球副本
-	private List<StarEctype> sectypes 	= Lists.newArrayList();
+	// 临时记录 星球ID
+	private List<Integer> tempSnid = Lists.newArrayList();
 	
-	// 特殊限时副本次数记录
-	private List<ChapterEctype> special = Lists.newArrayList();
+	
+	// 所有星球的偶发副本 集合
+	private List<ChapterInfo> allChances = Lists.newArrayList();
+	
 	
 	public EctypeControl( Player player ) {
-//		root = player;
 	}
 	
 	@Override
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
-		byte size = buf.readByte();
-		for( int i = 0; i < size; i++ ){
-			StarEctype o = new StarEctype( buf.readInt() );
-			o.wrapBuffer(buf);
-			sectypes.add( o );
+		short size = buf.readShort();
+		for (int i = 0; i < size; i++) {
+			ChapterPo templet = CsvGen.getChapterPo( buf.readInt() );
+			if( templet == null )
+				continue;
+			ChapterInfo chapter = new ChapterInfo( templet, buf.readInt() );
+			chapter.wrapBuffer(buf);
+			allChances.add(chapter);
 		}
 	}
 
 	@Override
 	public byte[] toBytes() {
+		if( allChances.isEmpty() )
+			return null;
 		ByteBuf buf = Unpooled.buffer( );
-		buf.writeByte( sectypes.size() );
-		for( StarEctype o : sectypes ){
-			buf.writeInt( o.getSnid() );
-			o.putBuffer(buf);
+		buf.writeShort( allChances.size() );
+		for( ChapterInfo chapter : allChances ){
+			buf.writeInt( chapter.getId() );
+			buf.writeInt( chapter.getSnid() );
+			chapter.putBuffer(buf);
 		}
 		return buf.array();
 	}
-	
-	//--------------------------------------------公共函数--------------------------------------------------
-	/** 初始化副本信息 */
-	public void initialize() {
-		// 星球副本
-		List<IPlanet> all = WorldManager.o.getAllPlanet();
-		for( IPlanet planet : all ){
-			try {
-				StarEctype o = new StarEctype( planet.getId() );
-				List<Integer> ls = planet.getItselfEctype();
-				for( int id : ls ){
-					ChapterEctype ectype = new ChapterEctype( planet.getId(), id );
-					ectype.generateNextEctype();
-					o.getGeneral().add(ectype);
-				}
-				o.getNormal().addAll( updateNormalEctype( planet.getId() ) );
-				sectypes.add( o );
-			} catch (Exception e) {
-				Logs.error( "初始化副本出错  星球ID=" + planet.getId() );
-			}
-		}
-	}
-	
+
 	/**
-	 * 精确获取 指定章节
-	 * @param snid
-	 * @param type
-	 * @param cnid 
-	 * @param enid 
+	 * 根据星球生成 偶发副本 列表
+	 * @param sid
 	 * @return
 	 */
-	public ChapterEctype getChapter( int snid, byte type, int cnid ) {
-		// 特殊限时副本
-		if( type == 3 ) return getSpecialEctype( cnid );
-		// 常规和普通限时
-		StarEctype star = getStarEctype( snid );
-		return star == null ? null : star.getChapter( type, cnid );
-	}
-	
-	//--------------------------------------------星球副本--------------------------------------------------
-	public StarEctype getStarEctype(int snid) {
-		for( StarEctype o : sectypes ){
-			if( o.getSnid() == snid )
-				return o;
-		}
-		return null;
-	}
-	
-	/**
-	 * 初始所有副本次数
-	 */
-	public void initAllTimes() {
-		for( StarEctype stare : sectypes )
-			stare.initGeneralTimes();
-	}
-	
-	/**
-	 * 刷新普通限时副本
-	 */
-	public void updateNormalEctype(){
-		for( StarEctype stare : sectypes ){
-			List<ChapterEctype> normal = stare.getNormal();
-			normal.clear();
-			normal.addAll( updateNormalEctype( stare.getSnid() ) );
-		}
-	}
-	private List<ChapterEctype> updateNormalEctype( int snid ) {
-		List<ChapterEctype> ret = Lists.newArrayList();
-		Lua lua = LuaUtil.getEctypeInfo();
-		LuaValue[] value = lua.getField( "getStarRandomEctype" ).call( 1, snid );
-		String content = value[0].getString();
+	private List<ChapterInfo> generateChanceEctype( int sid ) {
+		List<ChapterInfo> ret = Lists.newArrayList();
+		String content = LuaUtil.getEctypeInfo().getField( "generateChanceEctype" ).call( 1, sid )[0].getString();
 		if( !content.isEmpty() ){
-			String[] str = content.split("\\|");
+			String[] str = content.split( ";" );
 			for( String x : str ){
-				if( x.isEmpty() ) continue;
-				String[] o = x.split( ";" );
-				ChapterEctype ectype = new ChapterEctype( snid, Integer.parseInt( o[0] ) );
-				ectype.generateNextEctype();
-				int t = (int) (System.currentTimeMillis()/1000);
-				ectype.setEndtime( t + Integer.parseInt( o[1] ) );
-				ret.add(ectype);
-			}
-		}
-//		if( !ret.isEmpty() )
-//			Logs.debug( root, "星球" + snid + " 刷新普通限时副本 " + ret );
-		return ret;
-	}
-	
-	/**
-	 * 根据星球获取对应星球的副本列表 包括瞭望副本
-	 * @param snid
-	 * @return
-	 */
-	public List<StarEctype> getEctypeList( IPlanet planet ) {
-		List<StarEctype> ret 	= Lists.newArrayList();
-		List<Integer> scope 	= planet.getScopePlanet();
-		for( StarEctype o : sectypes ){
-			if( scope.indexOf( o.getSnid() ) != -1 || o.getSnid() == planet.getId() ){
-				o.removeCrapNormalEctype();
-				ret.add(o);
+				ChapterPo templet = CsvGen.getChapterPo( Integer.parseInt( x ) );
+				if( templet == null ) {
+					Logs.error( "在生成偶发副本出错 Chapter表格找不到 " + x + ", at = EctypeControl.generateChanceEctype" );
+					continue;
+				}
+				// 如果时间已经超过当日第一次登录的时间 那么就不生成该副本
+				int curtime = (int) (System.currentTimeMillis()/1000);
+				if( curtime >= logintime + templet.time && templet.time != 0 )
+					continue;
+				ChapterInfo chapter = new ChapterInfo( templet, sid );
+				chapter.init( templet );
+				chapter.setEndtime( templet.time == 0 ? 0 : (int)(logintime + templet.time) );
+				
+				ret.add(chapter);
 			}
 		}
 		return ret;
 	}
 	
-	//--------------------------------------------特殊限时副本--------------------------------------------------
 	/**
-	 * 获取特殊限时副本
+	 * 根据星球ID 和章节ID 获取对应章节
+	 * @param sid
+	 * @param id
 	 * @return
 	 */
-	public List<ChapterEctype> getSpecial() {
-		return special;
-	}
-	
-	private ChapterEctype getSpecialChapter( int cnid ) {
-		for( ChapterEctype cha : special ){
-			if( cha.getNid() == cnid )
-				return cha;
+	public ChapterInfo getChapter( int sid, int id ){
+		for( ChapterInfo chapter : allChances ){
+			if( chapter.getSnid() == sid && chapter.getId() == id )
+				return chapter;
 		}
 		return null;
 	}
 	
 	/**
-	 * 获取 指定特殊副本
-	 * @param cnid
-	 * @param enid
+	 * 根据星球获取 偶发副本
+	 * @param sid
+	 */
+	public List<ChapterInfo> getChanceEctype( int sid ){
+		List<ChapterInfo> ret = Lists.newArrayList();
+		for( ChapterInfo chapter : allChances ){
+			if( chapter.getSnid() != sid )
+				continue;
+			ret.add(chapter);
+		}
+		if( ret.isEmpty() && tempSnid.indexOf(sid) == -1 ){
+			ret.addAll( generateChanceEctype( sid ) );
+			allChances.addAll( ret );
+			tempSnid.add( sid );
+		}
+		return ret;
+	}
+	
+	/**
+	 * 根据星球获取 常规副本 (这里包括星球瞭望的)
+	 * @param sid
 	 * @return
 	 */
-	private ChapterEctype getSpecialEctype( int cnid ) {
-		return getSpecialChapter( cnid );
+	public List<ChapterInfo> getGeneralEctype( int sid ){
+		List<ChapterInfo> ret = Lists.newArrayList();
+		try {
+			WorldManager o = WorldManager.o;
+			IPlanet planet = o.getPlanet(sid);
+			// 先放入该星球的副本信息
+			ret.addAll( planet.getChapters() );
+			// 然后放入根据瞭望出来的星球副本信息
+			List<Integer> scope = planet.getScopePlanet();
+			for( int id : scope ){
+				IPlanet temp = o.getPlanet(id);
+				ret.addAll( temp.getChapters() );
+			}
+		} catch (Exception e) { }
+		return ret;
+	}
+	
+	/**
+	 * 刷新一下偶发副本 把时间到的删除掉
+	 */
+	public void updateChanceEctype(){
+		int curtime = (int) (System.currentTimeMillis()/1000);
+		List<ChapterInfo> remove = Lists.newArrayList();
+		for( ChapterInfo chapter : allChances ){
+			if( chapter.getEndtime() == 0 || curtime < chapter.getEndtime() )
+				continue;
+			remove.add(chapter);
+		}
+		allChances.removeAll(remove);
+	}
+	
+	/**
+	 * 清理数据
+	 */
+	public void clear(){
+		allChances.clear();
+		tempSnid.clear();
+		logintime = (int) (System.currentTimeMillis()/1000);
 	}
 
-
-
-	
 }

@@ -1,5 +1,6 @@
 package cn.xgame.a.fighter.o;
 
+import cn.xgame.a.IBufferStream;
 import io.netty.buffer.ByteBuf;
 
 
@@ -8,13 +9,15 @@ import io.netty.buffer.ByteBuf;
  * @author deng		
  * @date 2015-7-30 上午11:16:36
  */
-public class Attackattr {
+public class Attackattr implements IBufferStream{
 
 	// 类型
 	private byte type;
 	
 	// 数值
 	private float value;
+	
+	public Attackattr(){}
 
 	public Attackattr( byte type, float value ) {
 		this.type = type;
@@ -26,6 +29,18 @@ public class Attackattr {
 		buffer.writeInt( (int) value );
 	}
 
+	@Override
+	public void putBuffer(ByteBuf buf) {
+		buf.writeByte( type );
+		buf.writeFloat( value );
+	}
+
+	@Override
+	public void wrapBuffer(ByteBuf buf) {
+		type = buf.readByte();
+		value = buf.readFloat();
+	}
+	
 	public byte getType() {
 		return type;
 	}
@@ -38,5 +53,7 @@ public class Attackattr {
 	public void setValue( float value ) {
 		this.value = value;
 	}
+
+
 	
 }

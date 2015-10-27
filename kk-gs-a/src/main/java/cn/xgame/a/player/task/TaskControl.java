@@ -180,7 +180,7 @@ public class TaskControl implements IArrayStream{
 		List<HomePlanet> homes = WorldManager.o.getAllHomePlanet();
 		for( HomePlanet home : homes ){
 			Lua lua = LuaUtil.getTaskInfo();
-			LuaValue[] ret = lua.getField( "generateTask" ).call( 1, home.getId() );
+			LuaValue[] ret = lua.getField( "generateTask" ).call( 1, home.getId(), root.getLevel() );
 			String str = ret[0].getString();
 			if( str.isEmpty() ) 
 				continue;
@@ -188,6 +188,8 @@ public class TaskControl implements IArrayStream{
 			String[] content = str.split("\\|");
 			for( String x : content ){
 				String[] temp = x.split( ":" );
+				if( temp.length < 2 )
+					continue;
 				String[] ls = temp[1].split( ";" );
 				NpcTask npc = new NpcTask( Integer.parseInt( temp[0] ) );
 				for( String o : ls ){

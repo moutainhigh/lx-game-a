@@ -26,6 +26,12 @@ public interface PlayerData {
 	/** 头像图标ID */
 	int headIco();
 	
+	/** 玩家等级 */
+	short level();
+	
+	/** 玩家经验 */
+	int exp();
+	
 	/** 副官ID */
 	int adjutantId();
 	

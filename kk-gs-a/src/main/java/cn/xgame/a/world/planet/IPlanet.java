@@ -7,6 +7,7 @@ import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.world.planet.data.building.BuildingControl;
@@ -14,9 +15,12 @@ import cn.xgame.a.world.planet.data.resource.ResourceControl;
 import cn.xgame.a.world.planet.data.specialty.SpecialtyControl;
 import cn.xgame.a.world.planet.home.o.Child;
 import cn.xgame.a.world.planet.home.o.Institution;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.ChapterPo;
 import cn.xgame.config.o.StarsPo;
 import cn.xgame.gen.dto.MysqlGen.PlanetDataDto;
 import cn.xgame.system.LXConstants;
+import cn.xgame.utils.Logs;
 
 /**
  * 星球基类
@@ -40,6 +44,8 @@ public abstract class IPlanet implements ITransformStream{
 	// 星球建筑
 	protected BuildingControl 		buildingControl ;
 	
+	// 副本章节列表
+	private List<ChapterInfo> 		chapters = Lists.newArrayList();
 	
 	public IPlanet( StarsPo clone ){
 		templet 			= clone;
@@ -56,12 +62,12 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
+		initChapters( templet.ectypes );
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
 		dto.setBuildings( buildingControl.toBytes() );
 		dto.setSpecialtys( specialtyControl.toBytes() );
-		
 	}
 	
 	/**
@@ -74,6 +80,22 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromTemplet( templet.goods );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
+		initChapters( templet.ectypes );
+	}
+	
+	// 初始化副本章节信息
+	private void initChapters( String ectypes ) {
+		String[] array = ectypes.split(";");
+		for( String x : array ){
+			ChapterPo ctemplet = CsvGen.getChapterPo( Integer.parseInt( x ) );
+			if( ctemplet == null ) {
+				Logs.error( "在生成偶发副本出错 Chapter表格找不到 " + x + ", at = IPlanet.initChapters" );
+				continue;
+			}
+			ChapterInfo chapter = new ChapterInfo( ctemplet, getId() );
+			chapter.init( ctemplet );
+			chapters.add(chapter);
+		}
 	}
 	
 	@Override
@@ -81,30 +103,26 @@ public abstract class IPlanet implements ITransformStream{
 		buffer.writeInt( getId() );
 		buffer.writeShort( maxSpace );
 	}
-
-	/** 发起 建筑 投票 */
-	public void sponsorBuivote( Player player, int nid, byte index, int time ) throws Exception { }
-	/** 参与 建筑 投票*/
-	public void participateBuildVote(Player player, int nid, byte isAgree) throws Exception { }
-	
-	/** 发起 驱逐元老 投票 */
-	public void sponsorGenrVote( Player player, String uid, String explain ) throws Exception { }
-	/** 参与 驱逐元老 投票 */
-	public void participateGenrVote( Player player, String uid,byte isAgree ) throws Exception { }
-	
-	/** 申请所有政务数据 
-	 * @param player */
-	public void putAlllAffair( Player player, ByteBuf response) { }
-	/** 申请所有元老数据 */
-	public List<Child> getAllGenrs() { return null; }
-	/** 捐献资源 */
-	public void donateResource( Player player, IProp prop ){}
 	
 	/** 保存数据库 */
 	public abstract void updateDB();
 	/** 获取瞭望的星球ID列表 */
 	public abstract List<Integer> getScopePlanet();
-	
+
+	/** 发起 建筑 投票 */
+	public void sponsorBuivote( Player player, int nid, byte index, int time ) throws Exception { }
+	/** 参与 建筑 投票*/
+	public void participateBuildVote(Player player, int nid, byte isAgree) throws Exception { }
+	/** 发起 驱逐元老 投票 */
+	public void sponsorGenrVote( Player player, String uid, String explain ) throws Exception { }
+	/** 参与 驱逐元老 投票 */
+	public void participateGenrVote( Player player, String uid,byte isAgree ) throws Exception { }
+	/** 申请所有政务数据  */
+	public void putAlllAffair( Player player, ByteBuf response) { }
+	/** 申请所有元老数据 */
+	public List<Child> getAllGenrs() { return null; }
+	/** 捐献资源 */
+	public void donateResource( Player player, IProp prop ){}
 	/** 获得该星球体制 */
 	public Institution getInstitution() { return null; }
 	/** 获得该星人数 */
@@ -112,27 +130,29 @@ public abstract class IPlanet implements ITransformStream{
 	/** 获得该星科技等级 */
 	public byte getTechLevel() { return 0; }
 	
-	public StarsPo templet(){ return templet; }
-	public int getId() { return templet.id; }
-	public short getMaxSpace() { return maxSpace; }
-	public void setMaxSpace(short maxSpace) { this.maxSpace = maxSpace; }
-	public SpecialtyControl getSpecialtyControl() { return specialtyControl; }
-	public ResourceControl getDepotControl() { return depotControl; }
-	public BuildingControl getBuildingControl() { return buildingControl; }
-
-	/** 
-	 * 获取该星球本身自带的副本
-	 * @return
-	 */
-	public List<Integer> getItselfEctype() {
-		List<Integer> ret = Lists.newArrayList();
-		if( !templet().ectypes.isEmpty() ){
-			String[] str = templet().ectypes.split(";");
-			for( String o : str )
-				ret.add( Integer.parseInt(o) );
-		}
-		return ret;
+	
+	public StarsPo templet(){ 
+		return templet; 
 	}
+	public int getId() { 
+		return templet.id; 
+	}
+	public short getMaxSpace() { 
+		return maxSpace; 
+	}
+	public SpecialtyControl getSpecialtyControl() { 
+		return specialtyControl; 
+	}
+	public ResourceControl getDepotControl() { 
+		return depotControl; 
+	}
+	public BuildingControl getBuildingControl() { 
+		return buildingControl; 
+	}
+	public List<ChapterInfo> getChapters() {
+		return chapters;
+	}
+	
 	
 	/**
 	 * 获取星球的酒馆更新时间  单位秒
@@ -143,10 +163,17 @@ public abstract class IPlanet implements ITransformStream{
 		return LXConstants.TAVERN_UPDATE_TIME;
 	}
 
-
-
-
-
-
-
+	/**
+	 * 根据章节ID 获取对应章节
+	 * @param id
+	 * @return
+	 */
+	public ChapterInfo getChapter( int id ){
+		for( ChapterInfo chapter : chapters ){
+			if( chapter.getId() == id )
+				return chapter;
+		}
+		return null;
+	}
+	
 }

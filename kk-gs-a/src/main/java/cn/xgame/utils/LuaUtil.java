@@ -96,7 +96,7 @@ public class LuaUtil {
 		Lua.setLogClass(Logs.class);
 		
 		Lua lua = getTaskInfo();
-		LuaValue[] value = lua.getField("generateTask").call( 1, 1001 );
+		LuaValue[] value = lua.getField("generateTask").call( 1, 1001, 1 );
 		
 		String s = value[0].getString();
 		

@@ -1,5 +1,8 @@
 package cn.xgame.a.player.mail.classes;
 
+
+import x.javaplus.string.StringUtil;
+
 import io.netty.buffer.ByteBuf;
 
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
@@ -48,8 +51,8 @@ public class IMail{
 	public IMail( MailInfoDto dto ){
 		setUid( dto.getUid() );
 		setType( MailType.fromNumber(dto.getType()) );
-		setTitle( dto.getTitle() );
-		setContent( dto.getContent() );
+		setTitle( StringUtil.wrapBytes( dto.getTitle() ) );
+		setContent( StringUtil.wrapBytes( dto.getContent() ) );
 		setMoney( dto.getMoney() );
 		setSenderUID( dto.getSenderUID() );
 		setSenderName( dto.getSenderName() );

@@ -86,7 +86,7 @@ public class Player extends IPlayer implements ITransformStream{
 		setNickname( name );
 		setCreateTime( System.currentTimeMillis() );
 		// 初始化副本信息
-		ectypes.initialize();
+		ectypes.clear();
 		// 初始化任务
 		tasks.updateTasks();
 	}
@@ -143,6 +143,8 @@ public class Player extends IPlayer implements ITransformStream{
 		RW.writeString( buffer, getUID() );
 		RW.writeString( buffer, getNickname() );
 		buffer.writeInt( getHeadIco() );
+		buffer.writeShort( getLevel() );
+		buffer.writeInt( getExp() );
 		buffer.writeInt( getAdjutantId() );
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );

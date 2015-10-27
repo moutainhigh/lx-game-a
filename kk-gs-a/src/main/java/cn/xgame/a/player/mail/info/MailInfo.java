@@ -1,6 +1,7 @@
 package cn.xgame.a.player.mail.info;
 
 import x.javaplus.mysql.db.Condition;
+import x.javaplus.string.StringUtil;
 import cn.xgame.a.player.mail.classes.IMail;
 import cn.xgame.a.player.mail.classes.MailType;
 import cn.xgame.a.player.u.Player;
@@ -36,8 +37,8 @@ public class MailInfo extends IMail{
 		dto.setUname( uname );
 		dto.setUid( getUid() );
 		dto.setType( getType().toNumber() );
-		dto.setTitle( getTitle() );
-		dto.setContent( getContent() );
+		dto.setTitle( StringUtil.toBytes( getTitle() ) );
+		dto.setContent( StringUtil.toBytes( getContent() ) );
 		dto.setMoney( getMoney() );
 		dto.setSenderUID( getSenderUID() );
 		dto.setSenderName( getSenderName() );

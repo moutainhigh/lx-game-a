@@ -21,11 +21,11 @@ public interface MailInfo {
 	byte type();
 		
 	/** 邮件标题 */
-	String title();
-		
+	byte[] title();
+	
 	/** 邮件内容 */
-	String content();
-		
+	byte[] content();
+	
 	/** 货币 */
 	int	money();
 		

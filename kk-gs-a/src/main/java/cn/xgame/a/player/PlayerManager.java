@@ -126,8 +126,8 @@ public class PlayerManager {
 	 */
 	private void dailyHandle( Player player, int day ) {
 		
-		// 初始所有副本次数
-		player.getEctypes().initAllTimes();
+		// 直接清空副本
+		player.getEctypes().clear();
 		
 		// 结算舰长周薪
 		player.getDocks().balanceWeekly();
@@ -162,11 +162,6 @@ public class PlayerManager {
 		int day = ret.strideDay();
 		if( day >= 0 ) {
 			dailyHandle( ret, day );
-			// 刷新一下 普通限时副本 根据玩家登录限时
-			ret.getEctypes().updateNormalEctype();
-		}else{
-			// 这里是为了方便测试 让每次登录都 刷新副本
-			ret.getEctypes().updateNormalEctype();
 		}
 		
 		return ret;
@@ -321,7 +316,7 @@ public class PlayerManager {
 		dao.commit();
 		return ret;
 	}
-
+	
 	/**
 	 * 在数据库  查找 是否有该名字
 	 * @param name

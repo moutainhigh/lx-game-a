@@ -55,6 +55,8 @@
 			setObject( "lastLogoutTime", dto.getLastLogoutTime() );
 			setObject( "nickname", dto.getNickname() );
 			setObject( "headIco", dto.getHeadIco() );
+			setObject( "level", dto.getLevel() );
+			setObject( "exp", dto.getExp() );
 			setObject( "adjutantId", dto.getAdjutantId() );
 			setObject( "countryId", dto.getCountryId() );
 			setObject( "currency", dto.getCurrency() );
@@ -187,8 +189,8 @@
 		private String uname = null;
 		private Integer uid = null;
 		private Byte type = null;
-		private String title = null;
-		private String content = null;
+		private byte[] title = null;
+		private byte[] content = null;
 		private Integer money = null;
 		private byte[] adjuncts = null;
 		private String senderUID = null;
@@ -215,8 +217,8 @@
 		/**  玩家唯一ID  */		public String getUname(){			return this.uname;		}
 		/**  唯一ID  */		public Integer getUid(){			return this.uid;		}
 		/**  邮件类型  */		public Byte getType(){			return this.type;		}
-		/**  邮件标题  */		public String getTitle(){			return this.title;		}
-		/**  邮件内容  */		public String getContent(){			return this.content;		}
+		/**  邮件标题  */		public byte[] getTitle(){			return this.title;		}
+		/**  邮件内容  */		public byte[] getContent(){			return this.content;		}
 		/**  货币  */		public Integer getMoney(){			return this.money;		}
 		/**  附件  */		public byte[] getAdjuncts(){			return this.adjuncts;		}
 		/**  发送人UID  */		public String getSenderUID(){			return this.senderUID;		}
@@ -229,8 +231,8 @@
 		/**  玩家唯一ID  */		public void setUname( String uname ){			this.uname = uname;		}
 		/**  唯一ID  */		public void setUid( Integer uid ){			this.uid = uid;		}
 		/**  邮件类型  */		public void setType( Byte type ){			this.type = type;		}
-		/**  邮件标题  */		public void setTitle( String title ){			this.title = title;		}
-		/**  邮件内容  */		public void setContent( String content ){			this.content = content;		}
+		/**  邮件标题  */		public void setTitle( byte[] title ){			this.title = title;		}
+		/**  邮件内容  */		public void setContent( byte[] content ){			this.content = content;		}
 		/**  货币  */		public void setMoney( Integer money ){			this.money = money;		}
 		/**  附件  */		public void setAdjuncts( byte[] adjuncts ){			this.adjuncts = adjuncts;		}
 		/**  发送人UID  */		public void setSenderUID( String senderUID ){			this.senderUID = senderUID;		}
@@ -243,8 +245,8 @@
 		public static String unameChangeSql( String x ) {			return "uname=" + "'"+x+"'";		}
 		public static String uidChangeSql( Integer x ) {			return "uid=" + x;		}
 		public static String typeChangeSql( Byte x ) {			return "type=" + x;		}
-		public static String titleChangeSql( String x ) {			return "title=" + "'"+x+"'";		}
-		public static String contentChangeSql( String x ) {			return "content=" + "'"+x+"'";		}
+		public static String titleChangeSql( byte[] x ) {			return "title=" + x;		}
+		public static String contentChangeSql( byte[] x ) {			return "content=" + x;		}
 		public static String moneyChangeSql( Integer x ) {			return "money=" + x;		}
 		public static String adjunctsChangeSql( byte[] x ) {			return "adjuncts=" + x;		}
 		public static String senderUIDChangeSql( String x ) {			return "senderUID=" + "'"+x+"'";		}
@@ -257,8 +259,8 @@
 			uname = o.getString( "uname" );
 			uid = o.getInt( "uid" );
 			type = o.getByte( "type" );
-			title = o.getString( "title" );
-			content = o.getString( "content" );
+			title = o.getBytes( "title" );
+			content = o.getBytes( "content" );
 			money = o.getInt( "money" );
 			adjuncts = o.getBytes( "adjuncts" );
 			senderUID = o.getString( "senderUID" );
@@ -335,6 +337,8 @@
 		private Long lastLogoutTime = null;
 		private String nickname = null;
 		private Integer headIco = null;
+		private Short level = null;
+		private Integer exp = null;
 		private Integer adjutantId = null;
 		private Integer countryId = null;
 		private Integer currency = null;
@@ -352,6 +356,8 @@
 			this.lastLogoutTime = src.lastLogoutTime;
 			this.nickname = src.nickname;
 			this.headIco = src.headIco;
+			this.level = src.level;
+			this.exp = src.exp;
 			this.adjutantId = src.adjutantId;
 			this.countryId = src.countryId;
 			this.currency = src.currency;
@@ -369,6 +375,8 @@
 		/**  上次下线时间  */		public Long getLastLogoutTime(){			return this.lastLogoutTime;		}
 		/**  名字  */		public String getNickname(){			return this.nickname;		}
 		/**  头像图标ID  */		public Integer getHeadIco(){			return this.headIco;		}
+		/**  玩家等级  */		public Short getLevel(){			return this.level;		}
+		/**  玩家经验  */		public Integer getExp(){			return this.exp;		}
 		/**  副官ID  */		public Integer getAdjutantId(){			return this.adjutantId;		}
 		/**  区域  */		public Integer getCountryId(){			return this.countryId;		}
 		/**  游戏币  */		public Integer getCurrency(){			return this.currency;		}
@@ -386,6 +394,8 @@
 		/**  上次下线时间  */		public void setLastLogoutTime( Long lastLogoutTime ){			this.lastLogoutTime = lastLogoutTime;		}
 		/**  名字  */		public void setNickname( String nickname ){			this.nickname = nickname;		}
 		/**  头像图标ID  */		public void setHeadIco( Integer headIco ){			this.headIco = headIco;		}
+		/**  玩家等级  */		public void setLevel( Short level ){			this.level = level;		}
+		/**  玩家经验  */		public void setExp( Integer exp ){			this.exp = exp;		}
 		/**  副官ID  */		public void setAdjutantId( Integer adjutantId ){			this.adjutantId = adjutantId;		}
 		/**  区域  */		public void setCountryId( Integer countryId ){			this.countryId = countryId;		}
 		/**  游戏币  */		public void setCurrency( Integer currency ){			this.currency = currency;		}
@@ -403,6 +413,8 @@
 		public static String lastLogoutTimeChangeSql( Long x ) {			return "lastLogoutTime=" + x;		}
 		public static String nicknameChangeSql( String x ) {			return "nickname=" + "'"+x+"'";		}
 		public static String headIcoChangeSql( Integer x ) {			return "headIco=" + x;		}
+		public static String levelChangeSql( Short x ) {			return "level=" + x;		}
+		public static String expChangeSql( Integer x ) {			return "exp=" + x;		}
 		public static String adjutantIdChangeSql( Integer x ) {			return "adjutantId=" + x;		}
 		public static String countryIdChangeSql( Integer x ) {			return "countryId=" + x;		}
 		public static String currencyChangeSql( Integer x ) {			return "currency=" + x;		}
@@ -420,6 +432,8 @@
 			lastLogoutTime = o.getLong( "lastLogoutTime" );
 			nickname = o.getString( "nickname" );
 			headIco = o.getInt( "headIco" );
+			level = o.getShort( "level" );
+			exp = o.getInt( "exp" );
 			adjutantId = o.getInt( "adjutantId" );
 			countryId = o.getInt( "countryId" );
 			currency = o.getInt( "currency" );
@@ -431,7 +445,7 @@
 			fleets = o.getBytes( "fleets" );
 			tasks = o.getBytes( "tasks" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"level="+level+","+"exp="+exp+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer beSnid = null;

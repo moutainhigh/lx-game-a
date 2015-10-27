@@ -20,6 +20,11 @@ public class DropAward extends AwardInfo {
 		super(id,count);
 		this.rand = rand;
 	}
+	
+	public DropAward( String[] x ) {
+		super( Integer.parseInt(x[0]), Integer.parseInt(x[1]) );
+		this.rand = Integer.parseInt(x[1]);
+	}
 
 	public int getRand() {
 		return rand;

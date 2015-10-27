@@ -43,8 +43,7 @@ public class FleetIntoEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 如果有船直接删除掉
-			if( !fleet.isEmpty() )
-				fleet.removeAll();
+			fleet.removeAll();
 			// 实装 到舰队上
 			fleet.add( ship );
 			

@@ -18,6 +18,10 @@ public abstract class IPlayer {
 	private String 			nickname;
 	// 头像图标ID
 	private int 			headIco;
+	// 玩家等级
+	private short			level = 1;
+	// 玩家经验
+	private int				exp;
 	// 副官ID
 	private int 			adjutantId;
 	
@@ -42,6 +46,8 @@ public abstract class IPlayer {
 		this.gsid			= dto.getGsid();
 		this.nickname 		= dto.getNickname();
 		this.headIco		= dto.getHeadIco();
+		this.level			= dto.getLevel();
+		this.exp			= dto.getExp();
 		this.adjutantId 	= dto.getAdjutantId();
 		this.countryId		= dto.getCountryId();
 		this.currency		= dto.getCurrency();
@@ -55,6 +61,8 @@ public abstract class IPlayer {
 		dto.setGsid(gsid);
 		dto.setNickname(nickname);
 		dto.setHeadIco(headIco);
+		dto.setLevel(level);
+		dto.setExp(exp);
 		dto.setAdjutantId(adjutantId);
 		dto.setCountryId(countryId);
 		dto.setCurrency(currency);
@@ -131,8 +139,17 @@ public abstract class IPlayer {
 	public void setAdjutantId(int adjutantId) {
 		this.adjutantId = adjutantId;
 	}
-	
-	
-	
+	public short getLevel() {
+		return level;
+	}
+	public void setLevel(short level) {
+		this.level = level;
+	}
+	public int getExp() {
+		return exp;
+	}
+	public void setExp(int exp) {
+		this.exp = exp;
+	}
 	
 }
