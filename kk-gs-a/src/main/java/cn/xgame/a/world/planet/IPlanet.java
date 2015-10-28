@@ -62,7 +62,7 @@ public abstract class IPlanet implements ITransformStream{
 		maxSpace = templet.room;
 		specialtyControl.fromTemplet( templet.goods );
 		buildingControl.fromTemplet( templet.building );
-		initChapters( templet.ectypes );
+		initChapters();
 		// 下面保存 到数据库
 		dto.setId( templet.id );
 		dto.setMaxSpace( maxSpace );
@@ -80,12 +80,15 @@ public abstract class IPlanet implements ITransformStream{
 		specialtyControl.fromTemplet( templet.goods );
 		depotControl.fromBytes( dto.getDepots() );
 		buildingControl.fromBytes( dto.getBuildings() );
-		initChapters( templet.ectypes );
+		initChapters();
 	}
 	
-	// 初始化副本章节信息
-	private void initChapters( String ectypes ) {
-		String[] array = ectypes.split(";");
+	/**
+	 * 初始化副本章节信息
+	 */
+	public void initChapters() {
+		chapters.clear();
+		String[] array = templet.ectypes.split(";");
 		for( String x : array ){
 			ChapterPo ctemplet = CsvGen.getChapterPo( Integer.parseInt( x ) );
 			if( ctemplet == null ) {
@@ -94,6 +97,7 @@ public abstract class IPlanet implements ITransformStream{
 			}
 			ChapterInfo chapter = new ChapterInfo( ctemplet, getId() );
 			chapter.init( ctemplet );
+			chapter.generateAllEctype();
 			chapters.add(chapter);
 		}
 	}

@@ -1,6 +1,7 @@
 package cn.xgame.a.player;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -156,7 +157,7 @@ public class PlayerManager {
 		ret.setCtx( ctx );
 		// 放入内存
 		players.put( ret.getUID(), ret );
-		offline.remove( ret );
+		removeOffline( ret );
 		
 		// 判断是否过天
 		int day = ret.strideDay();
@@ -265,7 +266,7 @@ public class PlayerManager {
 	 */
 	public void exitByOffline( Player player ) {
 		
-		if( offline.remove(player) ){
+		if( removeOffline(player) ){
 			
 			// 然后处理退出
 			player.exit();
@@ -274,7 +275,16 @@ public class PlayerManager {
 		// 最后保存数据库
 		update( player );
 	}
-
+	private boolean removeOffline( Player ret ) {
+		Iterator<Player> iter = offline.iterator();
+		while( iter.hasNext() ){
+			if( iter.next().getUID().equals( ret.getUID() ) ){
+				iter.remove();
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	//===============================================================
 	//TODO========================数据库相关==========================

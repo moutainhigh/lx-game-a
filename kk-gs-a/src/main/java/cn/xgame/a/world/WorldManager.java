@@ -221,6 +221,16 @@ public class WorldManager {
 	}
 	
 	/**
+	 * 刷新每个星球的副本数据
+	 */
+	public void updateGeneralEctype() {
+		List<IPlanet> ls = getAllPlanet();
+		for( IPlanet o : ls ){
+			o.initChapters();
+		}
+	}
+	
+	/**
 	 * 根据瞭望距离获取周围的星球
 	 * @param qutlook
 	 * @param x
@@ -239,5 +249,6 @@ public class WorldManager {
 		}
 		return ret;
 	}
+	
 
 }

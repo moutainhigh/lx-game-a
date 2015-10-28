@@ -41,6 +41,10 @@ public class FleetInfo implements ITransformStream{
 	// 组队频道ID
 	private int 			axnId			= 0;
 	
+	public FleetInfo( byte No ){
+		this.No = No;
+	}
+	
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeByte( No );
@@ -59,7 +63,6 @@ public class FleetInfo implements ITransformStream{
 	public int getAxnId() { return axnId; }
 	public void setAxnId(int axnId) { this.axnId = axnId; }
 	public byte getNo() { return No; }
-	public void setNo(byte no) { No = no; }
 	
 	public void setBerthSnid( int berthSnid ) { 
 		this.berthSnid = berthSnid;

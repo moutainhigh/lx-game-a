@@ -25,6 +25,9 @@ public class DailyHandleImp extends IThread{
 			// 更新星球体制
 			WorldManager.o.runUpdateInstitution();
 			
+			// 更新星球常规副本
+			WorldManager.o.updateGeneralEctype();
+			
 		} catch (Exception e) {
 			Logs.error( "DailyHandleImp:" , e );
 		}

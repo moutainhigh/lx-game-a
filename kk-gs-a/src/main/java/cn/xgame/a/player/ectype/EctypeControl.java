@@ -31,6 +31,7 @@ public class EctypeControl implements IArrayStream{
 	private List<Integer> tempSnid = Lists.newArrayList();
 	
 	
+	
 	// 所有星球的偶发副本 集合
 	private List<ChapterInfo> allChances = Lists.newArrayList();
 	
@@ -90,7 +91,8 @@ public class EctypeControl implements IArrayStream{
 				ChapterInfo chapter = new ChapterInfo( templet, sid );
 				chapter.init( templet );
 				chapter.setEndtime( templet.time == 0 ? 0 : (int)(logintime + templet.time) );
-				
+				chapter.generateNextEctype();
+				Logs.debug( "生成副本 属性=[" + chapter.getEctypes().get(0) + "]" );
 				ret.add(chapter);
 			}
 		}

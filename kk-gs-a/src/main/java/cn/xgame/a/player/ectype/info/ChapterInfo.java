@@ -34,6 +34,9 @@ public class ChapterInfo extends IChapter{
 	// 奖励列表
 	private List<DropAward> 	awards = Lists.newArrayList();
 	
+	// 难度列表
+	private List<Byte>			difficultys = Lists.newArrayList();
+	
 	
 	public ChapterInfo( ChapterPo templet,int sid ) {
 		super( templet.id, sid, templet.temp );
@@ -78,6 +81,35 @@ public class ChapterInfo extends IChapter{
 		}
 	}
 	
+	/**
+	 * 生成下一个难度的副本 
+	 */
+	public void generateNextEctype() {
+		EctypePo templet = CsvGen.getEctypePo( getTempId() );
+		if( templet == null ) 
+			return;
+		nextLevelEctype( templet );
+	}
+	/**
+	 * 生成全部难度副本
+	 */
+	public void generateAllEctype() {
+		EctypePo templet = CsvGen.getEctypePo( getTempId() );
+		if( templet == null ) 
+			return;
+		for( int i = 0; i < difficultys.size(); i++ )
+			nextLevelEctype( templet );
+	}
+	private void nextLevelEctype( EctypePo templet ) {
+		int size = getEctypes().size();
+		if( size >= difficultys.size() )
+			return;
+		byte level = difficultys.get(size);
+		EctypeInfo ectype = new EctypeInfo( level, templet );
+		ectype.setAttribute( templet );
+		getEctypes().add( ectype );
+	}
+	
 	public int getDepthtime() {
 		return depthtime;
 	}
@@ -93,5 +125,9 @@ public class ChapterInfo extends IChapter{
 	public List<DropAward> getAwards() {
 		return awards;
 	}
+	public List<Byte> getDifficultys() {
+		return difficultys;
+	}
+
 
 }

@@ -51,7 +51,6 @@ public class IChapter implements IBufferStream{
 	public void init( ChapterPo templet ) {
 		times 	= templet.times == 0 ? -1 : templet.times;
 		initQuestions( templet.qc, templet.qp );
-		generateEctype( templet.nquality.isEmpty() ? 1 : Integer.parseInt( templet.nquality.split( ";" )[0] ) );
 	}
 	// 初始应答
 	private void initQuestions( String count, String pool ) {
@@ -105,20 +104,6 @@ public class IChapter implements IBufferStream{
 			o.wrapBuffer(buf);
 			ectypes.add( o );
 		}
-	}
-	
-	/**
-	 * 根据难度生成一个副本数据
-	 * @param level
-	 */
-	public void generateEctype( int level ) {
-		EctypePo templet = CsvGen.getEctypePo( tempId );
-		if( templet == null ) 
-			return;
-		EctypeInfo ectype = new EctypeInfo( (byte) level, templet );
-		ectype.setAttribute( templet );
-		ectypes.add( ectype );
-		Logs.debug( "生成副本 属性=[" + ectype + "]" );
 	}
 	
 	public int getId() {

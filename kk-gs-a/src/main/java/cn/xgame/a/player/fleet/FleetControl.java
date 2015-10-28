@@ -36,10 +36,9 @@ public class FleetControl implements IArrayStream{
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
-			FleetInfo fleet 		= new FleetInfo();
-			List<ShipInfo> ships 	= fleet.getShips();
-			fleet.setNo( buf.readByte() );
+			FleetInfo fleet = new FleetInfo( buf.readByte() );
 			fleet.setBerthSnid( buf.readInt() );
+			List<ShipInfo> ships 	= fleet.getShips();
 			byte count 				= buf.readByte();
 			for( int j = 0; j < count; j++ ){
 				ShipInfo ship = root.getDocks().getShip( buf.readInt() );
@@ -139,9 +138,7 @@ public class FleetControl implements IArrayStream{
 	 * 添加一个舰队 
 	 */
 	public void addFleet(){
-		FleetInfo e = new FleetInfo();
-		e.setNo( (byte) (fleets.size() + 1) );
-		fleets.add( e );
+		fleets.add( new FleetInfo( (byte)(fleets.size()+1) ) );
 	}
 
 	/**
