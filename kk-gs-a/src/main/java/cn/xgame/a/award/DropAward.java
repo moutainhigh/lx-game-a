@@ -23,7 +23,7 @@ public class DropAward extends AwardInfo {
 	
 	public DropAward( String[] x ) {
 		super( Integer.parseInt(x[0]), Integer.parseInt(x[1]) );
-		this.rand = Integer.parseInt(x[1]);
+		this.rand = Integer.parseInt(x[2]);
 	}
 
 	public int getRand() {

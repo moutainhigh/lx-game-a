@@ -8,9 +8,11 @@ import java.util.List;
 
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
+import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 申请某个星球的副本信息
@@ -34,39 +36,49 @@ public class ApplyEctypeEvent extends IEvent{
 		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
 		
-		// 瞭望副本
-		List<ChapterInfo> outlooks = control.getOutlookEctype(snid);
-		buffer.writeByte( outlooks.size() );
-//		for( ChapterEctype o : general ){
-//			buffer.writeByte( 1 );
-//			buffer.writeInt( o.getSnid() );
-//			o.buildTransformStream(buffer);
-//			buffer.writeInt( endtime );
-//			List<IEctype> ectypes = o.getEctypes();
-//			buffer.writeByte( ectypes.size() );
-//			for( IEctype x : ectypes ){
-//				buffer.writeInt( x.getNid() );
-//				Lua lua = LuaUtil.getEctypeCombat();
-//				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
-//			}
-//		}
+		// 常规副本
+		List<ChapterInfo> generals = control.getGeneralEctype(snid);
+		buffer.writeShort( generals.size() );
+		for( ChapterInfo o : generals ){
+			buffer.writeInt( o.getSnid() );
+			buffer.writeInt( o.getId() );
+			buffer.writeByte( o.getQuestions().size() );
+			for( int id : o.getQuestions() ){
+				buffer.writeInt( id );
+			}
+			List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
+			buffer.writeByte( guajiEctypes.size() );
+			for( EctypeInfo x : guajiEctypes ){
+				buffer.writeByte( x.getLevel() );
+				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+			}
+			List<EctypeInfo> ectypes = o.getEctypes();
+			buffer.writeByte( ectypes.size() );
+			for( EctypeInfo x : ectypes ){
+				buffer.writeByte( x.getLevel() );
+				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+			}
+		}
 		
 		// 偶发副本
 		List<ChapterInfo> chances = control.getChanceEctype(snid);
 		buffer.writeByte( chances.size() );
-//		for( ChapterEctype o : normals ){
-//			buffer.writeByte( 2 );
-//			buffer.writeInt( o.getSnid() );
-//			o.buildTransformStream(buffer);
-//			buffer.writeInt( o.getEndtime() );
-//			List<IEctype> ectypes = o.getEctypes();
-//			buffer.writeByte( ectypes.size() );
-//			for( IEctype x : ectypes ){
-//				buffer.writeInt( x.getNid() );
-//				Lua lua = LuaUtil.getEctypeCombat();
-//				lua.getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
-//			}
-//		}
+		for( ChapterInfo o : generals ){
+			buffer.writeInt( o.getSnid() );
+			buffer.writeInt( o.getId() );
+			buffer.writeInt( o.getEndtime() );
+			buffer.writeByte( o.getTimes() );
+			buffer.writeByte( o.getQuestions().size() );
+			for( int id : o.getQuestions() ){
+				buffer.writeInt( id );
+			}
+			List<EctypeInfo> ectypes = o.getEctypes();
+			buffer.writeByte( ectypes.size() );
+			for( EctypeInfo x : ectypes ){
+				buffer.writeByte( x.getLevel() );
+				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+			}
+		}
 		sendPackage( player.getCtx(), buffer );
 	}
 	

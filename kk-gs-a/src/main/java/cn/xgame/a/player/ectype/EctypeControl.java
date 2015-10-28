@@ -11,6 +11,7 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ChapterPo;
 import cn.xgame.utils.Logs;
@@ -130,16 +131,19 @@ public class EctypeControl implements IArrayStream{
 	}
 	
 	/**
-	 * 根据星球获取 瞭望副本
+	 * 根据星球获取 常规副本
 	 * @param sid
 	 * @return
 	 */
-	public List<ChapterInfo> getOutlookEctype( int sid ){
+	public List<ChapterInfo> getGeneralEctype( int sid ){
 		List<ChapterInfo> ret = Lists.newArrayList();
 		try {
 			WorldManager o = WorldManager.o;
+			// 先放入本星球副本
+			IPlanet planet = o.getPlanet(sid);
+			ret.addAll( planet.getChapters() );
 			// 然后放入根据瞭望出来的星球副本信息
-			List<Integer> scope = o.getPlanet(sid).getScopePlanet();
+			List<Integer> scope = planet.getScopePlanet();
 			for( int id : scope ){
 				ret.addAll( o.getPlanet(id).getChapters() );
 			}

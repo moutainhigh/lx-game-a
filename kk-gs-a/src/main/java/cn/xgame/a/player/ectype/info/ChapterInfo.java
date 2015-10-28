@@ -31,16 +31,22 @@ public class ChapterInfo extends IChapter{
 	// 金宝箱
 	private List<DropAward> 	goldenpond = Lists.newArrayList();
 	
+	// 奖励列表
+	private List<DropAward> 	awards = Lists.newArrayList();
+	
 	
 	public ChapterInfo( ChapterPo templet,int sid ) {
-		super( templet.id, sid );
+		super( templet.id, sid, templet.temp );
 		depthtime = templet.stime;
 		initGuajiEctype( templet.sleeptime );
 		initPond( silverpond, templet.silverpond );
 		initPond( goldenpond, templet.goldenpond );
+		initAwards( templet.reward );
 	}
 	// 初始宝箱
 	private void initPond( List<DropAward> list, String pond ) {
+		if( pond.isEmpty() )
+			return;
 		String[] str = pond.split( "\\|" );
 		for( String x : str ){
 			list.add( new DropAward(x.split(";")) );
@@ -48,17 +54,27 @@ public class ChapterInfo extends IChapter{
 	}
 	// 初始挂机副本
 	private void initGuajiEctype( String sleeptime ) {
+		if( sleeptime.isEmpty() )
+			return ;
 		String[] array = sleeptime.split( ";" );
 		for( int i = 0; i < array.length; i++ ){
 			EctypePo templet = CsvGen.getEctypePo( getTempId() );
 			if( templet == null ) 
 				continue;
-			EctypeInfo ectype = new EctypeInfo( (byte) (i+1) );
-			ectype.setAttribute( "normal", templet );
+			EctypeInfo ectype = new EctypeInfo( (byte) (i+1), templet );
+			// 挂机副本难度全部为1
+			ectype.setAttribute( 1, templet );
 			// 挂机副本 强制设置时间
 			ectype.setFighttime( Integer.parseInt( array[i] ) );
 			
 			guajiEctypes.add(ectype);
+		}
+	}
+	public void initAwards( String temp ){
+		if( temp.isEmpty() ) return;
+		String[] str = temp.split( "\\|" );
+		for( String x : str ){
+			awards.add( new DropAward( x.split(";") ) );
 		}
 	}
 	
@@ -73,6 +89,9 @@ public class ChapterInfo extends IChapter{
 	}
 	public List<DropAward> getGoldenpond() {
 		return goldenpond;
+	}
+	public List<DropAward> getAwards() {
+		return awards;
 	}
 
 }

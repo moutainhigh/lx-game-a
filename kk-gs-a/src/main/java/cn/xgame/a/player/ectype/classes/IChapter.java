@@ -43,18 +43,20 @@ public class IChapter implements IBufferStream{
 	private List<EctypeInfo> 	ectypes = Lists.newArrayList();
 	
 	
-	public IChapter( int id, int snid ){
+	public IChapter( int id, int snid, int tempId ){
 		this.id 	= id;
 		this.snid 	= snid;
+		this.tempId = tempId;
 	}
 	public void init( ChapterPo templet ) {
-		tempId 	= templet.temp;
 		times 	= templet.times == 0 ? -1 : templet.times;
 		initQuestions( templet.qc, templet.qp );
 		generateEctype( templet.nquality.isEmpty() ? 1 : Integer.parseInt( templet.nquality.split( ";" )[0] ) );
 	}
 	// 初始应答
 	private void initQuestions( String count, String pool ) {
+		if( count.isEmpty() || pool.isEmpty() )
+			return;
 		String[] counts = count.split("\\|");
 		String[] pools 	= pool.split( "\\|" );
 		if( counts.length != pools.length )
@@ -90,15 +92,16 @@ public class IChapter implements IBufferStream{
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		tempId = buf.readInt();
-		times = buf.readByte();
-		endtime = buf.readInt();
+		tempId 		= buf.readInt();
+		times 		= buf.readByte();
+		endtime 	= buf.readInt();
+		EctypePo templet = CsvGen.getEctypePo( tempId );
 		byte size = buf.readByte();
 		for (int i = 0; i < size; i++) 
 			questions.add( buf.readInt() );
 		size = buf.readByte();
 		for (int i = 0; i < size; i++) {
-			EctypeInfo o = new EctypeInfo( buf.readByte() );
+			EctypeInfo o = new EctypeInfo( buf.readByte(), templet );
 			o.wrapBuffer(buf);
 			ectypes.add( o );
 		}
@@ -112,8 +115,8 @@ public class IChapter implements IBufferStream{
 		EctypePo templet = CsvGen.getEctypePo( tempId );
 		if( templet == null ) 
 			return;
-		EctypeInfo ectype = new EctypeInfo( (byte) level );
-		ectype.setAttribute( "random", templet );
+		EctypeInfo ectype = new EctypeInfo( (byte) level, templet );
+		ectype.setAttribute( templet );
 		ectypes.add( ectype );
 	}
 	
