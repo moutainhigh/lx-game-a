@@ -118,6 +118,7 @@ public class IChapter implements IBufferStream{
 		EctypeInfo ectype = new EctypeInfo( (byte) level, templet );
 		ectype.setAttribute( templet );
 		ectypes.add( ectype );
+		Logs.debug( "生成副本 属性=[" + ectype + "]" );
 	}
 	
 	public int getId() {

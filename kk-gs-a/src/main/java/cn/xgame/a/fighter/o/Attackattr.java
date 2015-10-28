@@ -23,7 +23,11 @@ public class Attackattr implements IBufferStream{
 		this.type = type;
 		this.value = value;
 	}
-
+	
+	public String toString(){
+		return type + "-" + value;
+	}
+	
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeByte( type );
 		buffer.writeInt( (int) value );

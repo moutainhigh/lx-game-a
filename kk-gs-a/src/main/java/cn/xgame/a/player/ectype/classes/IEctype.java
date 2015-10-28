@@ -28,8 +28,8 @@ public class IEctype implements IBufferStream{
 	private int fighttime ;
 	
 	// 最大成功率
-	private short maxSuccessRate;
-		
+	private short maxWinRate;
+	
 	// 攻击列表
 	private List<Attackattr> atks = Lists.newArrayList();
 	
@@ -45,6 +45,11 @@ public class IEctype implements IBufferStream{
 	
 	public IEctype( byte level ) {
 		this.level = level;
+	}
+	
+	public String toString(){
+		return "level=" + level + ", hp=" + hp + ", fighttime=" + fighttime + ", maxWinRate=" + maxWinRate 
+				+ ", atks=" + atks + ", defs=" + defs + ", awardRate=" + awardRate + ", money=[" + money[0] + "," + money[1] + "]";
 	}
 	
 	@Override
@@ -108,11 +113,11 @@ public class IEctype implements IBufferStream{
 	public void setFighttime( int fighttime ) {
 		this.fighttime = fighttime;
 	}
-	public short getMaxSuccessRate() {
-		return maxSuccessRate;
+	public short getMaxWinRate() {
+		return maxWinRate;
 	}
-	public void setMaxSuccessRate(short maxSuccessRate) {
-		this.maxSuccessRate = maxSuccessRate;
+	public void setMaxWinRate(short maxWinRate) {
+		this.maxWinRate = maxWinRate;
 	}
 	public float getAwardRate() {
 		return awardRate;
@@ -132,5 +137,7 @@ public class IEctype implements IBufferStream{
 		fighter.defends.addAll(defs);
 		return fighter;
 	}
+
+
 	
 }
