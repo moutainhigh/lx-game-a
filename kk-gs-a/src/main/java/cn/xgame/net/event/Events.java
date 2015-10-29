@@ -63,8 +63,10 @@ import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
+import cn.xgame.net.event.all.pl.staratlas.AppendAirlineEvent;
+import cn.xgame.net.event.all.pl.staratlas.ApplyBerthEvent;
+import cn.xgame.net.event.all.pl.staratlas.ApplySailendEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
-import cn.xgame.net.event.all.pl.staratlas.ModifyAirlineEvent;
 import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
 import cn.xgame.net.event.all.pl.task.AbandonTaskEvent;
 import cn.xgame.net.event.all.pl.task.ApplyCanTaskEvent;
@@ -113,9 +115,11 @@ public enum Events {
 	PLAYER_LOGIN				( 1001,		new LoginEvent() 				, "登录游戏" ),
 	PLAYER_CREATE				( 1002, 	new CreateEvent() 				, "创建角色" ),
 	// 星图
-	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "申请星图信息" ),
-	SAIL_OUT					( 1015, 	new SailoutEvent()				, "出航" ),
-	MODIFY_AIRLINE				( 1016, 	new ModifyAirlineEvent()		, "修改航线" ),
+	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "航站-申请星图信息" ),
+	SAIL_OUT					( 1015, 	new SailoutEvent()				, "航站-开始出航" ),
+	APPLY_SAILEND				( 1016, 	new ApplySailendEvent()			, "航站-申请航行结束" ),
+	APPLY_BERTH					( 1017, 	new ApplyBerthEvent()			, "航站-就近停靠" ),
+	APPEND_AIRLINE				( 1018, 	new AppendAirlineEvent()		, "航站-追加航线" ),
 	// 舰队
 	FLEET_INTO					( 1027, 	new FleetIntoEvent()			, "舰队操作-实装舰队" ),
 	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰队操作-停用舰队" ),

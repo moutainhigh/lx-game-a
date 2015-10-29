@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.fleet.info.purpose.Backsail;
 import cn.xgame.a.player.fleet.info.purpose.FightEctype;
 import cn.xgame.a.player.fleet.info.purpose.Setsail;
 import cn.xgame.a.player.u.Player;
@@ -28,7 +29,7 @@ public abstract class IPurpose implements ITransformStream, IBufferStream{
 	}
 
 	/**
-	 * 类型 1.打副本  2.出航
+	 * 类型 1.打副本  2.出航 3.返航
 	 * @return
 	 */
 	public byte type(){ return type; }
@@ -47,18 +48,24 @@ public abstract class IPurpose implements ITransformStream, IBufferStream{
 				o.wrapBuffer(buf);
 				return o;
 			}
+			case 3:
+			{
+				Backsail o = new Backsail();
+				o.wrapBuffer(buf);
+				return o;
+			}
 		}
 		return null;
 	}
 
 	/**
 	 * 执行结果
-	 * @param endtime 
-	 * @param berthSnid 
-	 * @param fleet
-	 * @param player
+	 * @param endtime 航行结束时间
+	 * @param targetId 航行目的星球
+	 * @param fleet 舰队信息
+	 * @param player 玩家信息
 	 * @return
 	 */
-	public abstract void execut(int endtime, int berthSnid, FleetInfo fleet, Player player);
+	public abstract void execut(int endtime, int targetId, FleetInfo fleet, Player player);
 	
 }

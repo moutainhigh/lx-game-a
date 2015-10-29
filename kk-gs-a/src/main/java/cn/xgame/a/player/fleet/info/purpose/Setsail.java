@@ -59,17 +59,26 @@ public class Setsail extends IPurpose{
 	
 	/**
 	 * 重置 航线
-	 * @param args
+	 * @param airline
 	 */
-	public void resetAirline( List<Integer> args ){
-		airline.clear();
-		airline.addAll(args);
+	public void resetAirline( List<Integer> airline ){
+		this.airline.clear();
+		if( airline != null )
+			this.airline.addAll(airline);
 	}
 
+	/**
+	 * 追加 航线
+	 * @param airline
+	 */
+	public void appendAirline( List<Integer> airline ) {
+		this.airline.addAll(airline);
+	}
+	
 	@Override
-	public void execut( int endtime, int berthSnid, FleetInfo fleet, Player player ) {
-		int startId 	= berthSnid; // 起始星球
-		int aimId 		= berthSnid; // 目标星球
+	public void execut( int endtime, int targetId, FleetInfo fleet, Player player ) {
+		int startId 	= targetId; // 起始星球
+		int aimId 		= targetId; // 目标星球
 		int sailtime 	= 0; // 航行时间
 		
 		int temp  	= endtime;// 结束时间
@@ -96,6 +105,5 @@ public class Setsail extends IPurpose{
 			fleet.changeStatus( StatusType.SAIL, aimId, temp-sailtime, temp, new Setsail( airline ) );
 		}
 	}
-
 	
 }

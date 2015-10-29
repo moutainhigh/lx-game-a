@@ -103,8 +103,8 @@ public class CombatStatus extends IStatus{
 		// TODO
 		
 		// 设置悬停
-		fleet.setStatus( StatusType.HOVER.create() );
 		fleet.setBerthSnid( fleet.getBerthSnid() );
+		fleet.changeStatus( StatusType.HOVER );
 	}
 	
 	public byte getType() {

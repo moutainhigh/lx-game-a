@@ -35,7 +35,6 @@ public class SailoutEvent extends IEvent{
 		ErrorCode code 	= null;
 		IStatus status 	= null;
 		try {
-			
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null || fleet.getShips().isEmpty() || airline.isEmpty() || !fleet.isHover() )

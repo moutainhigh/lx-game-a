@@ -38,6 +38,7 @@ public class FleetControl implements IArrayStream{
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			FleetInfo fleet = new FleetInfo( buf.readByte() );
+			fleet.setBerthSnid( buf.readInt() );
 			List<ShipInfo> ships = fleet.getShips();
 			byte count = buf.readByte();
 			for( int j = 0; j < count; j++ ){
@@ -57,6 +58,7 @@ public class FleetControl implements IArrayStream{
 		buf.writeByte( fleets.size() );
 		for( FleetInfo fleet : fleets ){
 			buf.writeByte( fleet.getNo() );
+			buf.writeInt( fleet.getBerthSnid() );
 			List<ShipInfo> ships = fleet.getShips();
 			buf.writeByte( ships.size() );
 			for( ShipInfo ship : ships )

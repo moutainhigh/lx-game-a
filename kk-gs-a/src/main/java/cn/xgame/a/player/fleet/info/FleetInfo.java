@@ -114,6 +114,13 @@ public class FleetInfo implements ITransformStream{
 	public boolean isHover() {
 		return status.type() == StatusType.HOVER;
 	}
+	/**
+	 * 是否航行状态
+	 * @return
+	 */
+	public boolean isSail() {
+		return status.type() == StatusType.SAIL;
+	}
 	
 
 	/**

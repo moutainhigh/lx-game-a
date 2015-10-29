@@ -62,12 +62,12 @@ public class FightEctype extends IPurpose{
 		return chapterId;
 	}
 	@Override
-	public void execut( int endtime, int berthSnid, FleetInfo fleet, Player player) {
+	public void execut( int endtime, int targetId, FleetInfo fleet, Player player) {
 		
 		
-		fleet.setBerthSnid( berthSnid );
+		fleet.setBerthSnid( targetId );
 		// 改变战斗状态
-		fleet.setStatus( StatusType.HOVER.create() );
+		fleet.changeStatus( StatusType.HOVER );
 	}
 
 }
