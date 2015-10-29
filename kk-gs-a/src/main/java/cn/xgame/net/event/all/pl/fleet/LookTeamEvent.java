@@ -1,4 +1,4 @@
-package cn.xgame.net.event.all.pl.ship;
+package cn.xgame.net.event.all.pl.fleet;
 
 import io.netty.buffer.ByteBuf;
 

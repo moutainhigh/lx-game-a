@@ -37,7 +37,7 @@ public class SailoutEvent extends IEvent{
 		try {
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.getShips().isEmpty() || airline.isEmpty() || !fleet.isHover() )
+			if( fleet == null || fleet.isEmpty() || airline.isEmpty() || !fleet.isHover() )
 				throw new Exception( ErrorCode.FLEET_BUSY.name() );
 			
 			// 取出航线第一个目标星球
@@ -47,8 +47,7 @@ public class SailoutEvent extends IEvent{
 			
 			// 切换航行状态
 			int starttime = (int) (System.currentTimeMillis()/1000);
-			int endtime = starttime + sailtime;
-			status = fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ) );
+			status = fleet.changeStatus( StatusType.SAIL, aimId, starttime, sailtime, new Setsail( airline ), 0 );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

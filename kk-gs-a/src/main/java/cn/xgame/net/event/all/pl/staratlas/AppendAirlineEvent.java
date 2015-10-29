@@ -34,7 +34,7 @@ public class AppendAirlineEvent extends IEvent {
 		try {
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.getShips().isEmpty() )
+			if( fleet == null || fleet.isEmpty() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			if( !fleet.isSail() )
 				throw new Exception( ErrorCode.FELLT_NOTSAIL.name() );

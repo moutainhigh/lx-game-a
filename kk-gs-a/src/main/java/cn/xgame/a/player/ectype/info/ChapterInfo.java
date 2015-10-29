@@ -4,7 +4,9 @@ package cn.xgame.a.player.ectype.info;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.Util.Random;
 
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.award.DropAward;
 import cn.xgame.a.player.ectype.classes.IChapter;
 import cn.xgame.config.gen.CsvGen;
@@ -82,7 +84,8 @@ public class ChapterInfo extends IChapter{
 			guajiEctypes.add(ectype);
 		}
 	}
-	public void initAwards( String temp ){
+	// 初始奖励信息
+	private void initAwards( String temp ){
 		if( temp.isEmpty() ) return;
 		String[] str = temp.split( "\\|" );
 		for( String x : str ){
@@ -119,6 +122,72 @@ public class ChapterInfo extends IChapter{
 		getEctypes().add( ectype );
 	}
 	
+	public EctypeInfo getGuajiEctype( byte level ) {
+		for( EctypeInfo o : guajiEctypes ){
+			if( o.getLevel() == level )
+				return o;
+		}
+		return null;
+	}
+	
+	/**
+	 * 根据难度 获取副本信息
+	 * @param ltype 1.普通本 2.挂机本
+	 * @param level 难度
+	 * @return
+	 */
+	public EctypeInfo getEctype(byte ltype, byte level) {
+		if( ltype == 1 ){ // 普通本
+			return getNormalEctype( level );
+		}
+		if( ltype == 2 ){ // 挂机本
+			return getGuajiEctype( level );
+		}
+		return null;
+	}
+	
+	/**
+	 * 随机掉落奖励出来
+	 * @param size 队员个数
+	 * @return
+	 */
+	public List<AwardInfo> randomAward( int size ) {
+		List<AwardInfo> ret = Lists.newArrayList();
+		for( DropAward drop : awards ){
+			if( drop.isDrop() )
+				ret.add( drop.toAward() );
+		}
+		return ret;
+	}
+	
+	/**
+	 * 随机银色奖品
+	 * @param num
+	 * @return
+	 */
+	public List<AwardInfo> randomSilverAward( int num ) {
+		List<AwardInfo> ret = Lists.newArrayList();
+		if( silverpond.isEmpty() )
+			return ret;
+		int index = Random.get( 0, silverpond.size()-1 );
+		ret.add( silverpond.get(index).toAward() );
+		return ret;
+	}
+	
+	/**
+	 * 随机金色奖品
+	 * @param num
+	 * @return
+	 */
+	public List<AwardInfo> randomGoldenAward( int num ) {
+		List<AwardInfo> ret = Lists.newArrayList();
+		if( goldenpond.isEmpty() )
+			return ret;
+		int index = Random.get( 0, goldenpond.size()-1 );
+		ret.add( goldenpond.get(index).toAward() );	
+		return ret;
+	}
+	
 	public int getDepthtime() {
 		return depthtime;
 	}
@@ -137,6 +206,5 @@ public class ChapterInfo extends IChapter{
 	public List<Byte> getDifficultys() {
 		return difficultys;
 	}
-
 
 }

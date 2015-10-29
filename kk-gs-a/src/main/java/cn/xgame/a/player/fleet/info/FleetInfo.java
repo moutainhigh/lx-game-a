@@ -107,21 +107,15 @@ public class FleetInfo implements ITransformStream{
 		return ships.isEmpty();
 	}
 	
-	/**
-	 * 是否悬停
-	 * @return
-	 */
 	public boolean isHover() {
 		return status.type() == StatusType.HOVER;
 	}
-	/**
-	 * 是否航行状态
-	 * @return
-	 */
 	public boolean isSail() {
 		return status.type() == StatusType.SAIL;
 	}
-	
+	public boolean isCombat() {
+		return status.type() == StatusType.COMBAT;
+	}
 
 	/**
 	 * 获取当前耐久和总耐久

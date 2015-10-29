@@ -57,7 +57,8 @@ public class Attackattr implements IBufferStream{
 	public void setValue( float value ) {
 		this.value = value;
 	}
-
-
+	public void addValue( float value ) {
+		this.value += value;
+	}
 	
 }

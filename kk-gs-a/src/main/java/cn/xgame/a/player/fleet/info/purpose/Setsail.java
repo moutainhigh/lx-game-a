@@ -76,21 +76,21 @@ public class Setsail extends IPurpose{
 	}
 	
 	@Override
-	public void execut( int endtime, int targetId, FleetInfo fleet, Player player ) {
+	public void execut(  int starttime, int continutime, int targetId, FleetInfo fleet, Player player ) {
 		int startId 	= targetId; // 起始星球
 		int aimId 		= targetId; // 目标星球
 		int sailtime 	= 0; // 航行时间
 		
-		int temp  	= endtime;// 结束时间
-		int curtime = (int) (System.currentTimeMillis()/1000);
+		int endtime  	= starttime + continutime;// 结束时间
+		int curtime 	= (int) (System.currentTimeMillis()/1000);
 		
-		while( temp <= curtime ){
+		while( endtime <= curtime ){
 			startId = aimId;
 			if( airline.isEmpty() ){ aimId = 0; break; }
 			aimId 	= airline.remove(0);
 			
 			sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, startId, aimId )[0].getInt();
-			temp	+= sailtime;
+			endtime	+= sailtime;
 		}
 		
 		// 这里先直接设置当前船位置
@@ -102,7 +102,7 @@ public class Setsail extends IPurpose{
 		
 		// 否则 继续航行
 		} else {
-			fleet.changeStatus( StatusType.SAIL, aimId, temp-sailtime, temp, new Setsail( airline ) );
+			fleet.changeStatus( StatusType.SAIL, aimId, endtime-sailtime, sailtime, new Setsail( airline ), 0 );
 		}
 	}
 	

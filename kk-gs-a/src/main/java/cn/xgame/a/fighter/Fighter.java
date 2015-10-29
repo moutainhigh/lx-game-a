@@ -22,5 +22,50 @@ public class Fighter {
 	// 防御属性列表
 	public List<Attackattr> defends = new ArrayList<Attackattr>();
 	
+	private Attackattr getAtkattr( byte type ){
+		for( Attackattr x : attacks ){
+			if( x.getType() == type )
+				return x;
+		}
+		return null;
+	}
+	
+	private Attackattr getDefattr( byte type ){
+		for( Attackattr x : defends ){
+			if( x.getType() == type )
+				return x;
+		}
+		return null;
+	}
+	
+	/**
+	 * 添加攻击属性 自动合并
+	 * @param attrs
+	 */
+	public void addAtkattr( List<Attackattr> attrs ){
+		for( Attackattr attr : attrs ){
+			Attackattr temp = getAtkattr( attr.getType() );
+			if( temp == null ){
+				attacks.add(attr);
+			}else{
+				temp.addValue(attr.getValue());
+			}
+		}
+	}
+	
+	/**
+	 * 添加防御属性 自动合并
+	 * @param attrs
+	 */
+	public void addDefattr( List<Attackattr> attrs ){
+		for( Attackattr attr : attrs ){
+			Attackattr temp = getDefattr( attr.getType() );
+			if( temp == null ){
+				defends.add(attr);
+			}else{
+				temp.addValue(attr.getValue());
+			}
+		}
+	}
 	
 }

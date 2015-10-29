@@ -33,7 +33,7 @@ public class Backsail extends IPurpose{
 	}
 
 	@Override
-	public void execut( int endtime, int targetId, FleetInfo fleet, Player player ) {
+	public void execut(  int starttime, int continutime, int targetId, FleetInfo fleet, Player player ) {
 		// 直接设置悬停
 		fleet.changeStatus( StatusType.HOVER );
 	}

@@ -32,8 +32,8 @@ public class ApplySailendEvent extends IEvent {
 		try {
 			// 获取舰队
 			fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.getShips().isEmpty() )
-				throw new Exception( ErrorCode.FLEET_BUSY.name() );
+			if( fleet == null || fleet.isEmpty() )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			if( !fleet.isSail() )
 				throw new Exception( ErrorCode.FELLT_NOTSAIL.name() );
 			SailStatus x = (SailStatus) fleet.getStatus();
@@ -61,7 +61,7 @@ public class ApplySailendEvent extends IEvent {
 				// 切换航行状态
 				int starttime = (int) (System.currentTimeMillis()/1000);
 				int endtime = starttime + sailtime;
-				fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ) );
+				fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ), 0 );
 			}
 				
 			code = ErrorCode.SUCCEED;

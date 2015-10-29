@@ -24,9 +24,14 @@ import cn.xgame.net.event.all.pl.chat.LookGroupInfoEvent;
 import cn.xgame.net.event.all.pl.chat.LookPlayerInfoEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.InviteGroupAxnEvent;
+import cn.xgame.net.event.all.pl.ectype.ApplyAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
+import cn.xgame.net.event.all.pl.fleet.ExitTeamEvent;
+import cn.xgame.net.event.all.pl.fleet.FleetAwayEvent;
+import cn.xgame.net.event.all.pl.fleet.FleetIntoEvent;
+import cn.xgame.net.event.all.pl.fleet.LookTeamEvent;
 import cn.xgame.net.event.all.pl.mail.ApplyMailEvent;
 import cn.xgame.net.event.all.pl.mail.DeleteMailEvent;
 import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
@@ -54,10 +59,6 @@ import cn.xgame.net.event.all.pl.planet.ParticipateTechVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorBuildVoEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorExpelEvent;
 import cn.xgame.net.event.all.pl.planet.SponsorTechVoEvent;
-import cn.xgame.net.event.all.pl.ship.ExitTeamEvent;
-import cn.xgame.net.event.all.pl.ship.FleetAwayEvent;
-import cn.xgame.net.event.all.pl.ship.FleetIntoEvent;
-import cn.xgame.net.event.all.pl.ship.LookTeamEvent;
 import cn.xgame.net.event.all.pl.ship.MountCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
@@ -173,6 +174,7 @@ public enum Events {
 	//-----------------副本
 	APPLY_ACCECTYPE				( 1201, 	new ApplyEctypeEvent()			, "副本操作-申请副本列表" ),
 	START_ATTACK				( 1202, 	new StartAttackEvent()			, "副本操作-出击" ),
+	APPLY_ATTACK				( 1203, 	new ApplyAttackEvent()			, "副本操作-请求出击" ),
 	OVER_ATTACK					( 1211, 	new OverAttackEvent()			, "副本操作-申请结束" ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent()				, "星球操作-购买商店道具" ),

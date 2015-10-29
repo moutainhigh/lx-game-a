@@ -20,8 +20,11 @@ public class SailStatus extends IStatus{
 	// 起始时间 - 组要作用给前端展示
 	private int starttime;
 	
-	// 航行结束时间
-	private int endtime;
+	// 航行时间
+	private int continutime;
+	
+	// 等待时间  一般只会出现在组队情况下
+	private int waittime;
 	
 	// 航行目的
 	private IPurpose purpose;
@@ -32,17 +35,20 @@ public class SailStatus extends IStatus{
 	
 	@Override
 	public void init( Object[] objects ) {
-		aimId 		= (Integer) objects[0];
-		starttime	= (Integer) objects[1];
-		endtime		= (Integer) objects[2];
-		purpose		= (IPurpose) objects[3];
+		int i = 0;
+		aimId 		= (Integer) objects[i++];
+		starttime	= (Integer) objects[i++];
+		continutime	= (Integer) objects[i++];
+		purpose		= (IPurpose) objects[i++];
+		waittime	= (Integer) objects[i++];
 	}
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
 		buf.writeInt(aimId);
 		buf.writeInt(starttime);
-		buf.writeInt(endtime);
+		buf.writeInt(continutime);
+		buf.writeInt(waittime);
 		buf.writeByte( purpose.type() );
 		purpose.putBuffer(buf);
 	}
@@ -51,7 +57,8 @@ public class SailStatus extends IStatus{
 	public void wrapBuffer(ByteBuf buf) {
 		aimId 		= buf.readInt();
 		starttime	= buf.readInt();
-		endtime 	= buf.readInt();
+		continutime = buf.readInt();
+		waittime	= buf.readInt();
 		byte type 	= buf.readByte();
 		purpose 	= IPurpose.create( type, buf );		
 	}
@@ -60,20 +67,26 @@ public class SailStatus extends IStatus{
 	public void buildTransformStream( ByteBuf buffer ) {
 		super.buildTransformStream(buffer);
 		buffer.writeInt(aimId);
-		buffer.writeInt(starttime);
-		buffer.writeInt(endtime);
+		buffer.writeInt( getAlreadySailtime() );
+		buffer.writeInt(continutime);
+		buffer.writeInt(waittime);
 		purpose.buildTransformStream(buffer);
+	}
+
+	// 获取已经航行的时间 - 只用到前端显示
+	private int getAlreadySailtime() {
+		return (int) (System.currentTimeMillis()/1000) - starttime;
 	}
 	
 	@Override
 	public boolean isComplete() {
-		return (int) (System.currentTimeMillis()/1000) >= endtime;
+		return (int) (System.currentTimeMillis()/1000) >= (starttime+continutime+waittime);
 	}
 	
 	@Override
 	public void update( FleetInfo fleet, Player player ) {
 		// 执行航行目的
-		purpose.execut( endtime, aimId, fleet, player );
+		purpose.execut( starttime, continutime, aimId, fleet, player );
 	}
 	
 	public int getAimId() {
@@ -83,10 +96,10 @@ public class SailStatus extends IStatus{
 		this.aimId = aimId;
 	}
 	public int getEndtime() {
-		return endtime;
+		return continutime;
 	}
 	public void setEndtime(int endtime) {
-		this.endtime = endtime;
+		this.continutime = endtime;
 	}
 	public IPurpose getPurpose() {
 		return purpose;
@@ -99,6 +112,12 @@ public class SailStatus extends IStatus{
 	}
 	public void setStarttime(int starttime) {
 		this.starttime = starttime;
+	}
+	public int getWaittime() {
+		return waittime;
+	}
+	public void setWaittime(int waittime) {
+		this.waittime = waittime;
 	}
 
 }

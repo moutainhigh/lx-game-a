@@ -106,6 +106,14 @@ public class IChapter implements IBufferStream{
 		}
 	}
 	
+	public EctypeInfo getNormalEctype( byte level ){
+		for( EctypeInfo o : ectypes ){
+			if( o.getLevel() == level )
+				return o;
+		}
+		return null;
+	} 
+	
 	public int getId() {
 		return id;
 	}

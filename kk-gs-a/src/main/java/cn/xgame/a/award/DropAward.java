@@ -38,7 +38,15 @@ public class DropAward extends AwardInfo {
 	 * @return
 	 */
 	public boolean isDrop() {
-		return Random.get( 0, 10000 ) <= rand;
+		return Random.get( 0, 9999 ) <= rand;
+	}
+
+	/**
+	 * 转成可用的奖品类
+	 * @return
+	 */
+	public AwardInfo toAward() {
+		return new AwardInfo( getId(), getCount() );
 	}
 	
 }

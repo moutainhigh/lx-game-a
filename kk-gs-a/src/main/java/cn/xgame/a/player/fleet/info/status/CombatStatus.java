@@ -25,12 +25,20 @@ public class CombatStatus extends IStatus{
 	// 章节ID
 	private int chapterId;
 	
-	// 副本ID
-	private int ectypeId;
+	// 难度类型 1.普通本 2.挂机本
+	private byte ltype;
 	
-	// 战斗结束时间
-	private int endtime;
-	private int ctime;
+	// 难度
+	private byte level;
+	
+	// 起始时间
+	private int starttime;
+	
+	// 深度时间 
+	private int depthtime;
+	
+	// 战斗时间
+	private int fighttime;
 	
 	// 是否胜利
 	private byte isWin;
@@ -41,22 +49,38 @@ public class CombatStatus extends IStatus{
 	// 评分
 	private int score;
 	
+
+	
 	public CombatStatus() {
 		super( StatusType.COMBAT );
 	}
 	
 	@Override
 	public void init( Object[] objects ) {
-		
+		int i = 0;
+		type 		= (Byte) objects[i++];
+		chapterId 	= (Integer) objects[i++];
+		ltype		= (Byte) objects[i++];
+		level		= (Byte) objects[i++];
+		starttime	= (Integer) objects[i++];
+		depthtime	= (Integer) objects[i++];
+		fighttime	= (Integer) objects[i++];
+		isWin		= (Byte) objects[i++];
+		List<?>	x	= (List<?>) objects[i++];
+		for( Object o : x )
+			awards.add( (AwardInfo) o );
+		score		= (Integer) objects[i++];
 	}
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
 		buf.writeByte( type );
 		buf.writeInt( chapterId );
-		buf.writeInt( ectypeId );
-		buf.writeInt( endtime );
-		buf.writeInt( ctime );
+		buf.writeByte( ltype );
+		buf.writeByte( level );
+		buf.writeInt( starttime );
+		buf.writeInt( depthtime );
+		buf.writeInt( fighttime );
 		buf.writeByte( isWin );
 		buf.writeByte( awards.size() );
 		for( AwardInfo award : awards )
@@ -68,9 +92,11 @@ public class CombatStatus extends IStatus{
 	public void wrapBuffer(ByteBuf buf) {
 		this.type 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
-		this.ectypeId 	= buf.readInt();
-		this.endtime 	= buf.readInt();
-		this.ctime 		= buf.readInt();
+		this.ltype 		= buf.readByte();
+		this.level 		= buf.readByte();
+		this.starttime 	= buf.readInt();
+		this.depthtime 	= buf.readInt();
+		this.fighttime 	= buf.readInt();
 		this.isWin 		= buf.readByte();
 		byte size		= buf.readByte();
 		for( int i = 0; i < size; i++ )
@@ -83,13 +109,22 @@ public class CombatStatus extends IStatus{
 		super.buildTransformStream(buffer);
 		buffer.writeByte( type );
 		buffer.writeInt( chapterId );
-		buffer.writeInt( ectypeId );
-		buffer.writeInt( ctime );
+		buffer.writeByte( ltype );
+		buffer.writeByte( level );
+		buffer.writeInt( getAlreadyFighttime() );
+		buffer.writeInt( fighttime );
+	}
+	
+	// 获取已经战斗的时间 - 主要用于前端显示
+	private int getAlreadyFighttime() {
+		return (int)(System.currentTimeMillis()/1000) - starttime;
 	}
 	
 	@Override
 	public boolean isComplete() {
-		return (int) (System.currentTimeMillis()/1000) >= endtime;
+		// 起始时间 + (深度时间 x 2) + 战斗时间 = 结束时间
+		int i = starttime + (depthtime*2) + fighttime;
+		return (int) (System.currentTimeMillis()/1000) >= i;
 	}
 	
 	@Override
@@ -103,7 +138,6 @@ public class CombatStatus extends IStatus{
 		// TODO
 		
 		// 设置悬停
-		fleet.setBerthSnid( fleet.getBerthSnid() );
 		fleet.changeStatus( StatusType.HOVER );
 	}
 	
@@ -119,18 +153,6 @@ public class CombatStatus extends IStatus{
 	public void setChapterId(int chapterId) {
 		this.chapterId = chapterId;
 	}
-	public int getEctypeId() {
-		return ectypeId;
-	}
-	public void setEctypeId(int ectypeId) {
-		this.ectypeId = ectypeId;
-	}
-	public int getEndtime() {
-		return endtime;
-	}
-	public void setEndtime(int endtime) {
-		this.endtime = endtime;
-	}
 	public byte getIsWin() {
 		return isWin;
 	}
@@ -143,17 +165,41 @@ public class CombatStatus extends IStatus{
 	public void setAwards(List<AwardInfo> awards) {
 		this.awards = awards;
 	}
-	public int getCtime() {
-		return ctime;
-	}
-	public void setCtime(int ctime) {
-		this.ctime = ctime;
-	}
 	public int getScore() {
 		return score;
 	}
 	public void setScore(int score) {
 		this.score = score;
+	}
+	public byte getLtype() {
+		return ltype;
+	}
+	public void setLtype(byte ltype) {
+		this.ltype = ltype;
+	}
+	public byte getLevel() {
+		return level;
+	}
+	public void setLevel(byte level) {
+		this.level = level;
+	}
+	public int getStarttime() {
+		return starttime;
+	}
+	public void setStarttime(int starttime) {
+		this.starttime = starttime;
+	}
+	public int getDepthtime() {
+		return depthtime;
+	}
+	public void setDepthtime(int depthtime) {
+		this.depthtime = depthtime;
+	}
+	public int getFighttime() {
+		return fighttime;
+	}
+	public void setFighttime(int fighttime) {
+		this.fighttime = fighttime;
 	}
 
 }

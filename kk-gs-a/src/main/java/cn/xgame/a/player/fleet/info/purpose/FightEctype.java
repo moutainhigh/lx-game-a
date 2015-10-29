@@ -19,14 +19,25 @@ public class FightEctype extends IPurpose{
 	// 章节ID
 	private int chapterId;
 	
-	// 副本ID
-	private int ectypeId;
+	// 难度类型 1.普通本 2.挂机本
+	private byte ltype;
 	
-	public FightEctype( byte etype, int cnid, int enid ) {
+	// 难度
+	private byte level;
+	
+	/**
+	 * 创建一个 打副本 的目的
+	 * @param etype 副本类型 
+	 * @param cnid 章节ID
+	 * @param ltype 难度类型 1.普通本 2.挂机本
+	 * @param level 难度
+	 */
+	public FightEctype( byte etype, int cnid, byte ltype, byte level ) {
 		super( (byte) 1 );
 		this.etype 		= etype;
 		this.chapterId 	= cnid;
-		this.ectypeId 	= enid;
+		this.ltype		= ltype;
+		this.level 		= level;
 	}
 	public FightEctype() {
 		super( (byte) 1 );
@@ -36,14 +47,16 @@ public class FightEctype extends IPurpose{
 	public void putBuffer( ByteBuf buf ) {
 		buf.writeByte( etype );
 		buf.writeInt( chapterId );
-		buf.writeInt( ectypeId );
+		buf.writeByte( ltype );
+		buf.writeByte( level );
 	}
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
 		this.etype 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
-		this.ectypeId 	= buf.readInt();		
+		this.ltype		= buf.readByte();
+		this.level 		= buf.readByte();
 	}
 
 	@Override
@@ -52,22 +65,32 @@ public class FightEctype extends IPurpose{
 		putBuffer( buffer );
 	}
 
-	public int getEctypeId() {
-		return ectypeId;
+	@Override
+	public void execut(  int starttime, int continutime, int targetId, FleetInfo fleet, Player player) {
+		
+		
+		fleet.setBerthSnid( targetId );
+		// 改变战斗状态
+		fleet.changeStatus( StatusType.COMBAT );
 	}
+	
 	public byte getEtype() {
 		return etype;
 	}
 	public int getChapterId() {
 		return chapterId;
 	}
-	@Override
-	public void execut( int endtime, int targetId, FleetInfo fleet, Player player) {
-		
-		
-		fleet.setBerthSnid( targetId );
-		// 改变战斗状态
-		fleet.changeStatus( StatusType.HOVER );
+	public byte getLtype() {
+		return ltype;
+	}
+	public void setLtype(byte ltype) {
+		this.ltype = ltype;
+	}
+	public byte getLevel() {
+		return level;
+	}
+	public void setLevel(byte level) {
+		this.level = level;
 	}
 
 }

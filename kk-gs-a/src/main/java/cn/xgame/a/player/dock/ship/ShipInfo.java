@@ -243,8 +243,8 @@ public class ShipInfo implements ITransformStream{
 		List<IProp> props = weapons.getAll();
 		for( IProp prop : props ){
 			SEquipAttr weapon = (SEquipAttr) prop;
-			fighter.attacks.addAll( weapon.getAtks() );
-			fighter.defends.addAll( weapon.getDefs() );
+			fighter.addAtkattr( weapon.getAtks() );
+			fighter.addDefattr( weapon.getDefs() );
 		}
 	}
 

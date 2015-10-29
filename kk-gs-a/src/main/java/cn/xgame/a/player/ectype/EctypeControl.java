@@ -102,7 +102,7 @@ public class EctypeControl implements IArrayStream{
 	}
 	
 	/**
-	 * 根据星球ID 和章节ID 获取对应章节
+	 * 根据星球ID 和章节ID 获取对应偶发章节
 	 * @param sid
 	 * @param id
 	 * @return

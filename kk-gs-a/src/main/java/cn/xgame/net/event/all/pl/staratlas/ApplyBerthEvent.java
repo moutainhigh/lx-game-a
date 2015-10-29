@@ -32,7 +32,7 @@ public class ApplyBerthEvent extends IEvent{
 		try {
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.getShips().isEmpty() )
+			if( fleet == null || fleet.isEmpty() )
 				throw new Exception( ErrorCode.FLEET_BUSY.name() );
 			if( !fleet.isSail() )
 				throw new Exception( ErrorCode.FELLT_NOTSAIL.name() );
@@ -47,7 +47,7 @@ public class ApplyBerthEvent extends IEvent{
 			
 				int starttime = (int) (System.currentTimeMillis()/1000);
 				int endtime = starttime + backtime;
-				status = fleet.changeStatus( StatusType.SAIL, fleet.getBerthSnid(), starttime, endtime, new Backsail() );
+				status = fleet.changeStatus( StatusType.SAIL, fleet.getBerthSnid(), starttime, endtime, new Backsail(), 0 );
 			
 			}else{ // 如果继续往前走 直接将航站列表清空即可
 				

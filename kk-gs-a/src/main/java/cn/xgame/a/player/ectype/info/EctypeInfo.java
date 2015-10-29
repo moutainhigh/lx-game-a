@@ -1,5 +1,6 @@
 package cn.xgame.a.player.ectype.info;
 
+import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.ectype.classes.IEctype;
 import cn.xgame.config.o.EctypePo;
 import cn.xgame.utils.LuaUtil;
@@ -30,6 +31,18 @@ public class EctypeInfo extends IEctype{
 	
 	public void setAttribute( EctypePo templet ) {
 		setAttribute( getLevel(), templet );
+	}
+	
+	/**
+	 * 返回一个战斗者 供lua脚本调用
+	 * @return
+	 */
+	public Fighter fighter(){
+		Fighter fighter = new Fighter();
+		fighter.hp = getHp();
+		fighter.addAtkattr( getAtks() );
+		fighter.addDefattr( getDefs() );
+		return fighter;
 	}
 
 }

@@ -60,12 +60,13 @@ public abstract class IPurpose implements ITransformStream, IBufferStream{
 
 	/**
 	 * 执行结果
-	 * @param endtime 航行结束时间
+	 * @param starttime 航行起始时间
+	 * @param continutime 航行结束时间
 	 * @param targetId 航行目的星球
 	 * @param fleet 舰队信息
 	 * @param player 玩家信息
 	 * @return
 	 */
-	public abstract void execut(int endtime, int targetId, FleetInfo fleet, Player player);
+	public abstract void execut( int starttime, int continutime, int targetId, FleetInfo fleet, Player player);
 	
 }

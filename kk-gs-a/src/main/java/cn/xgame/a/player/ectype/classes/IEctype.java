@@ -8,7 +8,6 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Random;
 
 import cn.xgame.a.IBufferStream;
-import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.fighter.o.Attackattr;
 
 /**
@@ -124,18 +123,6 @@ public class IEctype implements IBufferStream{
 	}
 	public void setAwardRate(int awardRate) {
 		this.awardRate = awardRate;
-	}
-	
-	/**
-	 * 返回一个战斗者 供lua脚本调用
-	 * @return
-	 */
-	public Fighter fighter(){
-		Fighter fighter = new Fighter();
-		fighter.hp = hp;
-		fighter.attacks.addAll(atks);
-		fighter.defends.addAll(defs);
-		return fighter;
 	}
 	
 }
