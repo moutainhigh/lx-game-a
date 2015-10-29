@@ -15,25 +15,12 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 
 	private final StatusType type;
 	
-	// 当前停靠星球ID 
-	private int berthId = -1;
-	
 	public IStatus( StatusType type ){
 		this.type = type;
-	}
-	@Override
-	public void putBuffer(ByteBuf buf) {
-		buf.writeInt( berthId );
-	}
-	
-	@Override
-	public void wrapBuffer(ByteBuf buf) {
-		berthId = buf.readInt();
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( berthId );
 		buffer.writeByte( type().toNumber() );
 	}
 	
@@ -44,13 +31,6 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 	public StatusType type(){ 
 		return type; 
 	}
-	public int getBerthId() {
-		return berthId;
-	}
-	public void setBerthId(int berthId) {
-		this.berthId = berthId;
-	}
-	
 	
 	public static IStatus create( byte _type, ByteBuf buf ) {
 		StatusType type = StatusType.fromNumber( _type );
@@ -60,8 +40,12 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 		status.wrapBuffer(buf);
 		return status;
 	}
-
-
+	
+	/**
+	 * 初始化
+	 * @param objects
+	 */
+	public abstract void init( Object[] objects );
 	
 	/**
 	 * 是否完成
@@ -69,11 +53,11 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 	public abstract boolean isComplete() ;
 
 	/**
-	 * 执行状态
+	 * 刷新状态
 	 * @param fleetInfo 
 	 * @param player
 	 * @return
 	 */
-	public abstract void execut( FleetInfo fleetInfo, Player player ) ;
+	public abstract void update( FleetInfo fleetInfo, Player player ) ;
 	
 }

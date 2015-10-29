@@ -38,12 +38,7 @@ public class SailoutEvent extends IEvent{
 			
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.getShips().isEmpty() || airline.isEmpty() )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			
-			status = fleet.getStatus();
-			// 判断如果不在悬停状态 不能出航
-			if( status.type() != StatusType.HOVER )
+			if( fleet == null || fleet.getShips().isEmpty() || airline.isEmpty() || !fleet.isHover() )
 				throw new Exception( ErrorCode.FLEET_BUSY.name() );
 			
 			// 取出航线第一个目标星球
@@ -52,7 +47,9 @@ public class SailoutEvent extends IEvent{
 			int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId )[0].getInt();
 			
 			// 切换航行状态
-			status = fleet.changeSail( aimId, sailtime, new Setsail( airline ) );
+			int starttime = (int) (System.currentTimeMillis()/1000);
+			int endtime = starttime + sailtime;
+			status = fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ) );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

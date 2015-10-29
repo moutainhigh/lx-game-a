@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
@@ -26,15 +27,16 @@ public class UnloadCaptainEvent extends IEvent{
 		ErrorCode code 	= null;
 		try {
 			
-			ShipInfo ship = player.getDocks().getShipOfException(suid);
-			// 检测是否空闲状态
-			player.getDocks().isLeisure( ship );
+			DockControl docks = player.getDocks();
+			ShipInfo ship = docks.getShipOfException(suid);
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			if( ship.getCaptainUID() != cuid )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 				
 			// 直接卸掉
-			player.getDocks().downCaptain( ship );
+			docks.downCaptain( ship );
 			
 			ship.updateDB(player);
 			

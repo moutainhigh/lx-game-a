@@ -5,7 +5,6 @@ import java.util.Map;
 
 import cn.xgame.a.player.fleet.info.status.CombatStatus;
 import cn.xgame.a.player.fleet.info.status.HoverStatus;
-import cn.xgame.a.player.fleet.info.status.LeisureStatus;
 import cn.xgame.a.player.fleet.info.status.SailStatus;
 
 /**
@@ -14,14 +13,6 @@ import cn.xgame.a.player.fleet.info.status.SailStatus;
  * @date 2015-9-11 下午12:22:44
  */
 public enum StatusType {
-	
-	/** 空闲 */
-	LEISURE(0) {
-		@Override
-		public IStatus create() {
-			return new LeisureStatus();
-		}
-	},
 	
 	/** 悬停 */
 	HOVER(1) {

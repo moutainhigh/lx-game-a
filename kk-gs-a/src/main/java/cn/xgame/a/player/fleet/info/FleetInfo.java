@@ -6,17 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.ITransformStream;
-import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.fleet.classes.IPurpose;
 import cn.xgame.a.player.fleet.classes.IStatus;
 import cn.xgame.a.player.fleet.classes.StatusType;
-import cn.xgame.a.player.fleet.info.status.CombatStatus;
-import cn.xgame.a.player.fleet.info.status.SailStatus;
 import cn.xgame.a.player.u.Player;
 
 /**
@@ -29,11 +24,14 @@ public class FleetInfo implements ITransformStream{
 	// 舰队编号
 	private byte			No ;
 	
+	// 舰队停靠星球ID
+	private int				berthSnid;
+	
 	// 舰船列表
 	private List<ShipInfo> 	ships 			= Lists.newArrayList();
 	
 	// 舰队状态
-	private IStatus 		status 			= StatusType.LEISURE.create();
+	private IStatus 		status ;
 	
 	// 组队频道ID
 	private int 			axnId			= -1;
@@ -45,6 +43,7 @@ public class FleetInfo implements ITransformStream{
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeByte( No );
+		buffer.writeInt( berthSnid );
 		buffer.writeInt( axnId );
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
@@ -60,12 +59,12 @@ public class FleetInfo implements ITransformStream{
 	public byte getNo() { return No; }
 	
 	public void setBerthSnid( int berthSnid ) { 
-		status.setBerthId(berthSnid);
+		this.berthSnid = berthSnid;
 		for( ShipInfo ship : ships )
 			ship.setBerthSid(berthSnid);
 	}
 	public int getBerthSnid() {
-		return status.getBerthId();
+		return berthSnid;
 	}
 	
 	public ShipInfo getShip( int suid ){
@@ -80,15 +79,8 @@ public class FleetInfo implements ITransformStream{
 	 * 添加一个舰船到这个舰队
 	 * @param ship
 	 */
-	public void add( ShipInfo ship ) {
-		if( getShip(ship.getuId()) != null )
-			return;
-		ships.add(ship);
-		// 如果还是空闲状态 那么设置为悬停
-		if( status.type() == StatusType.LEISURE ){
-			status = StatusType.HOVER.create();
-			status.setBerthId( ship.getBerthSid() );
-		}
+	public void addShip( ShipInfo ship ) {
+		ships.add( ship );
 	}
 	
 	/**
@@ -103,20 +95,27 @@ public class FleetInfo implements ITransformStream{
 				break;
 			}
 		}
-		// 如果没有舰船在这个舰队了上了 那么就要设置为空闲状态
-		if( ships.isEmpty() ){
-			status = StatusType.LEISURE.create();
-		}
+	}
+	public void removeAll() {
+		ships.clear();
 	}
 	
 	/**
-	 * 删除所有舰船
+	 * 舰队是否空
 	 */
-	public void removeAll() {
-		ships.clear();
-		status = StatusType.LEISURE.create();
+	public boolean isEmpty(){
+		return ships.isEmpty();
 	}
 	
+	/**
+	 * 是否悬停
+	 * @return
+	 */
+	public boolean isHover() {
+		return status.type() == StatusType.HOVER;
+	}
+	
+
 	/**
 	 * 获取当前耐久和总耐久
 	 * @return
@@ -129,77 +128,25 @@ public class FleetInfo implements ITransformStream{
 		}
 		return ret;
 	}
-
-	/**
-	 * 是否空闲状态
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean isLeisure() throws Exception {
-		if( status.type() == StatusType.SAIL || status.type() == StatusType.COMBAT )
-			throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
-		return true;
-	}
 	
 	/**
-	 * 舰队是否空
-	 */
-	public boolean isEmpty(){
-		return ships.isEmpty();
-	}
-	
-	/**
-	 * 执行状态结果  - 一般在登录的时候调用
+	 * 刷新状态结果  - 一般在登录的时候调用
 	 * @param player
 	 */
-	public void executeStatus( Player player ) {
+	public void updateStatus( Player player ) {
 		if( !status.isComplete() ) 
 			return;
-		status.execut( this, player );
+		status.update( this, player );
 	}
 	
 	/**
-	 * 切换为航行状态
-	 * @param aimId
-	 * @param stime
-	 * @param purpose 
-	 */
-	public IStatus changeSail( int aimId, int stime, IPurpose purpose ) {
-		SailStatus o = new SailStatus();
-		o.setAimId( aimId );
-		o.setStarttime( (int)(System.currentTimeMillis()/1000) );
-		o.setEndtime( (int)(System.currentTimeMillis()/1000) + stime );
-		o.setPurpose( purpose );
-		status = o;
-		return status;
-	}
-
-	/**
-	 * 切换战斗状态
-	 * @param snid 
+	 * 切换状态
 	 * @param type
-	 * @param cnid
-	 * @param enid
-	 * @param ctime
-	 * @param iswin
-	 * @param awards
-	 * @param score 
+	 * @param objects
 	 */
-	public IStatus changeCombat( int snid, byte type, int cnid, int enid, int ctime, byte iswin, List<AwardInfo> awards, int score) {
-		CombatStatus o = new CombatStatus();
-		o.setType( type );
-		o.setChapterId( cnid );
-		o.setEctypeId( enid );
-		o.setEndtime( (int)(System.currentTimeMillis()/1000) + ctime );
-		o.setCtime( ctime );
-		o.setIsWin( iswin );
-		if( awards != null )
-			o.getAwards().addAll( awards );
-		o.setScore( score );
-		// 最后设置状态
-		status 		= o;
-		// 这里还要设置停靠星球ID
-		setBerthSnid( snid );
+	public IStatus changeStatus( StatusType type, Object ...objects ) {
+		status = type.create( );
+		status.init( objects );
 		return status;
 	}
 	
@@ -215,6 +162,5 @@ public class FleetInfo implements ITransformStream{
 		}
 		return fighter;
 	}
-
 
 }

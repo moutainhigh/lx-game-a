@@ -50,7 +50,7 @@ public class Setsail extends IPurpose{
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeByte( type() );
-//		putBuffer( buffer );
+		putBuffer( buffer );
 	}
 
 	public List<Integer> getAirline() {
@@ -68,34 +68,32 @@ public class Setsail extends IPurpose{
 
 	@Override
 	public void execut( int endtime, int berthSnid, FleetInfo fleet, Player player ) {
-		int berId = berthSnid;
-		int aimId = 0;
-		int temp  = endtime;
+		int startId 	= berthSnid; // 起始星球
+		int aimId 		= berthSnid; // 目标星球
+		int sailtime 	= 0; // 航行时间
+		
+		int temp  	= endtime;// 结束时间
 		int curtime = (int) (System.currentTimeMillis()/1000);
-		do {
-			if( aimId != 0 ) berId = aimId;
-
-			if( airline.isEmpty() ){
-				aimId = 0;
-				break;
-			}
+		
+		while( temp <= curtime ){
+			startId = aimId;
+			if( airline.isEmpty() ){ aimId = 0; break; }
+			aimId 	= airline.remove(0);
 			
-			// 取出航线第一个目标星球
-			aimId = airline.remove(0);
-			// 算出航行时间
-			temp += LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId )[0].getInt();
-		} while ( temp <= curtime );
+			sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, startId, aimId )[0].getInt();
+			temp	+= sailtime;
+		}
 		
 		// 这里先直接设置当前船位置
-		fleet.setBerthSnid( berId );
+		fleet.setBerthSnid( startId );
 		
 		// 表示所有航线都航行完了 设置悬停
 		if( aimId == 0 ){
-			fleet.setStatus( StatusType.HOVER.create() );
-			
+			fleet.changeStatus( StatusType.HOVER );
+		
 		// 否则 继续航行
 		} else {
-			fleet.changeSail( aimId, temp-curtime, new Setsail( airline ) );
+			fleet.changeStatus( StatusType.SAIL, aimId, temp-sailtime, temp, new Setsail( airline ) );
 		}
 	}
 

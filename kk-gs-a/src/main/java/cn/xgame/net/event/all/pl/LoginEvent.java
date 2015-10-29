@@ -71,7 +71,7 @@ public class LoginEvent extends IEvent{
 			FleetControl fleetCtr = player.getFleets();
 			List<FleetInfo> fleets = fleetCtr.getFleet();
 			for( FleetInfo fleet : fleets )// 发送数据之前先处理一下舰队状态
-				fleet.executeStatus( player );
+				fleet.updateStatus( player );
 			
 			// 基本数据
 			player.buildTransformStream( buffer );

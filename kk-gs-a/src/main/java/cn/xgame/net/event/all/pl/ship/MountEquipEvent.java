@@ -7,8 +7,9 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.DockControl;
+import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.info.SEquipAttr;
@@ -30,10 +31,10 @@ public class MountEquipEvent extends IEvent{
 		ErrorCode code 	= null;
 		IProp ret 		= null;
 		try {
-			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
-
-			// 检测是否空闲状态
-			player.getDocks().isLeisure( ship );
+			DockControl docks = player.getDocks();
+			ShipInfo ship 	= docks.getShipOfException(suid);
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 获取道具
 			StarDepot depot = player.getDepots( ship.getBerthSid() );

@@ -56,18 +56,16 @@ public class AnswerTeamAxnEvent extends IEvent{
 			
 			// 获取自己舰队
 			FleetInfo mfleet = player.getFleets().getFleetInfo(mfid);
-			if( mfleet == null || mfleet.isEmpty() )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			mfleet.isLeisure();
+			if( mfleet == null || mfleet.isEmpty() || !mfleet.isHover() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			// 这里证明已经有队伍了
 			if( mfleet.getAxnId() != -1 )
 				throw new Exception( ErrorCode.SHIP_ISHAVETEAM.name() );
 			
 			// 获取邀请人舰队
 			FleetInfo ifleet = sponsor.getFleets().getFleetInfo(ifid);
-			if( ifleet == null || ifleet.isEmpty() )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			ifleet.isLeisure();
+			if( ifleet == null || ifleet.isEmpty() || !ifleet.isHover() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			// 将玩家加入频道
 			axn = chatControl.getAXNInfo( ifleet.getAxnId() );
 			if( axn == null ){

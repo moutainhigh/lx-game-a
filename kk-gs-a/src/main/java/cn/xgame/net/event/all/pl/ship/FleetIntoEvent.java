@@ -29,14 +29,14 @@ public class FleetIntoEvent extends IEvent{
 		try {
 			// 获取舰队
 			FleetInfo fleet 	= player.getFleets().getFleetInfo(fid);
-			if( fleet == null )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			fleet.isLeisure();
+			if( fleet == null || !fleet.isHover() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 获取舰船
 			DockControl docks 	= player.getDocks();
 			ShipInfo ship 		= docks.getShipOfException(suid);
-			docks.isLeisure( ship );
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 如果不在同一个星球 那就不能 实装
 			if( fleet.getBerthSnid() != ship.getBerthSid() && fleet.getBerthSnid() != -1 )
@@ -45,7 +45,7 @@ public class FleetIntoEvent extends IEvent{
 			// 如果有船直接删除掉
 			fleet.removeAll();
 			// 实装 到舰队上
-			fleet.add( ship );
+			fleet.addShip( ship );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

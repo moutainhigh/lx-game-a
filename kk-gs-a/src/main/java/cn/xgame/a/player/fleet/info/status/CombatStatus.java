@@ -46,8 +46,12 @@ public class CombatStatus extends IStatus{
 	}
 	
 	@Override
+	public void init( Object[] objects ) {
+		
+	}
+	
+	@Override
 	public void putBuffer(ByteBuf buf) {
-		super.putBuffer(buf);
 		buf.writeByte( type );
 		buf.writeInt( chapterId );
 		buf.writeInt( ectypeId );
@@ -62,7 +66,6 @@ public class CombatStatus extends IStatus{
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		super.wrapBuffer(buf);
 		this.type 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
 		this.ectypeId 	= buf.readInt();
@@ -90,7 +93,7 @@ public class CombatStatus extends IStatus{
 	}
 	
 	@Override
-	public void execut( FleetInfo fleet, Player player ) {
+	public void update( FleetInfo fleet, Player player ) {
 		// 发送奖励
 		for( AwardInfo award : awards ){
 			StarDepot depot = player.getDepots(fleet.getBerthSnid());
@@ -101,6 +104,7 @@ public class CombatStatus extends IStatus{
 		
 		// 设置悬停
 		fleet.setStatus( StatusType.HOVER.create() );
+		fleet.setBerthSnid( fleet.getBerthSnid() );
 	}
 	
 	public byte getType() {
@@ -151,6 +155,5 @@ public class CombatStatus extends IStatus{
 	public void setScore(int score) {
 		this.score = score;
 	}
-
 
 }

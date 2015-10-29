@@ -129,7 +129,7 @@ public class DockControl implements IFromDB{
 		FleetInfo fleet = root.getFleets().getFleetInfo( ship );
 		if( fleet == null )
 			return true;
-		return fleet.isLeisure( );
+		return fleet.isHover();
 	}
 	
 	/**

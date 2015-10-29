@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.dock.DockControl;
-import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
@@ -28,19 +26,19 @@ public class FleetAwayEvent extends IEvent{
 		ErrorCode code = null;
 		try {
 			// 获取舰船
-			DockControl docks 	= player.getDocks();
-			ShipInfo ship 		= docks.getShipOfException(suid);
+			player.getDocks().getShipOfException(suid);
 			// 获取舰队
 			FleetInfo fleet 	= player.getFleets().getFleetInfo( fid );
 			if( fleet == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			if( fleet.getShip(suid) == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			
-			fleet.isLeisure();
+			if( !fleet.isHover() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 停用  - 直接删除掉
-			fleet.remove( ship );
+//			fleet.remove( ship );
+			fleet.removeAll();
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

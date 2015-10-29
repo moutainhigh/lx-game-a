@@ -1,4 +1,4 @@
-package cn.xgame.a.player.dock.ship.o;
+package cn.xgame.a.player.dock.classes;
 
 
 import io.netty.buffer.ByteBuf;

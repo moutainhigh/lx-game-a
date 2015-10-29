@@ -39,9 +39,8 @@ public class InviteTeamAxnEvent extends IEvent {
 		try {
 			// 获取舰队
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
-			if( fleet == null || fleet.isEmpty() )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			fleet.isLeisure();
+			if( fleet == null || fleet.isEmpty() || !fleet.isHover() )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 这里证明已经有队伍了
 			if( fleet.getAxnId() != -1 ){

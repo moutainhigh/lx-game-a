@@ -7,6 +7,7 @@ import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
@@ -29,7 +30,10 @@ public class UnloadHoldEvent extends IEvent{
 		ErrorCode code 	= null;
 		List<IProp> ret = null;
 		try {
-			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
+			DockControl docks = player.getDocks();
+			ShipInfo ship 	= docks.getShipOfException(suid);
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
 			
 			// 执行扣除
 			IProp prop 		= ship.getHolds().deductProp( puid, count );

@@ -42,7 +42,6 @@ public class ExitTeamEvent extends IEvent {
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 获取频道
-			
 			axn = chatControl.getAXNInfo(fleet.getAxnId());
 			if( axn == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );

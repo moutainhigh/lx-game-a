@@ -18,12 +18,13 @@ public class HoverStatus extends IStatus{
 	}
 
 	@Override
+	public void init( Object[] objects ) {
+	}
+	@Override
 	public void putBuffer(ByteBuf buf) {
-		super.putBuffer(buf);
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		super.wrapBuffer(buf);
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class HoverStatus extends IStatus{
 	}
 
 	@Override
-	public void execut(FleetInfo fleetInfo, Player player) {
+	public void update(FleetInfo fleetInfo, Player player) {
 		
 	}
 

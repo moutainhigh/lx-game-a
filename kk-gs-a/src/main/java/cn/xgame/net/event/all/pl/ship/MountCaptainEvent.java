@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
@@ -26,17 +27,18 @@ public class MountCaptainEvent extends IEvent{
 		
 		ErrorCode code = null;
 		try {
-			ShipInfo ship 		= player.getDocks().getShipOfException(suid);
-			// 检测是否空闲状态
-			player.getDocks().isLeisure( ship );
-			
+			DockControl docks = player.getDocks();
+			ShipInfo ship 		= docks.getShipOfException(suid);
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+				
 			// 获取舰长
-			CaptainInfo ccapt 	= player.getDocks().getCaptainOfException(cuid);
+			CaptainInfo ccapt 	= docks.getCaptainOfException(cuid);
 			if( ccapt.getShipUid() != -1 )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 先将舰船已经有个舰长去掉
-			player.getDocks().downCaptain( ship );
+			docks.downCaptain( ship );
 			
 			// 然后将新的舰长 指派到舰船上去
 			ship.setCaptainUID( ccapt.getuId() );

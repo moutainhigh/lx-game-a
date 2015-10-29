@@ -10,6 +10,7 @@ import x.javaplus.collections.Lists;
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 
@@ -82,6 +83,19 @@ public class FleetControl implements IArrayStream{
 	}
 	
 	/**
+	 * 获取还有队伍的舰队
+	 * @return
+	 */
+	public List<FleetInfo> getHaveTeam() {
+		List<FleetInfo> ret = Lists.newArrayList();
+		for( FleetInfo fleet : fleets ){
+			if( fleet.getAxnId() != -1 )
+				ret.add(fleet);
+		}
+		return ret;
+	}
+	
+	/**
 	 * 根据舰队编号获取舰队信息 -
 	 * @param No
 	 * @return
@@ -118,24 +132,16 @@ public class FleetControl implements IArrayStream{
 		return null;
 	}
 	
-	/**
-	 * 获取还有队伍的舰队
-	 * @return
-	 */
-	public List<FleetInfo> getHaveTeam() {
-		List<FleetInfo> ret = Lists.newArrayList();
-		for( FleetInfo fleet : fleets ){
-			if( fleet.getAxnId() != -1 )
-				ret.add(fleet);
-		}
-		return ret;
-	}
 	
 	/**
-	 * 添加一个舰队 
+	 * 创建一个舰队 
+	* @param sid 星球ID 
 	 */
-	public void addFleet(){
-		fleets.add( new FleetInfo( (byte)(fleets.size()+1) ) );
+	public void createFleet( int sid ){
+		FleetInfo e = new FleetInfo( (byte)(fleets.size()+1) );
+		e.setBerthSnid( sid );
+		e.changeStatus( StatusType.HOVER );
+		fleets.add( e );
 	}
 
 	/**

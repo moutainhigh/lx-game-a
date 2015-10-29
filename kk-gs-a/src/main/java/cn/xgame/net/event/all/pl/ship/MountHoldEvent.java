@@ -9,8 +9,9 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.DockControl;
+import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.dock.ship.ShipInfo;
-import cn.xgame.a.player.dock.ship.o.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -39,7 +40,11 @@ public class MountHoldEvent extends IEvent{
 		List<IProp> ret1 	= Lists.newArrayList();
 		List<IProp> ret2 	= Lists.newArrayList();
 		try {
-			ShipInfo ship 	= player.getDocks().getShipOfException(suid);
+			DockControl docks = player.getDocks();
+			ShipInfo ship 	= docks.getShipOfException(suid);
+			if( !docks.isLeisure( ship ) )
+				throw new Exception( ErrorCode.SHIP_NOTLEISURE.name() );
+			
 			StarDepot depot = player.getDepots(ship.getBerthSid());
 			IHold holds 	= ship.getHolds();
 			

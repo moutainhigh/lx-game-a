@@ -31,8 +31,15 @@ public class SailStatus extends IStatus{
 	}
 	
 	@Override
+	public void init( Object[] objects ) {
+		aimId 		= (Integer) objects[0];
+		starttime	= (Integer) objects[1];
+		endtime		= (Integer) objects[2];
+		purpose		= (IPurpose) objects[3];
+	}
+	
+	@Override
 	public void putBuffer(ByteBuf buf) {
-		super.putBuffer(buf);
 		buf.writeInt(aimId);
 		buf.writeInt(starttime);
 		buf.writeInt(endtime);
@@ -42,7 +49,6 @@ public class SailStatus extends IStatus{
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		super.wrapBuffer(buf);
 		aimId 		= buf.readInt();
 		starttime	= buf.readInt();
 		endtime 	= buf.readInt();
@@ -65,7 +71,7 @@ public class SailStatus extends IStatus{
 	}
 	
 	@Override
-	public void execut(FleetInfo fleet, Player player) {
+	public void update( FleetInfo fleet, Player player ) {
 		// 执行航行目的
 		purpose.execut( endtime, aimId, fleet, player );
 	}

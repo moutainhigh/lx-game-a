@@ -73,8 +73,8 @@ public class CreateEvent extends IEvent {
 			home.appendPlayer(player);
 			
 			// 创建一个舰队
-			player.getFleets().addFleet();
-			player.getFleets().addFleet();
+			player.getFleets().createFleet( home.getId() );
+			player.getFleets().createFleet( home.getId() );
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
