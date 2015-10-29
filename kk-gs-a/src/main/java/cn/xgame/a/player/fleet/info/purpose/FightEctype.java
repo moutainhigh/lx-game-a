@@ -2,6 +2,9 @@ package cn.xgame.a.player.fleet.info.purpose;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.fleet.classes.IPurpose;
+import cn.xgame.a.player.fleet.classes.StatusType;
+import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 打副本
@@ -57,6 +60,14 @@ public class FightEctype extends IPurpose{
 	}
 	public int getChapterId() {
 		return chapterId;
+	}
+	@Override
+	public void execut( int endtime, int berthSnid, FleetInfo fleet, Player player) {
+		
+		
+		fleet.setBerthSnid( berthSnid );
+		// 改变战斗状态
+		fleet.setStatus( StatusType.HOVER.create() );
 	}
 
 }

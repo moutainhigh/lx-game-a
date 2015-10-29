@@ -3,8 +3,10 @@ package cn.xgame.a.player.fleet.classes;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.IBufferStream;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.fleet.info.purpose.FightEctype;
 import cn.xgame.a.player.fleet.info.purpose.Setsail;
+import cn.xgame.a.player.u.Player;
 
 /**
  * 航行目的
@@ -48,5 +50,15 @@ public abstract class IPurpose implements ITransformStream, IBufferStream{
 		}
 		return null;
 	}
+
+	/**
+	 * 执行结果
+	 * @param endtime 
+	 * @param berthSnid 
+	 * @param fleet
+	 * @param player
+	 * @return
+	 */
+	public abstract void execut(int endtime, int berthSnid, FleetInfo fleet, Player player);
 	
 }

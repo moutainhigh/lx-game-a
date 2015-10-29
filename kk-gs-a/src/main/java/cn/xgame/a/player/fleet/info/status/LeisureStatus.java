@@ -23,18 +23,16 @@ public class LeisureStatus extends IStatus{
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+		super.putBuffer(buf);
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+		super.wrapBuffer(buf);
 	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeByte( type().toNumber() );
+		super.buildTransformStream(buffer);
 	}
 	
 	@Override
@@ -43,8 +41,8 @@ public class LeisureStatus extends IStatus{
 	}
 	
 	@Override
-	public IStatus execut(FleetInfo fleetInfo, Player player) {
-		return this;
+	public void execut(FleetInfo fleetInfo, Player player) {
+		
 	}
 
 }

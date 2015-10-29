@@ -49,7 +49,7 @@ public class IChapter implements IBufferStream{
 		this.tempId = tempId;
 	}
 	public void init( ChapterPo templet ) {
-		times 	= templet.times == 0 ? -1 : templet.times;
+		times = templet.times == 0 ? -1 : templet.times;
 		initQuestions( templet.qc, templet.qp );
 	}
 	// 初始应答

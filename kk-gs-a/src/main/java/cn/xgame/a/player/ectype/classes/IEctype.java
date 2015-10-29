@@ -37,7 +37,7 @@ public class IEctype implements IBufferStream{
 	private List<Attackattr> defs = Lists.newArrayList();
 	
 	// 道具奖励倍率
-	private float awardRate ; 
+	private int awardRate ; 
 	
 	// 金币奖励
 	private int[] money = new int[2];
@@ -119,10 +119,10 @@ public class IEctype implements IBufferStream{
 	public void setMaxWinRate(short maxWinRate) {
 		this.maxWinRate = maxWinRate;
 	}
-	public float getAwardRate() {
+	public int getAwardRate() {
 		return awardRate;
 	}
-	public void setAwardRate(float awardRate) {
+	public void setAwardRate(int awardRate) {
 		this.awardRate = awardRate;
 	}
 	
@@ -137,7 +137,5 @@ public class IEctype implements IBufferStream{
 		fighter.defends.addAll(defs);
 		return fighter;
 	}
-
-
 	
 }

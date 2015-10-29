@@ -44,7 +44,7 @@ public class InviteTeamAxnEvent extends IEvent {
 			fleet.isLeisure();
 			
 			// 这里证明已经有队伍了
-			if( fleet.getAxnId() != 0 ){
+			if( fleet.getAxnId() != -1 ){
 				AxnInfo axn = chatControl.getAXNInfo( fleet.getAxnId() );
 				// 判断舰船队伍是否已经满了
 				if( axn.isMaxmember() )

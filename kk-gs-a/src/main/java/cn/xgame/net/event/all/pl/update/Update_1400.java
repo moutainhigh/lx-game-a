@@ -23,13 +23,17 @@ public class Update_1400 extends IEvent{
 	
 	/**
 	 * 通知
+	 * @param id 任务ID 
 	 * @param player 
 	 * @param ret 道具更新个数
 	 */
-	public void run( Player player, List<IProp> ret ){
+	public void run( int id, Player player, List<IProp> ret ){
 		try {
 			ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+			buffer.writeInt( id );
 			buffer.writeInt( player.getCurrency() );
+			buffer.writeShort( player.getLevel() );
+			buffer.writeInt( player.getExp() );
 			buffer.writeByte( ret.size() );
 			for( IProp prop : ret ){
 				prop.putBaseBuffer(buffer);

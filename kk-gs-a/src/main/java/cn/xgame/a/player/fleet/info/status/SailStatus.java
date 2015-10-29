@@ -17,6 +17,9 @@ public class SailStatus extends IStatus{
 	// 目标星球ID
 	private int aimId;
 	
+	// 起始时间 - 组要作用给前端展示
+	private int starttime;
+	
 	// 航行结束时间
 	private int endtime;
 	
@@ -29,7 +32,9 @@ public class SailStatus extends IStatus{
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		super.putBuffer(buf);
 		buf.writeInt(aimId);
+		buf.writeInt(starttime);
 		buf.writeInt(endtime);
 		buf.writeByte( purpose.type() );
 		purpose.putBuffer(buf);
@@ -37,7 +42,9 @@ public class SailStatus extends IStatus{
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		super.wrapBuffer(buf);
 		aimId 		= buf.readInt();
+		starttime	= buf.readInt();
 		endtime 	= buf.readInt();
 		byte type 	= buf.readByte();
 		purpose 	= IPurpose.create( type, buf );		
@@ -45,8 +52,9 @@ public class SailStatus extends IStatus{
 
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
-		buffer.writeByte( type().toNumber() );
+		super.buildTransformStream(buffer);
 		buffer.writeInt(aimId);
+		buffer.writeInt(starttime);
 		buffer.writeInt(endtime);
 		purpose.buildTransformStream(buffer);
 	}
@@ -57,11 +65,9 @@ public class SailStatus extends IStatus{
 	}
 	
 	@Override
-	public IStatus execut(FleetInfo fleetInfo, Player player) {
-		// 先设置悬停星球ID
-		fleetInfo.setBerthSnid(aimId);
-		// 先暂时直接设置成悬停状态
-		return new HoverStatus();
+	public void execut(FleetInfo fleet, Player player) {
+		// 执行航行目的
+		purpose.execut( endtime, aimId, fleet, player );
 	}
 	
 	public int getAimId() {
@@ -81,6 +87,12 @@ public class SailStatus extends IStatus{
 	}
 	public void setPurpose(IPurpose purpose) {
 		this.purpose = purpose;
+	}
+	public int getStarttime() {
+		return starttime;
+	}
+	public void setStarttime(int starttime) {
+		this.starttime = starttime;
 	}
 
 }

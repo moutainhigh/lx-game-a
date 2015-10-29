@@ -35,11 +35,8 @@ public class FleetInfo implements ITransformStream{
 	// 舰队状态
 	private IStatus 		status 			= StatusType.LEISURE.create();
 	
-	// 当前停靠星球ID
-	private int 			berthSnid		= -1;
-	
 	// 组队频道ID
-	private int 			axnId			= 0;
+	private int 			axnId			= -1;
 	
 	public FleetInfo( byte No ){
 		this.No = No;
@@ -52,22 +49,23 @@ public class FleetInfo implements ITransformStream{
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
 			buffer.writeInt( ship.getuId() );
-		buffer.writeInt( berthSnid );
 		status.buildTransformStream(buffer);
 	}
 	
 	public List<ShipInfo> getShips() { return ships; }
 	public IStatus getStatus() { return status; }
 	public void setStatus( IStatus status ){ this.status = status; }
-	public int getBerthSnid() { return berthSnid; }
 	public int getAxnId() { return axnId; }
 	public void setAxnId(int axnId) { this.axnId = axnId; }
 	public byte getNo() { return No; }
 	
 	public void setBerthSnid( int berthSnid ) { 
-		this.berthSnid = berthSnid;
+		status.setBerthId(berthSnid);
 		for( ShipInfo ship : ships )
 			ship.setBerthSid(berthSnid);
+	}
+	public int getBerthSnid() {
+		return status.getBerthId();
 	}
 	
 	public ShipInfo getShip( int suid ){
@@ -88,8 +86,8 @@ public class FleetInfo implements ITransformStream{
 		ships.add(ship);
 		// 如果还是空闲状态 那么设置为悬停
 		if( status.type() == StatusType.LEISURE ){
-			status 		= StatusType.HOVER.create();
-			berthSnid 	= ship.getBerthSid();
+			status = StatusType.HOVER.create();
+			status.setBerthId( ship.getBerthSid() );
 		}
 	}
 	
@@ -107,8 +105,7 @@ public class FleetInfo implements ITransformStream{
 		}
 		// 如果没有舰船在这个舰队了上了 那么就要设置为空闲状态
 		if( ships.isEmpty() ){
-			status 		= StatusType.LEISURE.create();
-			berthSnid 	= -1;
+			status = StatusType.LEISURE.create();
 		}
 	}
 	
@@ -118,7 +115,6 @@ public class FleetInfo implements ITransformStream{
 	public void removeAll() {
 		ships.clear();
 		status = StatusType.LEISURE.create();
-		berthSnid = -1;
 	}
 	
 	/**
@@ -153,12 +149,13 @@ public class FleetInfo implements ITransformStream{
 	}
 	
 	/**
-	 * 执行状态 一般在登录的时候调用
+	 * 执行状态结果  - 一般在登录的时候调用
 	 * @param player
 	 */
 	public void executeStatus( Player player ) {
-		if( !status.isComplete() ) return;
-		status = status.execut( this, player );
+		if( !status.isComplete() ) 
+			return;
+		status.execut( this, player );
 	}
 	
 	/**
@@ -169,7 +166,8 @@ public class FleetInfo implements ITransformStream{
 	 */
 	public IStatus changeSail( int aimId, int stime, IPurpose purpose ) {
 		SailStatus o = new SailStatus();
-		o.setAimId(aimId);
+		o.setAimId( aimId );
+		o.setStarttime( (int)(System.currentTimeMillis()/1000) );
 		o.setEndtime( (int)(System.currentTimeMillis()/1000) + stime );
 		o.setPurpose( purpose );
 		status = o;
@@ -217,5 +215,6 @@ public class FleetInfo implements ITransformStream{
 		}
 		return fighter;
 	}
+
 
 }

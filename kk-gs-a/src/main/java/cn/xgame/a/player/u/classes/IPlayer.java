@@ -19,9 +19,9 @@ public abstract class IPlayer {
 	// 头像图标ID
 	private int 			headIco;
 	// 玩家等级
-	private short			level = 1;
+	protected short			level = 1;
 	// 玩家经验
-	private int				exp;
+	protected int			exp;
 	// 副官ID
 	private int 			adjutantId;
 	

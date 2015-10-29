@@ -60,7 +60,7 @@ public class AnswerTeamAxnEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			mfleet.isLeisure();
 			// 这里证明已经有队伍了
-			if( mfleet.getAxnId() != 0 )
+			if( mfleet.getAxnId() != -1 )
 				throw new Exception( ErrorCode.SHIP_ISHAVETEAM.name() );
 			
 			// 获取邀请人舰队

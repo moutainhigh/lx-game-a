@@ -16,6 +16,8 @@ import cn.xgame.a.player.task.TaskControl;
 import cn.xgame.a.player.tavern.TavernControl;
 import cn.xgame.a.player.u.classes.DBBaseUID;
 import cn.xgame.a.player.u.classes.IPlayer;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.PalyerlevelPo;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
@@ -188,6 +190,22 @@ public class Player extends IPlayer implements ITransformStream{
 		
 		Logs.debug( ctx, "货币改变 " + (currency - value) + (value>=0?" + ":" - ") + Math.abs(value) + " = " + currency + " " + explain );
 		return currency;
+	}
+	
+	/**
+	 * 添加经验
+	 * @param i
+	 */
+	public void addExp( int addexp ) {
+		this.exp += addexp;
+		// 下面刷新升级
+		PalyerlevelPo temp = CsvGen.getPalyerlevelPo(level);
+		while ( this.exp >= temp.exp && temp.exp != 0 ){
+			temp = CsvGen.getPalyerlevelPo(level+1);
+			if( temp == null )
+				break;
+			++level;
+		}
 	}
 	
 	public int generatorPropUID() {

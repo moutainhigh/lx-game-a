@@ -8,8 +8,6 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.Util.Time;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.task.classes.ConType;
@@ -179,9 +177,7 @@ public class TaskControl implements IArrayStream{
 		starInTask.clear();
 		List<HomePlanet> homes = WorldManager.o.getAllHomePlanet();
 		for( HomePlanet home : homes ){
-			Lua lua = LuaUtil.getTaskInfo();
-			LuaValue[] ret = lua.getField( "generateTask" ).call( 1, home.getId(), root.getLevel() );
-			String str = ret[0].getString();
+			String str = LuaUtil.getTaskInfo().getField( "generateTask" ).call( 1, home.getId(), root.getLevel() )[0].getString();
 			if( str.isEmpty() ) 
 				continue;
 			StarTask star = new StarTask( home.getId() );
@@ -223,7 +219,7 @@ public class TaskControl implements IArrayStream{
 			if( task.isComplete() ){
 				List<IProp> ret = task.executeAward( root );
 				// 通知前端
-				((Update_1400)Events.UPDATE_1400.toInstance()).run( root, ret );
+				((Update_1400)Events.UPDATE_1400.toInstance()).run( task.getId(), root, ret );
 				// 然后删除掉
 				remove.add(task);
 			}

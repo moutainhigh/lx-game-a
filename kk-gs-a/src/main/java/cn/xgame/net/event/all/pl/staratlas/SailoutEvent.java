@@ -7,15 +7,12 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
-import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.player.fleet.classes.IStatus;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.fleet.info.purpose.Setsail;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.config.gen.CsvGen;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.LuaUtil;
 
@@ -52,9 +49,7 @@ public class SailoutEvent extends IEvent{
 			// 取出航线第一个目标星球
 			int aimId = airline.remove(0);
 			// 算出航行时间
-			Lua lua = LuaUtil.getEctypeCombat();
-			LuaValue[] value = lua.getField( "getSailingTime" ).call( 1, CsvGen.getStarsPo( fleet.getBerthSnid() ), CsvGen.getStarsPo( aimId ) );
-			int sailtime = value[0].getInt();
+			int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId )[0].getInt();
 			
 			// 切换航行状态
 			status = fleet.changeSail( aimId, sailtime, new Setsail( airline ) );
@@ -64,13 +59,13 @@ public class SailoutEvent extends IEvent{
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 
-		ByteBuf respon = buildEmptyPackage( player.getCtx(), 125 );
-		respon.writeShort( code.toNumber() );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			respon.writeByte(fid);
-			status.buildTransformStream( respon );
+			buffer.writeByte( fid );
+			status.buildTransformStream( buffer );
 		}
-		sendPackage( player.getCtx(), respon );
+		sendPackage( player.getCtx(), buffer );
 	}
 
 }

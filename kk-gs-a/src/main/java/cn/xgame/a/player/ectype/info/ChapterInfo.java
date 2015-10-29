@@ -45,6 +45,15 @@ public class ChapterInfo extends IChapter{
 		initPond( silverpond, templet.silverpond );
 		initPond( goldenpond, templet.goldenpond );
 		initAwards( templet.reward );
+		initDifficultys( templet.nquality );
+	}
+	// 初始难度列表
+	private void initDifficultys( String nquality ) {
+		String[] content = nquality.split( ";" );
+		for( String str : content )
+			difficultys.add( Byte.parseByte( str ) );
+		if( difficultys.isEmpty() )
+			difficultys.add( (byte) 1 );
 	}
 	// 初始宝箱
 	private void initPond( List<DropAward> list, String pond ) {

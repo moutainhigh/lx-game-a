@@ -32,54 +32,59 @@ public class ApplyEctypeEvent extends IEvent{
 		if( fleet.isEmpty() )
 			return;
 		
-		EctypeControl control = player.getEctypes();
-		
-		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
-		
-		// 常规副本
-		List<ChapterInfo> generals = control.getGeneralEctype(snid);
-		buffer.writeShort( generals.size() );
-		for( ChapterInfo o : generals ){
-			buffer.writeInt( o.getSnid() );
-			buffer.writeInt( o.getId() );
-			buffer.writeByte( o.getQuestions().size() );
-			for( int id : o.getQuestions() ){
-				buffer.writeInt( id );
+		try {
+			EctypeControl control = player.getEctypes();
+			
+			ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
+			
+			// 常规副本
+			List<ChapterInfo> generals = control.getGeneralEctype(snid);
+			buffer.writeShort( generals.size() );
+			for( ChapterInfo o : generals ){
+				buffer.writeInt( o.getSnid() );
+				buffer.writeInt( o.getId() );
+				buffer.writeByte( o.getQuestions().size() );
+				for( int id : o.getQuestions() ){
+					buffer.writeInt( id );
+				}
+				List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
+				buffer.writeByte( guajiEctypes.size() );
+				for( EctypeInfo x : guajiEctypes ){
+					buffer.writeByte( x.getLevel() );
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+				}
+				List<EctypeInfo> ectypes = o.getEctypes();
+				buffer.writeByte( ectypes.size() );
+				for( EctypeInfo x : ectypes ){
+					buffer.writeByte( x.getLevel() );
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+				}
 			}
-			List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
-			buffer.writeByte( guajiEctypes.size() );
-			for( EctypeInfo x : guajiEctypes ){
-				buffer.writeByte( x.getLevel() );
-				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+			
+			// 偶发副本
+			List<ChapterInfo> chances = control.getChanceEctype(snid);
+			buffer.writeShort( chances.size() );
+			for( ChapterInfo o : chances ){
+				buffer.writeInt( o.getSnid() );
+				buffer.writeInt( o.getId() );
+				buffer.writeInt( o.getEndtime() );
+				buffer.writeByte( o.getTimes() );
+				buffer.writeByte( o.getQuestions().size() );
+				for( int id : o.getQuestions() ){
+					buffer.writeInt( id );
+				}
+				List<EctypeInfo> ectypes = o.getEctypes();
+				buffer.writeByte( ectypes.size() );
+				for( EctypeInfo x : ectypes ){
+					buffer.writeByte( x.getLevel() );
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
+				}
 			}
-			List<EctypeInfo> ectypes = o.getEctypes();
-			buffer.writeByte( ectypes.size() );
-			for( EctypeInfo x : ectypes ){
-				buffer.writeByte( x.getLevel() );
-				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
-			}
+			sendPackage( player.getCtx(), buffer );
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		// 偶发副本
-		List<ChapterInfo> chances = control.getChanceEctype(snid);
-		buffer.writeByte( chances.size() );
-		for( ChapterInfo o : generals ){
-			buffer.writeInt( o.getSnid() );
-			buffer.writeInt( o.getId() );
-			buffer.writeInt( o.getEndtime() );
-			buffer.writeByte( o.getTimes() );
-			buffer.writeByte( o.getQuestions().size() );
-			for( int id : o.getQuestions() ){
-				buffer.writeInt( id );
-			}
-			List<EctypeInfo> ectypes = o.getEctypes();
-			buffer.writeByte( ectypes.size() );
-			for( EctypeInfo x : ectypes ){
-				buffer.writeByte( x.getLevel() );
-				LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, o.getSnid(), x, fleet, buffer );
-			}
-		}
-		sendPackage( player.getCtx(), buffer );
 	}
 	
 }

@@ -135,10 +135,13 @@ public class ITask implements ITransformStream,IBufferStream {
 	public List<IProp> executeAward( Player root ) {
 		List<IProp> ret = Lists.newArrayList();
 		
+		// 添加道具
 		StarDepot depots = root.getDepots();
 		for( AwardInfo award : awards ){
 			ret.addAll( depots.appendProp( award.getId(), award.getCount() ) );
 		}
+		// 添加经验
+		root.addExp( templet.exp );
 		
 		return ret;
 	}

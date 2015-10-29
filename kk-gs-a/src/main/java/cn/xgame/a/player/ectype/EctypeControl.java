@@ -43,6 +43,7 @@ public class EctypeControl implements IArrayStream{
 	public void fromBytes(byte[] data) {
 		if( data == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
+		logintime = buf.readInt();
 		short size = buf.readShort();
 		for (int i = 0; i < size; i++) {
 			ChapterPo templet = CsvGen.getChapterPo( buf.readInt() );
@@ -59,6 +60,7 @@ public class EctypeControl implements IArrayStream{
 		if( allChances.isEmpty() )
 			return null;
 		ByteBuf buf = Unpooled.buffer( );
+		buf.writeInt( logintime );
 		buf.writeShort( allChances.size() );
 		for( ChapterInfo chapter : allChances ){
 			buf.writeInt( chapter.getId() );
@@ -76,7 +78,7 @@ public class EctypeControl implements IArrayStream{
 	private List<ChapterInfo> generateChanceEctype( int sid ) {
 		List<ChapterInfo> ret = Lists.newArrayList();
 		String content = LuaUtil.getEctypeInfo().getField( "generateChanceEctype" ).call( 1, sid )[0].getString();
-		if( !content.isEmpty() ){
+		if( content != null && !content.isEmpty() ){
 			String[] str = content.split( ";" );
 			for( String x : str ){
 				ChapterPo templet = CsvGen.getChapterPo( Integer.parseInt( x ) );
@@ -92,7 +94,7 @@ public class EctypeControl implements IArrayStream{
 				chapter.init( templet );
 				chapter.setEndtime( templet.time == 0 ? 0 : (int)(logintime + templet.time) );
 				chapter.generateNextEctype();
-				Logs.debug( "生成副本 属性=[" + chapter.getEctypes().get(0) + "]" );
+				Logs.debug( "生成副本 属性=[" + chapter.getEctypes() + "]" );
 				ret.add(chapter);
 			}
 		}

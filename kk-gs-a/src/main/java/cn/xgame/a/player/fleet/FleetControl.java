@@ -37,9 +37,8 @@ public class FleetControl implements IArrayStream{
 		byte size = buf.readByte();
 		for( int i = 0; i < size; i++ ){
 			FleetInfo fleet = new FleetInfo( buf.readByte() );
-			fleet.setBerthSnid( buf.readInt() );
-			List<ShipInfo> ships 	= fleet.getShips();
-			byte count 				= buf.readByte();
+			List<ShipInfo> ships = fleet.getShips();
+			byte count = buf.readByte();
 			for( int j = 0; j < count; j++ ){
 				ShipInfo ship = root.getDocks().getShip( buf.readInt() );
 				if( ship == null ) continue;
@@ -53,12 +52,10 @@ public class FleetControl implements IArrayStream{
 	
 	@Override
 	public byte[] toBytes() {
-		if( fleets.isEmpty() ) return null;
 		ByteBuf buf = Unpooled.buffer();
 		buf.writeByte( fleets.size() );
 		for( FleetInfo fleet : fleets ){
 			buf.writeByte( fleet.getNo() );
-			buf.writeInt( fleet.getBerthSnid() );
 			List<ShipInfo> ships = fleet.getShips();
 			buf.writeByte( ships.size() );
 			for( ShipInfo ship : ships )
@@ -128,7 +125,7 @@ public class FleetControl implements IArrayStream{
 	public List<FleetInfo> getHaveTeam() {
 		List<FleetInfo> ret = Lists.newArrayList();
 		for( FleetInfo fleet : fleets ){
-			if( fleet.getAxnId() != 0 )
+			if( fleet.getAxnId() != -1 )
 				ret.add(fleet);
 		}
 		return ret;
