@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.xgame.a.player.fleet.info.status.CombatStatus;
 import cn.xgame.a.player.fleet.info.status.HoverStatus;
 import cn.xgame.a.player.fleet.info.status.SailStatus;
+import cn.xgame.a.player.fleet.info.status.VoteStatus;
 
 /**
  * 舰队 状态
@@ -35,6 +36,14 @@ public enum StatusType {
 		@Override
 		public IStatus create() {
 			return new CombatStatus();
+		}
+	},
+	
+	/** 战斗 */
+	VOTE(4) {
+		@Override
+		public IStatus create() {
+			return new VoteStatus();
 		}
 	};
 	

@@ -95,7 +95,7 @@ public class LoginEvent extends IEvent{
 			// 舰队数据
 			buffer.writeByte( fleets.size() );
 			for( FleetInfo fleet : fleets ){
-				fleet.buildTransformStream(buffer);
+				fleet.buildTransformStream(player,buffer);
 			}
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(buffer);

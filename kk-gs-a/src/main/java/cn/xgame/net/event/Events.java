@@ -24,6 +24,7 @@ import cn.xgame.net.event.all.pl.chat.LookGroupInfoEvent;
 import cn.xgame.net.event.all.pl.chat.LookPlayerInfoEvent;
 import cn.xgame.net.event.all.pl.chat.SponsorChatEvent;
 import cn.xgame.net.event.all.pl.chat.InviteGroupAxnEvent;
+import cn.xgame.net.event.all.pl.ectype.AnswerAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
@@ -31,6 +32,7 @@ import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.fleet.ExitTeamEvent;
 import cn.xgame.net.event.all.pl.fleet.FleetAwayEvent;
 import cn.xgame.net.event.all.pl.fleet.FleetIntoEvent;
+import cn.xgame.net.event.all.pl.fleet.KickPlayerEvent;
 import cn.xgame.net.event.all.pl.fleet.LookTeamEvent;
 import cn.xgame.net.event.all.pl.mail.ApplyMailEvent;
 import cn.xgame.net.event.all.pl.mail.DeleteMailEvent;
@@ -80,6 +82,8 @@ import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_1050;
+import cn.xgame.net.event.all.pl.update.Update_1220;
+import cn.xgame.net.event.all.pl.update.Update_1221;
 import cn.xgame.net.event.all.pl.update.Update_1400;
 import cn.xgame.net.event.all.pl.update.Update_2301;
 import cn.xgame.net.event.all.pl.update.Update_3012;
@@ -126,6 +130,7 @@ public enum Events {
 	FLEET_AWAY					( 1028, 	new FleetAwayEvent()			, "舰队操作-停用舰队" ),
 	FLEET_LOOKTEAM				( 1061, 	new LookTeamEvent()				, "舰队操作-查看队伍" ),
 	FLEET_EXITTEAM				( 1062, 	new ExitTeamEvent()				, "舰队操作-退出队伍" ),
+	KICK_PLAYER					( 1063, 	new KickPlayerEvent()			, "舰队操作-踢人" ),
 	// 舰船
 	MOUNT_HOLD					( 1021, 	new MountHoldEvent()			, "舰船操作-放入船仓" ),
 //	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
@@ -175,6 +180,7 @@ public enum Events {
 	APPLY_ACCECTYPE				( 1201, 	new ApplyEctypeEvent()			, "副本操作-申请副本列表" ),
 	START_ATTACK				( 1202, 	new StartAttackEvent()			, "副本操作-出击" ),
 	APPLY_ATTACK				( 1203, 	new ApplyAttackEvent()			, "副本操作-请求出击" ),
+	ANSWER_ATTACK				( 1204, 	new AnswerAttackEvent()			, "副本操作-是否同意出击" ),
 	OVER_ATTACK					( 1211, 	new OverAttackEvent()			, "副本操作-申请结束" ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent()				, "星球操作-购买商店道具" ),
@@ -228,6 +234,9 @@ public enum Events {
 	UPDATE_1050					( 1050, 	new Update_1050()				, "更新包-" ),
 	// 任务
 	UPDATE_1400					( 1400, 	new Update_1400()				, "更新包-" ),
+	// 副本
+	UPDATE_1220					( 1220, 	new Update_1220()				, "更新包-" ),
+	UPDATE_1221					( 1221, 	new Update_1221()				, "更新包-" ),
 
 	
 	

@@ -72,7 +72,7 @@ public class StartAttackEvent extends IEvent{
 			// 如果是悬停中  而且还没有在副本地点  那么就需要航行
 			if( fleet.isHover() && fleet.getBerthSnid() != snid ){ 
 				
-				setSailStatus( snid, type, cnid, ltype, level, fleet, allfleets );
+				setSailStatus( snid, UID, type, cnid, ltype, level, fleet, allfleets );
 				
 				throw new Exception( ErrorCode.SUCCEED.name() );
 			} 
@@ -129,7 +129,7 @@ public class StartAttackEvent extends IEvent{
 			// >>>>>>>>> 切换战斗状态
 			fleet.setBerthSnid( snid );
 			int starttime = (int) (System.currentTimeMillis()/1000);
-			fleet.changeStatus( StatusType.COMBAT, type, cnid, ltype, level, 
+			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level, 
 					starttime, chapter.getDepthtime(), combatTime, iswin, awards, score );
 			
 			Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 舰队ID=" + fid );
@@ -138,14 +138,14 @@ public class StartAttackEvent extends IEvent{
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
-		ByteBuf response = buildEmptyPackage( player.getCtx(), 1024 );
-		response.writeShort( code.toNumber() );
+		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
+		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
-			response.writeByte( fid );
-			response.writeInt( fleet.getBerthSnid() );
-			fleet.getStatus().buildTransformStream( response );
+			buffer.writeByte( fid );
+			buffer.writeInt( fleet.getBerthSnid() );
+			fleet.getStatus().buildTransformStream( buffer );
 		}
-		sendPackage( player.getCtx(), response );
+		sendPackage( player.getCtx(), buffer );
 	}
 
 	/**
@@ -241,16 +241,17 @@ public class StartAttackEvent extends IEvent{
 	/**
 	 * 设置航行状态
 	 * @param snid
+	 * @param uID 
 	 * @param type
 	 * @param cnid
 	 * @param ltype
 	 * @param level
 	 * @param fleet
 	 */
-	private void setSailStatus(int snid, byte type, int cnid, byte ltype, byte level, FleetInfo fleet, List<FleetInfo> allfleet ) {
+	private void setSailStatus(int snid, String uID, byte type, int cnid, byte ltype, byte level, FleetInfo fleet, List<FleetInfo> allfleet ) {
 		int sailtime 	= LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid )[0].getInt();
 		int starttime 	= (int) (System.currentTimeMillis()/1000);
-		FightEctype fightEctype = new FightEctype( type, cnid, ltype, level );
+		FightEctype fightEctype = new FightEctype( uID, type, cnid, ltype, level );
 		// 这里根据组队算出 最高航行时间
 		int wtime		= sailtime;
 		for( FleetInfo x : allfleet ){

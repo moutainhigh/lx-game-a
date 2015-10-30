@@ -54,10 +54,10 @@ public abstract class IStatus implements ITransformStream, IBufferStream{
 
 	/**
 	 * 刷新状态
-	 * @param fleetInfo 
+	 * @param fleet 
 	 * @param player
 	 * @return
 	 */
-	public abstract void update( FleetInfo fleetInfo, Player player ) ;
+	public abstract void update( FleetInfo fleet, Player player ) ;
 	
 }

@@ -37,6 +37,8 @@ public class Update_3021 extends IEvent{
 			buffer.writeByte( fid );
 			if( isAgree == 1 ){
 				buffer.writeInt( axnId );
+				RW.writeString( buffer, player.getUID() );
+				buffer.writeInt( player.getHeadIco() );
 			}
 			sendPackage( sponsor.getCtx(), buffer );
 		} catch (Exception e) {

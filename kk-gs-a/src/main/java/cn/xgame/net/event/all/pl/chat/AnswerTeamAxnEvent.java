@@ -85,26 +85,32 @@ public class AnswerTeamAxnEvent extends IEvent{
 			code = ErrorCode.valueOf( e.getMessage() );
 		}
 		
+		// 获取频道玩家列表
+		List<IAxnCrew> crews = axn.getAxnCrews();
+		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( mfid );
 			buffer.writeInt( axn.getAxnId() );
+			buffer.writeByte( crews.size()-1 );
+			for( IAxnCrew crew : crews ){
+				if( crew.getUid().equals( player.getUID() ) )
+					continue;
+				crew.putBuffer(buffer);
+			}
 		}
 		sendPackage( player.getCtx(), buffer );
 		
 		// 只有同意才同步给所有队友
 		if( code == ErrorCode.SUCCEED){
 			
-			// 同步给 其他队友
-			List<IAxnCrew> crews = axn.getAxnCrews();
 			for( IAxnCrew crew : crews ){
 				if( crew.getUid().equals( player.getUID() ) )
 					continue;
 				Player to = PlayerManager.o.getPlayerFmOnline( crew.getUid() );
 				if( to == null ) 
 					continue;
-				
 				TeamAxnCrew team = (TeamAxnCrew)crew;
 				
 				((Update_3021)Events.UPDATE_3021.toInstance()).run( isAgree, player, team.getFid(), to, axn.getAxnId() );

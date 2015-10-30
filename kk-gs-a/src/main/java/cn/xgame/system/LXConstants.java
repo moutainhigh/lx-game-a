@@ -14,6 +14,8 @@ public class LXConstants {
 	public static final int CHAT_UID 			= 1000000;
 
 	
+
+	
 	
 
 	
@@ -44,6 +46,8 @@ public class LXConstants {
 	/** 邮件持续时间 (单位秒)*/
 	public static int MAIL_DURATION  		= 86400;
 	
+	/** 副本投票等待时间 (单位秒)*/
+	public static int ECTYPE_VOTE_TIME 		= 60;
 	
 	/**
 	 * 加载配置文件

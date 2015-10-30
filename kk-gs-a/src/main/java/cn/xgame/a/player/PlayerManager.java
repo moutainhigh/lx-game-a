@@ -105,7 +105,7 @@ public class PlayerManager {
 					return o;
 			}
 		}
-		return null;
+		return ret;
 	}
 	
 	//===============================================================

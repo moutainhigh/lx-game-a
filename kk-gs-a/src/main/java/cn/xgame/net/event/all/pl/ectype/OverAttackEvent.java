@@ -56,7 +56,7 @@ public class OverAttackEvent extends IEvent{
 			// 获取章节
 			ChapterInfo chapter = getChapter( player, fleet.getBerthSnid(), status.getType(), status.getChapterId() );
 			// 是否胜利
-			iswin			= status.getIsWin();
+			iswin = status.getIsWin();
 			// 只有胜利才发放奖励
 			if( iswin == 1 ){
 				
@@ -76,11 +76,13 @@ public class OverAttackEvent extends IEvent{
 					ret.addAll( depot.appendProp( award.getId(), award.getCount() ) );
 				}
 				
-				// 生成下一个难度的副本 
-				chapter.generateNextEctype();
-				
-				// 执行任务
-				player.getTasks().execute( ConType.WANCHENGFUBEN, status.getChapterId() );
+				// 必须要是自己的副本才行
+				if( status.getUID().equals( player.getUID() ) ){
+					// 生成下一个难度的副本 
+					chapter.generateNextEctype();
+					// 执行任务
+					player.getTasks().execute( ConType.WANCHENGFUBEN, status.getChapterId() );
+				}
 			}
 			
 			// 最后 将舰队 设置悬停状态

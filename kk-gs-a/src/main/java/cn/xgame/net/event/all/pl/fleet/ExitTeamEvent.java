@@ -79,7 +79,7 @@ public class ExitTeamEvent extends IEvent {
 					FleetInfo fleet = temp.getFleets().getFleetInfo( axn.getAxnId() );
 					fleet.setAxnId(0);
 					if( temp.isOnline() ){
-						((Update_2301)Events.UPDATE_2301.toInstance()).run( axn.getAxnId(), player.getNickname(), temp );
+						((Update_2301)Events.UPDATE_2301.toInstance()).run( axn.getAxnId(), player.getUID(), temp );
 					}else if( !temp.getFleets().isHaveTeam() ) {// 如果还有舰队有队伍 就不退出
 						PlayerManager.o.exitByOffline( temp );
 					}

@@ -3,14 +3,24 @@ package cn.xgame.a.player.fleet.info.status;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
+import x.javaplus.util.ErrorCode;
+import x.javaplus.util.lua.LuaValue;
 
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.ectype.info.ChapterInfo;
+import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 战斗状态
@@ -18,6 +28,9 @@ import cn.xgame.a.player.u.Player;
  * @date 2015-9-11 上午12:39:04
  */
 public class CombatStatus extends IStatus{
+	
+	// 所属副本玩家UID
+	private String UID;
 	
 	// 副本类型 1.常规副本 2.普通限时 3.特殊限时
 	private byte type;
@@ -58,6 +71,7 @@ public class CombatStatus extends IStatus{
 	@Override
 	public void init( Object[] objects ) {
 		int i = 0;
+		UID			= (String) objects[i++];
 		type 		= (Byte) objects[i++];
 		chapterId 	= (Integer) objects[i++];
 		ltype		= (Byte) objects[i++];
@@ -74,6 +88,7 @@ public class CombatStatus extends IStatus{
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		RW.writeString(buf, UID);
 		buf.writeByte( type );
 		buf.writeInt( chapterId );
 		buf.writeByte( ltype );
@@ -90,6 +105,7 @@ public class CombatStatus extends IStatus{
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		this.UID		= RW.readString(buf);
 		this.type 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
 		this.ltype 		= buf.readByte();
@@ -107,6 +123,7 @@ public class CombatStatus extends IStatus{
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
 		super.buildTransformStream(buffer);
+		RW.writeString(buffer, UID);
 		buffer.writeByte( type );
 		buffer.writeInt( chapterId );
 		buffer.writeByte( ltype );
@@ -129,77 +146,96 @@ public class CombatStatus extends IStatus{
 	
 	@Override
 	public void update( FleetInfo fleet, Player player ) {
-		// 发送奖励
-		for( AwardInfo award : awards ){
+		if( isWin == 1 ){
+			
 			StarDepot depot = player.getDepots(fleet.getBerthSnid());
-			depot.appendProp( award.getId(), award.getCount() );
+
+			// 发送奖励
+			for( AwardInfo award : awards ){
+				depot.appendProp( award.getId(), award.getCount() );
+			}
+			
+			// 这里如果不是自己的副本 那么就不给评分奖励
+			Player their = PlayerManager.o.getPlayerByTeam(UID);
+			if( their != null ){
+				try {
+					
+					// 获取副本信息
+					ChapterInfo chapter = getChapter( their, fleet.getBerthSnid(), type, chapterId );
+					EctypeInfo ectype = chapter.getEctype(ltype, level);
+					if( ectype == null )
+						throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+					
+					// 计算评分奖励
+					LuaValue[] value = LuaUtil.getEctypeGraded().getField("arithmeticGraded").call( 3, score );
+					List<AwardInfo> awards2 = Lists.newArrayList();
+					awards2.addAll( chapter.randomSilverAward( value[1].getInt() ) );
+					awards2.addAll( chapter.randomGoldenAward( value[2].getInt() ) );
+					// 发放评分奖励
+					for( AwardInfo award : awards2 ){
+						depot.appendProp( award.getId(), award.getCount() );
+					}
+					
+					// 生成下一个难度的副本  当然必须是自己的本才行
+					if( UID.equals( player.getUID() ) ){
+						chapter.generateNextEctype();
+						// 执行任务
+						player.getTasks().execute( ConType.WANCHENGFUBEN, chapterId );
+					}
+					
+				} catch (Exception e) { }
+			}
 		}
-		// 计算评星奖励
-		// TODO
 		
 		// 设置悬停
 		fleet.changeStatus( StatusType.HOVER );
 	}
 	
+	private ChapterInfo getChapter(Player player, int snid, byte type, int cnid ) throws Exception {
+		
+		switch ( type ) {
+		case 1:// 常规副本
+			IPlanet planet = WorldManager.o.getPlanet( snid );
+			return planet.getChapter( cnid );
+		case 2:// 偶发副本
+			return player.getEctypes().getChapter( snid, cnid );
+		}
+		
+		throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+	}
+	
 	public byte getType() {
 		return type;
-	}
-	public void setType(byte type) {
-		this.type = type;
 	}
 	public int getChapterId() {
 		return chapterId;
 	}
-	public void setChapterId(int chapterId) {
-		this.chapterId = chapterId;
-	}
 	public byte getIsWin() {
 		return isWin;
-	}
-	public void setIsWin(byte isWin) {
-		this.isWin = isWin;
 	}
 	public List<AwardInfo> getAwards() {
 		return awards;
 	}
-	public void setAwards(List<AwardInfo> awards) {
-		this.awards = awards;
-	}
 	public int getScore() {
 		return score;
-	}
-	public void setScore(int score) {
-		this.score = score;
 	}
 	public byte getLtype() {
 		return ltype;
 	}
-	public void setLtype(byte ltype) {
-		this.ltype = ltype;
-	}
 	public byte getLevel() {
 		return level;
-	}
-	public void setLevel(byte level) {
-		this.level = level;
 	}
 	public int getStarttime() {
 		return starttime;
 	}
-	public void setStarttime(int starttime) {
-		this.starttime = starttime;
-	}
 	public int getDepthtime() {
 		return depthtime;
-	}
-	public void setDepthtime(int depthtime) {
-		this.depthtime = depthtime;
 	}
 	public int getFighttime() {
 		return fighttime;
 	}
-	public void setFighttime(int fighttime) {
-		this.fighttime = fighttime;
+	public String getUID() {
+		return UID;
 	}
 
 }

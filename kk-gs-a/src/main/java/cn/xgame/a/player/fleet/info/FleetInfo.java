@@ -7,7 +7,9 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 
-import cn.xgame.a.ITransformStream;
+import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
@@ -19,7 +21,7 @@ import cn.xgame.a.player.u.Player;
  * @author deng		
  * @date 2015-9-10 下午10:06:18
  */
-public class FleetInfo implements ITransformStream{
+public class FleetInfo{
 	
 	// 舰队编号
 	private byte			No ;
@@ -40,11 +42,20 @@ public class FleetInfo implements ITransformStream{
 		this.No = No;
 	}
 	
-	@Override
-	public void buildTransformStream( ByteBuf buffer ) {
+	public void buildTransformStream( Player player, ByteBuf buffer ) {
 		buffer.writeByte( No );
 		buffer.writeInt( berthSnid );
 		buffer.writeInt( axnId );
+		AxnInfo axnInfo = ChatManager.o.axns().getAXNInfo(axnId);
+		buffer.writeByte( axnInfo == null ? 0 : (axnInfo.getAxnCrews().size()-1) );
+		if( axnInfo != null ){
+			List<IAxnCrew> crews = axnInfo.getAxnCrews();
+			for( IAxnCrew crew : crews ){
+				if( crew.getUid().equals( player.getUID() ) )
+					continue;
+				crew.putBuffer(buffer);
+			}
+		}
 		buffer.writeByte( ships.size() );
 		for( ShipInfo ship : ships )
 			buffer.writeInt( ship.getuId() );
@@ -115,6 +126,9 @@ public class FleetInfo implements ITransformStream{
 	}
 	public boolean isCombat() {
 		return status.type() == StatusType.COMBAT;
+	}
+	public boolean isVote() {
+		return status.type() == StatusType.VOTE;
 	}
 
 	/**

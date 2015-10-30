@@ -92,32 +92,17 @@ public class SailStatus extends IStatus{
 	public int getAimId() {
 		return aimId;
 	}
-	public void setAimId(int aimId) {
-		this.aimId = aimId;
-	}
 	public int getEndtime() {
 		return continutime;
-	}
-	public void setEndtime(int endtime) {
-		this.continutime = endtime;
 	}
 	public IPurpose getPurpose() {
 		return purpose;
 	}
-	public void setPurpose(IPurpose purpose) {
-		this.purpose = purpose;
-	}
 	public int getStarttime() {
 		return starttime;
 	}
-	public void setStarttime(int starttime) {
-		this.starttime = starttime;
-	}
 	public int getWaittime() {
 		return waittime;
-	}
-	public void setWaittime(int waittime) {
-		this.waittime = waittime;
 	}
 
 }

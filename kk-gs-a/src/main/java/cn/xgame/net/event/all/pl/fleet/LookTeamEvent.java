@@ -37,7 +37,6 @@ public class LookTeamEvent extends IEvent{
 			Player temp = PlayerManager.o.getPlayerByTeam( crew.getUid() );
 			buffer.writeByte( temp.isOnline() ? 1 : 0 );
 			RW.writeString( buffer, temp.getUID() );
-			RW.writeString( buffer, temp.getNickname() );
 			FleetInfo fleet = temp.getFleets().getFleetInfo( ((TeamAxnCrew)crew).getFid() );
 			int[] allDur = fleet.getAllDur();
 			buffer.writeInt( allDur[0] );

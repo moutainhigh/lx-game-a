@@ -1,10 +1,34 @@
 package cn.xgame.a.player.fleet.info.purpose;
 
+import java.util.List;
+
+import x.javaplus.collections.Lists;
+import x.javaplus.util.ErrorCode;
+import x.javaplus.util.Util.Random;
+import x.javaplus.util.lua.LuaValue;
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.chat.ChatManager;
+import cn.xgame.a.chat.axn.classes.IAxnCrew;
+import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
+import cn.xgame.a.chat.axn.info.AxnInfo;
+import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.dock.capt.CaptainInfo;
+import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.player.ectype.info.ChapterInfo;
+import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.IPurpose;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.world.WorldManager;
+import cn.xgame.a.world.planet.IPlanet;
+import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.system.LXConstants;
+import cn.xgame.utils.LuaUtil;
 
 /**
  * 打副本
@@ -13,6 +37,9 @@ import cn.xgame.a.player.u.Player;
  */
 public class FightEctype extends IPurpose{
 	
+	// 所属副本玩家UID
+	private String UID;
+		
 	// 副本类型 1.常规副本 2.普通限时 3.特殊限时
 	private byte etype;
 	
@@ -27,13 +54,15 @@ public class FightEctype extends IPurpose{
 	
 	/**
 	 * 创建一个 打副本 的目的
+	 * @param uID 
 	 * @param etype 副本类型 
 	 * @param cnid 章节ID
 	 * @param ltype 难度类型 1.普通本 2.挂机本
 	 * @param level 难度
 	 */
-	public FightEctype( byte etype, int cnid, byte ltype, byte level ) {
+	public FightEctype( String uID, byte etype, int cnid, byte ltype, byte level ) {
 		super( (byte) 1 );
+		this.UID		= uID;
 		this.etype 		= etype;
 		this.chapterId 	= cnid;
 		this.ltype		= ltype;
@@ -45,6 +74,7 @@ public class FightEctype extends IPurpose{
 
 	@Override
 	public void putBuffer( ByteBuf buf ) {
+		RW.writeString(buf, UID);
 		buf.writeByte( etype );
 		buf.writeInt( chapterId );
 		buf.writeByte( ltype );
@@ -53,6 +83,7 @@ public class FightEctype extends IPurpose{
 	
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		this.UID		= RW.readString(buf);
 		this.etype 		= buf.readByte();
 		this.chapterId 	= buf.readInt();
 		this.ltype		= buf.readByte();
@@ -68,10 +99,147 @@ public class FightEctype extends IPurpose{
 	@Override
 	public void execut(  int starttime, int continutime, int targetId, FleetInfo fleet, Player player) {
 		
-		
 		fleet.setBerthSnid( targetId );
-		// 改变战斗状态
-		fleet.changeStatus( StatusType.COMBAT );
+		try {
+			
+			Player their = PlayerManager.o.getPlayerByTeam(UID);
+			if( their == null )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			
+			// 获取所有舰队信息 - 这里包括组队的信息
+			List<FleetInfo> allfleets = getAllFleets( player, fleet );
+			
+			// 获取副本信息
+			ChapterInfo chapter = getChapter( their, targetId, etype, chapterId );
+			EctypeInfo ectype = chapter.getEctype(ltype, level);
+			if( ectype == null )
+				throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
+			
+			// 获取玩家战斗力
+			Fighter fighter = wrapFighter( allfleets );
+			
+			LuaValue[] ret = LuaUtil.getEctypeCombat().getField("arithmeticFight").
+					call( 5, fighter, ectype.fighter(), ectype.getFighttime(), ectype.getMaxWinRate() );
+			int combatTime	= ret[0].getInt();
+			int winRate 	= ret[1].getInt();
+			int damaged 	= ret[2].getInt();
+			int ammoExpend	= ret[3].getInt();
+			int score		= ret[4].getInt();
+			
+			// 算出胜负
+			byte iswin 		= (byte) (Random.get( 0, 10000 ) <= winRate ? 1 : 0);
+			// 随机出 胜利后的奖励
+			List<AwardInfo> awards = Lists.newArrayList();
+			if( iswin == 1 ){
+				// 金币奖励
+				awards.add( new AwardInfo( LXConstants.CURRENCY_NID, ectype.getMoney() ) );
+				// 道具奖励
+				awards.addAll( chapter.randomAward( allfleets.size() ) );
+			}
+			// 计算舰队里面的舰船 战损
+			SettlementWardamaged( player, fleet.getShips(), damaged, ammoExpend, iswin );
+			
+			// 如果这个副本时间也过了 那么直接发放奖励
+			int curtime = (int) (System.currentTimeMillis()/1000);
+			int endtime = starttime+continutime+combatTime+chapter.getDepthtime()*2;
+			if( curtime >= endtime ){
+				if( iswin == 1 ){
+					grantAward( fleet, player, chapter, score, awards );
+					// 必须要是自己的副本才有下面操作
+					if( UID.equals( player.getUID() ) ){
+						// 生成下一个难度的副本 
+						chapter.generateNextEctype();
+						// 执行任务
+						player.getTasks().execute( ConType.WANCHENGFUBEN, chapterId );
+					}
+				}
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			}
+			
+			// 改变战斗状态
+			fleet.changeStatus( StatusType.COMBAT, UID, etype, chapterId, ltype, level, 
+					starttime+continutime, chapter.getDepthtime(), combatTime, iswin, awards, score );
+		} catch (Exception e) {
+			
+			fleet.changeStatus( StatusType.HOVER );
+		}
+	}
+	
+	private void grantAward(FleetInfo fleet, Player player, ChapterInfo chapter,
+			int score, List<AwardInfo> awards) {
+		StarDepot depot = player.getDepots( fleet.getBerthSnid() );
+		// 发放奖励
+		for( AwardInfo award : awards ){
+			depot.appendProp( award.getId(), award.getCount() );
+		}
+		// 计算评分奖励
+		LuaValue[] value = LuaUtil.getEctypeGraded().getField("arithmeticGraded").call( 3, score );
+		List<AwardInfo> awards2 = Lists.newArrayList();
+		awards2.addAll( chapter.randomSilverAward( value[1].getInt() ) );
+		awards2.addAll( chapter.randomGoldenAward( value[2].getInt() ) );
+		// 发放评分奖励
+		for( AwardInfo award : awards2 ){
+			depot.appendProp( award.getId(), award.getCount() );
+		}
+	}
+	
+	private void SettlementWardamaged(Player player, List<ShipInfo> ships, int damaged, int ammoExpend, byte iswin) {
+		for( ShipInfo ship : ships ){
+			// 耐久消耗
+			ship.addCurrentHp( damaged );
+			// 弹药消耗
+			if( Random.get( 0, 10000 ) <= ammoExpend )
+				ship.toreduceAmmo( -1 );
+			// 舰长忠诚度
+			CaptainInfo capt = player.getDocks().getCaptain( ship.getCaptainUID() );
+			if( capt.changeLoyalty( iswin == 1 ? 1 : -1 ) ){
+				// 这里如果没有忠诚度了 就要删除掉
+				player.getDocks().destroy( capt );
+				ship.setCaptainUID( -1 );
+			}
+		}
+	}
+	
+	private Fighter wrapFighter( List<FleetInfo> allfleets ) {
+		Fighter ret = new Fighter();
+		for( FleetInfo fleet : allfleets ){
+			Fighter temp = fleet.fighter();
+			ret.hp += temp.hp;
+			ret.addAtkattr( temp.attacks );
+			ret.addDefattr( temp.defends );
+		}
+		return ret;
+	}
+	
+	private List<FleetInfo> getAllFleets( Player player, FleetInfo fleet ) {
+		List<FleetInfo> ret = Lists.newArrayList();
+		// 如果有组队
+		if( fleet.getAxnId() != -1 ){
+			AxnInfo axn = ChatManager.o.axns().getAXNInfo( fleet.getAxnId() );
+			List<IAxnCrew> crews = axn.getAxnCrews();
+			for( IAxnCrew crew : crews ){
+				if( crew.getUid().equals( player.getUID() ) )
+					continue;
+				TeamAxnCrew x 	= (TeamAxnCrew) crew;
+				Player o 		= PlayerManager.o.getPlayerByTeam( x.getUid() );
+				FleetInfo f 	= o.getFleets().getFleetInfo( x.getFid() );
+				ret.add( f );
+			}
+		}
+		ret.add( fleet );
+		return ret;
+	}
+	private ChapterInfo getChapter(Player player, int snid, byte type, int cnid ) throws Exception {
+		
+		switch ( type ) {
+		case 1:// 常规副本
+			IPlanet planet = WorldManager.o.getPlanet( snid );
+			return planet.getChapter( cnid );
+		case 2:// 偶发副本
+			return player.getEctypes().getChapter( snid, cnid );
+		}
+		
+		throw new Exception( ErrorCode.ECTYPE_NOTEXIST.name() );
 	}
 	
 	public byte getEtype() {
@@ -91,6 +259,12 @@ public class FightEctype extends IPurpose{
 	}
 	public void setLevel(byte level) {
 		this.level = level;
+	}
+	public String getUID() {
+		return UID;
+	}
+	public void setUID(String uID) {
+		UID = uID;
 	}
 
 }

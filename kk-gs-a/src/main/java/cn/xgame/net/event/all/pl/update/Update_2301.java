@@ -20,12 +20,12 @@ public class Update_2301 extends IEvent{
 	public void run(Player player, ByteBuf data) throws IOException {
 	}
 
-	public void run( int axnId, String nickname, Player accept ) {
+	public void run( int axnId, String UID, Player accept ) {
 		
 		try {
 			ByteBuf buffer = buildEmptyPackage( accept.getCtx(), 50 );
 			buffer.writeInt( axnId );
-			RW.writeString( buffer, nickname );
+			RW.writeString( buffer, UID );
 			sendPackage( accept.getCtx(), buffer );
 		} catch (Exception e) {
 			Logs.error( "Update_2301 ", e );
