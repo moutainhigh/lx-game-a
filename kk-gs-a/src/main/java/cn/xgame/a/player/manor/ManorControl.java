@@ -59,13 +59,13 @@ public class ManorControl implements IArrayStream,ITransformStream{
 			build.wrapBuffer(buff);
 			builds.add(build);
 		}
-		update();
+//		update();
 	}
 
 	@Override
 	public byte[] toBytes() {
 		if( territory == null ) return null;
-		update();
+//		update();
 		ByteBuf buff = Unpooled.buffer();
 		buff.writeInt( territory.id );
 		buff.writeByte( builds.size() );

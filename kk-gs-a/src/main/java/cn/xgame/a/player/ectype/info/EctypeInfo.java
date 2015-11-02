@@ -17,7 +17,7 @@ import cn.xgame.utils.LuaUtil;
  */
 public class EctypeInfo extends IEctype{
 	
-	public EctypeInfo( byte level, EctypePo templet ) {
+	public EctypeInfo( byte level ) {
 		super(level);
 	}
 	
@@ -48,11 +48,13 @@ public class EctypeInfo extends IEctype{
 		fighter.hp = getHp();
 		fighter.addAtkattr( getAtks() );
 		fighter.addDefattr( getDefs() );
-		for( int id : askings ){
-			AskingPo askingPo = CsvGen.getAskingPo(id);
-			if( askingPo == null )
-				continue;
-			fighter.asking.add( new Askings( askingPo ) );
+		if( askings != null ){
+			for( int id : askings ){
+				AskingPo askingPo = CsvGen.getAskingPo(id);
+				if( askingPo == null )
+					continue;
+				fighter.asking.add( new Askings( askingPo ) );
+			}
 		}
 		return fighter;
 	}

@@ -75,7 +75,7 @@ public class ChapterInfo extends IChapter{
 			EctypePo templet = CsvGen.getEctypePo( getTempId() );
 			if( templet == null ) 
 				continue;
-			EctypeInfo ectype = new EctypeInfo( (byte) (i+1), templet );
+			EctypeInfo ectype = new EctypeInfo( (byte) (i+1) );
 			// 挂机副本难度全部为1
 			ectype.setAttribute( 1, templet );
 			// 挂机副本 强制设置时间
@@ -117,7 +117,7 @@ public class ChapterInfo extends IChapter{
 		if( size >= difficultys.size() )
 			return;
 		byte level = difficultys.get(size);
-		EctypeInfo ectype = new EctypeInfo( level, templet );
+		EctypeInfo ectype = new EctypeInfo( level );
 		ectype.setAttribute( templet );
 		getEctypes().add( ectype );
 	}

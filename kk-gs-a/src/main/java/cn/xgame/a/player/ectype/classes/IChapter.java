@@ -12,7 +12,6 @@ import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AskingPo;
 import cn.xgame.config.o.ChapterPo;
-import cn.xgame.config.o.EctypePo;
 import cn.xgame.config.o.RquestionPo;
 import cn.xgame.utils.Logs;
 
@@ -94,13 +93,12 @@ public class IChapter implements IBufferStream{
 		tempId 		= buf.readInt();
 		times 		= buf.readByte();
 		endtime 	= buf.readInt();
-		EctypePo templet = CsvGen.getEctypePo( tempId );
 		byte size = buf.readByte();
 		for (int i = 0; i < size; i++) 
 			questions.add( buf.readInt() );
 		size = buf.readByte();
 		for (int i = 0; i < size; i++) {
-			EctypeInfo o = new EctypeInfo( buf.readByte(), templet );
+			EctypeInfo o = new EctypeInfo( buf.readByte() );
 			o.wrapBuffer(buf);
 			ectypes.add( o );
 		}
