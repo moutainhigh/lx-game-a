@@ -3,7 +3,11 @@ package cn.xgame.a.fighter;
 import java.util.ArrayList;
 import java.util.List;
 
+import x.javaplus.collections.Lists;
 
+
+import cn.xgame.a.fighter.o.Answers;
+import cn.xgame.a.fighter.o.Askings;
 import cn.xgame.a.fighter.o.Attackattr;
 
 /**
@@ -21,6 +25,13 @@ public class Fighter {
 	
 	// 防御属性列表
 	public List<Attackattr> defends = new ArrayList<Attackattr>();
+	
+	// 应答 - 问
+	public List<Askings> asking = Lists.newArrayList();
+	
+	// 应答 - 答
+	public List<Answers> answer = Lists.newArrayList();
+	
 	
 	private Attackattr getAtkattr( byte type ){
 		for( Attackattr x : attacks ){

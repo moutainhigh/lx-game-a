@@ -13,12 +13,12 @@ public class Respond {
 	public int id;
 	
 	// 对应值
-	public float intvalue;
+	public int intvalue;
 	
 	// 对应值
 	public float pctvalue;
 	
-	public Respond( int id, float intvalue, float pctvalue ) {
+	public Respond( int id, int intvalue, float pctvalue ) {
 		this.id 		= id;
 		this.intvalue 	= intvalue;
 		this.pctvalue 	= pctvalue;

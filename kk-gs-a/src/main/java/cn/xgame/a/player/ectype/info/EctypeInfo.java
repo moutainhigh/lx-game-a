@@ -1,7 +1,12 @@
 package cn.xgame.a.player.ectype.info;
 
+import java.util.List;
+
 import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.fighter.o.Askings;
 import cn.xgame.a.player.ectype.classes.IEctype;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.AskingPo;
 import cn.xgame.config.o.EctypePo;
 import cn.xgame.utils.LuaUtil;
 
@@ -35,13 +40,20 @@ public class EctypeInfo extends IEctype{
 	
 	/**
 	 * 返回一个战斗者 供lua脚本调用
+	 * @param askings 
 	 * @return
 	 */
-	public Fighter fighter(){
+	public Fighter fighter( List<Integer> askings ){
 		Fighter fighter = new Fighter();
 		fighter.hp = getHp();
 		fighter.addAtkattr( getAtks() );
 		fighter.addDefattr( getDefs() );
+		for( int id : askings ){
+			AskingPo askingPo = CsvGen.getAskingPo(id);
+			if( askingPo == null )
+				continue;
+			fighter.asking.add( new Askings( askingPo ) );
+		}
 		return fighter;
 	}
 

@@ -119,7 +119,7 @@ public class FightEctype extends IPurpose{
 			Fighter fighter = wrapFighter( allfleets );
 			
 			LuaValue[] ret = LuaUtil.getEctypeCombat().getField("arithmeticFight").
-					call( 5, fighter, ectype.fighter(), ectype.getFighttime(), ectype.getMaxWinRate() );
+					call( 5, fighter, ectype.fighter(chapter.getQuestions()), ectype.getFighttime(), ectype.getMaxWinRate() );
 			int combatTime	= ret[0].getInt();
 			int winRate 	= ret[1].getInt();
 			int damaged 	= ret[2].getInt();

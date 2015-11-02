@@ -13,24 +13,30 @@ public class Askings {
 	// 表格ID
 	public int id;
 	
+	// 权重值
+	public int heavy;
+		
 	// 类型 
 	public byte type;
 	
 	// 小类型
-	public byte atttype;
+	public byte settype;
 	
 	// 对应值
-	public float intvalue;
+	public int intvalue;
 	
 	// 对应值
 	public float pctvalue;
 	
+	
+	
 	public Askings(AskingPo asking) {
 		id 			= asking.id;
 		type 		= asking.type;
-		atttype 	= asking.atttype;
+		settype 	= asking.settype;
 		intvalue 	= asking.intvalue;
 		pctvalue 	= asking.pctvalue;
+		heavy		= asking.heavy;
 	}
 
 	/**

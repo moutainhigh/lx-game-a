@@ -8,11 +8,14 @@ import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.fighter.o.Answers;
 import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.info.SEquipAttr;
 import cn.xgame.a.prop.info.ShipAttr;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.AnswerPo;
 import cn.xgame.gen.dto.MysqlGen.ShipsDao;
 import cn.xgame.gen.dto.MysqlGen.ShipsDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -245,6 +248,19 @@ public class ShipInfo implements ITransformStream{
 			SEquipAttr weapon = (SEquipAttr) prop;
 			fighter.addAtkattr( weapon.getAtks() );
 			fighter.addDefattr( weapon.getDefs() );
+			// 舰船本身的应答
+			if( !attr.templet().answer.isEmpty() ){
+				String[] content = attr.templet().answer.split( ";" );
+				for( String id : content ){
+					AnswerPo answer = CsvGen.getAnswerPo( Integer.parseInt(id) );
+					fighter.answer.add( new Answers(answer) );
+				}
+			}
+			// 装备应答
+			for( int id : weapon.getAnswers() ){
+				AnswerPo answer = CsvGen.getAnswerPo( id );
+				fighter.answer.add( new Answers(answer) );
+			}
 		}
 	}
 
