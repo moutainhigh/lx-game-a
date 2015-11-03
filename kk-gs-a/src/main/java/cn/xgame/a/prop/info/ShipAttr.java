@@ -31,6 +31,9 @@ public class ShipAttr extends IProp{
 	// 质量
 	private int mass;
 	
+	// 精密度
+	private int accuracy;
+	
 	//------------------- 下面三个空间不用存数据库 就只是一个厨初始数据
 	// 武器最大空间
 	private short wroom;
@@ -50,6 +53,12 @@ public class ShipAttr extends IProp{
 		super( clone );
 		templet 	= clone.templet;
 		maxHp		= clone.maxHp;
+		maxEnergy	= clone.maxEnergy;
+		mass		= clone.mass;
+		accuracy	= clone.accuracy;
+		wroom		= clone.wroom;
+		eroom		= clone.eroom;
+		groom		= clone.groom;
 	}
 	
 	@Override
@@ -123,6 +132,12 @@ public class ShipAttr extends IProp{
 	public void setGroom(short groom) {
 		this.groom = groom;
 	}
+	public int getAccuracy() {
+		return accuracy;
+	}
+	public void setAccuracy(int accuracy) {
+		this.accuracy = accuracy;
+	}
 	
 	public static void main(String[] args) {
 		Lua.setLogClass( Logs.class );
@@ -142,7 +157,6 @@ public class ShipAttr extends IProp{
 		attr.wrapAttachBytes(bytes);
 		System.out.println( "3----- maxHp=" + attr.getMaxHp() + ", maxEnergy=" + attr.getMaxEnergy() );
 	}
-
 
 
 

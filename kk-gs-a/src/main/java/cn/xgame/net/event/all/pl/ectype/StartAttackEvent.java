@@ -161,7 +161,7 @@ public class StartAttackEvent extends IEvent{
 	private void SettlementWardamaged(Player player, List<ShipInfo> ships, int damaged, int ammoExpend, byte iswin) {
 		for( ShipInfo ship : ships ){
 			// 耐久消耗
-			ship.addCurrentHp( -damaged );
+			ship.settlementDamaged( damaged );
 			// 弹药消耗
 			if( Random.get( 0, 10000 ) <= ammoExpend )
 				ship.toreduceAmmo( -1 );

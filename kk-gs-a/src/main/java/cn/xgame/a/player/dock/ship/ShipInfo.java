@@ -231,6 +231,19 @@ public class ShipInfo implements ITransformStream{
 		return ret;
 	}
 	
+	/**
+	 * 获取所有装备精密度
+	 * @return
+	 */
+	private int getAllaccuracy() {
+		int ret = 0;
+		for( IProp o : weapons.getAll() )
+			ret += ((SEquipAttr)o).getAccuracy();
+		for( IProp o : assists.getAll() )
+			ret += ((SEquipAttr)o).getAccuracy();
+		return ret;
+	}
+	
 	/** 装满弹药  */
 	public void fillupAmmo( ) {
 		for( IProp o : weapons.getAll() ){
@@ -273,6 +286,23 @@ public class ShipInfo implements ITransformStream{
 				AnswerPo answer = CsvGen.getAnswerPo( id );
 				fighter.answer.add( new Answers(answer) );
 			}
+		}
+	}
+
+	/**
+	 * 结算战损
+	 * @param damaged
+	 */
+	public void settlementDamaged( int damaged ) {
+		// 获取所有装备 精密度
+		int allAccuracy = getAllaccuracy() + attr.getAccuracy();
+		float scale = damaged/allAccuracy;
+		// 舰船本身战损
+		addCurrentHp( -(int) (attr.getAccuracy() * scale) );
+		// 装备战损
+		for( IProp o : weapons.getAll() ){
+			SEquipAttr weapon = (SEquipAttr) o;
+			weapon.addCurrentDur( - (int) (weapon.getAccuracy() * scale) );
 		}
 	}
 	
