@@ -23,7 +23,7 @@ import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.event.all.pl.update.Update_1220;
+import cn.xgame.net.event.all.pl.update.Update_1290;
 import cn.xgame.system.LXConstants;
 
 /**
@@ -94,7 +94,7 @@ public class ApplyAttackEvent extends IEvent{
 				TeamAxnCrew x 	= (TeamAxnCrew) crew;
 				Player o 		= PlayerManager.o.getPlayerByTeam( x.getUid() );
 				if( x.isOnlineAndUpdate() )
-					((Update_1220)Events.UPDATE_1220.toInstance()).run( o, player, fleet.getNo(), x.getFid(), allfleets, chapter, ltype, ectype );
+					((Update_1290)Events.UPDATE_1290.toInstance()).run( o, player, fleet.getNo(), x.getFid(), allfleets, chapter, ltype, ectype );
 			}
 		}
 		

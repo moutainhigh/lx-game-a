@@ -3,6 +3,7 @@ package cn.xgame.a.player.dock.ship;
 
 import java.util.List;
 
+import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
@@ -179,6 +180,17 @@ public class ShipInfo implements ITransformStream{
 		IProp ret = weapons.getProp(puid);
 		return ret == null ? assists.getProp(puid) : ret;
 	}
+	
+	/**
+	 * 获取所有装备
+	 * @return
+	 */
+	public List<IProp> getAllEquip() {
+		List<IProp> ret = Lists.newArrayList();
+		ret.addAll( weapons.getAll() );
+		ret.addAll( assists.getAll() );
+		return ret;
+	}
 
 	/**
 	 * 删除一个装备
@@ -243,25 +255,25 @@ public class ShipInfo implements ITransformStream{
 	 * @param fighter
 	 */
 	public void wrapAttackattr( Fighter fighter ) {
+		// 舰船本身的应答
+		if( !attr.templet().answer.isEmpty() ){
+			String[] content = attr.templet().answer.split( ";" );
+			for( String id : content ){
+				AnswerPo answer = CsvGen.getAnswerPo( Integer.parseInt(id) );
+				fighter.answer.add( new Answers(answer) );
+			}
+		}
+		// 装备应答和攻击属性
 		List<IProp> props = weapons.getAll();
 		for( IProp prop : props ){
 			SEquipAttr weapon = (SEquipAttr) prop;
 			fighter.addAtkattr( weapon.getAtks() );
 			fighter.addDefattr( weapon.getDefs() );
-			// 舰船本身的应答
-			if( !attr.templet().answer.isEmpty() ){
-				String[] content = attr.templet().answer.split( ";" );
-				for( String id : content ){
-					AnswerPo answer = CsvGen.getAnswerPo( Integer.parseInt(id) );
-					fighter.answer.add( new Answers(answer) );
-				}
-			}
-			// 装备应答
 			for( int id : weapon.getAnswers() ){
 				AnswerPo answer = CsvGen.getAnswerPo( id );
 				fighter.answer.add( new Answers(answer) );
 			}
 		}
 	}
-
+	
 }

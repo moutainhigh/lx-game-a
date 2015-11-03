@@ -27,6 +27,8 @@ import cn.xgame.net.event.all.pl.chat.InviteGroupAxnEvent;
 import cn.xgame.net.event.all.pl.ectype.AnswerAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
+import cn.xgame.net.event.all.pl.ectype.ApplyRetreatEvent;
+import cn.xgame.net.event.all.pl.ectype.ApplySettlementEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.fleet.ExitTeamEvent;
@@ -44,6 +46,7 @@ import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.manor.DestroyBuildingEvent;
+import cn.xgame.net.event.all.pl.manor.SellGoodsEvent;
 import cn.xgame.net.event.all.pl.manor.TakeGoodsEvent;
 import cn.xgame.net.event.all.pl.manor.UpgradeBuildingEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyAlllAffairEvent;
@@ -82,8 +85,8 @@ import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_1050;
-import cn.xgame.net.event.all.pl.update.Update_1220;
-import cn.xgame.net.event.all.pl.update.Update_1221;
+import cn.xgame.net.event.all.pl.update.Update_1290;
+import cn.xgame.net.event.all.pl.update.Update_1291;
 import cn.xgame.net.event.all.pl.update.Update_1400;
 import cn.xgame.net.event.all.pl.update.Update_2301;
 import cn.xgame.net.event.all.pl.update.Update_3012;
@@ -149,6 +152,7 @@ public enum Events {
 	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent()		, "领地操作-建筑升级" ),
 	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建筑销毁" ),
 	TAKE_GOODS					( 1046, 	new TakeGoodsEvent()			, "领地操作-收取产出" ),
+	SELL_GOODS					( 1047, 	new SellGoodsEvent()			, "领地操作-出售产出" ),
 	// 邮件
 	APPLY_MAIL					( 1051, 	new ApplyMailEvent()			, "邮件操作-申请邮件列表" ),
 	SEND_MAIL					( 1052, 	new SendMailEvent()				, "邮件操作-发送邮件" ),
@@ -182,6 +186,8 @@ public enum Events {
 	APPLY_ATTACK				( 1203, 	new ApplyAttackEvent()			, "副本操作-请求出击" ),
 	ANSWER_ATTACK				( 1204, 	new AnswerAttackEvent()			, "副本操作-是否同意出击" ),
 	OVER_ATTACK					( 1211, 	new OverAttackEvent()			, "副本操作-申请结束" ),
+	APPLY_RETREAT				( 1212, 	new ApplyRetreatEvent()			, "副本操作-申请撤退" ),
+	APPLY_SETTLEMENT			( 1213, 	new ApplySettlementEvent()		, "副本操作-申请结算面板" ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent()				, "星球操作-购买商店道具" ),
 	TAVERN_BUY					( 1311, 	new TavernBuyEvent()			, "星球操作-购买酒馆道具" ),
@@ -235,8 +241,8 @@ public enum Events {
 	// 任务
 	UPDATE_1400					( 1400, 	new Update_1400()				, "更新包-" ),
 	// 副本
-	UPDATE_1220					( 1220, 	new Update_1220()				, "更新包-" ),
-	UPDATE_1221					( 1221, 	new Update_1221()				, "更新包-" ),
+	UPDATE_1290					( 1290, 	new Update_1290()				, "更新包-" ),
+	UPDATE_1291					( 1291, 	new Update_1291()				, "更新包-" ),
 
 	
 	

@@ -19,7 +19,7 @@ import cn.xgame.a.player.fleet.info.vote.EctypeVote;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.event.all.pl.update.Update_1221;
+import cn.xgame.net.event.all.pl.update.Update_1291;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -103,7 +103,7 @@ public class AnswerAttackEvent extends IEvent{
 				} 
 				
 				if( x.isOnlineAndUpdate() )
-					((Update_1221)Events.UPDATE_1221.toInstance()).run( x.getSocket(), x.getFid(), player.getUID(), isAgree );
+					((Update_1291)Events.UPDATE_1291.toInstance()).run( x.getSocket(), x.getFid(), player.getUID(), isAgree );
 			}
 			
 		}

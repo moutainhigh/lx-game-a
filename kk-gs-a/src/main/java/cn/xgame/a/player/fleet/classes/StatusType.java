@@ -39,7 +39,7 @@ public enum StatusType {
 		}
 	},
 	
-	/** 战斗 */
+	/** 投票 */
 	VOTE(4) {
 		@Override
 		public IStatus create() {

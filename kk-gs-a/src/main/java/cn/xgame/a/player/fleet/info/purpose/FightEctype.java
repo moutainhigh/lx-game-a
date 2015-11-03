@@ -14,15 +14,16 @@ import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.IPurpose;
+import cn.xgame.a.player.fleet.classes.IResult;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
-import cn.xgame.a.player.task.classes.ConType;
+import cn.xgame.a.player.fleet.info.result.CombatIn;
+import cn.xgame.a.player.fleet.info.result.Settlement;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
@@ -134,52 +135,26 @@ public class FightEctype extends IPurpose{
 				// 金币奖励
 				awards.add( new AwardInfo( LXConstants.CURRENCY_NID, ectype.getMoney() ) );
 				// 道具奖励
-				awards.addAll( chapter.randomAward( allfleets.size() ) );
+				awards.addAll( chapter.randomAward( allfleets.size(), ectype.getAwardRate() ) );
 			}
 			// 计算舰队里面的舰船 战损
 			SettlementWardamaged( player, fleet.getShips(), damaged, ammoExpend, iswin );
 			
 			// 如果这个副本时间也过了 那么直接发放奖励
+			IResult result = null;
 			int curtime = (int) (System.currentTimeMillis()/1000);
 			int endtime = starttime+continutime+combatTime+chapter.getDepthtime()*2;
 			if( curtime >= endtime ){
-				if( iswin == 1 ){
-					grantAward( fleet, player, chapter, score, awards );
-					// 必须要是自己的副本才有下面操作
-					if( UID.equals( player.getUID() ) ){
-						// 生成下一个难度的副本 
-						chapter.generateNextEctype();
-						// 执行任务
-						player.getTasks().execute( ConType.WANCHENGFUBEN, chapterId );
-					}
-				}
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+				result = new Settlement();
+			}else{
+				result = new CombatIn( starttime+continutime, chapter.getDepthtime(), combatTime );
 			}
 			
 			// 改变战斗状态
-			fleet.changeStatus( StatusType.COMBAT, UID, etype, chapterId, ltype, level, 
-					starttime+continutime, chapter.getDepthtime(), combatTime, iswin, awards, score );
+			fleet.changeStatus( StatusType.COMBAT, UID, etype, chapterId, ltype, level, iswin, awards, score, result );
 		} catch (Exception e) {
 			
 			fleet.changeStatus( StatusType.HOVER );
-		}
-	}
-	
-	private void grantAward(FleetInfo fleet, Player player, ChapterInfo chapter,
-			int score, List<AwardInfo> awards) {
-		StarDepot depot = player.getDepots( fleet.getBerthSnid() );
-		// 发放奖励
-		for( AwardInfo award : awards ){
-			depot.appendProp( award.getId(), award.getCount() );
-		}
-		// 计算评分奖励
-		LuaValue[] value = LuaUtil.getEctypeGraded().getField("arithmeticGraded").call( 3, score );
-		List<AwardInfo> awards2 = Lists.newArrayList();
-		awards2.addAll( chapter.randomSilverAward( value[1].getInt() ) );
-		awards2.addAll( chapter.randomGoldenAward( value[2].getInt() ) );
-		// 发放评分奖励
-		for( AwardInfo award : awards2 ){
-			depot.appendProp( award.getId(), award.getCount() );
 		}
 	}
 	

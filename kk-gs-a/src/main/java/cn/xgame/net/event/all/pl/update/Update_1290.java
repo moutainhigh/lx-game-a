@@ -20,7 +20,7 @@ import cn.xgame.utils.LuaUtil;
  * @author deng		
  * @date 2015-10-30 下午4:49:19
  */
-public class Update_1220 extends IEvent{
+public class Update_1290 extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {

@@ -25,6 +25,7 @@ import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.fleet.info.purpose.FightEctype;
+import cn.xgame.a.player.fleet.info.result.CombatIn;
 import cn.xgame.a.player.fleet.info.status.SailStatus;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
@@ -63,8 +64,11 @@ public class StartAttackEvent extends IEvent{
 			if( fleet.isCombat() )
 				throw new Exception( ErrorCode.FLEET_BUSY.name() );
 			Player their = PlayerManager.o.getPlayerByTeam(UID);
-			if( their == null )
-				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			if( their == null ){
+				fleet.setBerthSnid( snid );
+				fleet.changeStatus( StatusType.HOVER );
+				throw new Exception( ErrorCode.SUCCEED.name() );
+			}
 			
 			// 获取所有舰队信息 - 这里包括组队的信息
 			List<FleetInfo> allfleets = getAllFleets( player, fleet );
@@ -118,7 +122,7 @@ public class StartAttackEvent extends IEvent{
 				// 金币奖励
 				awards.add( new AwardInfo( LXConstants.CURRENCY_NID, ectype.getMoney() ) );
 				// 道具奖励
-				awards.addAll( chapter.randomAward( allfleets.size() ) );
+				awards.addAll( chapter.randomAward( allfleets.size(), ectype.getAwardRate() ) );
 			}
 			
 			// 计算舰队里面的舰船 战损
@@ -127,9 +131,8 @@ public class StartAttackEvent extends IEvent{
 			
 			// >>>>>>>>> 切换战斗状态
 			fleet.setBerthSnid( snid );
-			int starttime = (int) (System.currentTimeMillis()/1000);
-			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level, 
-					starttime, chapter.getDepthtime(), combatTime, iswin, awards, score );
+			CombatIn result = new CombatIn( (int) (System.currentTimeMillis()/1000), chapter.getDepthtime(), combatTime );
+			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level,iswin, awards, score, result );
 			
 			Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 舰队ID=" + fid );
 			code = ErrorCode.SUCCEED;
@@ -158,7 +161,7 @@ public class StartAttackEvent extends IEvent{
 	private void SettlementWardamaged(Player player, List<ShipInfo> ships, int damaged, int ammoExpend, byte iswin) {
 		for( ShipInfo ship : ships ){
 			// 耐久消耗
-			ship.addCurrentHp( damaged );
+			ship.addCurrentHp( -damaged );
 			// 弹药消耗
 			if( Random.get( 0, 10000 ) <= ammoExpend )
 				ship.toreduceAmmo( -1 );

@@ -149,12 +149,13 @@ public class ChapterInfo extends IChapter{
 	/**
 	 * 随机掉落奖励出来
 	 * @param size 队员个数
+	 * @param rateup 掉落几率加成
 	 * @return
 	 */
-	public List<AwardInfo> randomAward( int size ) {
+	public List<AwardInfo> randomAward( int size, int rateup ) {
 		List<AwardInfo> ret = Lists.newArrayList();
 		for( DropAward drop : awards ){
-			if( drop.isDrop() )
+			if( drop.isDrop( rateup ) )
 				ret.add( drop.toAward() );
 		}
 		return ret;
@@ -167,7 +168,7 @@ public class ChapterInfo extends IChapter{
 	 */
 	public List<AwardInfo> randomSilverAward( int num ) {
 		List<AwardInfo> ret = Lists.newArrayList();
-		if( silverpond.isEmpty() )
+		if( silverpond.isEmpty() || num < 1 )
 			return ret;
 		int index = Random.get( 0, silverpond.size()-1 );
 		ret.add( silverpond.get(index).toAward() );
@@ -181,7 +182,7 @@ public class ChapterInfo extends IChapter{
 	 */
 	public List<AwardInfo> randomGoldenAward( int num ) {
 		List<AwardInfo> ret = Lists.newArrayList();
-		if( goldenpond.isEmpty() )
+		if( goldenpond.isEmpty() || num < 1 )
 			return ret;
 		int index = Random.get( 0, goldenpond.size()-1 );
 		ret.add( goldenpond.get(index).toAward() );	

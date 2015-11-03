@@ -56,7 +56,7 @@ public class StarDepot extends IDepot implements ITransformStream{
 		// 检测是否货币
 		if( nid == LXConstants.CURRENCY_NID ){
 			root.changeCurrency( count, "添加道具" );
-//			ret.add( IProp.create( 0, nid, count) );
+			ret.add( IProp.create( 0, nid, count) );
 			return ret;
 		}
 		

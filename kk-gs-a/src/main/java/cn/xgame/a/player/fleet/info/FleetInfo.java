@@ -13,6 +13,7 @@ import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
+import cn.xgame.a.player.fleet.classes.LotteryInfo;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.u.Player;
 
@@ -37,6 +38,10 @@ public class FleetInfo{
 	
 	// 组队频道ID
 	private int 			axnId			= -1;
+	
+	
+	// 临时记录 舰队打完副本是否可以抽奖
+	private List<LotteryInfo> lotterys		= Lists.newArrayList();
 	
 	public FleetInfo( byte No ){
 		this.No = No;
@@ -76,6 +81,9 @@ public class FleetInfo{
 	}
 	public int getBerthSnid() {
 		return berthSnid;
+	}
+	public List<LotteryInfo> getLotterys() {
+		return lotterys;
 	}
 	
 	public ShipInfo getShip( int suid ){
@@ -149,6 +157,7 @@ public class FleetInfo{
 	 * @param player
 	 */
 	public void updateStatus( Player player ) {
+		lotterys.clear();
 		if( !status.isComplete() ) 
 			return;
 		status.update( this, player );
@@ -177,5 +186,7 @@ public class FleetInfo{
 		}
 		return fighter;
 	}
+
+
 
 }

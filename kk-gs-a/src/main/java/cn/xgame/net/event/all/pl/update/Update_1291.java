@@ -15,7 +15,7 @@ import cn.xgame.utils.Logs;
  * @author deng		
  * @date 2015-10-30 下午5:42:12
  */
-public class Update_1221 extends IEvent{
+public class Update_1291 extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {

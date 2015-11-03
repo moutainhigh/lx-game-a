@@ -40,7 +40,15 @@ public class DropAward extends AwardInfo {
 	public boolean isDrop() {
 		return Random.get( 0, 9999 ) <= rand;
 	}
-
+	/**
+	 * 是否掉落
+	 * @param rateup 几率加成
+	 * @return
+	 */
+	public boolean isDrop( int rateup ) {
+		return Random.get( 0, 9999 ) <= (rand+rateup);
+	}
+	
 	/**
 	 * 转成可用的奖品类
 	 * @return
@@ -48,5 +56,7 @@ public class DropAward extends AwardInfo {
 	public AwardInfo toAward() {
 		return new AwardInfo( getId(), getCount() );
 	}
+
+
 	
 }

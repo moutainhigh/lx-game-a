@@ -93,6 +93,10 @@ public class Player extends IPlayer implements ITransformStream{
 		tasks.updateTasks();
 	}
 	
+	public String toString(){
+		return "UID=" + getUID() + ", nickname=" + getNickname();
+	}
+	
 	/**
 	 * 从数据库获取一个
 	 * @param dto
@@ -153,7 +157,25 @@ public class Player extends IPlayer implements ITransformStream{
 		buffer.writeByte( 1 );
 	}
 	
-
+	
+	public int generatorPropUID() {
+		return propBaseUid.generatorPropUID();
+	}
+	public int generatorShipUID() {
+		return propBaseUid.generatorShipUID();
+	}
+	public int generatorCaptainUID() {
+		return propBaseUid.generatorCaptainUID();
+	}
+	
+	/**
+	 * 玩家是否在线
+	 * @return
+	 */
+	public boolean isOnline() {
+		return ctx != null  && ctx.channel().isActive() && Attr.getAttachment(ctx) != null;
+	}
+	
 	/**  退出处理 */
 	public void exit() {
 		
@@ -207,28 +229,13 @@ public class Player extends IPlayer implements ITransformStream{
 			++level;
 		}
 	}
-	
-	public int generatorPropUID() {
-		return propBaseUid.generatorPropUID();
-	}
-	public int generatorShipUID() {
-		return propBaseUid.generatorShipUID();
-	}
-	public int generatorCaptainUID() {
-		return propBaseUid.generatorCaptainUID();
-	}
-	
+
 	/**
-	 * 玩家是否在线
+	 * 是否VIP
 	 * @return
 	 */
-	public boolean isOnline() {
-		return ctx != null  && ctx.channel().isActive() && Attr.getAttachment(ctx) != null;
-	}
-	
-	
-	public String toString(){
-		return "UID=" + getUID() + ", nickname=" + getNickname();
+	public boolean isVip() {
+		return false;
 	}
 
 	public boolean safeCheck( Events event ) {
