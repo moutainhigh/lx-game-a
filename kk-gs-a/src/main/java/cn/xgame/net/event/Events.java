@@ -29,6 +29,7 @@ import cn.xgame.net.event.all.pl.ectype.ApplyAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyEctypeEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplyRetreatEvent;
 import cn.xgame.net.event.all.pl.ectype.ApplySettlementEvent;
+import cn.xgame.net.event.all.pl.ectype.LotteryEvent;
 import cn.xgame.net.event.all.pl.ectype.OverAttackEvent;
 import cn.xgame.net.event.all.pl.ectype.StartAttackEvent;
 import cn.xgame.net.event.all.pl.fleet.ExitTeamEvent;
@@ -188,6 +189,7 @@ public enum Events {
 	OVER_ATTACK					( 1211, 	new OverAttackEvent()			, "副本操作-申请结束" ),
 	APPLY_RETREAT				( 1212, 	new ApplyRetreatEvent()			, "副本操作-申请撤退" ),
 	APPLY_SETTLEMENT			( 1213, 	new ApplySettlementEvent()		, "副本操作-申请结算面板" ),
+	LOTTERY						( 1214, 	new LotteryEvent()				, "副本操作-抽奖" ),
 	//-----------------交易
 	SHOP_BUY					( 1301, 	new ShopBuyEvent()				, "星球操作-购买商店道具" ),
 	TAVERN_BUY					( 1311, 	new TavernBuyEvent()			, "星球操作-购买酒馆道具" ),

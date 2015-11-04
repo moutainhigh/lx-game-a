@@ -147,6 +147,9 @@ public class Building extends IBuilding{
 			}
 			ret.add( x );
 		}
+		// 如果收取的时候 是满的 那么就要重新计时
+		if( curSumCount() >= templet().ram && !ret.isEmpty() )
+			setEndtime( (int)(System.currentTimeMillis()/1000) );
 		return ret;
 	}
 

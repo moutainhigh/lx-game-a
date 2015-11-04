@@ -46,6 +46,7 @@ public class CombatIn extends IResult{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
+		super.buildTransformStream(buffer);
 		buffer.writeInt( getAlreadyFighttime() );
 		buffer.writeInt( fighttime );
 	}

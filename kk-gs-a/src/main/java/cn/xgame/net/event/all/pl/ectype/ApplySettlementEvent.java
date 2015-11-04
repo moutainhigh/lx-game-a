@@ -131,6 +131,7 @@ public class ApplySettlementEvent extends IEvent {
 			buffer.writeInt( ship.getuId() );
 			buffer.writeInt( ship.getCurrentHp() );
 			List<IProp> props = ship.getAllEquip();
+			buffer.writeByte( props.size() );
 			for( IProp prop : props ){
 				SEquipAttr weapon = (SEquipAttr) prop;
 				buffer.writeInt( weapon.getUid() );

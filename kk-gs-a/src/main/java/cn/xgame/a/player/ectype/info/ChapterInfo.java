@@ -4,7 +4,6 @@ package cn.xgame.a.player.ectype.info;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.Util.Random;
 
 import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.award.DropAward;
@@ -27,12 +26,6 @@ public class ChapterInfo extends IChapter{
 	// 挂机副本列表
 	private List<EctypeInfo> 	guajiEctypes = Lists.newArrayList();
 	
-	// 银宝箱
-	private List<DropAward> 	silverpond = Lists.newArrayList();
-	
-	// 金宝箱
-	private List<DropAward> 	goldenpond = Lists.newArrayList();
-	
 	// 奖励列表
 	private List<DropAward> 	awards = Lists.newArrayList();
 	
@@ -44,8 +37,6 @@ public class ChapterInfo extends IChapter{
 		super( templet.id, sid, templet.temp );
 		depthtime = templet.stime;
 		initGuajiEctype( templet.sleeptime );
-		initPond( silverpond, templet.silverpond );
-		initPond( goldenpond, templet.goldenpond );
 		initAwards( templet.reward );
 		initDifficultys( templet.nquality );
 	}
@@ -56,15 +47,6 @@ public class ChapterInfo extends IChapter{
 			difficultys.add( Byte.parseByte( str ) );
 		if( difficultys.isEmpty() )
 			difficultys.add( (byte) 1 );
-	}
-	// 初始宝箱
-	private void initPond( List<DropAward> list, String pond ) {
-		if( pond.isEmpty() )
-			return;
-		String[] str = pond.split( "\\|" );
-		for( String x : str ){
-			list.add( new DropAward(x.split(";")) );
-		}
 	}
 	// 初始挂机副本
 	private void initGuajiEctype( String sleeptime ) {
@@ -161,45 +143,11 @@ public class ChapterInfo extends IChapter{
 		return ret;
 	}
 	
-	/**
-	 * 随机银色奖品
-	 * @param num
-	 * @return
-	 */
-	public List<AwardInfo> randomSilverAward( int num ) {
-		List<AwardInfo> ret = Lists.newArrayList();
-		if( silverpond.isEmpty() || num < 1 )
-			return ret;
-		int index = Random.get( 0, silverpond.size()-1 );
-		ret.add( silverpond.get(index).toAward() );
-		return ret;
-	}
-	
-	/**
-	 * 随机金色奖品
-	 * @param num
-	 * @return
-	 */
-	public List<AwardInfo> randomGoldenAward( int num ) {
-		List<AwardInfo> ret = Lists.newArrayList();
-		if( goldenpond.isEmpty() || num < 1 )
-			return ret;
-		int index = Random.get( 0, goldenpond.size()-1 );
-		ret.add( goldenpond.get(index).toAward() );	
-		return ret;
-	}
-	
 	public int getDepthtime() {
 		return depthtime;
 	}
 	public List<EctypeInfo> getGuajiEctypes() {
 		return guajiEctypes;
-	}
-	public List<DropAward> getSilverpond() {
-		return silverpond;
-	}
-	public List<DropAward> getGoldenpond() {
-		return goldenpond;
 	}
 	public List<DropAward> getAwards() {
 		return awards;

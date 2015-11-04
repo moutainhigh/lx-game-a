@@ -13,6 +13,7 @@ import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_1050;
 import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.system.LXConstants;
 
 /**
  * 发送邮件
@@ -33,10 +34,10 @@ public class SendMailEvent extends IEvent {
 		ErrorCode code = null;
 		try {
 			// 算出手续费 这里加上了 交易货币
-			int factorage = money/10;
+			int needmoney = LXConstants.MAIL_FACTORAGE + money;
 			
 			// 扣取手续费
-			if( player.changeCurrency( -factorage, "邮件手续费&交易货币" ) == -1 )
+			if( player.changeCurrency( -needmoney, "邮件手续费&交易货币" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 创建邮件
