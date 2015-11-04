@@ -13,17 +13,20 @@ public class Settlement extends IResult{
 	public Settlement() {
 		super((byte) 2);
 	}
+	
+	public Settlement( int fighttime ) {
+		super((byte) 2);
+		setCtime(fighttime);
+	}
 
 	@Override
 	public void putBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+		buf.writeInt( getCtime() );
 	}
 
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
-		// TODO Auto-generated method stub
-		
+		setCtime( buf.readInt() );
 	}
 
 	@Override

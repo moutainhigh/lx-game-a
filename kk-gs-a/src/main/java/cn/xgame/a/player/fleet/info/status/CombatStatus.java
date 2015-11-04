@@ -121,7 +121,7 @@ public class CombatStatus extends IStatus{
 		
 		// 如果是战斗中 那么就设置成 结算中即可
 		if( result.type() == 1 ){
-			result = new Settlement();
+			result = new Settlement( result.getCtime() );
 		}
 		
 	}

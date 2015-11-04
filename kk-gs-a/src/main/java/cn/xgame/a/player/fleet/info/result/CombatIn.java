@@ -28,6 +28,7 @@ public class CombatIn extends IResult{
 		this.starttime = starttime;
 		this.depthtime = depthtime;
 		this.fighttime = fighttime;
+		setCtime( fighttime + depthtime*2 );
 	}
 
 	@Override
@@ -42,6 +43,7 @@ public class CombatIn extends IResult{
 		starttime = buf.readInt();
 		depthtime = buf.readInt();
 		fighttime = buf.readInt();
+		setCtime( fighttime + depthtime*2 );
 	}
 	
 	@Override

@@ -38,7 +38,7 @@ public class OverAttackEvent extends IEvent{
 				throw new Exception( ErrorCode.SUCCEED.name() );
 			
 			// 将结果设置一下就行了
-			status.setResult( new Settlement() );
+			status.setResult( new Settlement( status.getResult().getCtime() ) );
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

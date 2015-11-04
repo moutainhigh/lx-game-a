@@ -15,6 +15,9 @@ public abstract class IResult implements ITransformStream, IBufferStream{
 
 	private byte type;
 	
+	// 这里加一个战斗时间 方便 给前端显示用
+	private int ctime;
+	
 	public IResult(byte type) {
 		this.type = type;
 	}
@@ -50,6 +53,13 @@ public abstract class IResult implements ITransformStream, IBufferStream{
 
 	
 	public abstract boolean isComplete() ;
-	
+
+	public int getCtime() {
+		return ctime;
+	}
+	public void setCtime(int ctime) {
+		this.ctime = ctime;
+	}
+
 
 }

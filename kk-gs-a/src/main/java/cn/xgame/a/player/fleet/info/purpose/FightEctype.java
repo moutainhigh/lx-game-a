@@ -145,7 +145,7 @@ public class FightEctype extends IPurpose{
 			int curtime = (int) (System.currentTimeMillis()/1000);
 			int endtime = starttime+continutime+combatTime+chapter.getDepthtime()*2;
 			if( curtime >= endtime ){
-				result = new Settlement();
+				result = new Settlement( combatTime+chapter.getDepthtime()*2 );
 			}else{
 				result = new CombatIn( starttime+continutime, chapter.getDepthtime(), combatTime );
 			}

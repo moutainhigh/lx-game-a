@@ -39,6 +39,7 @@ public class ApplySettlementEvent extends IEvent {
 
 		ErrorCode code 		= null;
 		byte iswin			= 0;
+		int fighttime		= 0;
 		byte star			= 0;
 		byte isLottery		= 0;
 		FleetInfo fleet 	= null;
@@ -54,6 +55,7 @@ public class ApplySettlementEvent extends IEvent {
 			if( !status.isComplete() )
 				throw new Exception( ErrorCode.SUCCEED.name() );
 			
+			fighttime = status.getResult().getCtime();
 			// 是否胜利
 			iswin = status.getIsWin();
 			if( iswin == 1 ){
@@ -97,7 +99,7 @@ public class ApplySettlementEvent extends IEvent {
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( fid );
 			fleet.getStatus().buildTransformStream(buffer);
-			putWardamaged( player, fleet, buffer );
+			buffer.writeInt( fighttime );
 			buffer.writeByte( iswin );
 			if( iswin == 1 ){
 				buffer.writeByte( star );
@@ -114,6 +116,7 @@ public class ApplySettlementEvent extends IEvent {
 				}
 				buffer.writeByte( isLottery );
 			}
+			putWardamaged( player, fleet, buffer );
 		}
 		sendPackage( player.getCtx(), buffer );
 	}
