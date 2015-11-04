@@ -4,7 +4,6 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.system.SystemCfg;
 import x.javaplus.util.lua.Lua;
-import x.javaplus.util.lua.LuaValue;
 
 /**
  * 调用外边lua文件 工具
@@ -95,10 +94,7 @@ public class LuaUtil {
 	public static void main(String[] args) {
 		Lua.setLogClass(Logs.class);
 		
-		Lua lua = getTaskInfo();
-		LuaValue[] value = lua.getField("generateTask").call( 1, 1001, 1 );
-		
-		String s = value[0].getString();
+		String s = LuaUtil.getEctypeInfo().getField( "generateChanceEctype" ).call( 1, 1004 )[0].getString();
 		
 		System.out.println( s );
 		

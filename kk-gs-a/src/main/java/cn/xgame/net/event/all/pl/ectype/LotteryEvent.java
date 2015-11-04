@@ -10,7 +10,6 @@ import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Random;
 
 import cn.xgame.a.award.AwardInfo;
-import cn.xgame.a.award.DropAward;
 import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.fleet.classes.LotteryInfo;
 import cn.xgame.a.player.fleet.info.FleetInfo;
@@ -35,6 +34,7 @@ public class LotteryEvent extends IEvent{
 		int isNext = 0;
 		List<AwardInfo> awards = Lists.newArrayList();
 		List<IProp> ret = Lists.newArrayList();
+		byte type = 0;
 		try {
 			FleetInfo fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null )
@@ -49,16 +49,17 @@ public class LotteryEvent extends IEvent{
 			ChapterPo chapter = CsvGen.getChapterPo( lottery.getChapterId() );
 			if( chapter == null )
 				throw new Exception( ErrorCode.NOT_LOTTERY.name() );
-			
+
+			type = (byte) lottery.getType();
 			// 获取奖品池
-			List<DropAward> drops = getAward( lottery.getType() == 1 ? chapter.silverpond : chapter.goldenpond );
+			List<AwardInfo> drops = getAward( lottery.getType() == 1 ? chapter.silverpond : chapter.goldenpond );
 			if( drops.isEmpty() )
 				throw new Exception( ErrorCode.NOT_LOTTERY.name() );
 			
 			// 获取奖品列表
 			while( awards.size() < lottery.getCount() ){
 				int index = Random.get( 0, drops.size()-1 );
-				awards.add( drops.remove(index).toAward() );
+				awards.add( drops.remove(index) );
 				if( drops.isEmpty() )
 					break;
 			}
@@ -81,6 +82,7 @@ public class LotteryEvent extends IEvent{
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( fid );
+			buffer.writeByte( type );
 			buffer.writeByte( awards.size() );
 			for( AwardInfo award : awards )
 				award.buildTransformStream(buffer);
@@ -100,13 +102,15 @@ public class LotteryEvent extends IEvent{
 	 * @param string
 	 * @return
 	 */
-	private List<DropAward> getAward( String string ) {
-		List<DropAward> ret = Lists.newArrayList();
+	private List<AwardInfo> getAward( String string ) {
+		List<AwardInfo> ret = Lists.newArrayList();
 		if( string.isEmpty() )
 			return ret;
 		String[] str = string.split( "\\|" );
-		for( String x : str )
-			ret.add( new DropAward(x.split(";")) );
+		for( String x : str ){
+			String[] o = x.split(";");
+			ret.add( new AwardInfo( Integer.parseInt(o[0]), Integer.parseInt(o[1]) ) );
+		}
 		return ret;
 	}
 

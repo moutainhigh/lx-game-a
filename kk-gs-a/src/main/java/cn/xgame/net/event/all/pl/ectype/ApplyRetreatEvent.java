@@ -3,17 +3,13 @@ package cn.xgame.net.event.all.pl.ectype;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
-import java.util.List;
 
 import x.javaplus.util.ErrorCode;
 
-import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.dock.ship.ShipInfo;
+import cn.xgame.a.fighter.DamagedInfo;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.SEquipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -30,10 +26,14 @@ public class ApplyRetreatEvent extends IEvent{
 
 		ErrorCode code 		= null;
 		FleetInfo fleet 	= null;
+		DamagedInfo dinfo	= null;
 		try {
 			fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null || fleet.isEmpty() || !fleet.isCombat() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
+			
+			// 先计算战损
+			dinfo = fleet.computeDamage( player );
 			
 			// 设置为悬停
 			fleet.changeStatus( StatusType.HOVER );
@@ -48,31 +48,9 @@ public class ApplyRetreatEvent extends IEvent{
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( fid );
 			fleet.getStatus().buildTransformStream(buffer);
-			putWardamaged( player, fleet, buffer );
+			dinfo.buildTransformStream(buffer);
 		}
 		sendPackage( player.getCtx(), buffer );
 	}
 
-	/**
-	 * 塞入战损
-	 * @param player
-	 * @param fleet
-	 * @param buffer
-	 */
-	private void putWardamaged(Player player, FleetInfo fleet, ByteBuf buffer) {
-		List<ShipInfo> ships = fleet.getShips();
-		buffer.writeByte( ships.size() );
-		for( ShipInfo ship : ships ){
-			buffer.writeInt( ship.getuId() );
-			buffer.writeInt( ship.getCurrentHp() );
-			List<IProp> props = ship.getAllEquip();
-			for( IProp prop : props ){
-				SEquipAttr weapon = (SEquipAttr) prop;
-				buffer.writeInt( weapon.getUid() );
-				buffer.writeInt( weapon.getCurrentDur() );
-			}
-			CaptainInfo capt = player.getDocks().getCaptain( ship.getCaptainUID() );
-			buffer.writeInt( capt == null ? 0 : capt.attr().getLoyalty() );
-		}
-	}
 }

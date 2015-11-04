@@ -18,8 +18,6 @@ import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.StatusType;
@@ -125,14 +123,10 @@ public class StartAttackEvent extends IEvent{
 				awards.addAll( chapter.randomAward( allfleets.size(), ectype.getAwardRate() ) );
 			}
 			
-			// 计算舰队里面的舰船 战损
-			SettlementWardamaged( player, fleet.getShips(), damaged, ammoExpend, iswin );
-			
-			
 			// >>>>>>>>> 切换战斗状态
 			fleet.setBerthSnid( snid );
 			CombatIn result = new CombatIn( (int) (System.currentTimeMillis()/1000), chapter.getDepthtime(), combatTime );
-			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level,iswin, awards, score, result );
+			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level, damaged, ammoExpend, iswin, awards, score, result );
 			
 			Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 舰队ID=" + fid );
 			code = ErrorCode.SUCCEED;
@@ -148,31 +142,6 @@ public class StartAttackEvent extends IEvent{
 			fleet.getStatus().buildTransformStream( buffer );
 		}
 		sendPackage( player.getCtx(), buffer );
-	}
-
-	/**
-	 * 结算战损
-	 * @param player
-	 * @param ships
-	 * @param damaged
-	 * @param ammoExpend
-	 * @param iswin
-	 */
-	private void SettlementWardamaged(Player player, List<ShipInfo> ships, int damaged, int ammoExpend, byte iswin) {
-		for( ShipInfo ship : ships ){
-			// 耐久消耗
-			ship.settlementDamaged( damaged );
-			// 弹药消耗
-			if( Random.get( 0, 10000 ) <= ammoExpend )
-				ship.toreduceAmmo( -1 );
-			// 舰长忠诚度
-			CaptainInfo capt = player.getDocks().getCaptain( ship.getCaptainUID() );
-			if( capt.changeLoyalty( iswin == 1 ? 1 : -1 ) ){
-				// 这里如果没有忠诚度了 就要删除掉
-				player.getDocks().destroy( capt );
-				ship.setCaptainUID( -1 );
-			}
-		}
 	}
 
 	/**

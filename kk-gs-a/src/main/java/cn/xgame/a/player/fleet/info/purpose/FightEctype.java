@@ -14,8 +14,6 @@ import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.player.PlayerManager;
-import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.classes.IPurpose;
@@ -137,13 +135,11 @@ public class FightEctype extends IPurpose{
 				// 道具奖励
 				awards.addAll( chapter.randomAward( allfleets.size(), ectype.getAwardRate() ) );
 			}
-			// 计算舰队里面的舰船 战损
-			SettlementWardamaged( player, fleet.getShips(), damaged, ammoExpend, iswin );
 			
-			// 如果这个副本时间也过了 那么直接发放奖励
 			IResult result = null;
 			int curtime = (int) (System.currentTimeMillis()/1000);
 			int endtime = starttime+continutime+combatTime+chapter.getDepthtime()*2;
+			// 如果这个副本时间也过了设置结算中
 			if( curtime >= endtime ){
 				result = new Settlement( combatTime+chapter.getDepthtime()*2 );
 			}else{
@@ -151,27 +147,10 @@ public class FightEctype extends IPurpose{
 			}
 			
 			// 改变战斗状态
-			fleet.changeStatus( StatusType.COMBAT, UID, etype, chapterId, ltype, level, iswin, awards, score, result );
+			fleet.changeStatus( StatusType.COMBAT, UID, etype, chapterId, ltype, level, damaged, ammoExpend, iswin, awards, score, result );
 		} catch (Exception e) {
 			
 			fleet.changeStatus( StatusType.HOVER );
-		}
-	}
-	
-	private void SettlementWardamaged(Player player, List<ShipInfo> ships, int damaged, int ammoExpend, byte iswin) {
-		for( ShipInfo ship : ships ){
-			// 耐久消耗
-			ship.settlementDamaged( damaged );
-			// 弹药消耗
-			if( Random.get( 0, 10000 ) <= ammoExpend )
-				ship.toreduceAmmo( -1 );
-			// 舰长忠诚度
-			CaptainInfo capt = player.getDocks().getCaptain( ship.getCaptainUID() );
-			if( capt.changeLoyalty( iswin == 1 ? 1 : -1 ) ){
-				// 这里如果没有忠诚度了 就要删除掉
-				player.getDocks().destroy( capt );
-				ship.setCaptainUID( -1 );
-			}
 		}
 	}
 	

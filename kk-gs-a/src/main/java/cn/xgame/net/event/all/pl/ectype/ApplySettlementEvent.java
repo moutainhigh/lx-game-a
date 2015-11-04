@@ -11,9 +11,8 @@ import x.javaplus.util.ErrorCode;
 import x.javaplus.util.lua.LuaValue;
 
 import cn.xgame.a.award.AwardInfo;
+import cn.xgame.a.fighter.DamagedInfo;
 import cn.xgame.a.player.depot.o.StarDepot;
-import cn.xgame.a.player.dock.capt.CaptainInfo;
-import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.fleet.classes.LotteryInfo;
 import cn.xgame.a.player.fleet.classes.StatusType;
@@ -22,7 +21,6 @@ import cn.xgame.a.player.fleet.info.status.CombatStatus;
 import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.SEquipAttr;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.LuaUtil;
 
@@ -45,6 +43,7 @@ public class ApplySettlementEvent extends IEvent {
 		FleetInfo fleet 	= null;
 		List<AwardInfo> a 	= null;
 		List<IProp> ret		= Lists.newArrayList();
+		DamagedInfo dinfo	= null;
 		try {
 			fleet = player.getFleets().getFleetInfo(fid);
 			if( fleet == null || fleet.isEmpty() || !fleet.isCombat() )
@@ -54,6 +53,9 @@ public class ApplySettlementEvent extends IEvent {
 			// 如果时间还没完 那么继续播放
 			if( !status.isComplete() )
 				throw new Exception( ErrorCode.SUCCEED.name() );
+			
+			// 先计算战损
+			dinfo = fleet.computeDamage( player );
 			
 			fighttime = status.getResult().getCtime();
 			// 是否胜利
@@ -116,33 +118,9 @@ public class ApplySettlementEvent extends IEvent {
 				}
 				buffer.writeByte( isLottery );
 			}
-			putWardamaged( player, fleet, buffer );
+			dinfo.buildTransformStream( buffer );
 		}
 		sendPackage( player.getCtx(), buffer );
-	}
-
-	/**
-	 * 塞入战损
-	 * @param player
-	 * @param fleet
-	 * @param buffer
-	 */
-	private void putWardamaged(Player player, FleetInfo fleet, ByteBuf buffer) {
-		List<ShipInfo> ships = fleet.getShips();
-		buffer.writeByte( ships.size() );
-		for( ShipInfo ship : ships ){
-			buffer.writeInt( ship.getuId() );
-			buffer.writeInt( ship.getCurrentHp() );
-			List<IProp> props = ship.getAllEquip();
-			buffer.writeByte( props.size() );
-			for( IProp prop : props ){
-				SEquipAttr weapon = (SEquipAttr) prop;
-				buffer.writeInt( weapon.getUid() );
-				buffer.writeInt( weapon.getCurrentDur() );
-			}
-			CaptainInfo capt = player.getDocks().getCaptain( ship.getCaptainUID() );
-			buffer.writeInt( capt == null ? 0 : capt.attr().getLoyalty() );
-		}
 	}
 
 	/**
@@ -168,3 +146,4 @@ public class ApplySettlementEvent extends IEvent {
 	}
 
 }
+

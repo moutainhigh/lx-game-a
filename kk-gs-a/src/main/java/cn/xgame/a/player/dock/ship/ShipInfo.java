@@ -8,6 +8,7 @@ import x.javaplus.mysql.db.Condition;
 import x.javaplus.util.ErrorCode;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
+import cn.xgame.a.fighter.DamagedInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.fighter.o.Answers;
 import cn.xgame.a.player.dock.classes.IHold;
@@ -235,7 +236,7 @@ public class ShipInfo implements ITransformStream{
 	 * 获取所有装备精密度
 	 * @return
 	 */
-	private int getAllaccuracy() {
+	public int getAllaccuracy() {
 		int ret = 0;
 		for( IProp o : weapons.getAll() )
 			ret += ((SEquipAttr)o).getAccuracy();
@@ -290,20 +291,35 @@ public class ShipInfo implements ITransformStream{
 	}
 
 	/**
-	 * 结算战损
-	 * @param damaged
+	 * 计算战损
+	 * @param ret
+	 * @param scale
 	 */
-	public void settlementDamaged( int damaged ) {
-		// 获取所有装备 精密度
-		int allAccuracy = getAllaccuracy() + attr.getAccuracy();
-		float scale = damaged/allAccuracy;
-		// 舰船本身战损
-		addCurrentHp( -(int) (attr.getAccuracy() * scale) );
-		// 装备战损
+	public void computeEquipDamage( DamagedInfo ret, float scale ) {
+		// 武器
+		List<IProp> removes = Lists.newArrayList();
 		for( IProp o : weapons.getAll() ){
-			SEquipAttr weapon = (SEquipAttr) o;
-			weapon.addCurrentDur( - (int) (weapon.getAccuracy() * scale) );
+			SEquipAttr equip = (SEquipAttr) o;
+			equip.addCurrentDur( - (int) (equip.getAccuracy() * scale) );
+			if( equip.getCurrentDur() < equip.getMaxDur() ){
+				ret.addLossEquip( this, equip.getUid(), equip.getCurrentDur() );
+				if( equip.getCurrentDur() == 0 )
+					removes.add(o);
+			}
 		}
+		weapons.getAll().removeAll(removes);
+		// 辅助
+		removes.clear();
+		for( IProp o : assists.getAll() ){
+			SEquipAttr equip = (SEquipAttr) o;
+			equip.addCurrentDur( - (int) (equip.getAccuracy() * scale) );
+			if( equip.getCurrentDur() < equip.getMaxDur() ){
+				ret.addLossEquip( this, equip.getUid(), equip.getCurrentDur() );
+				if( equip.getCurrentDur() == 0 )
+					removes.add(o);
+			}
+		}
+		assists.getAll().removeAll(removes);
 	}
 	
 }

@@ -42,6 +42,7 @@ public class ApplyEctypeEvent extends IEvent{
 		
 		try {
 			EctypeControl control = player.getEctypes();
+			control.updateChanceEctype();
 			
 			ByteBuf buffer = buildEmptyPackage( player.getCtx(), 1024 );
 			

@@ -39,6 +39,12 @@ public class CombatStatus extends IStatus{
 	// 奖励列表
 	private List<AwardInfo> awards = Lists.newArrayList();
 	
+	// 战损
+	private int damaged;
+	
+	// 弹药消耗
+	private int ammoExpend;
+	
 	// 是否胜利
 	private byte isWin;
 	
@@ -60,6 +66,8 @@ public class CombatStatus extends IStatus{
 		chapterId 	= (Integer) objects[i++];
 		ltype		= (Byte) objects[i++];
 		level		= (Byte) objects[i++];
+		damaged		= (Integer) objects[i++];
+		ammoExpend	= (Integer) objects[i++];
 		isWin		= (Byte) objects[i++];
 		List<?>	x	= (List<?>) objects[i++];
 		for( Object o : x )
@@ -75,6 +83,8 @@ public class CombatStatus extends IStatus{
 		buf.writeInt( chapterId );
 		buf.writeByte( ltype );
 		buf.writeByte( level );
+		buf.writeInt( damaged );
+		buf.writeInt( ammoExpend );
 		buf.writeByte( isWin );
 		buf.writeByte( awards.size() );
 		for( AwardInfo award : awards )
@@ -91,6 +101,8 @@ public class CombatStatus extends IStatus{
 		this.chapterId 	= buf.readInt();
 		this.ltype 		= buf.readByte();
 		this.level 		= buf.readByte();
+		this.damaged	= buf.readInt();
+		this.ammoExpend	= buf.readInt();
 		this.isWin 		= buf.readByte();
 		byte size		= buf.readByte();
 		for( int i = 0; i < size; i++ )
@@ -155,6 +167,18 @@ public class CombatStatus extends IStatus{
 	}
 	public void setResult(IResult result) {
 		this.result = result;
+	}
+	public int getDamaged() {
+		return damaged;
+	}
+	public void setDamaged(int damaged) {
+		this.damaged = damaged;
+	}
+	public int getAmmoExpend() {
+		return ammoExpend;
+	}
+	public void setAmmoExpend(int ammoExpend) {
+		this.ammoExpend = ammoExpend;
 	}
 
 }
