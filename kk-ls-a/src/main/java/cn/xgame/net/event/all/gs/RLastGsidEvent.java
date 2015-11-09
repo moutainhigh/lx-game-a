@@ -6,8 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 
 import cn.xgame.a.user.UserManager;
-import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.net.netty.classes.IEvent;
+import cn.xgame.net.netty.classes.Netty.RW;
 
 /**
  * 记录用户 最后一次登录的服务器ID

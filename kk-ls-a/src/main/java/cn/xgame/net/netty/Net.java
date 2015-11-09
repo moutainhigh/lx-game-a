@@ -1,8 +1,8 @@
-package cn.xgame.net;
+package cn.xgame.net.netty;
 
 import cn.xgame.a.gs.GSManager;
 import cn.xgame.net.event.Events;
-import cn.xgame.net.netty.Netty.IP;
+import cn.xgame.net.netty.classes.Netty.IP;
 import cn.xgame.utils.Logs;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

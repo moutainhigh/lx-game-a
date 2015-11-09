@@ -8,8 +8,8 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.gs.GSManager;
-import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.net.netty.classes.IEvent;
+import cn.xgame.net.netty.classes.Netty.RW;
 
 /**
  * 游戏服务器 连接

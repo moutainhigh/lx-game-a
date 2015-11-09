@@ -14,6 +14,7 @@ import cn.xgame.net.event.all.gs.UpdatePeopleEvent;
 import cn.xgame.net.event.all.user.ApplyGslistEvent;
 import cn.xgame.net.event.all.user.LoginEvent;
 import cn.xgame.net.event.all.user.SignupEvent;
+import cn.xgame.net.netty.classes.IEvent;
 
 /**
  * 通信 消息

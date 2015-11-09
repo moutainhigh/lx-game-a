@@ -1,8 +1,8 @@
 package cn.xgame.net.netty.server;
 
-import cn.xgame.net.Net;
-import cn.xgame.net.netty.Netty.Config;
-import cn.xgame.net.netty.Netty.IP;
+import cn.xgame.net.netty.Net;
+import cn.xgame.net.netty.classes.Netty.Config;
+import cn.xgame.net.netty.classes.Netty.IP;
 import cn.xgame.utils.Logs;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

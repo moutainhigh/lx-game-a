@@ -10,8 +10,8 @@ import java.util.List;
 import cn.xgame.a.gs.GSData;
 import cn.xgame.a.gs.GSManager;
 import cn.xgame.a.user.UserManager;
-import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.net.netty.classes.IEvent;
+import cn.xgame.net.netty.classes.Netty.RW;
 
 /**
  * 服务器 列表

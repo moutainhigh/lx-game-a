@@ -61,4 +61,7 @@ public interface PlayerData {
 	
 	/** 任务数据 */
 	byte[] tasks();
+	
+	/** 兑换数据 */
+	byte[] swops();
 }

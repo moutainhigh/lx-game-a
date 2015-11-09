@@ -79,11 +79,13 @@ import cn.xgame.net.event.all.pl.task.AbandonTaskEvent;
 import cn.xgame.net.event.all.pl.task.ApplyCanTaskEvent;
 import cn.xgame.net.event.all.pl.task.ApplyYetTaskEvent;
 import cn.xgame.net.event.all.pl.task.ReceiveTaskEvent;
+import cn.xgame.net.event.all.pl.transaction.ApplySSwopEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchBuyEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchCollectEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchSoldoutEvent;
 import cn.xgame.net.event.all.pl.transaction.ShopBuyEvent;
+import cn.xgame.net.event.all.pl.transaction.SpecialSwopEvent;
 import cn.xgame.net.event.all.pl.transaction.TavernBuyEvent;
 import cn.xgame.net.event.all.pl.update.Update_1050;
 import cn.xgame.net.event.all.pl.update.Update_1290;
@@ -197,6 +199,8 @@ public enum Events {
 	EXCH_BUY					( 1322, 	new ExchBuyEvent()				, "交易所-购买" ),
 	EXCH_COLLECT				( 1323, 	new ExchCollectEvent()			, "交易所-收款" ),
 	EXCH_SOLDOUT				( 1324, 	new ExchSoldoutEvent()			, "交易所-下架" ),
+	APPLY_SSWOP					( 1331, 	new ApplySSwopEvent()			, "兑换-申请特殊兑换剩余次数" ),
+	SPECIAL_SWOP				( 1332, 	new SpecialSwopEvent()			, "兑换-特殊兑换" ),
 	//-----------------任务
 	APPLY_CANTASK				( 1401, 	new ApplyCanTaskEvent()			, "任务系统-申请可接任务列表" ),
 	APPLY_YETTASK				( 1402, 	new ApplyYetTaskEvent()			, "任务系统-申请已接任务列表" ),

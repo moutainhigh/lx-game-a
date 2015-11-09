@@ -1,4 +1,4 @@
-package cn.xgame.net.netty;
+package cn.xgame.net.netty.classes;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

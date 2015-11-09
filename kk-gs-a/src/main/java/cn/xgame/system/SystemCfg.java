@@ -32,7 +32,7 @@ public class SystemCfg {
 	/** 服务器 名字 */
 	public static String 		GS_NAME 	;
 	
-	/** 服务器 端口 */
+	/** 服务器 IP地址 */
 	public static String 		GS_IP 		;
 
 	/** 服务器 端口 */

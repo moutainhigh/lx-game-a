@@ -91,6 +91,14 @@ public class LuaUtil {
 		return new Lua( SystemCfg.FILE_NAME + "lua/TaskInfo.lua" );
 	}
 	
+	/**
+	 * 兑换
+	 * @return
+	 */
+	public static Lua getExchangeInfo() {
+		return new Lua( SystemCfg.FILE_NAME + "lua/ExchangeInfo.lua" );
+	}
+	
 	public static void main(String[] args) {
 		Lua.setLogClass(Logs.class);
 		

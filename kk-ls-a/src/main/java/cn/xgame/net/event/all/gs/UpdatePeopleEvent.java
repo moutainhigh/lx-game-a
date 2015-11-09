@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 
 import cn.xgame.a.gs.GSManager;
-import cn.xgame.net.event.IEvent;
+import cn.xgame.net.netty.classes.IEvent;
 import cn.xgame.utils.Logs;
 
 /**

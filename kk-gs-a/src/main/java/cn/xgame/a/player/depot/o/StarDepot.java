@@ -143,15 +143,56 @@ public class StarDepot extends IDepot implements ITransformStream{
 			Logs.error( root, "prop == null at DepotControl.deductProp( int uid, int count )" );
 			return;
 		}
-		
 		// 执行扣除
+		executeDeduct( prop, count );
+	}
+
+	/**
+	 * 扣除道具 这里是通过表格ID
+	 * @param clone
+	 */
+	public boolean deductPropByNid( IProp clone ) {
+		return deductPropByNid( clone.getNid(), clone.getCount() );
+	}
+	public boolean deductPropByNid( int nid, int count ) {
+		List<IProp> ret = getPropsByNid(nid);
+		List<IProp> temps = Lists.newArrayList();
+		// 这里先检测 数量是否够
+		int tempcount = count;
+		for( IProp prop : ret ){
+			tempcount = prop.getCount() - tempcount;
+			temps.add(prop);
+			if( tempcount >= 0 ){
+				tempcount = 0;
+				break;
+			}
+			tempcount = Math.abs(tempcount);
+		}
+		if( tempcount != 0 )
+			return false;
+		// 这里开始执行扣除
+		for( IProp prop : temps ){
+			tempcount = prop.getCount() - count;
+			executeDeduct( prop, count );
+			count = tempcount >= 0 ? 0 : Math.abs(tempcount);
+		}
+		return true;
+	}
+	
+	// 执行扣除
+	private void executeDeduct( IProp prop, int count ) {
+		if( count == 0 )
+			return;
+		// 临时记录 为了打印输出
+		int tempcount = prop.getCount();
+		
 		prop.deductCount( count );
 		if( prop.isEmpty() )
 			remove( prop );
 		else
 			updateDB( prop );
 		
-		Logs.debug( root.getCtx(), "扣除道具 ("+uid+","+count+"), 扣除后 (" + prop + ")" );
+		Logs.debug( root.getCtx(), "扣除道具("+prop.getUid()+","+prop.getNid()+") [ "+tempcount+" - "+count+" = " + prop.getCount() );
 	}
 	
 	public boolean remove( IProp prop ){

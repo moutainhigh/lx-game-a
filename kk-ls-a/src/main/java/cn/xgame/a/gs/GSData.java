@@ -1,6 +1,6 @@
 package cn.xgame.a.gs;
 
-import cn.xgame.net.netty.Netty.Attr;
+import cn.xgame.net.netty.classes.Netty.Attr;
 import io.netty.channel.ChannelHandlerContext;
 
 /**

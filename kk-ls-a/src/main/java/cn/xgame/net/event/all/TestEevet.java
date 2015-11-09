@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import cn.xgame.net.event.IEvent;
+import cn.xgame.net.netty.classes.IEvent;
 
 
 public class TestEevet extends IEvent{

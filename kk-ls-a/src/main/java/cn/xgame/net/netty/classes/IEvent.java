@@ -1,11 +1,13 @@
-package cn.xgame.net.event;
+package cn.xgame.net.netty.classes;
 
 import java.io.IOException;
+
+import cn.xgame.net.netty.classes.Netty.Config;
+
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import cn.xgame.net.netty.Netty.Config;
 
 public abstract class IEvent {
 	

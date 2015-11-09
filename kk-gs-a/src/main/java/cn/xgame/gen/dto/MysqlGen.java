@@ -67,6 +67,7 @@
 			setObject( "taverns", dto.getTaverns() );
 			setObject( "fleets", dto.getFleets() );
 			setObject( "tasks", dto.getTasks() );
+			setObject( "swops", dto.getSwops() );
 
 			super.commit( true );		}	}
 	public static class PropsDao extends SqlDao{				public PropsDao( String tableName ) {			super( tableName );		}				public PropsDto get( String id ) {			super.select( "'"+id+"'", true );			if( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() );				return x;			}			return null;		}				public List<PropsDto> getAll( String id ) {			super.select( "'"+id+"'", false );			return getLs();		}		public List<PropsDto> getByExact( String arg ) {			super.selectByExact( arg );			return getLs();		}				private List<PropsDto> getLs() {			List<PropsDto> ls = Lists.newArrayList();			while( next() ){				PropsDto x = new PropsDto();				x.fromDBObject( getObject() ) ;				ls.add( x );			}			return ls;		}				public PropsDto update(){			_update( );			return new PropsDto();		}		public PropsDto updateByExact( String arg ){			_updateByExact( arg );			return new PropsDto();		}				public PropsDto create() {			insert();			return new PropsDto();		}				public void delete( String id ){			super.delete( "'"+id+"'" );		}		public void deleteByExact( String arg ){			super.deleteByExact( arg );		}				public void commit(){			super.commit( false );		}				public void commit( PropsDto dto ) {			setObject( "gsid", dto.getGsid() );
@@ -349,6 +350,7 @@
 		private byte[] taverns = null;
 		private byte[] fleets = null;
 		private byte[] tasks = null;
+		private byte[] swops = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -368,6 +370,7 @@
 			this.taverns = src.taverns;
 			this.fleets = src.fleets;
 			this.tasks = src.tasks;
+			this.swops = src.swops;
 
 		}		/**  服务器ID  */		public Short getGsid(){			return this.gsid;		}
 		/**  唯一ID  */		public String getUid(){			return this.uid;		}
@@ -387,6 +390,7 @@
 		/**  酒馆数据  */		public byte[] getTaverns(){			return this.taverns;		}
 		/**  舰队数据  */		public byte[] getFleets(){			return this.fleets;		}
 		/**  任务数据  */		public byte[] getTasks(){			return this.tasks;		}
+		/**  兑换数据  */		public byte[] getSwops(){			return this.swops;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -406,6 +410,7 @@
 		/**  酒馆数据  */		public void setTaverns( byte[] taverns ){			this.taverns = taverns;		}
 		/**  舰队数据  */		public void setFleets( byte[] fleets ){			this.fleets = fleets;		}
 		/**  任务数据  */		public void setTasks( byte[] tasks ){			this.tasks = tasks;		}
+		/**  兑换数据  */		public void setSwops( byte[] swops ){			this.swops = swops;		}
 
 		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x ) {			return "uid=" + "'"+x+"'";		}
@@ -425,6 +430,7 @@
 		public static String tavernsChangeSql( byte[] x ) {			return "taverns=" + x;		}
 		public static String fleetsChangeSql( byte[] x ) {			return "fleets=" + x;		}
 		public static String tasksChangeSql( byte[] x ) {			return "tasks=" + x;		}
+		public static String swopsChangeSql( byte[] x ) {			return "swops=" + x;		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -444,8 +450,9 @@
 			taverns = o.getBytes( "taverns" );
 			fleets = o.getBytes( "fleets" );
 			tasks = o.getBytes( "tasks" );
+			swops = o.getBytes( "swops" );
 
-		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"level="+level+","+"exp="+exp+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks;		}	}
+		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"level="+level+","+"exp="+exp+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks+","+"swops="+swops;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;
 		private String uname = null;
 		private Integer beSnid = null;

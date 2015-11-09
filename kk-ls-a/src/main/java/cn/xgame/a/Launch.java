@@ -5,6 +5,7 @@ import org.apache.log4j.PropertyConfigurator;
 import x.javaplus.util.Resources;
 
 
+import cn.xgame.net.http.server.HttpServer;
 import cn.xgame.net.netty.server.NettyServer;
 import cn.xgame.system.SystemCfg;
 
@@ -15,7 +16,7 @@ import cn.xgame.system.SystemCfg;
  */
 public class Launch {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		// 1 加载系统配置
 		initSystemProperties();
@@ -33,7 +34,7 @@ public class Launch {
 		
 	}
 	
-	private static void startServer() {
+	private static void startServer() throws Exception {
 		
 		// 启动 用户登录服务器
 		NettyServer userServer = new NettyServer( SystemCfg.USER_PORT );
@@ -45,6 +46,8 @@ public class Launch {
 		if( gsServer.start() )
 			System.out.println( "gs_server starting success  port:" + SystemCfg.GS_PORT );
 		
+		// 启动GM工具服务器
+		new HttpServer().start( 31000 );
 	}
 
 }
