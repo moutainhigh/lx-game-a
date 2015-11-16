@@ -36,8 +36,6 @@ public class EquipAuxiliaryAttr extends IProp{
 	private int addHp;
 	// 推进器
 	private int push;
-	// 添加弹药量
-	private int addsurplus;
 	
 	// 应答 - 问
 	private List<Integer> askings = Lists.newArrayList();
@@ -91,7 +89,6 @@ public class EquipAuxiliaryAttr extends IProp{
 		buffer.writeInt( maxDur );
 		buffer.writeInt( addHp );
 		buffer.writeInt( push );
-		buffer.writeInt( addsurplus );
 		buffer.writeByte( askings.size() );
 		for( int id : askings )
 			buffer.writeInt(id);
@@ -147,12 +144,6 @@ public class EquipAuxiliaryAttr extends IProp{
 	}
 	public void setPush(int push) {
 		this.push = push;
-	}
-	public int getAddsurplus() {
-		return addsurplus;
-	}
-	public void setAddsurplus(int addsurplus) {
-		this.addsurplus = addsurplus;
 	}
 	public List<Integer> getAskings() {
 		return askings;

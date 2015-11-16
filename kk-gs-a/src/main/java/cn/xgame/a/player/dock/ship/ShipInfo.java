@@ -249,7 +249,7 @@ public class ShipInfo implements ITransformStream{
 	public void fillupAmmo( ) {
 		for( IProp o : weapons.getAll() ){
 			EquipWeaponAttr weapon = (EquipWeaponAttr) o;
-			weapon.setCurAmmo( weapon.getMaxAmmo() );
+			weapon.fillupAmmo();
 		}
 	}
 	

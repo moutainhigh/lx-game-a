@@ -32,8 +32,6 @@ public class EquipWeaponAttr extends IProp{
 	private int maxDur;
 	// 当前弹药量
 	private int curAmmo;
-	// 最大弹药量
-	private int maxAmmo;
 	
 	// 消耗能量
 	private int energy;
@@ -43,8 +41,6 @@ public class EquipWeaponAttr extends IProp{
 	private int perplexity;
 	// 质量
 	private int mass;
-	// 添加生命值
-	private int addHp;
 	// 战斗属性列表
 	private List<Attackattr> battleAttrs = Lists.newArrayList();
 	// 应答 - 问
@@ -67,8 +63,6 @@ public class EquipWeaponAttr extends IProp{
 		currentDur 	= clone.currentDur;
 		maxDur		= clone.maxDur;
 		curAmmo		= clone.curAmmo;
-		maxAmmo		= clone.maxAmmo;
-		addHp		= clone.addHp;
 		battleAttrs.addAll( clone.battleAttrs );
 		askings.addAll( clone.askings );
 		answers.addAll( clone.answers );
@@ -109,8 +103,6 @@ public class EquipWeaponAttr extends IProp{
 		buffer.writeInt( currentDur );
 		buffer.writeInt( maxDur );
 		buffer.writeInt( curAmmo );
-		buffer.writeInt( maxAmmo );
-		buffer.writeInt( addHp );
 		buffer.writeByte( battleAttrs.size() );
 		for( Attackattr a : battleAttrs )
 			a.buildTransformStream( buffer );
@@ -120,6 +112,13 @@ public class EquipWeaponAttr extends IProp{
 		buffer.writeByte( answers.size() );
 		for( int id : answers )
 			buffer.writeInt(id);
+	}
+	
+	/**
+	 * 装满弹药
+	 */
+	public void fillupAmmo() {
+		curAmmo = templet.surplus;
 	}
 	
 	public int getCurrentDur() {
@@ -170,18 +169,6 @@ public class EquipWeaponAttr extends IProp{
 	}
 	public void setCurAmmo(int curAmmo) {
 		this.curAmmo = curAmmo;
-	}
-	public int getMaxAmmo() {
-		return maxAmmo;
-	}
-	public void setMaxAmmo(int maxAmmo) {
-		this.maxAmmo = maxAmmo;
-	}
-	public int getAddHp() {
-		return addHp;
-	}
-	public void setAddHp(int addHp) {
-		this.addHp = addHp;
 	}
 	public List<Attackattr> getBattleAttrs() {
 		return battleAttrs;
