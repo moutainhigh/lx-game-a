@@ -34,6 +34,7 @@ public class UpgradeBuildingEvent extends IEvent {
 		
 		ErrorCode code = null;
 		IBuilding building = null;
+		BbuildingPo templet = null;
 		List<IProp> ret = null;
 		try {
 			ManorControl manors = player.getManors();
@@ -50,10 +51,10 @@ public class UpgradeBuildingEvent extends IEvent {
 			// TODO
 			
 			// 开始扣除资源
-			BbuildingPo templet = CsvGen.getBbuildingPo(building.templet().next);
+			templet = CsvGen.getBbuildingPo(building.templet().next);
 			if( templet == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			ret = deductResource( player, building.templet().needres );
+			ret = deductResource( player, templet.needres );
 			
 			// 开始升级
 			building.inUpgrade();
@@ -67,7 +68,7 @@ public class UpgradeBuildingEvent extends IEvent {
 		buffer.writeShort( code.toNumber() );
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( index );
-			buffer.writeInt( building.templet().id );
+			buffer.writeInt( templet.id );
 			buffer.writeInt( building.getEndtime() );
 			buffer.writeInt( player.getCurrency() );
 			buffer.writeByte( ret.size() );

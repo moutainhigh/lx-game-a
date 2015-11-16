@@ -30,7 +30,8 @@ public class LoginEvent extends IEvent{
 		JSONObject ret = new JSONObject();
 		ret.accumulate( "code", username == null ? 1 : 0 );
 		ret.accumulate( "username", username == null ? "" : username );
-		ret.accumulate( "servers", "1,校长的爱,127.0.0.1|2,屌丝逆袭,127.0.0.1" );
+//		ret.accumulate( "servers", "1,校长的爱,127.0.0.1|2,屌丝逆袭,127.0.0.1" );
+		ret.accumulate( "servers", generateServers() );
 		sendPackage(ctx, ret, request);
 	}
 

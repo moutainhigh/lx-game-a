@@ -43,6 +43,7 @@ public class IBuilding implements ITransformStream,IBufferStream{
 	private void initProduceTemplet() {
 		if( templet == null || templet.ProduceTpye.isEmpty() )
 			return;
+		produceTemplet.clear();
 		String[] array = templet.ProduceTpye.split( "\\|" );
 		for( String str : array ){
 			Goods goods = new Goods();
@@ -94,6 +95,7 @@ public class IBuilding implements ITransformStream,IBufferStream{
 	public void inUpgrade() {
 		setType( BuildingType.UPGRADE );
 		setEndtime( (int)(System.currentTimeMillis()/1000) + templet.needtime );
+		produceTemplet.clear();
 	}
 	
 	/**
@@ -102,6 +104,7 @@ public class IBuilding implements ITransformStream,IBufferStream{
 	public void inDestroy() {
 		setType( BuildingType.DESTROY );
 		setEndtime( (int)(System.currentTimeMillis()/1000) + (templet.needtime/10) );
+		produceTemplet.clear();
 	}
 	
 	/**

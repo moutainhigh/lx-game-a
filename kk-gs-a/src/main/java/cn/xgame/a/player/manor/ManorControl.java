@@ -157,6 +157,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	 * @throws Exception 
 	 */
 	public boolean isCanBuild( IBuilding building ) throws Exception {
+		update();
 		int curGrid = building.templet().usegrid;
 		// 判断位置
 		for( IBuilding o : builds ){
