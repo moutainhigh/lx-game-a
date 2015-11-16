@@ -12,7 +12,8 @@ import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.SEquipAttr;
+import cn.xgame.a.prop.info.EquipAuxiliaryAttr;
+import cn.xgame.a.prop.info.EquipWeaponAttr;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -45,14 +46,24 @@ public class MountEquipEvent extends IEvent{
 			if( !clone.isShipEquip() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
-			SEquipAttr equip 	= (SEquipAttr)clone;
-			IHold hold 			= equip.isWeapon() ? ship.getWeapons() : ship.getAssists();
+			IHold hold 		= null;
+			int energy		= 0;
+			if( clone.itemType() == 1 || clone.itemType() == 2 ){
+				energy 		= ((EquipWeaponAttr)clone).getEnergy();
+				hold		= ship.getWeapons();
+			}
+			if( clone.itemType() == 3 ){
+				energy		= ((EquipAuxiliaryAttr)clone).getEnergy();
+				hold		= ship.getAssists();
+			}
+			if( hold == null )
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 看货仓是否 还有空间
 			if( !hold.roomIsEnough( clone ) )
 				throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
 			// 看能量是否足够
-			int needEnergy 		= equip.getEnergy() + ship.allOccupyEnergy();
+			int needEnergy 		= energy + ship.allOccupyEnergy();
 			if( needEnergy > ship.attr().getMaxEnergy() )
 				throw new Exception( ErrorCode.ENERGY_LAZYWEIGHT.name() );
 			

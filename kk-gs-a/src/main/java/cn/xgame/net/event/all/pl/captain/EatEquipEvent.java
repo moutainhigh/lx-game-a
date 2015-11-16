@@ -10,7 +10,7 @@ import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.CEquipAttr;
+import cn.xgame.a.prop.info.EquipChipAttr;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -40,7 +40,7 @@ public class EatEquipEvent extends IEvent {
 				throw new Exception( ErrorCode.PROP_NOTEXIST.name() );
 			
 			// 直接设置装备
-			captain.setEquip( (CEquipAttr) prop );
+			captain.setEquip( (EquipChipAttr) prop );
 			captain.updateDB( player );
 			
 			// 完后在玩家仓库删除道具

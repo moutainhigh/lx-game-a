@@ -8,7 +8,7 @@ import io.netty.buffer.Unpooled;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.CEquipAttr;
+import cn.xgame.a.prop.info.EquipChipAttr;
 import cn.xgame.a.prop.info.CaptainAttr;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDao;
 import cn.xgame.gen.dto.MysqlGen.CaptainsDto;
@@ -31,7 +31,7 @@ public class CaptainInfo implements ITransformStream{
 	private int shipUid 			= -1;
 	
 	// 装备
-	private CEquipAttr equip;
+	private EquipChipAttr equip;
 	
 	public CaptainInfo( int snid, int uid, int nid, byte quality ) {
 		this.snid = snid;
@@ -44,7 +44,7 @@ public class CaptainInfo implements ITransformStream{
 		attr.wrapAttachBytes( dto.getAttachAttr() );
 		shipUid	= dto.getShipUid();
 		if( dto.getEquips() != null )
-			equip = new CEquipAttr( Unpooled.copiedBuffer( dto.getEquips() ) );
+			equip = new EquipChipAttr( Unpooled.copiedBuffer( dto.getEquips() ) );
 	}
 	
 	@Override
@@ -103,8 +103,8 @@ public class CaptainInfo implements ITransformStream{
 	public CaptainAttr attr(){ return attr; }
 	public int getuId() { return attr.getUid(); }
 	public int getnId() { return attr.getNid(); }
-	public CEquipAttr getEquip() { return equip; }
-	public void setEquip( CEquipAttr equip ) { this.equip = equip; }
+	public EquipChipAttr getEquip() { return equip; }
+	public void setEquip( EquipChipAttr equip ) { this.equip = equip; }
 	public int getShipUid() { return shipUid; }
 	public void setShipUid(int shipUid) { this.shipUid = shipUid; }
 	public int getSnid() { return snid; }

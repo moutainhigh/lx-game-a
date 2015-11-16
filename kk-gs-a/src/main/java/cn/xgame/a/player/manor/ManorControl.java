@@ -18,7 +18,7 @@ import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.a.player.manor.info.Building;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ReclaimcapacityPo;
+import cn.xgame.config.o.ReclaimPo;
 import cn.xgame.utils.Logs;
 
 /**
@@ -29,7 +29,7 @@ import cn.xgame.utils.Logs;
 public class ManorControl implements IArrayStream,ITransformStream{
 
 	// 领土
-	private ReclaimcapacityPo territory = null;
+	private ReclaimPo territory = null;
 	
 	// 建筑列表
 	private List<IBuilding> builds = Lists.newArrayList();
@@ -43,7 +43,7 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		if( data == null ) return;
 		builds.clear();
 		ByteBuf buff = Unpooled.copiedBuffer(data);
-		territory = CsvGen.getReclaimcapacityPo( buff.readInt() );
+		territory = CsvGen.getReclaimPo( buff.readInt() );
 		BuildingType[] values = BuildingType.values();
 		byte size = buff.readByte();
 		for( int i = 0; i < size; i++ ){
@@ -171,10 +171,10 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		return true;
 	}
 
-	public ReclaimcapacityPo getTerritory() {
+	public ReclaimPo getTerritory() {
 		return territory;
 	}
-	public void setTerritory(ReclaimcapacityPo territory) {
+	public void setTerritory(ReclaimPo territory) {
 		this.territory = territory;
 	}
 	public List<IBuilding> getBuilds() {

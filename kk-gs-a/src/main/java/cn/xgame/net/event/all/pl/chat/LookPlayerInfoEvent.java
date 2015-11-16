@@ -13,7 +13,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.a.world.planet.home.o.Child;
-import cn.xgame.config.o.ReclaimcapacityPo;
+import cn.xgame.config.o.ReclaimPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -74,7 +74,7 @@ public class LookPlayerInfoEvent extends IEvent{
 	
 	// 获取领地等级
 	private int getManorLevel(Player temp) {
-		ReclaimcapacityPo territory = temp.getManors().getTerritory();
+		ReclaimPo territory = temp.getManors().getTerritory();
 		return territory == null ? 0 : territory.level;
 	}
 

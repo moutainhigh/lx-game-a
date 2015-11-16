@@ -11,20 +11,29 @@ import cn.xgame.a.fighter.o.Attackattr;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Equip_weaponPo;
 import cn.xgame.config.o.ItemPo;
-import cn.xgame.config.o.WeaponPo;
 import cn.xgame.utils.LuaUtil;
 
 /**
- * 舰船装备属性
+ * 舰船装备 - 武器&&防具 属性
  * @author deng		
  * @date 2015-6-18 下午1:49:18
  */
-public class SEquipAttr extends IProp{
+public class EquipWeaponAttr extends IProp{
 
 	private static final int version = 1;
 	
-	private final WeaponPo templet;
+	private final Equip_weaponPo templet;
+	
+	// 当前耐久度
+	private int currentDur;
+	// 总耐久度
+	private int maxDur;
+	// 当前弹药量
+	private int curAmmo;
+	// 最大弹药量
+	private int maxAmmo;
 	
 	// 消耗能量
 	private int energy;
@@ -34,33 +43,21 @@ public class SEquipAttr extends IProp{
 	private int perplexity;
 	// 质量
 	private int mass;
-	// 当前耐久度
-	private int currentDur;
-	// 总耐久度
-	private int maxDur;
-	// 推进
-	private int boost;
-	// 当前弹药量
-	private int curAmmo;
-	// 最大弹药量
-	private int maxAmmo;
 	// 添加生命值
 	private int addHp;
-	// 攻击属性列表
-	private List<Attackattr> atks = Lists.newArrayList();
-	// 防御属性列表
-	private List<Attackattr> defs = Lists.newArrayList();
+	// 战斗属性列表
+	private List<Attackattr> battleAttrs = Lists.newArrayList();
 	// 应答 - 问
 	private List<Integer> askings = Lists.newArrayList();
 	// 应答 - 答
 	private List<Integer> answers = Lists.newArrayList();
 	
-	public SEquipAttr( ItemPo item, int uid, int nid, int count, Quality quality ) {
+	public EquipWeaponAttr( ItemPo item, int uid, int nid, int count, Quality quality ) {
 		super( item, uid, nid, count, quality );
-		templet 	= CsvGen.getWeaponPo(nid);
+		templet 	= CsvGen.getEquip_weaponPo(nid);
 	}
 	
-	private SEquipAttr( SEquipAttr clone ){
+	private EquipWeaponAttr( EquipWeaponAttr clone ){
 		super( clone );
 		templet 	= clone.templet;
 		energy		= clone.energy;
@@ -69,20 +66,18 @@ public class SEquipAttr extends IProp{
 		mass		= clone.mass;
 		currentDur 	= clone.currentDur;
 		maxDur		= clone.maxDur;
-		boost		= clone.boost;
 		curAmmo		= clone.curAmmo;
 		maxAmmo		= clone.maxAmmo;
 		addHp		= clone.addHp;
-		atks.addAll( clone.atks );
-		defs.addAll( clone.defs );
+		battleAttrs.addAll( clone.battleAttrs );
 		askings.addAll( clone.askings );
 		answers.addAll( clone.answers );
 	}
 	
 	@Override
-	public SEquipAttr clone() { return new SEquipAttr( this ); }
+	public EquipWeaponAttr clone() { return new EquipWeaponAttr( this ); }
 	
-	public WeaponPo templet() { return templet; }
+	public Equip_weaponPo templet() { return templet; }
 
 	@Override
 	public byte[] toAttachBytes() {
@@ -102,8 +97,7 @@ public class SEquipAttr extends IProp{
 	
 	@Override
 	public void randomAttachAttr() {
-		Lua lua = LuaUtil.getGameData();
-		lua.getField( "randomAttachAttr" ).call( 0, this );
+		LuaUtil.getGameData().getField( "randomAttachAttr" ).call( 0, this );
 	}
 	
 	@Override
@@ -114,15 +108,11 @@ public class SEquipAttr extends IProp{
 		buffer.writeInt( mass );
 		buffer.writeInt( currentDur );
 		buffer.writeInt( maxDur );
-		buffer.writeInt( boost );
 		buffer.writeInt( curAmmo );
 		buffer.writeInt( maxAmmo );
 		buffer.writeInt( addHp );
-		buffer.writeByte( atks.size() );
-		for( Attackattr a : atks )
-			a.buildTransformStream( buffer );
-		buffer.writeByte( defs.size() );
-		for( Attackattr a : defs )
+		buffer.writeByte( battleAttrs.size() );
+		for( Attackattr a : battleAttrs )
 			a.buildTransformStream( buffer );
 		buffer.writeByte( askings.size() );
 		for( int id : askings )
@@ -132,15 +122,6 @@ public class SEquipAttr extends IProp{
 			buffer.writeInt(id);
 	}
 	
-	
-	/** 是否武器 */
-	public boolean isWeapon() {
-		return item().itemtype == 1;
-	}
-	/** 是否辅助装备 */
-	public boolean isAssistEquip() {
-		return item().itemtype == 2;
-	}
 	public int getCurrentDur() {
 		return currentDur;
 	}
@@ -184,12 +165,6 @@ public class SEquipAttr extends IProp{
 	public void setMaxDur(int maxDur) {
 		this.maxDur = maxDur;
 	}
-	public int getBoost() {
-		return boost;
-	}
-	public void setBoost(int boost) {
-		this.boost = boost;
-	}
 	public int getCurAmmo() {
 		return curAmmo;
 	}
@@ -208,17 +183,11 @@ public class SEquipAttr extends IProp{
 	public void setAddHp(int addHp) {
 		this.addHp = addHp;
 	}
-	public List<Attackattr> getAtks() {
-		return atks;
+	public List<Attackattr> getBattleAttrs() {
+		return battleAttrs;
 	}
-	public void setAtks( byte type, float value ){
-		atks.add( new Attackattr( type, value ) );
-	}
-	public List<Attackattr> getDefs() {
-		return defs;
-	}
-	public void setDefs( byte type, float value ){
-		defs.add( new Attackattr( type, value ) );
+	public void setBattleAttrs( byte type, float value ){
+		battleAttrs.add( new Attackattr( type, value ) );
 	}
 	public List<Integer> getAskings() {
 		return askings;

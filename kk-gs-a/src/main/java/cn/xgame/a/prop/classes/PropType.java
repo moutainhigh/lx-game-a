@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.CEquipAttr;
+import cn.xgame.a.prop.info.EquipAuxiliaryAttr;
+import cn.xgame.a.prop.info.EquipChipAttr;
 import cn.xgame.a.prop.info.CaptainAttr;
 import cn.xgame.a.prop.info.OtherAttr;
-import cn.xgame.a.prop.info.SEquipAttr;
+import cn.xgame.a.prop.info.EquipWeaponAttr;
 import cn.xgame.a.prop.info.ShipAttr;
 import cn.xgame.a.prop.info.StuffAttr;
 import cn.xgame.config.o.ItemPo;
@@ -39,9 +40,11 @@ public enum PropType {
 	EQUIP( 3 ) {
 		@Override
 		public IProp create( ItemPo item, int uid, int nid, int count, Quality quality ) {
-			if( item.itemtype == 4 )// 舰长装备
-				return new CEquipAttr( item, uid, nid, count, quality );
-			return new SEquipAttr( item, uid, nid, count, quality );
+			if( item.itemtype == 3 )// 辅助装备
+				return new EquipAuxiliaryAttr(item, uid, nid, count, quality);
+			if( item.itemtype == 4 )// 芯片装备
+				return new EquipChipAttr( item, uid, nid, count, quality );
+			return new EquipWeaponAttr( item, uid, nid, count, quality );
 		}
 	},
 	

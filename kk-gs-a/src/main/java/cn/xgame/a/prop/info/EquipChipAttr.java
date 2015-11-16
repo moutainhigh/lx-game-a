@@ -6,8 +6,8 @@ import io.netty.buffer.Unpooled;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.Equip_chipPo;
 import cn.xgame.config.o.ItemPo;
-import cn.xgame.config.o.TreasurePo;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
@@ -16,11 +16,11 @@ import cn.xgame.utils.LuaUtil;
  * @author deng		
  * @date 2015-6-18 下午1:49:59
  */
-public class CEquipAttr extends IProp{
+public class EquipChipAttr extends IProp{
 
 	private static final int version = 1;
 	
-	private final TreasurePo templet;
+	private final Equip_chipPo templet;
 	
 	// 操控
 	private int control;
@@ -32,17 +32,17 @@ public class CEquipAttr extends IProp{
 	private int affinity;
 	
 	
-	public CEquipAttr(ItemPo item, int uid, int nid, int count, Quality quality ) {
+	public EquipChipAttr(ItemPo item, int uid, int nid, int count, Quality quality ) {
 		super( item, uid, nid, count, quality );
-		templet = CsvGen.getTreasurePo(nid);
+		templet = CsvGen.getEquip_chipPo(nid);
 	}
 	
-	public CEquipAttr( ByteBuf buf ) {
+	public EquipChipAttr( ByteBuf buf ) {
 		super( buf );
-		templet = CsvGen.getTreasurePo( getNid() );
+		templet = CsvGen.getEquip_chipPo( getNid() );
 	}
 	
-	private CEquipAttr( CEquipAttr clone ) {
+	private EquipChipAttr( EquipChipAttr clone ) {
 		super( clone );
 		templet 	= clone.templet;
 		control 	= clone.control;
@@ -51,9 +51,9 @@ public class CEquipAttr extends IProp{
 	}
 
 	@Override
-	public CEquipAttr clone() { return new CEquipAttr(this); }
+	public EquipChipAttr clone() { return new EquipChipAttr(this); }
 	
-	public TreasurePo templet() { return templet; }
+	public Equip_chipPo templet() { return templet; }
 	
 	@Override
 	public byte[] toAttachBytes() {
@@ -108,14 +108,14 @@ public class CEquipAttr extends IProp{
 		CsvGen.load();
 		ItemPo item = CsvGen.getItemPo( 50001 );
 		
-		CEquipAttr attr = new CEquipAttr( item, 1, item.id, 1, Quality.COLOR01 );
+		EquipChipAttr attr = new EquipChipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		attr.randomAttachAttr();
 		
 		System.out.println( "1----- control=" + attr.getControl() + ", perception=" + attr.getPerception() );
 		
 		byte[] bytes = attr.toAttachBytes();
 		
-		attr = new CEquipAttr( item, 1, item.id, 1, Quality.COLOR01 );
+		attr = new EquipChipAttr( item, 1, item.id, 1, Quality.COLOR01 );
 		System.out.println( "2----- control=" + attr.getControl() + ", perception=" + attr.getPerception() );
 		
 		attr.wrapAttachBytes(bytes);

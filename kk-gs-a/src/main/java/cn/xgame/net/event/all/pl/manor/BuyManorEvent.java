@@ -11,7 +11,7 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.ReclaimcapacityPo;
+import cn.xgame.config.o.ReclaimPo;
 import cn.xgame.net.event.IEvent;
 
 /**
@@ -35,7 +35,7 @@ public class BuyManorEvent extends IEvent{
 				throw new Exception( ErrorCode.MANOR_LEVEL_TOOLOW.name() );
 
 			// 获取领地
-			ReclaimcapacityPo reclaim = CsvGen.getReclaimcapacityPo(mnid); 
+			ReclaimPo reclaim = CsvGen.getReclaimPo(mnid); 
 			if( reclaim == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			

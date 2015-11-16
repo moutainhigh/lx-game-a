@@ -206,8 +206,8 @@ public abstract class IProp implements ITransformStream{
 	 * ------type == 3 舰船装备<br>
 	 * 1.武器(攻击)<br>
 	 * 2.防具(防御)<br>
-	 * 3.推进器<br>
-	 * 4.辅助<br>
+	 * 3.辅助<br>
+	 * 4.芯片<br>
 	 * 
 	 * @return
 	 */

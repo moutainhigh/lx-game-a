@@ -14,7 +14,7 @@ import cn.xgame.a.fighter.o.Answers;
 import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
-import cn.xgame.a.prop.info.SEquipAttr;
+import cn.xgame.a.prop.info.EquipWeaponAttr;
 import cn.xgame.a.prop.info.ShipAttr;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.AnswerPo;
@@ -213,9 +213,9 @@ public class ShipInfo implements ITransformStream{
 	public int allOccupyEnergy() {
 		int ret = 0;
 		for( IProp o : weapons.getAll() )
-			ret += ((SEquipAttr)o).getEnergy();
+			ret += ((EquipWeaponAttr)o).getEnergy();
 		for( IProp o : assists.getAll() )
-			ret += ((SEquipAttr)o).getEnergy();
+			ret += ((EquipWeaponAttr)o).getEnergy();
 		return ret;
 	}
 	
@@ -226,9 +226,9 @@ public class ShipInfo implements ITransformStream{
 	public int allEctypeComplexity(){
 		int ret = 0;
 		for( IProp o : weapons.getAll() )
-			ret += ((SEquipAttr)o).getPerplexity();
+			ret += ((EquipWeaponAttr)o).getPerplexity();
 		for( IProp o : assists.getAll() )
-			ret += ((SEquipAttr)o).getPerplexity();
+			ret += ((EquipWeaponAttr)o).getPerplexity();
 		return ret;
 	}
 	
@@ -239,16 +239,16 @@ public class ShipInfo implements ITransformStream{
 	public int getAllaccuracy() {
 		int ret = 0;
 		for( IProp o : weapons.getAll() )
-			ret += ((SEquipAttr)o).getAccuracy();
+			ret += ((EquipWeaponAttr)o).getAccuracy();
 		for( IProp o : assists.getAll() )
-			ret += ((SEquipAttr)o).getAccuracy();
+			ret += ((EquipWeaponAttr)o).getAccuracy();
 		return ret;
 	}
 	
 	/** 装满弹药  */
 	public void fillupAmmo( ) {
 		for( IProp o : weapons.getAll() ){
-			SEquipAttr weapon = (SEquipAttr) o;
+			EquipWeaponAttr weapon = (EquipWeaponAttr) o;
 			weapon.setCurAmmo( weapon.getMaxAmmo() );
 		}
 	}
@@ -258,7 +258,7 @@ public class ShipInfo implements ITransformStream{
 	 */
 	public void toreduceAmmo( int value ){
 		for( IProp o : weapons.getAll() ){
-			SEquipAttr weapon = (SEquipAttr) o;
+			EquipWeaponAttr weapon = (EquipWeaponAttr) o;
 			int cur = weapon.getCurAmmo() + value;
 			weapon.setCurAmmo(cur);
 		}
@@ -280,9 +280,11 @@ public class ShipInfo implements ITransformStream{
 		// 装备应答和攻击属性
 		List<IProp> props = weapons.getAll();
 		for( IProp prop : props ){
-			SEquipAttr weapon = (SEquipAttr) prop;
-			fighter.addAtkattr( weapon.getAtks() );
-			fighter.addDefattr( weapon.getDefs() );
+			EquipWeaponAttr weapon = (EquipWeaponAttr) prop;
+			if( weapon.itemType() == 1 )
+				fighter.addAtkattr( weapon.getBattleAttrs());
+			if( weapon.itemType() == 2 )
+				fighter.addDefattr( weapon.getBattleAttrs() );
 			for( int id : weapon.getAnswers() ){
 				AnswerPo answer = CsvGen.getAnswerPo( id );
 				fighter.answer.add( new Answers(answer) );
@@ -299,7 +301,7 @@ public class ShipInfo implements ITransformStream{
 		// 武器
 		List<IProp> removes = Lists.newArrayList();
 		for( IProp o : weapons.getAll() ){
-			SEquipAttr equip = (SEquipAttr) o;
+			EquipWeaponAttr equip = (EquipWeaponAttr) o;
 			equip.addCurrentDur( - (int) (equip.getAccuracy() * scale) );
 			if( equip.getCurrentDur() < equip.getMaxDur() ){
 				ret.addLossEquip( this, equip.getUid(), equip.getCurrentDur() );
@@ -311,7 +313,7 @@ public class ShipInfo implements ITransformStream{
 		// 辅助
 		removes.clear();
 		for( IProp o : assists.getAll() ){
-			SEquipAttr equip = (SEquipAttr) o;
+			EquipWeaponAttr equip = (EquipWeaponAttr) o;
 			equip.addCurrentDur( - (int) (equip.getAccuracy() * scale) );
 			if( equip.getCurrentDur() < equip.getMaxDur() ){
 				ret.addLossEquip( this, equip.getUid(), equip.getCurrentDur() );
