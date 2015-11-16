@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 有玩家退出群聊 通知

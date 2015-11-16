@@ -11,9 +11,9 @@ import cn.xgame.a.player.ectype.info.EctypeInfo;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 有人请求出击 通知

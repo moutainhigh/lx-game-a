@@ -10,9 +10,9 @@ import cn.xgame.a.chat.ChatManager;
 import cn.xgame.a.chat.axn.classes.ChatType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 发起聊天

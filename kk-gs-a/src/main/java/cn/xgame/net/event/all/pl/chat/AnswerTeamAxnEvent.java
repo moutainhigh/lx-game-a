@@ -20,8 +20,8 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.event.all.pl.update.Update_3021;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.utils.Logs;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 回答是否同意组队

@@ -7,8 +7,8 @@ import cn.xgame.a.prop.classes.Quality;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ItemPo;
 import cn.xgame.gen.dto.MysqlGen.PropsDto;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
+import cn.xgame.net.netty.Netty.RW;
 import io.netty.buffer.ByteBuf;
 
 /**

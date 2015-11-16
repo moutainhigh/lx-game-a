@@ -25,9 +25,9 @@ import cn.xgame.a.player.fleet.info.result.Settlement;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.LuaUtil;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 打副本

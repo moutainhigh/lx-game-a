@@ -19,9 +19,9 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.netty.Netty.RW;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
+import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 玩家登录 
