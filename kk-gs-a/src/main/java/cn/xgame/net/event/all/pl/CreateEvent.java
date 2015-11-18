@@ -65,6 +65,9 @@ public class CreateEvent extends IEvent {
 			player.getFleets().createFleet( home.getId() );
 			player.getFleets().createFleet( home.getId() );
 			
+			ShipInfo shipInfo = player.getDocks().getApron().get(0);
+			player.getFleets().getFleet().get(0).addShip(shipInfo);
+			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code	= ErrorCode.valueOf( e.getMessage() );
