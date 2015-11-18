@@ -30,8 +30,6 @@ public class EquipAuxiliaryAttr extends IProp{
 	private int accuracy;
 	// 复杂度
 	private int perplexity;
-	// 质量
-	private int mass;
 	// 添加生命值
 	private int addHp;
 	// 推进器
@@ -84,7 +82,6 @@ public class EquipAuxiliaryAttr extends IProp{
 		buffer.writeInt( energy );
 		buffer.writeInt( accuracy );
 		buffer.writeInt( perplexity );
-		buffer.writeInt( mass );
 		buffer.writeInt( currentDur );
 		buffer.writeInt( maxDur );
 		buffer.writeInt( addHp );
@@ -126,12 +123,6 @@ public class EquipAuxiliaryAttr extends IProp{
 	}
 	public void setPerplexity(int perplexity) {
 		this.perplexity = perplexity;
-	}
-	public int getMass() {
-		return mass;
-	}
-	public void setMass(int mass) {
-		this.mass = mass;
 	}
 	public int getAddHp() {
 		return addHp;

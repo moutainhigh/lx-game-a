@@ -28,9 +28,6 @@ public class ShipAttr extends IProp{
 	// 最大能源
 	private int maxEnergy;
 	
-	// 质量
-	private int mass;
-	
 	// 精密度
 	private int accuracy;
 	
@@ -54,7 +51,6 @@ public class ShipAttr extends IProp{
 		templet 	= clone.templet;
 		maxHp		= clone.maxHp;
 		maxEnergy	= clone.maxEnergy;
-		mass		= clone.mass;
 		accuracy	= clone.accuracy;
 		wroom		= clone.wroom;
 		eroom		= clone.eroom;
@@ -93,7 +89,6 @@ public class ShipAttr extends IProp{
 	public void buildTransformStream(ByteBuf buffer) {
 		buffer.writeInt( maxHp );
 		buffer.writeInt( maxEnergy );
-		buffer.writeInt( mass );
 	}
 
 	public int getMaxHp() {
@@ -107,12 +102,6 @@ public class ShipAttr extends IProp{
 	}
 	public void setMaxEnergy(int maxEnergy) {
 		this.maxEnergy = maxEnergy;
-	}
-	public int getMass() {
-		return mass;
-	}
-	public void setMass(int mass) {
-		this.mass = mass;
 	}
 	public short getWroom() {
 		return wroom;
