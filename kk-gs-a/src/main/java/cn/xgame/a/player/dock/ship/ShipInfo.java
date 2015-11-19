@@ -113,8 +113,8 @@ public class ShipInfo implements ITransformStream{
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {
-		buffer.writeInt( attr.getUid() );
 		buffer.writeInt( attr.getNid() );
+		buffer.writeInt( attr.getUid() );
 		buffer.writeByte( attr.getQuality().toNumber() );
 		attr.buildTransformStream(buffer);
 		buffer.writeInt( currentHp );
