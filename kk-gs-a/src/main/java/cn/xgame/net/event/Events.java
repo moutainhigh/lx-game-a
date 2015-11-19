@@ -69,7 +69,7 @@ import cn.xgame.net.event.all.pl.ship.MountCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadCaptainEvent;
 import cn.xgame.net.event.all.pl.ship.UnloadEquipEvent;
 import cn.xgame.net.event.all.pl.ship.MountEquipEvent;
-import cn.xgame.net.event.all.pl.ship.MountHoldEvent;
+import cn.xgame.net.event.all.pl.ship.HoldOperateEvent;
 import cn.xgame.net.event.all.pl.staratlas.AppendAirlineEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplyBerthEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplySailendEvent;
@@ -138,7 +138,7 @@ public enum Events {
 	FLEET_EXITTEAM				( 1062, 	new ExitTeamEvent()				, "舰队操作-退出队伍" ),
 	KICK_PLAYER					( 1063, 	new KickPlayerEvent()			, "舰队操作-踢人" ),
 	// 舰船
-	MOUNT_HOLD					( 1021, 	new MountHoldEvent()			, "舰船操作-放入船仓" ),
+	MOUNT_HOLD					( 1021, 	new HoldOperateEvent()			, "舰船操作-放入船仓" ),
 //	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
 	MOUNT_EQUIP					( 1023, 	new MountEquipEvent()			, "舰船操作-装上装备" ),
 	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent()			, "舰船操作-取下装备" ),
