@@ -59,10 +59,10 @@ public class HoldOperateEvent extends IEvent{
 					throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
 				
 				// 这里先扣除 因为下面放入货仓的时候会改变UID
-				depot.deductProp( prop );
+				depot.deductProp( clone );
 				
 				// 放入货仓
-				ret.addAll( holds.appendProp( prop ) );
+				ret.addAll( holds.appendProp( clone ) );
 			}else{
 				// 执行扣除
 				IProp prop 		= ship.getHolds().deductProp( uid, count );
@@ -95,9 +95,4 @@ public class HoldOperateEvent extends IEvent{
 		
 	}
 
-}
-
-class Props{
-	int id;
-	int count;
 }

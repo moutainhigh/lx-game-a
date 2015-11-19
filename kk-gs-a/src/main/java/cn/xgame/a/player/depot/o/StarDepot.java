@@ -192,7 +192,7 @@ public class StarDepot extends IDepot implements ITransformStream{
 		else
 			updateDB( prop );
 		
-		Logs.debug( root.getCtx(), "扣除道具("+prop.getUid()+","+prop.getNid()+") [ "+tempcount+" - "+count+" = " + prop.getCount() );
+		Logs.debug( root.getCtx(), "玩家星球"+beSnid+"背包 扣除道具("+prop.getUid()+","+prop.getNid()+") [ "+tempcount+" - "+count+" = " + prop.getCount() + " ]" );
 	}
 	
 	public boolean remove( IProp prop ){
