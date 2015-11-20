@@ -111,6 +111,13 @@ public class ShipInfo implements ITransformStream{
 		dto.setWeapons( weapons.toBytes() );
 		dto.setAssists( assists.toBytes() );
 	}
+	public void deleteDB( Player player ){
+		ShipsDao dao 	= SqlUtil.getShipsDao();
+		String sql 		= new Condition( ShipsDto.uidChangeSql( attr.getUid() ) ).AND( ShipsDto.gsidChangeSql( player.getGsid() ) ).
+				AND( ShipsDto.unameChangeSql( player.getUID() ) ).toString();
+		dao.deleteByExact( sql );
+		dao.commit();
+	}
 	
 	@Override
 	public void buildTransformStream(ByteBuf buffer) {

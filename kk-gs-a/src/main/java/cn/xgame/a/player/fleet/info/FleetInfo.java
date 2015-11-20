@@ -209,7 +209,7 @@ public class FleetInfo{
 			// 舰长忠诚度
 			CaptainInfo capt = root.getDocks().getCaptain( ship.getCaptainUID() );
 			if( capt.changeLoyalty( temp.getIsWin() == 1 ? 1 : -1 ) ){
-				root.getDocks().destroy( capt );
+				root.getDocks().destroyCapt( capt );
 				ship.setCaptainUID( -1 );
 			}
 			ret.addLossCapt( ship, capt );

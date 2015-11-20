@@ -120,6 +120,28 @@ public class DockControl implements IFromDB{
 	}
 
 	/**
+	 * 销毁一个舰长
+	 * @param captain
+	 */
+	public void destroyShip( ShipInfo ship ) {
+		if( ship == null ) return;
+		removeShip( ship.getuId() );
+		ship.deleteDB( root );
+	}
+	public void destroyShip( int uid ) {
+		destroyShip( getShip(uid) );
+	}
+	private void removeShip(int uid) {
+		Iterator<ShipInfo> iter = apron.iterator();
+		while( iter.hasNext() ){
+			if( iter.next().getuId() == uid ){
+				iter.remove();
+				break;
+			}
+		}
+	}
+	
+	/**
 	 * 检测这艘舰船 是否空闲
 	 * @param ship
 	 * @throws Exception 
@@ -191,15 +213,15 @@ public class DockControl implements IFromDB{
 	 * 销毁一个舰长
 	 * @param captain
 	 */
-	public void destroy( CaptainInfo captain ) {
+	public void destroyCapt( CaptainInfo captain ) {
 		if( captain == null ) return;
-		remove( captain.getuId() );
+		removeCapt( captain.getuId() );
 		captain.deleteDB( root );
 	}
-	public void destroy( int uid ) {
-		destroy( getCaptain(uid) );
+	public void destroyCapt( int uid ) {
+		destroyCapt( getCaptain(uid) );
 	}
-	private void remove(int uid) {
+	private void removeCapt(int uid) {
 		Iterator<CaptainInfo> iter = cabin.iterator();
 		while( iter.hasNext() ){
 			if( iter.next().getuId() == uid ){
