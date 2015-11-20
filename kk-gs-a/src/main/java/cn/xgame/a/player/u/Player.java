@@ -45,6 +45,7 @@ public class Player extends IPlayer implements ITransformStream{
 	
 	//////////////////////数据库相关//////////////////////////
 	
+	
 	// 玩家领地
 	private ManorControl 		manors			= new ManorControl( this );
 	

@@ -13,6 +13,7 @@ import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
+import cn.xgame.net.event.all.pl.NewbieguideEvent;
 import cn.xgame.net.event.all.pl.captain.EatEquipEvent;
 import cn.xgame.net.event.all.pl.captain.EatIntimacyEvent;
 import cn.xgame.net.event.all.pl.chat.AlterGroupNameEvent;
@@ -125,6 +126,7 @@ public enum Events {
 	//-----------------玩家
 	PLAYER_LOGIN				( 1001,		new LoginEvent() 				, "登录游戏" ),
 	PLAYER_CREATE				( 1002, 	new CreateEvent() 				, "创建角色" ),
+	NEWBIE_GUIDE				( 1003, 	new NewbieguideEvent() 			, "保存新手引导状态" ),
 	// 星图
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "航站-申请星图信息" ),
 	SAIL_OUT					( 1015, 	new SailoutEvent()				, "航站-开始出航" ),
@@ -139,7 +141,6 @@ public enum Events {
 	KICK_PLAYER					( 1063, 	new KickPlayerEvent()			, "舰队操作-踢人" ),
 	// 舰船
 	MOUNT_HOLD					( 1021, 	new HoldOperateEvent()			, "舰船操作-放入船仓" ),
-//	UNLOAD_HOLD					( 1022, 	new UnloadHoldEvent()			, "舰船操作-船仓卸下" ),
 	MOUNT_EQUIP					( 1023, 	new MountEquipEvent()			, "舰船操作-装上装备" ),
 	UNLOAD_EQUIP				( 1024, 	new UnloadEquipEvent()			, "舰船操作-取下装备" ),
 	MOUNT_CAPTAIN				( 1025, 	new MountCaptainEvent() 		, "舰船操作-指派舰长" ),

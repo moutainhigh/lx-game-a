@@ -78,7 +78,8 @@ public class LoginEvent extends IEvent{
 			// 母星数据
 			home.buildTransformStream( buffer );
 			home.putPlyaerInfo( player, buffer );
-			player.getDepots( home.getId() ).buildTransformStream( buffer );
+//			player.getDepots( home.getId() ).buildTransformStream( buffer );
+			player.getDepots( 2007 ).buildTransformStream( buffer );
 			// 舰长数据
 			List<CaptainInfo> capts = player.getDocks().getCabin();
 			buffer.writeByte( capts.size() );
@@ -99,6 +100,8 @@ public class LoginEvent extends IEvent{
 			}
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(buffer);
+			// 新手引导
+			buffer.writeByte( player.getGuideStatus() );
 		}
 		sendPackage( ctx, buffer );
 		

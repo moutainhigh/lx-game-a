@@ -41,6 +41,9 @@ public abstract class IPlayer {
 	private long 			lastLogoutTime;
 	
 	
+	// 玩家新手引导状态值
+	private byte 			guideStatus;
+	
 	public void wrap( PlayerDataDto dto ){
 		this.UID 			= dto.getUid();
 		this.gsid			= dto.getGsid();
@@ -54,6 +57,7 @@ public abstract class IPlayer {
 		this.gold			= dto.getGold();
 		this.createTime		= dto.getCreateTime();
 		this.lastLogoutTime = dto.getLastLogoutTime();
+		this.guideStatus 	= dto.getGuideStatus();
 	}
 	
 	public void update( PlayerDataDto dto ) {
@@ -69,6 +73,7 @@ public abstract class IPlayer {
 		dto.setGold(gold);
 		dto.setCreateTime(createTime);
 		dto.setLastLogoutTime(lastLogoutTime);
+		dto.setGuideStatus(guideStatus);
 	}
 	
 	public String getUID() {
@@ -150,6 +155,12 @@ public abstract class IPlayer {
 	}
 	public void setExp(int exp) {
 		this.exp = exp;
+	}
+	public byte getGuideStatus() {
+		return guideStatus;
+	}
+	public void setGuideStatus(byte guideStatus) {
+		this.guideStatus = guideStatus;
 	}
 	
 }

@@ -64,4 +64,7 @@ public interface PlayerData {
 	
 	/** 兑换数据 */
 	byte[] swops();
+	
+	/** 玩家新手引导状态值 */
+	byte guideStatus();
 }

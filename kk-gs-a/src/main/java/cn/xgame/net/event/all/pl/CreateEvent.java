@@ -66,7 +66,9 @@ public class CreateEvent extends IEvent {
 			player.getFleets().createFleet( home.getId() );
 			
 			ShipInfo shipInfo = player.getDocks().getApron().get(0);
-			player.getFleets().getFleet().get(0).addShip(shipInfo);
+			FleetInfo fleetInfo = player.getFleets().getFleet().get(0);
+			fleetInfo.addShip(shipInfo);
+			fleetInfo.setBerthSnid( 2007 );
 			
 			code	= ErrorCode.SUCCEED;
 		} catch (Exception e) {
@@ -82,7 +84,8 @@ public class CreateEvent extends IEvent {
 			// 发送自己母星数据
 			home.buildTransformStream( buffer );
 			home.putPlyaerInfo( player, buffer );
-			player.getDepots( home.getId() ).buildTransformStream( buffer );
+//			player.getDepots( home.getId() ).buildTransformStream( buffer );
+			player.getDepots( 2007 ).buildTransformStream( buffer );
 			// 舰长数据
 			List<CaptainInfo> capts = player.getDocks().getCabin();
 			buffer.writeByte( capts.size() );
@@ -104,6 +107,8 @@ public class CreateEvent extends IEvent {
 			}
 			// 聊天频道 这里强制发0
 			buffer.writeByte( 0 );
+			// 新手引导
+			buffer.writeByte( player.getGuideStatus() );
 		}
 		sendPackage( ctx, buffer );
 	

@@ -14,6 +14,7 @@ import cn.xgame.a.fighter.o.Answers;
 import cn.xgame.a.player.dock.classes.IHold;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.a.prop.info.EquipAuxiliaryAttr;
 import cn.xgame.a.prop.info.EquipWeaponAttr;
 import cn.xgame.a.prop.info.ShipAttr;
 import cn.xgame.config.gen.CsvGen;
@@ -215,7 +216,7 @@ public class ShipInfo implements ITransformStream{
 		for( IProp o : weapons.getAll() )
 			ret += ((EquipWeaponAttr)o).getEnergy();
 		for( IProp o : assists.getAll() )
-			ret += ((EquipWeaponAttr)o).getEnergy();
+			ret += ((EquipAuxiliaryAttr)o).getEnergy();
 		return ret;
 	}
 	
@@ -228,7 +229,7 @@ public class ShipInfo implements ITransformStream{
 		for( IProp o : weapons.getAll() )
 			ret += ((EquipWeaponAttr)o).getPerplexity();
 		for( IProp o : assists.getAll() )
-			ret += ((EquipWeaponAttr)o).getPerplexity();
+			ret += ((EquipAuxiliaryAttr)o).getPerplexity();
 		return ret;
 	}
 	
@@ -241,7 +242,7 @@ public class ShipInfo implements ITransformStream{
 		for( IProp o : weapons.getAll() )
 			ret += ((EquipWeaponAttr)o).getAccuracy();
 		for( IProp o : assists.getAll() )
-			ret += ((EquipWeaponAttr)o).getAccuracy();
+			ret += ((EquipAuxiliaryAttr)o).getAccuracy();
 		return ret;
 	}
 	
