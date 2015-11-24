@@ -56,7 +56,7 @@ public class ApplySailendEvent extends IEvent {
 				// 取出航线第一个目标星球
 				int aimId = airline.remove(0);
 				// 算出航行时间
-				int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId )[0].getInt();
+				int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId, fleet.toShipDatas() )[0].getInt();
 				
 				// 切换航行状态
 				int starttime = (int) (System.currentTimeMillis()/1000);

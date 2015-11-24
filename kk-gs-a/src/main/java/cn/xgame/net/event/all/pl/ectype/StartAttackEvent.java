@@ -220,13 +220,13 @@ public class StartAttackEvent extends IEvent{
 	 * @param fleet
 	 */
 	private void setSailStatus(int snid, String uID, byte type, int cnid, byte ltype, byte level, FleetInfo fleet, List<FleetInfo> allfleet ) {
-		int sailtime 	= LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid )[0].getInt();
+		int sailtime 	= LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid, fleet.toShipDatas() )[0].getInt();
 		int starttime 	= (int) (System.currentTimeMillis()/1000);
 		FightEctype fightEctype = new FightEctype( uID, type, cnid, ltype, level );
 		// 这里根据组队算出 最高航行时间
 		int wtime		= sailtime;
 		for( FleetInfo x : allfleet ){
-			int temp	= LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, x.getBerthSnid(), snid )[0].getInt();
+			int temp	= LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, x.getBerthSnid(), snid, x.toShipDatas() )[0].getInt();
 			if( temp > wtime )
 				wtime	= temp;
 		}

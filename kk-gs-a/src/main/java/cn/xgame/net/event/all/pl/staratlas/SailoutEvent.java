@@ -14,6 +14,7 @@ import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.fleet.info.purpose.Setsail;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -43,12 +44,13 @@ public class SailoutEvent extends IEvent{
 			// 取出航线第一个目标星球
 			int aimId = airline.remove(0);
 			// 算出航行时间
-			int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId )[0].getInt();
+			int sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), aimId, fleet.toShipDatas() )[0].getInt();
 			
 			// 切换航行状态
 			int starttime = (int) (System.currentTimeMillis()/1000);
 			status = fleet.changeStatus( StatusType.SAIL, aimId, starttime, sailtime, new Setsail( airline ), 0 );
 			
+			Logs.debug( player.getCtx(), " 出航 " + fleet.getBerthSnid() + " -> " + aimId + " 航行时间 =" + sailtime );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

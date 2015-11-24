@@ -78,7 +78,7 @@ public class Update_1290 extends IEvent{
 		int ret = snid;
 		int temp = 0;
 		for( FleetInfo fleet : allfleets ){
-			int stime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid )[0].getInt();
+			int stime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid, fleet.toShipDatas() )[0].getInt();
 			if( stime > temp ){
 				temp 	= stime;
 				ret 	= fleet.getBerthSnid();
