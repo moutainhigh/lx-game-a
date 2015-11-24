@@ -1,5 +1,6 @@
 package cn.xgame.utils;
 
+
 import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.system.SystemCfg;
@@ -102,12 +103,13 @@ public class LuaUtil {
 	public static void main(String[] args) {
 		Lua.setLogClass(Logs.class);
 		
-		String s = LuaUtil.getEctypeInfo().getField( "generateChanceEctype" ).call( 1, 1004 )[0].getString();
-		
-		System.out.println( s );
 		
 	}
 
 
 	
+}
+
+class sadas{
+	int a;
 }

@@ -231,6 +231,8 @@ public abstract class IProp implements ITransformStream{
 	/** 最大叠加数 */
 	public int getMaxOverlap() { return item.manymax; }
 	
+	/** 道具质量 */
+	public int getMess() { return item.mess; }
 	
 	/** 是否货币 */
 	public boolean isCurrency() { return item.itemtype == 0 && nid == LXConstants.CURRENCY_NID; }

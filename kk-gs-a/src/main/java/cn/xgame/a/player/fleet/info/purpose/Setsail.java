@@ -5,6 +5,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 
 import io.netty.buffer.ByteBuf;
+import cn.xgame.a.fighter.ShipData;
 import cn.xgame.a.player.fleet.classes.IPurpose;
 import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
@@ -84,12 +85,12 @@ public class Setsail extends IPurpose{
 		int endtime  	= starttime + continutime;// 结束时间
 		int curtime 	= (int) (System.currentTimeMillis()/1000);
 		
+		List<ShipData> shipDatas = fleet.toShipDatas();
 		while( endtime <= curtime ){
 			startId = aimId;
 			if( airline.isEmpty() ){ aimId = 0; break; }
 			aimId 	= airline.remove(0);
-			
-			sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, startId, aimId )[0].getInt();
+			sailtime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, startId, aimId, shipDatas )[0].getInt();
 			endtime	+= sailtime;
 		}
 		

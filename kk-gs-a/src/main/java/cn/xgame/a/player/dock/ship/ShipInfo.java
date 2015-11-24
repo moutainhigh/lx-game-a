@@ -244,13 +244,38 @@ public class ShipInfo implements ITransformStream{
 	 * 获取所有装备精密度
 	 * @return
 	 */
-	public int getAllaccuracy() {
+	public int allEctypeAccuracy() {
 		int ret = 0;
 		for( IProp o : weapons.getAll() )
 			ret += ((EquipWeaponAttr)o).getAccuracy();
 		for( IProp o : assists.getAll() )
 			ret += ((EquipAuxiliaryAttr)o).getAccuracy();
 		return ret;
+	}
+	
+	/**
+	 * 该船的总质量
+	 * @return
+	 */
+	public int allMess(){
+		int ret = attr.getMess();
+		List<IProp> all = getAllEquip();
+		for( IProp o : all )
+			ret += o.getMess();
+		return ret;
+	}
+	
+	/**
+	 * 获取推进力  如果没有装备是加推进力的 那么就用船本身的推进力
+	 * @return
+	 */
+	public int getPush() {
+		int ret = 0;
+		// 先检测是否有装备有推进力
+		for( IProp o : assists.getAll() )
+			ret += ((EquipAuxiliaryAttr)o).getPush();
+		// 如果没有装备加推进力 那么就是船本身的推进力
+		return ret == 0 ? attr.templet().push : ret;
 	}
 	
 	/** 装满弹药  */
@@ -331,5 +356,7 @@ public class ShipInfo implements ITransformStream{
 		}
 		assists.getAll().removeAll(removes);
 	}
+
+
 	
 }

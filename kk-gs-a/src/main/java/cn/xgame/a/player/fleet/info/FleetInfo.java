@@ -2,6 +2,7 @@ package cn.xgame.a.player.fleet.info;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.DamagedInfo;
 import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.fighter.ShipData;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
@@ -214,7 +216,7 @@ public class FleetInfo{
 			}
 			ret.addLossCapt( ship, capt );
 			// 获取所有装备 精密度 + 船本身精密度
-			int allAccuracy = ship.getAllaccuracy() + ship.attr().getAccuracy();
+			int allAccuracy = ship.allEctypeAccuracy() + ship.attr().getAccuracy();
 			float scale = temp.getDamaged()/allAccuracy;
 			if( scale == 0 )
 				continue;
@@ -233,6 +235,16 @@ public class FleetInfo{
 		return ret;
 	}
 
-
+	public List<ShipData> toShipDatas() {
+		List<ShipData> ret = new ArrayList<ShipData>();
+		for( ShipInfo ship : ships ){
+			ShipData x = new ShipData();
+			x.push = ship.getPush();
+			x.pushratio = ship.attr().templet().pushratio;
+			x.mess = ship.allMess();
+			ret.add(x);
+		}
+		return ret;
+	}
 
 }
