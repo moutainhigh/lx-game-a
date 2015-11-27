@@ -50,7 +50,7 @@ public class SailoutEvent extends IEvent{
 			int starttime = (int) (System.currentTimeMillis()/1000);
 			status = fleet.changeStatus( StatusType.SAIL, aimId, starttime, sailtime, new Setsail( airline ), 0 );
 			
-			Logs.debug( player.getCtx(), " 出航 " + fleet.getBerthSnid() + " -> " + aimId + " 航行时间 =" + sailtime );
+			Logs.debug( player.getCtx(), "出航 " + fleet.getBerthSnid() + " -> " + aimId + " 航行时间 =" + sailtime );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );

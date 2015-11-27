@@ -1,10 +1,15 @@
 package cn.xgame.a.player.mail.classes;
 
 
+import java.util.List;
+
+import x.javaplus.collections.Lists;
 import x.javaplus.string.StringUtil;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
+import cn.xgame.a.prop.IProp;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -21,25 +26,25 @@ public class IMail{
 	private MailType 		type;
 	
 	// 邮件标题
-	private String 			title;
+	private String 			title = "";
 	
 	// 邮件内容
-	private String 			content;
+	private String 			content = "";
 	
 	// 货币
-	private int 			money;
+	private int 			money = 0;
 	
 	// 附件
-//	private List<IProp> adjuncts = Lists.newArrayList();
+	private List<IProp> adjuncts = Lists.newArrayList();
 	
 	// 发送人UID
-	private String 			senderUID;
+	private String 			senderUID = "";
 	
 	// 发送人名字
-	private String 			senderName;
+	private String 			senderName = "";
 	
 	// 发送时间
-	private int 			sendtime;
+	private int 			sendtime = 0;
 	
 	// 已读 & 已支付
 	private boolean 		isRead = false;
@@ -59,19 +64,27 @@ public class IMail{
 		setSendtime( dto.getSendtime() );
 		setRead( dto.getIsRead() == 1 );
 		setDurationtime( dto.getDurationtime() );
+		setAdjuncts( dto.getAdjuncts() );
 	}
 	
-	public IMail( MailType type, String title, String content,
-			int money, String senderUID, String senderName ) {
-		this.type = type;
-		this.title = title;
-		this.content = content;
-		this.money = money;
-		this.senderUID = senderUID;
-		this.senderName = senderName;
-		this.sendtime = (int) (System.currentTimeMillis()/1000);
-		this.isRead = false;
-		this.durationtime = 0;
+
+
+	public IMail( MailType type, String title, String content, String senderUID, String senderName ) {
+		this.type 			= type;
+		this.title 			= title;
+		this.content 		= content;
+		this.senderUID 		= senderUID;
+		this.senderName 	= senderName;
+		this.sendtime 		= (int) (System.currentTimeMillis()/1000);
+		this.isRead 		= false;
+		this.durationtime 	= 0;
+	}
+
+	public IMail(MailType type, String title, String content) {
+		this.type 			= type;
+		this.title 			= title;
+		this.content 		= content;
+		this.sendtime 		= (int) (System.currentTimeMillis()/1000);
 	}
 
 	/**
@@ -87,6 +100,7 @@ public class IMail{
 		buffer.writeInt( sendtime );
 		buffer.writeByte( isRead ? 1 : 0 );
 		buffer.writeInt( durationtime );
+		buffer.writeByte( adjuncts.isEmpty() ? 0 : 1 );
 	}
 	
 	/**
@@ -94,8 +108,37 @@ public class IMail{
 	 * @param buffer
 	 */
 	public void putBufferContent( ByteBuf buffer ) {
+		buffer.writeInt(uid);
 		RW.writeString( buffer, content );
 		buffer.writeInt( money );
+		buffer.writeByte( adjuncts.size() );
+		for( IProp prop : adjuncts ){
+			prop.putBaseBuffer(buffer);
+		}
+	}
+	
+	/**
+	 * 添加道具
+	 * @param prop
+	 */
+	public void addProp( IProp prop ){
+		prop.setUid(adjuncts.size());
+		adjuncts.add(prop);
+	}
+	
+	/**
+	 * 获取道具列表
+	 * @return
+	 */
+	public List<IProp> getProps() {
+		return adjuncts;
+	}
+	
+	/**
+	 * 清理道具列表
+	 */
+	public void clearupProps() {
+		adjuncts.clear();
 	}
 	
 	public int getUid() {
@@ -158,6 +201,21 @@ public class IMail{
 	public void setDurationtime(int durationtime) {
 		this.durationtime = durationtime;
 	}
-
+	public void setAdjuncts(byte[] arrays) {
+		ByteBuf buf = Unpooled.copiedBuffer(arrays);
+		byte size = buf.readByte();
+		for (int i = 0; i < size; i++) {
+			IProp prop = IProp.create(buf);
+			adjuncts.add(prop);
+		}
+	}
+	public byte[] getAdjuncts(){
+		ByteBuf buf = Unpooled.buffer();
+		buf.writeByte( adjuncts.size() );
+		for( IProp prop : adjuncts ){
+			prop.putBuffer(buf);
+		}
+		return buf.array();
+	}
 
 }

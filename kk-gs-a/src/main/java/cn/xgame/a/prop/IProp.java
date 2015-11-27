@@ -83,7 +83,7 @@ public abstract class IProp implements ITransformStream{
 	 * @return
 	 */
 	public static IProp create( int uid, int nid, int count ) {
-		ItemPo item 		= CsvGen.getItemPo(nid);
+		ItemPo item = CsvGen.getItemPo(nid);
 		return create( item, uid, nid, count, randomQuality( item.quality ) );
 	}
 	

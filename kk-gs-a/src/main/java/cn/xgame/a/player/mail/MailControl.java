@@ -49,14 +49,36 @@ public class MailControl implements IFromDB{
 	}
 	
 	/**
+	 * 获取有附加的邮件
+	 * @param uid
+	 * @return
+	 */
+	public List<MailInfo> getHavePropMail( int uid ) {
+		List<MailInfo> ret = Lists.newArrayList();
+		for( MailInfo mail : mails ){
+			// 如果有附件才返回
+			if(!mail.getProps().isEmpty() || mail.getMoney() > 0){
+				if( uid == -1 ){
+					ret.add(mail);
+				}else if( mail.getUid() == uid){
+					ret.add(mail);
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	/**
 	 * 根据唯一ID 获取邮件 
 	 * @param uid
 	 * @return
 	 */
 	public MailInfo getMail( int uid ) {
 		for( MailInfo mail : mails ){
-			if( mail.getUid() == uid )
+			if( mail.getUid() == uid ){
 				return mail;
+			}
 		}
 		return null;
 	}
@@ -71,13 +93,18 @@ public class MailControl implements IFromDB{
 	
 	/**
 	 * 删除一个邮件
-	 * @param uid
+	 * @param uid -1表示一键删除 已读邮件
 	 */
 	public void remove( int uid ) {
 		Iterator<MailInfo> iter = mails.iterator();
 		while( iter.hasNext() ){
 			MailInfo mail = iter.next();
-			if( mail.getUid() == uid ){
+			if( uid == -1 && mail.isRead() ){
+				if( !mail.getProps().isEmpty() || mail.getMoney() > 0 )
+					continue;
+				iter.remove();
+				mail.deleteDB( root.getUID() );
+			}else if( mail.getUid() == uid ){
 				iter.remove();
 				mail.deleteDB( root.getUID() );
 				break;
@@ -97,6 +124,5 @@ public class MailControl implements IFromDB{
 		}
 		return ret;
 	}
-
 
 }

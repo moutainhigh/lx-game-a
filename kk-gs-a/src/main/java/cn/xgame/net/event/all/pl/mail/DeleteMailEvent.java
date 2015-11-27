@@ -34,6 +34,9 @@ public class DeleteMailEvent extends IEvent{
 		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
 		buffer.writeShort( code.toNumber() );
+		if( code == ErrorCode.SUCCEED ){
+			buffer.writeInt(uid);
+		}
 		sendPackage( player.getCtx(), buffer );
 	}
 

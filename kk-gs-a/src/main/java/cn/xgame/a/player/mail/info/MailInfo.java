@@ -5,9 +5,12 @@ import x.javaplus.string.StringUtil;
 import cn.xgame.a.player.mail.classes.IMail;
 import cn.xgame.a.player.mail.classes.MailType;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDao;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.system.LXConstants;
 import cn.xgame.system.SystemCfg;
 
 /**
@@ -21,10 +24,46 @@ public class MailInfo extends IMail{
 		super(dto);
 	}
 
-	public MailInfo( byte type, String title, String content, int money, Player player ) {
-		super( MailType.fromNumber(type), title, content, money, player.getUID(), player.getNickname() );
+	/**
+	 * 玩家发送邮件
+	 * @param type
+	 * @param title
+	 * @param content
+	 * @param money
+	 * @param player
+	 */
+	public MailInfo( byte type, String title, String content, Player player ) {
+		super( MailType.fromNumber(type), title, content, player.getUID(), player.getNickname() );
 	}
-
+	
+	/**
+	 * 系统邮件
+	 * @param type
+	 * @param title
+	 * @param content
+	 */
+	public MailInfo( MailType type, String title, String content ){
+		super(type,title,content);
+	}
+	
+	/**
+	 * 添加道具
+	 * @param nid
+	 * @param count
+	 */
+	public void addProp( int nid, int count ){
+		if( CsvGen.getItemPo(nid) == null )
+			return;
+		if( count == 0 )
+			return;
+		if( nid == LXConstants.CURRENCY_NID ){
+			setMoney(count);
+		}else{
+			IProp prop = IProp.create(-1, nid, count);
+			addProp(prop);
+		}
+	}
+	
 	/**
 	 * 创建数据库
 	 * @param root
@@ -40,6 +79,7 @@ public class MailInfo extends IMail{
 		dto.setTitle( StringUtil.toBytes( getTitle() ) );
 		dto.setContent( StringUtil.toBytes( getContent() ) );
 		dto.setMoney( getMoney() );
+		dto.setAdjuncts( getAdjuncts() );
 		dto.setSenderUID( getSenderUID() );
 		dto.setSenderName( getSenderName() );
 		dto.setSendtime( getSendtime() );
@@ -59,6 +99,7 @@ public class MailInfo extends IMail{
 		MailInfoDto dto = dao.updateByExact( sql );
 		dto.setIsRead( (byte) (isRead() ? 1 : 0) );
 		dto.setMoney( getMoney() );
+		dto.setAdjuncts( getAdjuncts() );
 		dao.commit(dto);
 	}
 	
@@ -79,5 +120,5 @@ public class MailInfo extends IMail{
 		String sql	= new Condition( MailInfoDto.unameChangeSql( uname ) ).AND( MailInfoDto.gsidChangeSql( SystemCfg.ID ) ).toString();
 		return SqlUtil.getMaxId( SqlUtil.getClassName( MailInfoDto.class ), "uid", sql ) + 1;
 	}
-	
+
 }

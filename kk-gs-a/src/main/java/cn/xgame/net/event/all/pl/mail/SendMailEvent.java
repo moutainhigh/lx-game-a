@@ -30,6 +30,11 @@ public class SendMailEvent extends IEvent {
 		String title 			= RW.readString(data); // 标题;
 		String content 			= RW.readString(data); // 内容;
 		int money 				= data.readInt(); // 货币
+//		List<Prop> props 		= Lists.newArrayList(); // 附件
+//		byte size				= data.readByte();
+//		for (int i = 0; i < size; i++)
+//			props.add( new Prop(data) );
+		
 		
 		ErrorCode code = null;
 		try {
@@ -41,7 +46,13 @@ public class SendMailEvent extends IEvent {
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
 			// 创建邮件
-			MailInfo mail = new MailInfo( type, title, content, money, player );
+			MailInfo mail = new MailInfo( type, title, content, player );
+			mail.addProp( LXConstants.CURRENCY_NID, money );
+//			StarDepot depots = player.getDepots();
+//			for( Prop prop : props ){
+//				depots.deductProp(uid, count);
+//				mail.addProp( prop.id, prop.count );
+//			}
 			mail.createDB( recipientsUID );
 			
 			Player recipients = PlayerManager.o.getPlayerFmOnline(recipientsUID);
@@ -65,8 +76,16 @@ public class SendMailEvent extends IEvent {
 			buffer.writeInt( player.getCurrency() );
 		}
 		sendPackage( player.getCtx(), buffer );
-	
 	}
 
+}
+
+class Prop{
+	int uid;
+	int count;
+	public Prop(ByteBuf data) {
+		uid = data.readInt();
+		count = data.readInt();
+	}
 }
 
