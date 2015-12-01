@@ -78,11 +78,7 @@ public class LoginEvent extends IEvent{
 			// 母星数据
 			home.buildTransformStream( buffer );
 			home.putPlyaerInfo( player, buffer );
-			if( player.getGuideStatus() >= 5 ){
-				player.getDepots( home.getId() ).buildTransformStream( buffer );
-			}else{
-				player.getDepots( 2007 ).buildTransformStream( buffer );
-			}
+			player.getDepots( home.getId() ).buildTransformStream( buffer );
 			// 舰长数据
 			List<CaptainInfo> capts = player.getDocks().getCabin();
 			buffer.writeByte( capts.size() );
