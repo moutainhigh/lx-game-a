@@ -1,5 +1,7 @@
 package cn.xgame.a.player.task.classes.condition;
 
+
+
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -12,34 +14,22 @@ import cn.xgame.a.prop.IProp;
 import cn.xgame.config.o.TaskcndPo;
 
 /**
- * 收集道具
+ * 运输道具
  * @author deng		
- * @date 2015-10-25 上午2:05:41
+ * @date 2015-12-1 下午5:23:29
  */
-public class XiaohaoDaoju extends ICondition{
+public class YunshuDaoju extends ICondition {
 	
-	// 需要消耗的道具 
+	// 道具UID列表
 	private List<IProp> props = Lists.newArrayList();
 	
-	public XiaohaoDaoju( ConType type, TaskcndPo templet ) {
-		super(type,templet);
-	}
-	
-	public boolean isComplete( Player player ){
-		StarDepot depots = player.getDepots();
-		for( IProp prop : props ){
-			int count = 0;
-			List<IProp> ls = depots.getPropsByNid(prop.getNid());
-			for (IProp x : ls)
-				count += x.getCount();
-			if( count < prop.getCount() )
-				return false;
-		}
-		return true;
+	public YunshuDaoju(ConType type, TaskcndPo templet) {
+		super(type, templet);
 	}
 	
 	@Override
 	public void beginExecute(Player player) {
+		StarDepot depots = player.getDepots();
 		String[] array = templet().needitem.split("\\|");
 		for( String temp : array ){
 			String str[] = temp.split(";");
@@ -47,18 +37,20 @@ public class XiaohaoDaoju extends ICondition{
 			int count = Integer.parseInt( str[1] );
 			IProp prop = IProp.create(id, count);
 			props.add(prop);
+			depots.appendProp(id, count);
 		}
 	}
 	
 	@Override
 	public void execute(Object[] objects) {
+		int id = (Integer) objects[0];
+		isComplete = id == templet().starid;
 	}
 
 	@Override
 	public void endExecute(Player player) {
-		// 删除收集的道具
 		StarDepot depots = player.getDepots();
-		for( IProp prop : props )
+		for (IProp prop : props )
 			depots.deductPropByNid(prop);
 	}
 }

@@ -97,6 +97,8 @@ public class LoginEvent extends IEvent{
 			for( FleetInfo fleet : fleets ){
 				fleet.buildTransformStream(player,buffer);
 			}
+			// 已接任务列表 and 可接任务列表
+			player.getTasks().buildTransformStream(buffer);
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(buffer);
 			// 新手引导

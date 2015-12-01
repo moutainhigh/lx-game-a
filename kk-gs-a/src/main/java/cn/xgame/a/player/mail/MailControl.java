@@ -12,6 +12,8 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDao;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
+import cn.xgame.net.event.Events;
+import cn.xgame.net.event.all.pl.update.Update_1050;
 import cn.xgame.system.SystemCfg;
 
 /**
@@ -88,7 +90,12 @@ public class MailControl implements IFromDB{
 	 * @param mail
 	 */
 	public void addMail( MailInfo mail ) {
+		// 先创建数据库 在里面设置了唯一ID
+		mail.createDB(root.getUID());
+		// 放入内存
 		mails.add( mail );
+		// 这里发同步信息
+		((Update_1050)Events.UPDATE_1050.toInstance()).run( root, mail );
 	}
 	
 	/**

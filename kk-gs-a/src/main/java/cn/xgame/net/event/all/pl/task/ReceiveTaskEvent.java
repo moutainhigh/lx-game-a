@@ -26,8 +26,6 @@ public class ReceiveTaskEvent extends IEvent{
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
 		
-		int snid 	= data.readInt();
-		int npcid 	= data.readInt();
 		int taskid	= data.readInt();
 		
 		ErrorCode code = null;
@@ -37,18 +35,16 @@ public class ReceiveTaskEvent extends IEvent{
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
 			// 判断 地点
-			if( !isInSite( player, templet.needsite ) )
+			if( !isInSite( player, templet.starid ) )
 				throw new Exception( ErrorCode.CON_DISSATISFY.name() );
-			// 判断 等级
-			// TODO
 			
 			// 检测是否有这个任务 并且 在可接任务列表中删除掉
 			TaskControl tasks = player.getTasks();
-			if( !tasks.removeCanTask( snid, npcid, taskid ) )
+			if( !tasks.removeCanTask( taskid ) )
 				throw new Exception( ErrorCode.TASK_NOTEXIST.name() );
 			
 			// 创建一个任务
-			TaskType type = TaskType.fromNumber( templet.type );
+			TaskType type = TaskType.fromNumber( templet.tasktype );
 			ITask ret = type.create( templet );
 			
 			// 添加到已接任务列表

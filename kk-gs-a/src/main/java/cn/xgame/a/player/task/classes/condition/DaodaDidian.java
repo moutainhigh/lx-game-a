@@ -2,6 +2,7 @@ package cn.xgame.a.player.task.classes.condition;
 
 import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.task.classes.ICondition;
+import cn.xgame.a.player.u.Player;
 import cn.xgame.config.o.TaskcndPo;
 
 /**
@@ -11,27 +12,24 @@ import cn.xgame.config.o.TaskcndPo;
  */
 public class DaodaDidian extends ICondition{
 	
-	// 需要到达的星球ID
-	private final int sid;
-	
 	public DaodaDidian( ConType type, TaskcndPo templet ) {
-		super(type,templet.id);
-		sid = Integer.parseInt( templet.value );
+		super(type,templet);
+	}
+	
+	@Override
+	public void beginExecute(Player player) {
+		
+	}
+	
+	@Override
+	public void execute(Object[] objects) {
+		int id = (Integer) objects[0];
+		isComplete = templet().starid == id;
 	}
 
 	@Override
-	public boolean isComplete() {
-		return sid == getValue();
-	}
-	
-	/**
-	 * 执行 条件
-	 * @param eid
-	 */
-	public void execute( int sid ){
-		if( this.sid != sid || isComplete() )
-			return ;
-		setValue(sid);
+	public void endExecute(Player player) {
+		
 	}
 	
 }

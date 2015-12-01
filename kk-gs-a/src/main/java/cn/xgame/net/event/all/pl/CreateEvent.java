@@ -104,6 +104,8 @@ public class CreateEvent extends IEvent {
 			for( FleetInfo fleet : fleets ){
 				fleet.buildTransformStream(player,buffer);
 			}
+			// 已接任务列表 and 可接任务列表
+			player.getTasks().buildTransformStream(buffer);
 			// 聊天频道 这里强制发0
 			buffer.writeByte( 0 );
 			// 新手引导

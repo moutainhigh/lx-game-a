@@ -77,8 +77,7 @@ import cn.xgame.net.event.all.pl.staratlas.ApplySailendEvent;
 import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
 import cn.xgame.net.event.all.pl.task.AbandonTaskEvent;
-import cn.xgame.net.event.all.pl.task.ApplyCanTaskEvent;
-import cn.xgame.net.event.all.pl.task.ApplyYetTaskEvent;
+import cn.xgame.net.event.all.pl.task.CompleteTaskEvent;
 import cn.xgame.net.event.all.pl.task.ReceiveTaskEvent;
 import cn.xgame.net.event.all.pl.transaction.ApplySSwopEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
@@ -203,11 +202,9 @@ public enum Events {
 	APPLY_SSWOP					( 1331, 	new ApplySSwopEvent()			, "兑换-申请特殊兑换剩余次数" ),
 	SPECIAL_SWOP				( 1332, 	new SpecialSwopEvent()			, "兑换-特殊兑换" ),
 	//-----------------任务
-	APPLY_CANTASK				( 1401, 	new ApplyCanTaskEvent()			, "任务系统-申请可接任务列表" ),
-	APPLY_YETTASK				( 1402, 	new ApplyYetTaskEvent()			, "任务系统-申请已接任务列表" ),
 	RECEIVE_TASK				( 1403, 	new ReceiveTaskEvent()			, "任务系统-接任务" ),
 	ABANDON_TASK				( 1404, 	new AbandonTaskEvent()			, "任务系统-放弃任务" ),
-	
+	COMPLETE_TASK				( 1405, 	new CompleteTaskEvent()			, "任务系统-完成任务" ),
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent()			, "聊天系统-发起聊天" ),

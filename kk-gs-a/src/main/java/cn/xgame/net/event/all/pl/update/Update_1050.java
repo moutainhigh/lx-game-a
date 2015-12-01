@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.Logs;
-import cn.xgame.net.netty.Netty.RW;
 
 /**
  * 邮件通知
@@ -21,15 +21,19 @@ public class Update_1050 extends IEvent {
 	}
 
 	/**
-	 * 通知
-	 * @param player 发送人
-	 * @param recipients 接受人
+	 * 你有新的邮件
 	 */
-	public void run(Player player, Player recipients) {
+	public void run( Player player, MailInfo mail ) {
+		
 		try {
-			ByteBuf buffer = buildEmptyPackage( recipients.getCtx(), 125 );
-			RW.writeString( buffer, player.getNickname() );
-			sendPackage( recipients.getCtx(), buffer );
+			
+			if( !player.isOnline() )
+				return;
+			
+			ByteBuf buffer = buildEmptyPackage( player.getCtx(), 125 );
+			buffer.writeInt(mail.getUid());
+			sendPackage( player.getCtx(), buffer );
+			
 		} catch (Exception e) {
 			Logs.error( "Update_1050 ", e );
 		}

@@ -6,16 +6,16 @@ import cn.xgame.a.player.u.Player;
 import cn.xgame.config.o.TaskcndPo;
 
 /**
- * 完成副本
+ * 对话
  * @author deng		
- * @date 2015-10-25 上午2:04:14
+ * @date 2015-12-1 下午4:55:06
  */
-public class WanchengFuben extends ICondition{
+public class DuiHua extends ICondition {
 	
-	public WanchengFuben( ConType type, TaskcndPo templet ) {
+	public DuiHua( ConType type, TaskcndPo templet ) {
 		super(type,templet);
 	}
-
+	
 	@Override
 	public void beginExecute(Player player) {
 		
@@ -23,8 +23,9 @@ public class WanchengFuben extends ICondition{
 	
 	@Override
 	public void execute(Object[] objects) {
-		int id = (Integer) objects[0];
-		isComplete = id == templet().target;
+		int sid = (Integer) objects[0];
+		int npcid = (Integer) objects[1];
+		isComplete = ( templet().starid == sid && templet().target == npcid );
 	}
 
 	@Override
@@ -32,4 +33,6 @@ public class WanchengFuben extends ICondition{
 		
 	}
 
+
+	
 }

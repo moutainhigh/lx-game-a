@@ -133,9 +133,6 @@ public class PlayerManager {
 		// 结算舰长周薪
 		player.getDocks().balanceWeekly();
 		
-		// 刷新任务列表
-		player.getTasks().updateTasks();
-		
 		// 清空兑换记录
 		player.getSwops().clear();
 	}

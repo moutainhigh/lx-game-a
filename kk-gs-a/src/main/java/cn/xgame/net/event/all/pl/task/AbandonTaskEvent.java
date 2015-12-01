@@ -24,8 +24,6 @@ public class AbandonTaskEvent extends IEvent {
 		ErrorCode code = null;
 		try {
 			
-			// 判断
-			
 			// 这里直接删除
 			player.getTasks().removeYetTask( tid );
 			

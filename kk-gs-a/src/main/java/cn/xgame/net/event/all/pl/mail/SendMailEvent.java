@@ -9,10 +9,9 @@ import x.javaplus.util.ErrorCode;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.net.event.Events;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.net.event.all.pl.update.Update_1050;
 import cn.xgame.system.LXConstants;
+import cn.xgame.system.SystemCfg;
 import cn.xgame.net.netty.Netty.RW;
 
 /**
@@ -53,16 +52,11 @@ public class SendMailEvent extends IEvent {
 //				depots.deductProp(uid, count);
 //				mail.addProp( prop.id, prop.count );
 //			}
-			mail.createDB( recipientsUID );
 			
-			Player recipients = PlayerManager.o.getPlayerFmOnline(recipientsUID);
+			Player recipients = PlayerManager.o.getPlayer(recipientsUID,SystemCfg.ID);
 			if( recipients != null ){
-				
 				// 放入玩家邮箱
 				recipients.getMails().addMail( mail );
-				
-				// 这里发生同步信息
-				((Update_1050)Events.UPDATE_1050.toInstance()).run( player, recipients );
 			}
 			
 			code = ErrorCode.SUCCEED;

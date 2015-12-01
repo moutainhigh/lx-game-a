@@ -14,13 +14,38 @@ import cn.xgame.config.o.TaskPo;
  */
 public enum TaskType {
 	
-	/** 常规任务 */
-	GENERAL(1) {
+	/** 主线任务 */
+	MAINLINE(1) {
 		@Override
 		public ITask create(TaskPo templet) {
-			return new GeneralTask( GENERAL, templet );
+			return new GeneralTask( MAINLINE, templet );
+		}
+	},
+	
+	/** 支线任务 */
+	BRANCH(2) {
+		@Override
+		public ITask create(TaskPo templet) {
+			return new GeneralTask( BRANCH, templet );
+		}
+	},
+	
+	/** 日常任务 */
+	EVERYDAY(3) {
+		@Override
+		public ITask create(TaskPo templet) {
+			return new GeneralTask( EVERYDAY, templet );
+		}
+	},
+	
+	/** 道具触发任务 */
+	ITEMTRIGGER(4) {
+		@Override
+		public ITask create(TaskPo templet) {
+			return new GeneralTask( ITEMTRIGGER, templet );
 		}
 	};
+	
 	
 	private final byte	number;
 	private static final Map<Byte, TaskType> numToEnum = new HashMap<Byte, TaskType>();

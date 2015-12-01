@@ -1,4 +1,4 @@
-package cn.xgame.a.player.task.star;
+package cn.xgame.a.player.task.info;
 
 /**
  * 可接任务
@@ -10,22 +10,11 @@ public class CanTask {
 	// 任务id
 	private int id;
 	
-	// 时效 结束时间
-	private int endtime;
-	
-	
 	public CanTask( int id ) {
 		this.id = id;
 	}
 
 	public int getId() {
 		return id;
-	}
-	public int getEndtime() {
-		return endtime;
-	}
-
-	public void setEndtime(int endtime) {
-		this.endtime = endtime;
 	}
 }

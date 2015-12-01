@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.xgame.a.player.task.classes.condition.DaodaDidian;
+import cn.xgame.a.player.task.classes.condition.DuiHua;
 import cn.xgame.a.player.task.classes.condition.WanchengFuben;
 import cn.xgame.a.player.task.classes.condition.XiaohaoDaoju;
+import cn.xgame.a.player.task.classes.condition.YunshuDaoju;
 import cn.xgame.config.o.TaskcndPo;
 
 /**
@@ -16,9 +18,19 @@ import cn.xgame.config.o.TaskcndPo;
 public enum ConType {
 	
 	/**
+	 * 对话
+	 */
+	DUIHUA(1) {
+		@Override
+		public ICondition create(TaskcndPo templet) {
+			return new DuiHua( DUIHUA, templet );
+		}
+	},
+	
+	/**
 	 * 到达地点
 	 */
-	DAODADIDIAN(1) {
+	DAODADIDIAN(2) {
 		@Override
 		public ICondition create(TaskcndPo templet) {
 			return new DaodaDidian( DAODADIDIAN, templet );
@@ -28,7 +40,7 @@ public enum ConType {
 	/**
 	 * 完成副本
 	 */
-	WANCHENGFUBEN(2) {
+	WANCHENGFUBEN(3) {
 		@Override
 		public ICondition create(TaskcndPo templet) {
 			return new WanchengFuben( WANCHENGFUBEN, templet );
@@ -36,12 +48,22 @@ public enum ConType {
 	},
 	
 	/**
-	 * 消耗道具
+	 * 运输道具
 	 */
-	XIAOHAODAOJU(3) {
+	YUNSHUDAOJU(4) {
 		@Override
 		public ICondition create(TaskcndPo templet) {
-			return new XiaohaoDaoju(XIAOHAODAOJU,templet);
+			return new YunshuDaoju( YUNSHUDAOJU, templet );
+		}
+	},
+	
+	/**
+	 * 收集道具
+	 */
+	SHOUJIDAOJU(5) {
+		@Override
+		public ICondition create(TaskcndPo templet) {
+			return new XiaohaoDaoju( SHOUJIDAOJU, templet );
 		}
 	};
 

@@ -77,11 +77,15 @@ public abstract class IProp implements ITransformStream{
 
 	/**
 	 * 创建一个简单的道具
-	 * @param uid
 	 * @param nid
 	 * @param count
 	 * @return
 	 */
+	public static IProp create(int nid, int count) {
+		ItemPo item = CsvGen.getItemPo(nid);
+		return create( item, 0, nid, count, Quality.COLOR00 );
+	}
+	
 	public static IProp create( int uid, int nid, int count ) {
 		ItemPo item = CsvGen.getItemPo(nid);
 		return create( item, uid, nid, count, randomQuality( item.quality ) );
@@ -275,6 +279,8 @@ public abstract class IProp implements ITransformStream{
 			count	= ret;
 		return ret < 0 ? Math.abs(ret) : 0;
 	}
+
+
 
 
 }

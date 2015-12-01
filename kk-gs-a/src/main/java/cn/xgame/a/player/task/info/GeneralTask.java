@@ -1,6 +1,5 @@
 package cn.xgame.a.player.task.info;
 
-import io.netty.buffer.ByteBuf;
 import cn.xgame.a.player.task.classes.ITask;
 import cn.xgame.a.player.task.classes.TaskType;
 import cn.xgame.config.o.TaskPo;
@@ -16,8 +15,4 @@ public class GeneralTask extends ITask{
 		super(type,templet);
 	}
 
-	@Override
-	public void buildTransformStream(ByteBuf buffer) {
-		super.buildTransformStream(buffer);
-	}
 }

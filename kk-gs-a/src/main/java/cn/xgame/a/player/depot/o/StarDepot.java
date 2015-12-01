@@ -249,5 +249,4 @@ public class StarDepot extends IDepot implements ITransformStream{
 		dao.commit();
 	}
 
-
 }
