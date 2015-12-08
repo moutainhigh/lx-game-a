@@ -4,8 +4,12 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
+import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.player.task.TaskControl;
+import cn.xgame.a.player.task.classes.ITask;
+import cn.xgame.a.player.task.classes.TaskType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 
@@ -23,9 +27,21 @@ public class AbandonTaskEvent extends IEvent {
 		
 		ErrorCode code = null;
 		try {
+			TaskControl taskControl = player.getTasks();
+			
+			ITask task = taskControl.getYetInTask(tid);
+			
+			if( task == null )
+				throw new Exception(ErrorCode.SUCCEED.name());
 			
 			// 这里直接删除
-			player.getTasks().removeYetTask( tid );
+			taskControl.removeYetTask( tid );
+			
+			// 如果不是日常任务 那么就再次放入到可接任务列表
+			if( task.type() == TaskType.EVERYDAY ){
+			}else{
+				taskControl.addCanTask( Lists.newArrayList(tid) );
+			}
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

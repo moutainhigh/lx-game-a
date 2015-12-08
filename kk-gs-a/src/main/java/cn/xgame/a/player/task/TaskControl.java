@@ -51,6 +51,7 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		int size = buf.readInt();
 		for (int i = 0; i < size; i++) {
 			CanTask task = new CanTask( buf.readInt() );
+			task.setLooptimes( buf.readByte() );
 			canTasks.add(task);
 		}
 		// 已接任务
@@ -78,8 +79,10 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		ByteBuf buf = Unpooled.buffer();
 		// 可接任务
 		buf.writeInt( canTasks.size() );
-		for( CanTask task : canTasks )
+		for( CanTask task : canTasks ){
 			buf.writeInt( task.getId() );
+			buf.writeByte( task.getLooptimes() );
+		}
 		// 已接任务
 		buf.writeByte( yetInTasks.size() );
 		for( ITask task : yetInTasks ){
@@ -99,6 +102,7 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		buffer.writeInt(canTasks.size());
 		for( CanTask task : canTasks ){
 			buffer.writeInt(task.getId());
+			buffer.writeByte(task.getLooptimes());
 		}
 		buffer.writeByte(yetInTasks.size());
 		for( ITask task : yetInTasks ){
@@ -128,6 +132,17 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		}
 	}
 	
+	/**
+	 * 刷新每日任务次数
+	 */
+	public void updateEverydayTimes() {
+		Iterator<CanTask> iter = canTasks.iterator();
+		while(iter.hasNext()){
+			CanTask task = iter.next();
+			task.setLooptimes(0);
+		}
+	}
+	
 	public List<CanTask> getCanTasks(){
 		return canTasks;
 	}
@@ -138,6 +153,13 @@ public class TaskControl implements IArrayStream,ITransformStream{
 			CanTask task = new CanTask(id);
 			canTasks.add(task);
 		}
+	}
+	public CanTask getCanTask(int taskid) {
+		for( CanTask task : canTasks ){
+			if( task.getId() == taskid )
+				return task;
+		}
+		return null;
 	}
 	/**
 	 * 删除一个可接任务
@@ -210,7 +232,6 @@ public class TaskControl implements IArrayStream,ITransformStream{
 			}
 		}
 	}
-
-
+	
 
 }

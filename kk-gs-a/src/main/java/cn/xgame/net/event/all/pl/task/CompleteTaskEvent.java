@@ -9,6 +9,7 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.task.TaskControl;
 import cn.xgame.a.player.task.classes.ITask;
+import cn.xgame.a.player.task.classes.TaskType;
 import cn.xgame.a.player.task.info.CanTask;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.Events;
@@ -48,13 +49,21 @@ public class CompleteTaskEvent extends IEvent{
 			task.executeAward(player);
 			// 执行结束
 			task.executeEnd(player);
-			// 检查是否有后续任务
-			if( task.templet().needlast != 0 ){
-				CanTask e = new CanTask(task.templet().needlast);
-				taskControl.getCanTasks().add( e );
-				// 通知
-				((Update_1400)Events.UPDATE_1400.toInstance()).run( player, Lists.newArrayList(task.templet().needlast) );
+			
+			// 如果不是日常任务 那么就再次放入到可接任务列表
+			if( task.type() == TaskType.EVERYDAY ){
+				CanTask ct = taskControl.getCanTask(taskid);
+				if( ct != null ) ct.addLooptimes(1);
+			}else{
+				// 检查是否有后续任务
+				if( task.templet().needlast != 0 ){
+					CanTask e = new CanTask(task.templet().needlast);
+					taskControl.getCanTasks().add( e );
+					// 通知
+					((Update_1400)Events.UPDATE_1400.toInstance()).run( player, Lists.newArrayList(task.templet().needlast) );
+				}
 			}
+			
 			// 最后删除这个任务
 			taskControl.removeYetTask(taskid);
 			

@@ -77,7 +77,7 @@ public class FleetControl implements IArrayStream{
 	 */
 	public List<FleetInfo> getFleetHavaShip() {
 		List<FleetInfo> ret = Lists.newArrayList();
-		for( FleetInfo fleet : ret ){
+		for( FleetInfo fleet : fleets ){
 			if( !fleet.isEmpty() )
 				ret.add(fleet);
 		}

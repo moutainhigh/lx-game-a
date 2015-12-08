@@ -7,8 +7,11 @@ import x.javaplus.collections.Lists;
 import x.javaplus.mysql.db.Condition;
 
 import cn.xgame.a.IFromDB;
+import cn.xgame.a.player.PlayerManager;
+import cn.xgame.a.player.mail.classes.MailType;
 import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDao;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -132,4 +135,33 @@ public class MailControl implements IFromDB{
 		return ret;
 	}
 
+	public static void main(String[] args) {
+		CsvGen.load();
+		// 添加邮件
+		Player player = PlayerManager.o.getPlayerFmDB( "277902348", SystemCfg.ID );
+		MailInfo mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=1", "我是邮件内容.");
+		mail.setMoney(1000);
+		mail.addProp(60001, 10);
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=2", "我是邮件内容.");
+		mail.setMoney(1000);
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=3", "我是邮件内容.");
+		mail.setMoney(1000);
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=4", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=4", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=5", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=6", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=7", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=8", "我是邮件内容.");
+		player.getMails().addMail(mail);
+		mail = new MailInfo(MailType.SYSTEM, "我是邮件!UID=9", "我是邮件内容.");
+		player.getMails().addMail(mail);
+	}
 }

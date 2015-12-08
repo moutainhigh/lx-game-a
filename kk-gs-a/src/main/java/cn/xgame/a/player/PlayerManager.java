@@ -135,6 +135,9 @@ public class PlayerManager {
 		
 		// 清空兑换记录
 		player.getSwops().clear();
+		
+		// 刷新每日任务次数
+		player.getTasks().updateEverydayTimes();
 	}
 
 	//===============================================================

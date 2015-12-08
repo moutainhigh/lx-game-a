@@ -100,7 +100,7 @@ public class IMail{
 		buffer.writeInt( sendtime );
 		buffer.writeByte( isRead ? 1 : 0 );
 		buffer.writeInt( durationtime );
-		buffer.writeByte( adjuncts.isEmpty() ? 0 : 1 );
+		buffer.writeByte( (adjuncts.isEmpty() && getMoney() == 0) ? 0 : 1 );
 	}
 	
 	/**
