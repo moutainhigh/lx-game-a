@@ -23,9 +23,9 @@ public class DuiHua extends ICondition {
 	
 	@Override
 	public void execute(Object[] objects) {
-		int sid = (Integer) objects[0];
-		int npcid = (Integer) objects[1];
-		isComplete = ( templet().starid == sid && templet().target == npcid );
+		int sid = (Integer) objects[0];//星球ID
+		int npcid = (Integer) objects[1];//NPCid
+		isComplete = ( (templet().starid == 0 || templet().starid == sid) && templet().target == npcid );
 	}
 
 	@Override

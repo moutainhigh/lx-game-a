@@ -13,6 +13,7 @@ import cn.xgame.a.chat.axn.classes.IAxnCrew;
 import cn.xgame.a.chat.axn.classes.TeamAxnCrew;
 import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.Fighter;
+import cn.xgame.a.fighter.o.Attackattr;
 import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
@@ -66,12 +67,24 @@ public class ApplyEctypeEvent extends IEvent{
 				for( EctypeInfo x : guajiEctypes ){
 					buffer.writeByte( x.getLevel() );
 					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+					buffer.writeByte( x.getAtks().size() );
+					for( Attackattr attr : x.getAtks() )
+						attr.buildTransformStream(buffer);
+					buffer.writeByte( x.getDefs().size() );
+					for( Attackattr attr : x.getDefs() )
+						attr.buildTransformStream(buffer);
 				}
 				List<EctypeInfo> ectypes = o.getEctypes();
 				buffer.writeByte( ectypes.size() );
 				for( EctypeInfo x : ectypes ){
 					buffer.writeByte( x.getLevel() );
 					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+					buffer.writeByte( x.getAtks().size() );
+					for( Attackattr attr : x.getAtks() )
+						attr.buildTransformStream(buffer);
+					buffer.writeByte( x.getDefs().size() );
+					for( Attackattr attr : x.getDefs() )
+						attr.buildTransformStream(buffer);
 				}
 			}
 			
@@ -93,6 +106,12 @@ public class ApplyEctypeEvent extends IEvent{
 				for( EctypeInfo x : ectypes ){
 					buffer.writeByte( x.getLevel() );
 					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+					buffer.writeByte( x.getAtks().size() );
+					for( Attackattr attr : x.getAtks() )
+						attr.buildTransformStream(buffer);
+					buffer.writeByte( x.getDefs().size() );
+					for( Attackattr attr : x.getDefs() )
+						attr.buildTransformStream(buffer);
 				}
 			}
 			sendPackage( player.getCtx(), buffer );

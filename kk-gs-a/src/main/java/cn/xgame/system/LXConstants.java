@@ -14,6 +14,8 @@ public class LXConstants {
 	public static final int CHAT_UID 			= 1000000;
 
 	
+
+	
 	
 
 	
@@ -48,6 +50,9 @@ public class LXConstants {
 	
 	/** 副本投票等待时间 (单位秒)*/
 	public static int ECTYPE_VOTE_TIME 		= 60;
+	
+	/** 基地塔默认ID*/
+	public static int BASE_BUILD_ID 		= 20025;
 	
 	/**
 	 * 加载配置文件

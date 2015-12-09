@@ -13,6 +13,7 @@ import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.manor.classes.IBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
+import cn.xgame.config.o.ReclaimPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
@@ -41,8 +42,11 @@ public class BuildBuildingEvent extends IEvent {
 			building.setIndex(index);
 			
 			ManorControl manors = player.getManors();
-			// 检测该位置是否可以建造
-			manors.isCanBuild( building );
+			manors.update();
+
+			// 检测是否可以建造 位置-重复-总空间
+			isCanBuild( building, manors.getBbuild(), manors.getBuilds(), manors.getTerritory() );
+			
 			// 检测科技等级是否满足
 			// TODO
 			
@@ -76,6 +80,34 @@ public class BuildBuildingEvent extends IEvent {
 		sendPackage( player.getCtx(), buffer );
 	}
 
+	/**
+	 * 检测这个建筑是否可以建造   位置-重复-总空间
+	 * @param building
+	 * @return
+	 * @throws Exception 
+	 */
+	private boolean isCanBuild( IBuilding building, IBuilding bbuild, List<IBuilding> builds, ReclaimPo territory ) throws Exception {
+		int curGrid = building.templet().usegrid;
+		// 判断基地塔
+		if( bbuild.templet().id == building.templet().id )
+			throw new Exception( ErrorCode.HAVE_EQUAL.name() );
+		if( bbuild.indexIsOverlap( building.getIndex(), building.templet().usegrid ) )
+			throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
+		curGrid += bbuild.templet().usegrid;
+		// 判断其他建筑
+		for( IBuilding o : builds ){
+			if( o.templet().id == building.templet().id )
+				throw new Exception( ErrorCode.HAVE_EQUAL.name() );
+			if( o.indexIsOverlap( building.getIndex(), building.templet().usegrid ) )
+				throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
+			curGrid += o.templet().usegrid;
+		}
+		// 判断该领地的格子数还够不够
+		if( curGrid > territory.room )
+			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
+		return true;
+	}
+	
 	/**
 	 * 扣除资源
 	 * @param player

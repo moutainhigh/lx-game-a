@@ -19,6 +19,7 @@ import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.player.u.classes.Init;
+import cn.xgame.config.gen.CsvGen;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDao;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.gen.dto.MysqlGen.SqlUtil;
@@ -356,7 +357,12 @@ public class PlayerManager {
 			
 //			o.create( null, "102", 1, "大峰哥3" );
 			
-			System.out.println( o.peopleNumber() );
+//			System.out.println( o.peopleNumber() );
+			
+			CsvGen.load();
+			
+//			Player player = PlayerManager.o.getPlayerFmDB( "277902348", SystemCfg.ID );
+			
 			
 		} catch (Exception e) {
 		}

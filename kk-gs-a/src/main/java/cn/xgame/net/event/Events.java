@@ -78,6 +78,7 @@ import cn.xgame.net.event.all.pl.staratlas.ApplyStaratlasEvent;
 import cn.xgame.net.event.all.pl.staratlas.SailoutEvent;
 import cn.xgame.net.event.all.pl.task.AbandonTaskEvent;
 import cn.xgame.net.event.all.pl.task.CompleteTaskEvent;
+import cn.xgame.net.event.all.pl.task.NPCDialogueEvent;
 import cn.xgame.net.event.all.pl.task.ReceiveTaskEvent;
 import cn.xgame.net.event.all.pl.transaction.ApplySSwopEvent;
 import cn.xgame.net.event.all.pl.transaction.ExchAddedEvent;
@@ -205,6 +206,7 @@ public enum Events {
 	RECEIVE_TASK				( 1403, 	new ReceiveTaskEvent()			, "任务系统-接任务" ),
 	ABANDON_TASK				( 1404, 	new AbandonTaskEvent()			, "任务系统-放弃任务" ),
 	COMPLETE_TASK				( 1405, 	new CompleteTaskEvent()			, "任务系统-完成任务" ),
+	NPC_DIALOGUE				( 1406, 	new NPCDialogueEvent()			, "任务系统-NPC对话" ),
 	
 	//-----------------聊天
 	SPONSOR_CHAT				( 3001, 	new SponsorChatEvent()			, "聊天系统-发起聊天" ),

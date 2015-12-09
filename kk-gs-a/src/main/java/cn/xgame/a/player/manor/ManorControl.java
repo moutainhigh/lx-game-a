@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.log4j.PropertyConfigurator;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Resources;
 import x.javaplus.util.lua.Lua;
 
@@ -15,10 +14,12 @@ import cn.xgame.a.IArrayStream;
 import cn.xgame.a.ITransformStream;
 import cn.xgame.a.player.manor.classes.BuildingType;
 import cn.xgame.a.player.manor.classes.IBuilding;
+import cn.xgame.a.player.manor.info.BaseBuilding;
 import cn.xgame.a.player.manor.info.Building;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.ReclaimPo;
+import cn.xgame.system.LXConstants;
 import cn.xgame.utils.Logs;
 
 /**
@@ -30,6 +31,9 @@ public class ManorControl implements IArrayStream,ITransformStream{
 
 	// 领土
 	private ReclaimPo territory = null;
+	
+	// 基地塔
+	private BaseBuilding bbuild = null;
 	
 	// 建筑列表
 	private List<IBuilding> builds = Lists.newArrayList();
@@ -44,6 +48,8 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		builds.clear();
 		ByteBuf buff = Unpooled.copiedBuffer(data);
 		territory = CsvGen.getReclaimPo( buff.readInt() );
+		bbuild = new BaseBuilding( buff.readInt() );
+		bbuild.wrapBuffer(buff);
 		BuildingType[] values = BuildingType.values();
 		byte size = buff.readByte();
 		for( int i = 0; i < size; i++ ){
@@ -59,15 +65,15 @@ public class ManorControl implements IArrayStream,ITransformStream{
 			build.wrapBuffer(buff);
 			builds.add(build);
 		}
-//		update();
 	}
 
 	@Override
 	public byte[] toBytes() {
 		if( territory == null ) return null;
-//		update();
 		ByteBuf buff = Unpooled.buffer();
 		buff.writeInt( territory.id );
+		buff.writeInt( bbuild.templet().id );
+		bbuild.putBuffer(buff);
 		buff.writeByte( builds.size() );
 		for( IBuilding build : builds ){
 			buff.writeByte( build.getType().ordinal() );
@@ -80,9 +86,12 @@ public class ManorControl implements IArrayStream,ITransformStream{
 	@Override
 	public void buildTransformStream( ByteBuf buffer ) {
 		buffer.writeInt( getNid() );
-		buffer.writeByte( builds.size() );
-		for( IBuilding o : builds ){
-			o.buildTransformStream(buffer);
+		if( territory != null ){
+			bbuild.buildTransformStream(buffer);
+			buffer.writeByte( builds.size() );
+			for( IBuilding o : builds ){
+				o.buildTransformStream(buffer);
+			}
 		}
 	}
 
@@ -150,35 +159,22 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		builds.add( building );
 	}
 
-	/**
-	 * 检测这个建筑是否可以建造
-	 * @param building
-	 * @return
-	 * @throws Exception 
-	 */
-	public boolean isCanBuild( IBuilding building ) throws Exception {
-		update();
-		int curGrid = building.templet().usegrid;
-		// 判断位置
-		for( IBuilding o : builds ){
-			if( o.indexIsOverlap( building.getIndex(), building.templet().usegrid ) )
-				throw new Exception( ErrorCode.INDEX_OCCUPY.name() );
-			curGrid += o.templet().usegrid;
-		}
-		// 判断该领地的格子数还够不够
-		if( curGrid > territory.room )
-			throw new Exception( ErrorCode.ROOM_LAZYWEIGHT.name() );
-		return true;
-	}
-
 	public ReclaimPo getTerritory() {
 		return territory;
 	}
 	public void setTerritory(ReclaimPo territory) {
+		if( this.territory == null ){
+			//第一次创建 基地塔
+			bbuild = new BaseBuilding( LXConstants.BASE_BUILD_ID );
+			bbuild.setIndex((byte) 1);
+		}
 		this.territory = territory;
 	}
 	public List<IBuilding> getBuilds() {
 		return builds;
+	}
+	public BaseBuilding getBbuild() {
+		return bbuild;
 	}
 	/** 领地ID */
 	public int getNid() {
@@ -198,4 +194,6 @@ public class ManorControl implements IArrayStream,ITransformStream{
 		as.addBuilding(building);
 		as.update();
 	}
+
+
 }
