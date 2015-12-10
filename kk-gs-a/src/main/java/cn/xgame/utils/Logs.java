@@ -42,4 +42,8 @@ public class Logs {
 		Logs.debug( "" );
 		error( "asdasds" );
 	}
+	
+	public static long gettime(){
+		return System.currentTimeMillis();
+	}
 }

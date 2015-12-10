@@ -18,6 +18,7 @@ import cn.xgame.a.player.PlayerManager;
 import cn.xgame.a.player.ectype.EctypeControl;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
 import cn.xgame.a.player.ectype.info.EctypeInfo;
+import cn.xgame.a.player.ectype.info.StarGeneralEctype;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
@@ -53,6 +54,7 @@ public class ApplyEctypeEvent extends IEvent{
 						
 			// 常规副本
 			List<ChapterInfo> generals = control.getGeneralEctype(snid);
+			StarGeneralEctype sgel = control.getSGEL(snid);
 			buffer.writeShort( generals.size() );
 			for( ChapterInfo o : generals ){
 				buffer.writeInt( o.getSnid() );
@@ -62,21 +64,24 @@ public class ApplyEctypeEvent extends IEvent{
 					buffer.writeInt( id );
 				}
 				int startId = getFarthestSid( allfleets, o.getSnid() );
-				List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
-				buffer.writeByte( guajiEctypes.size() );
-				for( EctypeInfo x : guajiEctypes ){
-					buffer.writeByte( x.getLevel() );
-					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
-					buffer.writeByte( x.getAtks().size() );
-					for( Attackattr attr : x.getAtks() )
-						attr.buildTransformStream(buffer);
-					buffer.writeByte( x.getDefs().size() );
-					for( Attackattr attr : x.getDefs() )
-						attr.buildTransformStream(buffer);
-				}
+				buffer.writeByte( 0 );
+//				List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
+//				buffer.writeByte( guajiEctypes.size() );
+//				for( EctypeInfo x : guajiEctypes ){
+//					buffer.writeByte( x.getLevel() );
+//					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+//					buffer.writeByte( x.getAtks().size() );
+//					for( Attackattr attr : x.getAtks() )
+//						attr.buildTransformStream(buffer);
+//					buffer.writeByte( x.getDefs().size() );
+//					for( Attackattr attr : x.getDefs() )
+//						attr.buildTransformStream(buffer);
+//				}
+				byte size = sgel.getCl(o.getId()).curIndex;
 				List<EctypeInfo> ectypes = o.getEctypes();
-				buffer.writeByte( ectypes.size() );
-				for( EctypeInfo x : ectypes ){
+				buffer.writeByte( size );
+				for( int i = 0; i < size; i++ ){
+					EctypeInfo x = ectypes.get(i);
 					buffer.writeByte( x.getLevel() );
 					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
 					buffer.writeByte( x.getAtks().size() );

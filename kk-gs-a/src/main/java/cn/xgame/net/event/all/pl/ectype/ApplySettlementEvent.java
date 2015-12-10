@@ -135,6 +135,10 @@ public class ApplySettlementEvent extends IEvent {
 		if( !status.getUID().equals( player.getUID() ) )
 			return ;
 		
+		// 如果是常规副本 那么就生成下一个 难度副本
+		if( status.getType() == 1 ){
+			player.getEctypes().generateNextGeneralEctype(fleet.getBerthSnid(), status.getChapterId());
+		}
 		// 如果是偶发副本 那么就生成下一个 难度副本
 		if( status.getType() == 2 ){
 			ChapterInfo chapter = player.getEctypes().getChapter( fleet.getBerthSnid(), status.getChapterId() );

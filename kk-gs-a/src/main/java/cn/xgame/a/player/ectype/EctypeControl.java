@@ -9,6 +9,8 @@ import x.javaplus.collections.Lists;
 
 import cn.xgame.a.IArrayStream;
 import cn.xgame.a.player.ectype.info.ChapterInfo;
+import cn.xgame.a.player.ectype.info.ChapterLevel;
+import cn.xgame.a.player.ectype.info.StarGeneralEctype;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.IPlanet;
@@ -30,11 +32,12 @@ public class EctypeControl implements IArrayStream{
 	// 临时记录 星球ID
 	private List<Integer> tempSnid = Lists.newArrayList();
 	
-	
-	
 	// 所有星球的偶发副本 集合
 	private List<ChapterInfo> allChances = Lists.newArrayList();
 	
+	
+	// 常规副本难度
+	private List<StarGeneralEctype> starels = Lists.newArrayList();
 	
 	public EctypeControl( Player player ) {
 	}
@@ -44,7 +47,7 @@ public class EctypeControl implements IArrayStream{
 		if( data == null ) return;
 		ByteBuf buf = Unpooled.copiedBuffer(data);
 		logintime = buf.readInt();
-		short size = buf.readShort();
+		int size = buf.readShort();
 		for (int i = 0; i < size; i++) {
 			ChapterPo templet = CsvGen.getChapterPo( buf.readInt() );
 			if( templet == null )
@@ -52,6 +55,12 @@ public class EctypeControl implements IArrayStream{
 			ChapterInfo chapter = new ChapterInfo( templet, buf.readInt() );
 			chapter.wrapBuffer(buf);
 			allChances.add(chapter);
+		}
+		size = buf.readInt();
+		for( int i = 0; i < size; i++ ){
+			StarGeneralEctype x = new StarGeneralEctype(buf.readInt());
+			x.wrapBuffer(buf);
+			starels.add(x);
 		}
 	}
 
@@ -66,6 +75,11 @@ public class EctypeControl implements IArrayStream{
 			buf.writeInt( chapter.getId() );
 			buf.writeInt( chapter.getSnid() );
 			chapter.putBuffer(buf);
+		}
+		buf.writeInt( starels.size() );
+		for( StarGeneralEctype x : starels ){
+			buf.writeInt( x.getSnid() );
+			x.putBuffer(buf);
 		}
 		return buf.array();
 	}
@@ -134,26 +148,6 @@ public class EctypeControl implements IArrayStream{
 		return ret;
 	}
 	
-	/**
-	 * 根据星球获取 常规副本
-	 * @param sid
-	 * @return
-	 */
-	public List<ChapterInfo> getGeneralEctype( int sid ){
-		List<ChapterInfo> ret = Lists.newArrayList();
-		try {
-			WorldManager o = WorldManager.o;
-			// 先放入本星球副本
-			IPlanet planet = o.getPlanet(sid);
-			ret.addAll( planet.getChapters() );
-			// 然后放入根据瞭望出来的星球副本信息
-			List<Integer> scope = planet.getScopePlanet();
-			for( int id : scope ){
-				ret.addAll( o.getPlanet(id).getChapters() );
-			}
-		} catch (Exception e) { }
-		return ret;
-	}
 	
 	/**
 	 * 刷新一下偶发副本 把时间到的删除掉
@@ -177,5 +171,67 @@ public class EctypeControl implements IArrayStream{
 		tempSnid.clear();
 		logintime = (int) (System.currentTimeMillis()/1000);
 	}
-
+	
+	/*-----------------------------常规副本----------------------------------------------*/
+	
+	/**
+	 * 根据星球获取 常规副本
+	 * @param sid
+	 * @return
+	 */
+	public List<ChapterInfo> getGeneralEctype( int sid ){
+		List<ChapterInfo> ret = Lists.newArrayList();
+		try {
+			WorldManager o = WorldManager.o;
+			// 先放入本星球副本
+			IPlanet planet = o.getPlanet(sid);
+			ret.addAll( generateEctypeLevel(planet) );
+			// 然后放入根据瞭望出来的星球副本信息
+			List<Integer> scope = planet.getScopePlanet();
+			for( int id : scope ){
+				ret.addAll( generateEctypeLevel(o.getPlanet(id)) );
+			}
+		} catch (Exception e) { }
+		return ret;
+	}
+	private List<ChapterInfo> generateEctypeLevel(IPlanet planet) {
+		List<ChapterInfo> ret = Lists.newArrayList();
+		StarGeneralEctype sgel = getSGEL(planet.getId());
+		if( sgel == null ){
+			sgel = new StarGeneralEctype(planet.getId());
+			starels.add(sgel);
+		}
+		for( ChapterInfo chapter : planet.getChapters() ){
+			ChapterLevel cl = sgel.getCl(chapter.getId());
+			if( cl == null ){
+				sgel.put( chapter.getId(), chapter.getEctypes().size(), 1 );
+			}
+			ret.add(chapter);
+		}
+		return ret;
+	}
+	
+	/**
+	 * 生成对应星球的章节 的下一个难度
+	 * @param berthSnid
+	 * @param chapterId
+	 */
+	public void generateNextGeneralEctype( int berthSnid, int chapterId ) {
+		StarGeneralEctype sgel = starels.get(berthSnid);
+		if( sgel != null ){
+			ChapterLevel cl = sgel.getCl(chapterId);
+			if( cl != null ){
+				cl.next();
+			}
+		}
+	}
+	
+	public StarGeneralEctype getSGEL( int sid ){
+		for( StarGeneralEctype x : starels ){
+			if( x.getSnid() == sid ){
+				return x;
+			}
+		}
+		return null;
+	}
 }
