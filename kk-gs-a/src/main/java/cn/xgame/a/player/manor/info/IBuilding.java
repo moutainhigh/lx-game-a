@@ -31,7 +31,6 @@ public abstract class IBuilding implements IBufferStream{
 	private int nid;
 	// 建筑物位置
 	private byte index;
-	
 	// 建筑状态  1.已建筑 2.建筑中 3.升级中 4.销毁中
 	private BStatus status;
 	// 结束时间 对应各个类型的时间

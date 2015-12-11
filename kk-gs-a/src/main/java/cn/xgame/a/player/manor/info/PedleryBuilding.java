@@ -45,9 +45,27 @@ public class PedleryBuilding extends IBuilding {
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		super.putBuffer(buf);
+		buf.writeByte( updatelevel );
+		buf.writeByte( goodclevel );
+		buf.writeByte( goodqlevel );
+		buf.writeByte( treasures.size() );
+		for( int id : treasures ){
+			buf.writeInt(id);
+		}
+		buf.writeInt( rtime );
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		super.wrapBuffer(buf);
+		updatelevel = buf.readByte();
+		goodclevel = buf.readByte();
+		goodqlevel = buf.readByte();
+		byte size = buf.readByte();
+		for( int i = 0; i < size; i++ ){
+			treasures.add( buf.readInt() );
+		}
+		rtime = buf.readInt();
 	}
 	
 	@Override

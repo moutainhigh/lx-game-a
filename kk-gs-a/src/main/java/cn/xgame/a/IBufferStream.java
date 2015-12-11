@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 
 public interface IBufferStream {
 
+	
+	
 	/**
 	 * 将数据 放入buf
 	 * @param buf
