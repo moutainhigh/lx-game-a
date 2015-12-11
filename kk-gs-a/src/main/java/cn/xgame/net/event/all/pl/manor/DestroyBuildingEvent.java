@@ -7,9 +7,11 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.manor.ManorControl;
-import cn.xgame.a.player.manor.classes.BuildingType;
-import cn.xgame.a.player.manor.classes.IBuilding;
+import cn.xgame.a.player.manor.classes.BStatus;
+import cn.xgame.a.player.manor.info.IBuilding;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.config.gen.CsvGen;
+import cn.xgame.config.o.BbuildingPo;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.system.LXConstants;
 
@@ -35,14 +37,16 @@ public class DestroyBuildingEvent extends IEvent{
 			building = manors.getBuildByIndex( index );
 			if( building == null || !building.isDestroy() )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			if( building.getType() != BuildingType.INSERVICE )
+			if( building.getStatus() != BStatus.INSERVICE )
 				throw new Exception( ErrorCode.MANOR_TIME_ISYET.name() );
 			
-			// 直接开始销毁
-			building.inDestroy();
+			// 开始销毁
+			BbuildingPo templet = CsvGen.getBbuildingPo(building.getNid());
+			building.setStatus(BStatus.DESTROY);
+			building.setEndtime((int)(System.currentTimeMillis()/1000)+templet.needtime/10);
 			
 			// 把钱给玩家
-			int money 	= getMoney( building.templet().needres );
+			int money 	= getMoney( templet.needres );
 			money		= (int) (money * 0.2);
 			player.changeCurrency( money, "领地建筑拆毁获得" );
 			

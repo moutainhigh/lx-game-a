@@ -4,6 +4,7 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.string.StringUtil;
+import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,12 +22,14 @@ import cn.xgame.a.player.task.TaskControl;
 import cn.xgame.a.player.tavern.TavernControl;
 import cn.xgame.a.player.u.classes.DBBaseUID;
 import cn.xgame.a.player.u.classes.IPlayer;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.PalyerlevelPo;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
 import cn.xgame.net.event.all.pl.update.Update_1400;
+import cn.xgame.system.LXConstants;
 import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.Logs;
 import cn.xgame.utils.PackageCheck;
@@ -170,6 +173,7 @@ public class Player extends IPlayer implements ITransformStream{
 		buffer.writeInt( getCurrency() );
 		buffer.writeInt( getGold() );
 		buffer.writeByte( 1 );
+		buffer.writeInt( manors.getNid() );
 	}
 	
 	
@@ -227,6 +231,53 @@ public class Player extends IPlayer implements ITransformStream{
 		
 		Logs.debug( ctx, "货币改变 " + (currency - value) + (value>=0?" + ":" - ") + Math.abs(value) + " = " + currency + " " + explain );
 		return currency;
+	}
+	
+	/**
+	 * 一个公共扣除资源函数
+	 * @param needres
+	 * @throws Exception 
+	 */
+	public List<IProp> deductResource( int sind, String needres, String explain ) throws Exception {
+		int needMoney 			= 0;
+		List<IProp> materials 	= Lists.newArrayList();
+		StarDepot depots 		= getDepots(sind);
+		// 先判断是够足够
+		String[] array 		= needres.split( "\\|" );
+		for( String str : array ){
+			String[] res 	= str.split(";");
+			int id 			= Integer.parseInt( res[0] );
+			int count 		= Integer.parseInt( res[1] );
+			if( id == LXConstants.CURRENCY_NID ){
+				if( count > getCurrency() )
+					throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
+				needMoney 	+= count;
+			}else{
+				// 拷贝一份当前资源道具列表 然后虚拟扣除
+				List<IProp> temp = depots.getPropsByNidClone( id );
+				for( IProp prop : temp ){
+					count	= prop.deductCount( count );
+					materials.add( prop );
+					if( count == 0 ) break;
+				}
+				// 最后如果资源没扣完 那么说明数量不足 直接返回
+				if( count > 0 ) 
+					throw new Exception( ErrorCode.STUFF_LAZYWEIGHT.name() );
+			}
+		}
+		// 这里执行扣除
+		changeCurrency( -needMoney, explain+"扣除" );
+		for( IProp prop : materials ){
+			if( prop.isEmpty() )
+				depots.remove( prop );
+			else
+				depots.getProp( prop ).setCount( prop.getCount() );
+		}
+		Logs.debug( this, explain+" 扣除资源 " + materials );
+		return materials;
+	}
+	public List<IProp> deductResource( String needres, String explain ) throws Exception{
+		return deductResource( getCountryId(), needres, explain );
 	}
 	
 	/**

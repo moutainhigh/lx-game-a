@@ -14,6 +14,7 @@ import cn.xgame.a.chat.axn.info.AxnInfo;
 import cn.xgame.a.fighter.DamagedInfo;
 import cn.xgame.a.fighter.Fighter;
 import cn.xgame.a.fighter.ShipData;
+import cn.xgame.a.player.dock.DockControl;
 import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.classes.IStatus;
@@ -204,24 +205,29 @@ public class FleetInfo{
 		
 		List<ShipInfo> removes = Lists.newArrayList();
 		
+		DockControl docks = root.getDocks();
 		for( ShipInfo ship : ships ){
 			// 弹药消耗
 //			if( Random.get( 0, 10000 ) <= temp.getAmmoExpend() )
 //				ship.toreduceAmmo( -1 );
 			// 舰长忠诚度
-			CaptainInfo capt = root.getDocks().getCaptain( ship.getCaptainUID() );
-			if( capt.changeLoyalty( temp.getIsWin() == 1 ? 1 : -1 ) ){
-				root.getDocks().destroyCapt( capt );
-				ship.setCaptainUID( -1 );
+			CaptainInfo capt = docks.getCaptain( ship.getCaptainUID() );
+			if( capt != null ){
+				if( capt.changeLoyalty( temp.getIsWin() == 1 ? 1 : -1 ) ){
+					docks.destroyCapt( capt );
+					ship.setCaptainUID( -1 );
+				}
+				ret.addLossCapt( ship, capt );
 			}
-			ret.addLossCapt( ship, capt );
 			// 获取所有装备 精密度 + 船本身精密度
-			int allAccuracy = ship.allEctypeAccuracy() + ship.attr().getAccuracy();
-			float scale = temp.getDamaged()/allAccuracy;
+			int accuracy = ship.attr().getAccuracy();
+			accuracy = accuracy <= 0 ? 1 : accuracy;
+			int allAccuracy = ship.allEctypeAccuracy() + accuracy;
+			float scale = ((float)temp.getDamaged())/((float)allAccuracy);
 			if( scale == 0 )
 				continue;
 			// 舰船本身战损
-			ship.addCurrentHp( -(int) (ship.attr().getAccuracy() * scale) );
+			ship.addCurrentHp( -(int) (accuracy * scale) );
 			if( ship.getCurrentHp() < ship.attr().getMaxHp() ){
 				ret.addLossShip( ship );
 				if( ship.getCurrentHp() == 0 ) //如果血量为0  那么就会报废

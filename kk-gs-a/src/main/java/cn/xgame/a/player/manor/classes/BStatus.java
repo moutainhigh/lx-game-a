@@ -1,11 +1,12 @@
 package cn.xgame.a.player.manor.classes;
 
+
 /**
- * 建筑类型
+ * 建筑状态
  * @author deng		
  * @date 2015-10-15 下午1:37:13
  */
-public enum BuildingType {
+public enum BStatus {
 
 	/**
 	 * 已建筑
@@ -25,5 +26,5 @@ public enum BuildingType {
 	/**
 	 * 销毁中
 	 */
-	DESTROY
+	DESTROY;
 }

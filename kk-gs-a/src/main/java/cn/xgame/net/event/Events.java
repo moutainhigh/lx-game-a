@@ -43,11 +43,15 @@ import cn.xgame.net.event.all.pl.mail.DeleteMailEvent;
 import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
 import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
 import cn.xgame.net.event.all.pl.mail.SendMailEvent;
-import cn.xgame.net.event.all.pl.manor.ApplyGoodsEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyPedleryEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyShopEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyProduceEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
+import cn.xgame.net.event.all.pl.manor.BuyShopItemEvent;
 import cn.xgame.net.event.all.pl.manor.DestroyBuildingEvent;
+import cn.xgame.net.event.all.pl.manor.ExchangeChestsEvent;
 import cn.xgame.net.event.all.pl.manor.SellGoodsEvent;
 import cn.xgame.net.event.all.pl.manor.TakeGoodsEvent;
 import cn.xgame.net.event.all.pl.manor.UpgradeBuildingEvent;
@@ -57,7 +61,6 @@ import cn.xgame.net.event.all.pl.planet.ApplyExchMeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
-import cn.xgame.net.event.all.pl.planet.ApplyShopEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
@@ -149,14 +152,18 @@ public enum Events {
 	EAT_EQUIP					( 1031, 	new EatEquipEvent()				, "舰长操作-装上装备" ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent()			, "舰长操作-吃亲密度丹" ),
 	// 领地
-	APP_MANOR					( 1040, 	new ApplyManorEvent() 			, "领地操作-申请领地信息" ),
+	APP_MANOR					( 1040, 	new ApplyManorEvent() 			, "领地操作-申请领地建筑信息" ),
 	BUY_MANOR					( 1041, 	new BuyManorEvent()				, "领地操作-购买领地" ),
-	APPLY_GOODS					( 1042, 	new ApplyGoodsEvent()			, "领地操作-申请产出" ),
+	APPLY_GOODS					( 1042, 	new ApplyProduceEvent()			, "领地操作-申请产出" ),
 	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent()		, "领地操作-建造建筑" ),
 	UPGRADE_BUILDING			( 1044, 	new UpgradeBuildingEvent()		, "领地操作-建筑升级" ),
 	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建筑销毁" ),
 	TAKE_GOODS					( 1046, 	new TakeGoodsEvent()			, "领地操作-收取产出" ),
 	SELL_GOODS					( 1047, 	new SellGoodsEvent()			, "领地操作-出售产出" ),
+	APPLY_SHOP					( 1048, 	new ApplyShopEvent()			, "领地操作-申请商店详细信息" ),
+	APPLY_PEDLERY				( 1049, 	new ApplyPedleryEvent()			, "领地操作-申请行商详细信息" ),
+	BUY_SHOPITEM				( 1071, 	new BuyShopItemEvent()			, "领地操作-购买商店物品" ),
+	EXCHANGE_CHESTS				( 1072, 	new ExchangeChestsEvent()		, "领地操作-兑换行商宝箱" ),
 	// 邮件
 	APPLY_MAIL					( 1051, 	new ApplyMailEvent()			, "邮件操作-申请邮件列表" ),
 	SEND_MAIL					( 1052, 	new SendMailEvent()				, "邮件操作-发送邮件" ),

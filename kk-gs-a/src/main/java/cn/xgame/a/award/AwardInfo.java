@@ -1,5 +1,6 @@
 package cn.xgame.a.award;
 
+import x.javaplus.string.StringUtil;
 import io.netty.buffer.ByteBuf;
 import cn.xgame.a.ITransformStream;
 
@@ -26,6 +27,13 @@ public class AwardInfo implements ITransformStream{
 		this.count 	= buf.readInt();
 	}
 
+	public AwardInfo( String[] array ){
+		if( array == null || array.length != 2 )
+			throw new RuntimeException("array == null || array.length != 2");
+		this.id 	= Integer.parseInt( StringUtil.convertNumberString(array[0]) );
+		this.count 	= Integer.parseInt( StringUtil.convertNumberString(array[1]) );
+	}
+	
 	public String toString(){
 		return id + "-" + count;
 	}

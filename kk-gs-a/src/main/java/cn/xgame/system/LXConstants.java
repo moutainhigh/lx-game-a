@@ -16,6 +16,8 @@ public class LXConstants {
 	
 
 	
+
+	
 	
 
 	
@@ -53,6 +55,13 @@ public class LXConstants {
 	
 	/** 基地塔默认ID*/
 	public static int BASE_BUILD_ID 		= 20025;
+	
+	/** 领地建筑商店刷新时间(秒)*/
+	public static int[] BUILD_SHOP_UPDATETIME 	= {86400};
+	/** 领地建筑商店刷新时间(秒)*/
+	public static int[] BUILD_SHOP_NUM 			= {1};
+	/** 领地建筑商店刷新时间(秒)*/
+	public static int[] BUILD_SHOP_QUALITY 		= {1};
 	
 	/**
 	 * 加载配置文件

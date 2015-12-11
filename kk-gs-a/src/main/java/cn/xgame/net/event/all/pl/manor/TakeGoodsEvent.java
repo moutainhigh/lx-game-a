@@ -9,8 +9,9 @@ import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.depot.o.StarDepot;
+import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.manor.classes.Goods;
-import cn.xgame.a.player.manor.info.Building;
+import cn.xgame.a.player.manor.info.ProduceBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.prop.IProp;
 import cn.xgame.net.event.IEvent;
@@ -35,11 +36,12 @@ public class TakeGoodsEvent extends IEvent{
 			goods.add(g);
 		}
 		
+		ManorControl manors = player.getManors();
 		ErrorCode code = null;
 		List<IProp> ret = Lists.newArrayList();
 		try {
 			// 获取建筑
-			Building building = (Building) player.getManors().getBuildByIndex( index );
+			ProduceBuilding building = (ProduceBuilding) manors.getBuildByIndex( index );
 			if( building == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			
