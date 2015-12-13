@@ -62,9 +62,9 @@ public class ShipInfo implements ITransformStream{
 		attr.randomAttachAttr();
 		currentHp 	= attr.getMaxHp();
 		berthSid	= snid;
-		holds.setRoom( attr.getGroom() );
-		weapons.setRoom( attr.getWroom() );
-		assists.setRoom( attr.getEroom() );
+		holds.setRoom( attr.templet().groom );
+		weapons.setRoom( attr.templet().wroom );
+		assists.setRoom( attr.templet().eroom );
 	}
 
 	/**
@@ -346,7 +346,7 @@ public class ShipInfo implements ITransformStream{
 		// 辅助
 		removes.clear();
 		for( IProp o : assists.getAll() ){
-			EquipWeaponAttr equip = (EquipWeaponAttr) o;
+			EquipAuxiliaryAttr equip = (EquipAuxiliaryAttr) o;
 			equip.addCurrentDur( - (int) (equip.getAccuracy() * scale) );
 			if( equip.getCurrentDur() < equip.getMaxDur() ){
 				ret.addLossEquip( this, equip.getUid(), equip.getCurrentDur() );

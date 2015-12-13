@@ -28,19 +28,6 @@ public class ShipAttr extends IProp{
 	// 最大能源
 	private int maxEnergy;
 	
-	// 精密度
-	private int accuracy;
-	
-	//------------------- 下面三个空间不用存数据库 就只是一个厨初始数据
-	// 武器最大空间
-	private short wroom;
-	
-	// 辅助最大空间
-	private short eroom;
-	
-	// 货仓最大空间
-	private short groom;
-	
 	public ShipAttr( ItemPo item, int uid, int nid, int count, Quality quality) {
 		super( item, uid, nid, count, quality );
 		templet 	= CsvGen.getShipPo(nid);
@@ -51,10 +38,6 @@ public class ShipAttr extends IProp{
 		templet 	= clone.templet;
 		maxHp		= clone.maxHp;
 		maxEnergy	= clone.maxEnergy;
-		accuracy	= clone.accuracy;
-		wroom		= clone.wroom;
-		eroom		= clone.eroom;
-		groom		= clone.groom;
 	}
 	
 	@Override
@@ -102,30 +85,6 @@ public class ShipAttr extends IProp{
 	}
 	public void setMaxEnergy(int maxEnergy) {
 		this.maxEnergy = maxEnergy;
-	}
-	public short getWroom() {
-		return wroom;
-	}
-	public void setWroom(short wroom) {
-		this.wroom = wroom;
-	}
-	public short getEroom() {
-		return eroom;
-	}
-	public void setEroom(short eroom) {
-		this.eroom = eroom;
-	}
-	public short getGroom() {
-		return groom;
-	}
-	public void setGroom(short groom) {
-		this.groom = groom;
-	}
-	public int getAccuracy() {
-		return accuracy;
-	}
-	public void setAccuracy(int accuracy) {
-		this.accuracy = accuracy;
 	}
 	
 	public static void main(String[] args) {

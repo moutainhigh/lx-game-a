@@ -92,7 +92,7 @@ public class BuildBuildingEvent extends IEvent {
 		int sumGrid = templet.usegrid;
 		for( IBuilding o : builds ){
 			// 看是否允许唯一
-			if( templet.id == o.getNid() && templet.isUnique == 0 )
+			if( templet.id == o.getNid() )
 				throw new Exception( ErrorCode.HAVE_EQUAL.name() );
 			// 看位置是否允许建筑
 			if( o.indexIsOverlap( index, templet.usegrid ) )

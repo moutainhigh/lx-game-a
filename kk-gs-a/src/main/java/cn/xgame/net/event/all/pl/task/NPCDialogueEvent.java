@@ -27,6 +27,8 @@ public class NPCDialogueEvent extends IEvent{
 		
 		ByteBuf buffer = buildEmptyPackage( player.getCtx(), 2 );
 		buffer.writeShort( ErrorCode.SUCCEED.toNumber() );
+		buffer.writeInt(sid);
+		buffer.writeInt(npcid);
 		sendPackage( player.getCtx(), buffer );
 	}
 

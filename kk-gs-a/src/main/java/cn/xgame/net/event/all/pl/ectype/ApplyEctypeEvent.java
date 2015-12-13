@@ -51,7 +51,7 @@ public class ApplyEctypeEvent extends IEvent{
 			List<FleetInfo> allfleets = getAllFleets( player, fleet );
 			// 获取玩家战斗力
 			Fighter fighter = wrapFighter( allfleets );
-						
+			
 			// 常规副本
 			List<ChapterInfo> generals = control.getGeneralEctype(snid);
 			StarGeneralEctype sgel = control.getSGEL(snid);

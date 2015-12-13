@@ -22,9 +22,11 @@ public class BaseBuilding extends IBuilding{
 	
 	@Override
 	public void putBuffer(ByteBuf buf) {
+		super.putBuffer(buf);
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
+		super.wrapBuffer(buf);
 	}
 	
 	@Override

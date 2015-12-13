@@ -100,6 +100,13 @@ public class EquipAuxiliaryAttr extends IProp{
 	public void setCurrentDur(int currentDur) {
 		this.currentDur = currentDur;
 	}
+	public void addCurrentDur( int value ) {
+		this.currentDur += value;
+		if( this.currentDur < 0 )
+			this.currentDur = 0;
+		if( this.currentDur > maxDur )
+			this.currentDur = maxDur;
+	}
 	public int getMaxDur() {
 		return maxDur;
 	}

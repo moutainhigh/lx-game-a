@@ -220,7 +220,7 @@ public class FleetInfo{
 				ret.addLossCapt( ship, capt );
 			}
 			// 获取所有装备 精密度 + 船本身精密度
-			int accuracy = ship.attr().getAccuracy();
+			int accuracy = ship.attr().templet().precision;
 			accuracy = accuracy <= 0 ? 1 : accuracy;
 			int allAccuracy = ship.allEctypeAccuracy() + accuracy;
 			float scale = ((float)temp.getDamaged())/((float)allAccuracy);
@@ -230,8 +230,10 @@ public class FleetInfo{
 			ship.addCurrentHp( -(int) (accuracy * scale) );
 			if( ship.getCurrentHp() < ship.attr().getMaxHp() ){
 				ret.addLossShip( ship );
-				if( ship.getCurrentHp() == 0 ) //如果血量为0  那么就会报废
+				if( ship.getCurrentHp() == 0 ){ //如果血量为0  那么就会报废
 					removes.add(ship);
+					continue;
+				}
 			}
 			// 装备战损
 			ship.computeEquipDamage( ret, scale );
