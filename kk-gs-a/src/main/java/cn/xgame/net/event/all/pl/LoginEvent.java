@@ -102,7 +102,7 @@ public class LoginEvent extends IEvent{
 			// 聊天频道信息
 			player.getChatAxns().buildTransformStream(buffer);
 			// 新手引导
-			buffer.writeByte( player.getGuideStatus() );
+			RW.writeString(buffer, player.getGuideStatus());
 		}
 		sendPackage( ctx, buffer );
 		

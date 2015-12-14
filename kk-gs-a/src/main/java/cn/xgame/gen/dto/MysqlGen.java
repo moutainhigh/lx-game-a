@@ -352,7 +352,7 @@
 		private byte[] fleets = null;
 		private byte[] tasks = null;
 		private byte[] swops = null;
-		private Byte guideStatus = null;
+		private String guideStatus = null;
 
 		public PlayerDataDto() {		}				/**		 * Copy new one		 */		public PlayerDataDto(PlayerDataDto src) {			this.gsid = src.gsid;
 			this.uid = src.uid;
@@ -394,7 +394,7 @@
 		/**  舰队数据  */		public byte[] getFleets(){			return this.fleets;		}
 		/**  任务数据  */		public byte[] getTasks(){			return this.tasks;		}
 		/**  兑换数据  */		public byte[] getSwops(){			return this.swops;		}
-		/**  玩家新手引导状态值  */		public Byte getGuideStatus(){			return this.guideStatus;		}
+		/**  玩家新手引导状态值  */		public String getGuideStatus(){			return this.guideStatus;		}
 
 		/**  服务器ID  */		public void setGsid( Short gsid ){			this.gsid = gsid;		}
 		/**  唯一ID  */		public void setUid( String uid ){			this.uid = uid;		}
@@ -415,7 +415,7 @@
 		/**  舰队数据  */		public void setFleets( byte[] fleets ){			this.fleets = fleets;		}
 		/**  任务数据  */		public void setTasks( byte[] tasks ){			this.tasks = tasks;		}
 		/**  兑换数据  */		public void setSwops( byte[] swops ){			this.swops = swops;		}
-		/**  玩家新手引导状态值  */		public void setGuideStatus( Byte guideStatus ){			this.guideStatus = guideStatus;		}
+		/**  玩家新手引导状态值  */		public void setGuideStatus( String guideStatus ){			this.guideStatus = guideStatus;		}
 
 		public static String gsidChangeSql( Short x ) {			return "gsid=" + x;		}
 		public static String uidChangeSql( String x ) {			return "uid=" + "'"+x+"'";		}
@@ -436,7 +436,7 @@
 		public static String fleetsChangeSql( byte[] x ) {			return "fleets=" + x;		}
 		public static String tasksChangeSql( byte[] x ) {			return "tasks=" + x;		}
 		public static String swopsChangeSql( byte[] x ) {			return "swops=" + x;		}
-		public static String guideStatusChangeSql( Byte x ) {			return "guideStatus=" + x;		}
+		public static String guideStatusChangeSql( String x ) {			return "guideStatus=" + "'"+x+"'";		}
 
 		@Override		public void fromDBObject(DBObject o) {			gsid = o.getShort( "gsid" );
 			uid = o.getString( "uid" );
@@ -457,7 +457,7 @@
 			fleets = o.getBytes( "fleets" );
 			tasks = o.getBytes( "tasks" );
 			swops = o.getBytes( "swops" );
-			guideStatus = o.getByte( "guideStatus" );
+			guideStatus = o.getString( "guideStatus" );
 
 		}				@Override		public String toString() {			return "gsid="+gsid+","+"uid="+uid+","+"createTime="+createTime+","+"lastLogoutTime="+lastLogoutTime+","+"nickname="+nickname+","+"headIco="+headIco+","+"level="+level+","+"exp="+exp+","+"adjutantId="+adjutantId+","+"countryId="+countryId+","+"currency="+currency+","+"gold="+gold+","+"ectypes="+ectypes+","+"manors="+manors+","+"chatAxns="+chatAxns+","+"taverns="+taverns+","+"fleets="+fleets+","+"tasks="+tasks+","+"swops="+swops+","+"guideStatus="+guideStatus;		}	}
 	public static class PropsDto implements SqlDto{		private Short gsid = null;

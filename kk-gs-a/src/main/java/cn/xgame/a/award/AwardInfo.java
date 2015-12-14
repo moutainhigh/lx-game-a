@@ -56,6 +56,8 @@ public class AwardInfo implements ITransformStream{
 	public void setCount(int count) {
 		this.count = count;
 	}
-
+	public void addCount(int value) {
+		this.count += value;
+	}
 
 }

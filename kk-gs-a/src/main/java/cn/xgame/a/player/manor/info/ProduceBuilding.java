@@ -29,7 +29,6 @@ public class ProduceBuilding extends IBuilding{
 	private int interval;
 	// 总比例
 	private float sumScale;
-	
 	// 可以产出的总量
 	private int sumProduce;
 	
@@ -42,12 +41,6 @@ public class ProduceBuilding extends IBuilding{
 	
 	public ProduceBuilding( BType type,BbuildingPo templet ) {
 		super(type,templet);
-	}
-	
-	@Override
-	public void init() {
-		produces.clear();
-		rtime = (int)(System.currentTimeMillis()/1000);
 		initProduceTemplet();
 	}
 	private void initProduceTemplet() {
@@ -66,6 +59,12 @@ public class ProduceBuilding extends IBuilding{
 			sumScale += g.getCount();
 		}
 	}
+	
+	@Override
+	public void init() {
+		produces.clear();
+		rtime = (int)(System.currentTimeMillis()/1000);
+	}
 
 	@Override
 	public void putBuffer(ByteBuf buf) {
@@ -75,6 +74,7 @@ public class ProduceBuilding extends IBuilding{
 			buf.writeInt( g.getId() );
 			buf.writeFloat( g.getCount() );
 		}
+		buf.writeInt(rtime);
 	}
 	@Override
 	public void wrapBuffer(ByteBuf buf) {
@@ -87,6 +87,7 @@ public class ProduceBuilding extends IBuilding{
 			g.addCount( buf.readFloat() );
 			produces.add(g);
 		}
+		rtime = buf.readInt();
 	}
 	
 	public void update() {

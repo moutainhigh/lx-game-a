@@ -9,7 +9,6 @@ import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.task.TaskControl;
-import cn.xgame.a.player.task.classes.ICondition;
 import cn.xgame.a.player.task.classes.ITask;
 import cn.xgame.a.player.task.classes.TaskType;
 import cn.xgame.a.player.task.info.CanTask;
@@ -61,11 +60,6 @@ public class ReceiveTaskEvent extends IEvent{
 			
 			// 添加到已接任务列表
 			taskControl.addTask( ret );
-			
-			// 这里测试 直接设置为可完成
-			for( ICondition con : ret.getConditions() ){
-				con.isComplete(true);
-			}
 			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {

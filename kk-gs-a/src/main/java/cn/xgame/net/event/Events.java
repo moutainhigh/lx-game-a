@@ -14,6 +14,7 @@ import cn.xgame.net.event.all.ls.UpdatePeopleEvent;
 import cn.xgame.net.event.all.pl.CreateEvent;
 import cn.xgame.net.event.all.pl.LoginEvent;
 import cn.xgame.net.event.all.pl.NewbieguideEvent;
+import cn.xgame.net.event.all.pl.TimeRevisionEvent;
 import cn.xgame.net.event.all.pl.captain.EatEquipEvent;
 import cn.xgame.net.event.all.pl.captain.EatIntimacyEvent;
 import cn.xgame.net.event.all.pl.chat.AlterGroupNameEvent;
@@ -130,6 +131,7 @@ public enum Events {
 	PLAYER_LOGIN				( 1001,		new LoginEvent() 				, "登录游戏" ),
 	PLAYER_CREATE				( 1002, 	new CreateEvent() 				, "创建角色" ),
 	NEWBIE_GUIDE				( 1003, 	new NewbieguideEvent() 			, "保存新手引导状态" ),
+	TIME_REVISION				( 1004, 	new TimeRevisionEvent() 		, "时间校对" ), 
 	// 星图
 	APPLY_STARATLAS				( 1014, 	new ApplyStaratlasEvent()		, "航站-申请星图信息" ),
 	SAIL_OUT					( 1015, 	new SailoutEvent()				, "航站-开始出航" ),

@@ -273,7 +273,7 @@ public class Player extends IPlayer implements ITransformStream{
 			else
 				depots.getProp( prop ).setCount( prop.getCount() );
 		}
-		Logs.debug( this, explain+" 扣除资源 " + materials );
+		Logs.debug( ctx, explain+" 扣除资源 " + materials );
 		return materials;
 	}
 	public List<IProp> deductResource( String needres, String explain ) throws Exception{

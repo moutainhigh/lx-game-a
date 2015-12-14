@@ -42,7 +42,7 @@ public abstract class IPlayer {
 	
 	
 	// 玩家新手引导状态值
-	private byte 			guideStatus;
+	private String 			guideStatus;
 	
 	public void wrap( PlayerDataDto dto ){
 		this.UID 			= dto.getUid();
@@ -156,10 +156,10 @@ public abstract class IPlayer {
 	public void setExp(int exp) {
 		this.exp = exp;
 	}
-	public byte getGuideStatus() {
+	public String getGuideStatus() {
 		return guideStatus;
 	}
-	public void setGuideStatus(byte guideStatus) {
+	public void setGuideStatus(String guideStatus) {
 		this.guideStatus = guideStatus;
 	}
 	

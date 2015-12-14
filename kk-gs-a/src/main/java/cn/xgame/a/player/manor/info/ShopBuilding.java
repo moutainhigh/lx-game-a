@@ -1,5 +1,6 @@
 package cn.xgame.a.player.manor.info;
 
+import java.util.Iterator;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
@@ -110,6 +111,25 @@ public class ShopBuilding extends IBuilding{
 		return LXConstants.BUILD_SHOP_UPDATETIME[updatelevel-1] + rtime;
 	}
 
+	public AwardInfo getItem(int pid) {
+		for( AwardInfo g : goods ){
+			if( g.getId() == pid )
+				return g;
+		}
+		return null;
+	}
+	
+	public void removeItem(int pid) {
+		Iterator<AwardInfo> iter = goods.iterator();
+		while(iter.hasNext()){
+			AwardInfo g = iter.next();
+			if( g.getId() == pid ){
+				iter.remove();
+				break;
+			}
+		}
+	}
+	
 	public byte getUpdatelevel() {
 		return updatelevel;
 	}
@@ -137,5 +157,6 @@ public class ShopBuilding extends IBuilding{
 	public void setGoodclevel(byte goodclevel) {
 		this.goodclevel = goodclevel;
 	}
+
 	
 }

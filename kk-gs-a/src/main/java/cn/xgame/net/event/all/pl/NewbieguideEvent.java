@@ -7,6 +7,8 @@ import java.io.IOException;
 //import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.net.netty.Netty.RW;
+import cn.xgame.utils.Logs;
 
 /**
  * 保存新手引导状态值
@@ -17,8 +19,9 @@ public class NewbieguideEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {
-		byte guidestatus = data.readByte();
+		String guidestatus = RW.readString(data);
 		player.setGuideStatus(guidestatus);
+		Logs.debug(player.getCtx(), "保存引导 =" + guidestatus);
 		// 这里删除掉船
 //		if( guidestatus >= 5 ){
 //			FleetInfo fleetInfo = player.getFleets().getFleetHavaShip().get(0);

@@ -109,7 +109,7 @@ public class CreateEvent extends IEvent {
 			// 聊天频道 这里强制发0
 			buffer.writeByte( 0 );
 			// 新手引导
-			buffer.writeByte( player.getGuideStatus() );
+			RW.writeString(buffer, player.getGuideStatus());
 		}
 		sendPackage( ctx, buffer );
 	

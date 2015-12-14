@@ -83,6 +83,7 @@ public class BuyManorEvent extends IEvent{
 		BbuildingPo templet = CsvGen.getBbuildingPo( LXConstants.BASE_BUILD_ID );
 		if( templet != null ){
 			BaseBuilding building = new BaseBuilding(BType.BASE, templet);
+			building.setIndex((byte) 1);
 			building.build();
 			manors.addBuilding(building);
 		}else{

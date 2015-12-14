@@ -66,5 +66,5 @@ public interface PlayerData {
 	byte[] swops();
 	
 	/** 玩家新手引导状态值 */
-	byte guideStatus();
+	String guideStatus();
 }

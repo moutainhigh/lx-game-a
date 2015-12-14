@@ -52,7 +52,7 @@ public class BuildBuildingEvent extends IEvent {
 			ret = player.deductResource( templet.needres, "建造领地建筑" );
 			
 			// 创建建筑
-			BType bType = BType.values()[templet.type];
+			BType bType = BType.values()[templet.type-1];
 			building = bType.create(templet);
 			building.setIndex(index);
 			building.setStatus(BStatus.IMBAU);
@@ -92,8 +92,8 @@ public class BuildBuildingEvent extends IEvent {
 		int sumGrid = templet.usegrid;
 		for( IBuilding o : builds ){
 			// 看是否允许唯一
-			if( templet.id == o.getNid() )
-				throw new Exception( ErrorCode.HAVE_EQUAL.name() );
+//			if( templet.id == o.getNid() )
+//				throw new Exception( ErrorCode.HAVE_EQUAL.name() );
 			// 看位置是否允许建筑
 			if( o.indexIsOverlap( index, templet.usegrid ) )
 				throw new Exception( ErrorCode.INDEX_OCCUPY.name() );

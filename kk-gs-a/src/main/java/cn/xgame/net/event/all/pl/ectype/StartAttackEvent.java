@@ -128,7 +128,7 @@ public class StartAttackEvent extends IEvent{
 			CombatIn result = new CombatIn( (int) (System.currentTimeMillis()/1000), chapter.getDepthtime(), combatTime );
 			fleet.changeStatus( StatusType.COMBAT, UID, type, cnid, ltype, level, damaged, ammoExpend, iswin, awards, score, result );
 			
-			Logs.debug( player, "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 舰队ID=" + fid );
+			Logs.debug( player.getCtx(), "申请攻打副本 星球ID=" + snid + ", 类型=" + type + ", 章节ID=" + cnid + ", 舰队ID=" + fid );
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
