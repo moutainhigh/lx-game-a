@@ -13,5 +13,5 @@
 	<!--登陆服IP localhost-->
 	<lsAddress>192.168.1.144</lsAddress>
 	<!--登陆服端口-->
-	<lsPort>9000</lsPort>
+	<lsPort>8001</lsPort>
 </config>

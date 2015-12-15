@@ -79,7 +79,7 @@ public class ReceiveTaskEvent extends IEvent{
 
 	// 检测玩家是否在这个地点
 	private boolean isInSite( Player player, int needsite ) {
-		if( needsite == 0 )
+		if( needsite == 0 || player.getCountryId() == needsite )
 			return true;
 		List<FleetInfo> ls = player.getFleets().getFleetHavaShip();
 		for( FleetInfo f : ls ){

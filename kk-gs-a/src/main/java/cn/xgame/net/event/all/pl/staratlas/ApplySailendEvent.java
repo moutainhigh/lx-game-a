@@ -62,8 +62,7 @@ public class ApplySailendEvent extends IEvent {
 				
 				// 切换航行状态
 				int starttime = (int) (System.currentTimeMillis()/1000);
-				int endtime = starttime + sailtime;
-				fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ), 0 );
+				fleet.changeStatus( StatusType.SAIL, aimId, starttime, sailtime, new Setsail( airline ), 0 );
 			}
 			
 			code = ErrorCode.SUCCEED;
