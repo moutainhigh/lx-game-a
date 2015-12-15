@@ -3,7 +3,6 @@ package cn.xgame.a.player.u;
 import java.util.List;
 
 import x.javaplus.collections.Lists;
-import x.javaplus.string.StringUtil;
 import x.javaplus.util.ErrorCode;
 import x.javaplus.util.Util.Time;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +27,6 @@ import cn.xgame.config.o.PalyerlevelPo;
 import cn.xgame.gen.dto.MysqlGen.PlayerDataDto;
 import cn.xgame.net.event.Events;
 import cn.xgame.net.event.all.ls.RLastGsidEvent;
-import cn.xgame.net.event.all.pl.update.Update_1400;
 import cn.xgame.system.LXConstants;
 import cn.xgame.system.SystemCfg;
 import cn.xgame.utils.Logs;
@@ -102,9 +100,6 @@ public class Player extends IPlayer implements ITransformStream{
 		setCreateTime( System.currentTimeMillis() );
 		// 初始化副本信息
 		ectypes.clear();
-		// 初始化任务
-		PalyerlevelPo temp = CsvGen.getPalyerlevelPo(level);
-		tasks.addCanTask( StringUtil.arrayToInteger(temp.tasks,";") );
 	}
 	
 	public String toString(){
@@ -286,23 +281,31 @@ public class Player extends IPlayer implements ITransformStream{
 	 */
 	public void addExp( int addexp ) {
 		this.exp += addexp;
-		List<Integer> ret = Lists.newArrayList();
+		short curLevel = this.level;
 		// 下面刷新升级
 		PalyerlevelPo temp = CsvGen.getPalyerlevelPo(level);
 		while ( this.exp >= temp.exp && temp.exp != 0 ){
 			temp = CsvGen.getPalyerlevelPo(level+1);
 			if( temp == null )
 				break;
-			++level;
-			ret.addAll( StringUtil.arrayToInteger(temp.tasks,";") );
+			++this.level;
 		}
-		// 如果升级了 做的事情
-		if( !ret.isEmpty() ){
-			// 添加到可接任务列表
-			tasks.addCanTask( ret );
-			// 通知
-			((Update_1400)Events.UPDATE_1400.toInstance()).run( this, ret );
+		// 如果升级了
+		if( this.level - curLevel > 0 ){
+			Logs.debug(ctx, "升级了 +"+(this.level-curLevel)+" cur="+this.level );
+			// 刷新可接任务
+			updateCanTask();
+			
+			
 		}
+	}
+	private void updateCanTask() {
+//		List<Integer> ret = Lists.newArrayList();
+//		
+//		
+//		tasks.addCanTask( ret );
+//		// 通知
+//		((Update_1400)Events.UPDATE_1400.toInstance()).run( this, ret );
 	}
 
 	/**

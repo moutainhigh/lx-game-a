@@ -35,7 +35,9 @@ public class ReceiveTaskEvent extends IEvent{
 			TaskPo templet = CsvGen.getTaskPo(taskid);
 			if( templet == null )
 				throw new Exception( ErrorCode.OTHER_ERROR.name() );
-			
+			// 判断等级
+			if( player.getLevel() < templet.needlv )
+				throw new Exception( ErrorCode.LEVEL_LAZYWEIGHT.name() );
 			// 判断 地点
 			if( !isInSite( player, templet.starid ) )
 				throw new Exception( ErrorCode.CON_DISSATISFY.name() );

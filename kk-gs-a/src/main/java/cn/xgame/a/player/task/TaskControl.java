@@ -154,9 +154,17 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		if( ret == null || ret.isEmpty() )
 			return;
 		for( int id : ret ){
-			CanTask task = new CanTask(id);
-			canTasks.add(task);
+			TaskPo t = CsvGen.getTaskPo(id);
+			if( t == null )
+				continue;
+			canTasks.add(new CanTask(id));
 		}
+	}
+	public void addCanTask( int id ) {
+		TaskPo t = CsvGen.getTaskPo(id);
+		if( t == null )
+			return;
+		canTasks.add(new CanTask(id));
 	}
 	public CanTask getCanTask(int taskid) {
 		for( CanTask task : canTasks ){
@@ -245,6 +253,8 @@ public class TaskControl implements IArrayStream,ITransformStream{
 			}
 		}
 	}
+
+
 
 
 	

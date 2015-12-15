@@ -1,5 +1,8 @@
 package cn.xgame.a.player.u.classes;
 
+import java.util.List;
+
+import x.javaplus.collections.Lists;
 import x.javaplus.util.lua.Lua;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.utils.LuaUtil;
@@ -25,7 +28,11 @@ public class Init {
 		Player ret = new Player( uID, headIco, name );
 		ret.setAdjutantId( adjutantId );
 		ret.setCountryId( countryId );
-		
+		// 初始化任务
+		List<Integer> tasks = Lists.newArrayList();
+		tasks.add( 99001 );
+		ret.getTasks().addCanTask( tasks );
+		// 调用lua脚本
 		Lua lua = LuaUtil.getInit();
 		lua.getField( "createPlayerData" ).call( 0, ret );
 		
