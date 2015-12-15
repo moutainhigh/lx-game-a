@@ -62,6 +62,7 @@ public class CompleteTaskEvent extends IEvent{
 					// 通知
 					((Update_1400)Events.UPDATE_1400.toInstance()).run( player, Lists.newArrayList(task.templet().needlast) );
 				}
+				// 添加到完成列表中
 				taskControl.addCompletTask(taskid);
 			}
 			
