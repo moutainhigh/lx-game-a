@@ -297,7 +297,7 @@ public class Player extends IPlayer implements ITransformStream{
 			ret.addAll( StringUtil.arrayToInteger(temp.tasks,";") );
 		}
 		// 如果升级了 做的事情
-		if( ret.isEmpty() ){
+		if( !ret.isEmpty() ){
 			// 添加到可接任务列表
 			tasks.addCanTask( ret );
 			// 通知

@@ -217,7 +217,7 @@ public class EctypeControl implements IArrayStream{
 	 * @param chapterId
 	 */
 	public void generateNextGeneralEctype( int berthSnid, int chapterId ) {
-		StarGeneralEctype sgel = starels.get(berthSnid);
+		StarGeneralEctype sgel = getSGEL(berthSnid);
 		if( sgel != null ){
 			ChapterLevel cl = sgel.getCl(chapterId);
 			if( cl != null ){

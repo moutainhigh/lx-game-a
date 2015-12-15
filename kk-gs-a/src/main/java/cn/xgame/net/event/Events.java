@@ -45,9 +45,9 @@ import cn.xgame.net.event.all.pl.mail.ExtractAdjunctEvent;
 import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
 import cn.xgame.net.event.all.pl.mail.SendMailEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyPedleryEvent;
-import cn.xgame.net.event.all.pl.manor.ApplyShopEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyProduceEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
+import cn.xgame.net.event.all.pl.manor.ApplyBShopEvent;
 import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
 import cn.xgame.net.event.all.pl.manor.BuyShopItemEvent;
@@ -62,6 +62,7 @@ import cn.xgame.net.event.all.pl.planet.ApplyExchMeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyGenrsEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyHomeEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyResEvent;
+import cn.xgame.net.event.all.pl.planet.ApplySShopEvent;
 import cn.xgame.net.event.all.pl.planet.ApplyTavernEvent;
 import cn.xgame.net.event.all.pl.planet.DonateStuffEvent;
 import cn.xgame.net.event.all.pl.planet.ParticipateBuildVoEvent;
@@ -162,7 +163,7 @@ public enum Events {
 	DESTROY_BUILDING			( 1045, 	new DestroyBuildingEvent()		, "领地操作-建筑销毁" ),
 	TAKE_GOODS					( 1046, 	new TakeGoodsEvent()			, "领地操作-收取产出" ),
 	SELL_GOODS					( 1047, 	new SellGoodsEvent()			, "领地操作-出售产出" ),
-	APPLY_SHOP					( 1048, 	new ApplyShopEvent()			, "领地操作-申请商店详细信息" ),
+	APPLY_SHOP					( 1048, 	new ApplyBShopEvent()			, "领地操作-申请商店详细信息" ),
 	APPLY_PEDLERY				( 1049, 	new ApplyPedleryEvent()			, "领地操作-申请行商详细信息" ),
 	BUY_SHOPITEM				( 1071, 	new BuyShopItemEvent()			, "领地操作-购买商店物品" ),
 	EXCHANGE_CHESTS				( 1072, 	new ExchangeChestsEvent()		, "领地操作-兑换行商宝箱" ),
@@ -176,7 +177,7 @@ public enum Events {
 	//-----------------星球
 	APPLY_PLANET				( 1101, 	new ApplyHomeEvent()			, "星球操作-申请基础数据" ),
 	APPLY_PLANET_RES			( 1111, 	new ApplyResEvent()				, "星球操作-申请资源" ),
-	APPLY_PLANET_SPE			( 1112, 	new ApplyShopEvent()			, "星球操作-申请商店" ),
+	APPLY_PLANET_SPE			( 1112, 	new ApplySShopEvent()			, "星球操作-申请商店" ),
 	APPLY_ALLLAFFAIR			( 1113, 	new ApplyAlllAffairEvent()		, "星球操作-申请政务" ),
 	APPLY_GENRS					( 1114, 	new ApplyGenrsEvent()			, "星球操作-申请元老数据" ),
 	APPLY_TAVERN				( 1115, 	new ApplyTavernEvent()			, "星球操作-申请酒馆" ),

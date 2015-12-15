@@ -62,6 +62,7 @@ public class CompleteTaskEvent extends IEvent{
 					// 通知
 					((Update_1400)Events.UPDATE_1400.toInstance()).run( player, Lists.newArrayList(task.templet().needlast) );
 				}
+				taskControl.addCompletTask(taskid);
 			}
 			
 			// 最后删除这个任务

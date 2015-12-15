@@ -115,6 +115,10 @@ public class TaskControl implements IArrayStream,ITransformStream{
 				buffer.writeByte( con.isComplete(root) ? 1 : 0 );
 			}
 		}
+		buffer.writeInt( completeTasks.size() );
+		for( CompleteTask task : completeTasks ){
+			buffer.writeInt(task.getId());
+		}
 	}
 	
 	/**
@@ -214,6 +218,15 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		}
 	}
 	
+	/**
+	 * 添加一个已经完成的任务
+	 * @param taskid
+	 */
+	public void addCompletTask(int taskid) {
+		CompleteTask e = new CompleteTask(taskid);
+		e.setCompleteTime((int) (System.currentTimeMillis()/1000));
+		completeTasks.add(e);
+	}
 
 	/**
 	 * 执行任务
@@ -232,6 +245,8 @@ public class TaskControl implements IArrayStream,ITransformStream{
 			}
 		}
 	}
+
+
 	
 
 }

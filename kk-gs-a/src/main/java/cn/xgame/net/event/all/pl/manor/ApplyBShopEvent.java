@@ -20,7 +20,7 @@ import cn.xgame.net.event.IEvent;
  * @author deng		
  * @date 2015-12-11 下午6:55:44
  */
-public class ApplyShopEvent extends IEvent{
+public class ApplyBShopEvent extends IEvent{
 
 	@Override
 	public void run(Player player, ByteBuf data) throws IOException {

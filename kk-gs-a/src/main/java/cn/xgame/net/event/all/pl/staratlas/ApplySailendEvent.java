@@ -11,6 +11,7 @@ import cn.xgame.a.player.fleet.classes.StatusType;
 import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.fleet.info.purpose.Setsail;
 import cn.xgame.a.player.fleet.info.status.SailStatus;
+import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.utils.LuaUtil;
@@ -50,7 +51,8 @@ public class ApplySailendEvent extends IEvent {
 			if( airline.isEmpty() ){// 没有航站了 那就悬停
 			
 				fleet.changeStatus( StatusType.HOVER );
-			
+				// 执行任务
+				player.getTasks().execute( ConType.DAODADIDIAN, fleet.getBerthSnid() );
 			}else{ // 这里继续航行
 				
 				// 取出航线第一个目标星球
@@ -63,7 +65,7 @@ public class ApplySailendEvent extends IEvent {
 				int endtime = starttime + sailtime;
 				fleet.changeStatus( StatusType.SAIL, aimId, starttime, endtime, new Setsail( airline ), 0 );
 			}
-				
+			
 			code = ErrorCode.SUCCEED;
 		} catch (Exception e) {
 			code = ErrorCode.valueOf( e.getMessage() );
