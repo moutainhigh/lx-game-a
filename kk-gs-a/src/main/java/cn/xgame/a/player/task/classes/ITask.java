@@ -130,11 +130,13 @@ public class ITask implements IBufferStream {
 		root.changeCurrency( templet.money, "任务奖励获得" );
 		// 直接发送经验
 		root.addExp( templet.exp );
-		// 道具 用邮件的形式发送
-		MailInfo mail = new MailInfo( MailType.SYSTEM, templet.name, "恭喜完成任务! 快领取你的便当吧." );
-		for( AwardInfo award : awards )
-			 mail.addProp( award.getId(), award.getCount() );
-		root.getMails().addMail(mail);
+		// 道具 用邮件的形式发送 如果有的话
+		if( !awards.isEmpty() ){
+			MailInfo mail = new MailInfo( MailType.SYSTEM, "任务奖励", "谢谢你的帮忙!" );
+			for( AwardInfo award : awards )
+				mail.addProp( award.getId(), award.getCount() );
+			root.getMails().addMail(mail);
+		}
 	}
 	
 	public void executeEnd(Player player) {

@@ -47,7 +47,7 @@ public class ManorControl implements IArrayStream{
 		byte size = buff.readByte();
 		for( int i = 0; i < size; i++ ){
 			BbuildingPo templet = CsvGen.getBbuildingPo(buff.readInt());
-			BType type = values[templet.type-1];
+			BType type = values[templet.buildtype-1];
 			IBuilding o = type.create(templet);
 			o.wrapBuffer(buff);
 			builds.add(o);

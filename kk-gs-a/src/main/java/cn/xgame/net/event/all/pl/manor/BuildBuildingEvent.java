@@ -52,7 +52,7 @@ public class BuildBuildingEvent extends IEvent {
 			ret = player.deductResource( templet.needres, "建造领地建筑" );
 			
 			// 创建建筑
-			BType bType = BType.values()[templet.type-1];
+			BType bType = BType.values()[templet.buildtype-1];
 			building = bType.create(templet);
 			building.setIndex(index);
 			building.setStatus(BStatus.IMBAU);

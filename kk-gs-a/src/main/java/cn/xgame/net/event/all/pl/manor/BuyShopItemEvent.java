@@ -48,9 +48,9 @@ public class BuyShopItemEvent extends IEvent{
 				throw new Exception( ErrorCode.PROP_LAZYWEIGHT.name() );
 			
 			// 执行扣除商店道具 
-			goods.addCount( -count );
-			if( goods.getCount() == 0 )
-				building.removeItem( pid );
+//			goods.addCount( -count );
+//			if( goods.getCount() == 0 )
+//				building.removeItem( pid );
 			
 			// 然后发放道具
 			ret = player.getDepots().appendProp(pid, count);
