@@ -14,6 +14,7 @@ import cn.xgame.a.player.fleet.info.status.SailStatus;
 import cn.xgame.a.player.task.classes.ConType;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
+import cn.xgame.utils.Logs;
 import cn.xgame.utils.LuaUtil;
 
 /**
@@ -53,6 +54,8 @@ public class ApplySailendEvent extends IEvent {
 				fleet.changeStatus( StatusType.HOVER );
 				// 执行任务
 				player.getTasks().execute( ConType.DAODADIDIAN, fleet.getBerthSnid() );
+				
+				Logs.debug( player.getCtx(), "航行结束 当前停靠星球=" + fleet.getBerthSnid() );
 			}else{ // 这里继续航行
 				
 				// 取出航线第一个目标星球
@@ -63,6 +66,8 @@ public class ApplySailendEvent extends IEvent {
 				// 切换航行状态
 				int starttime = (int) (System.currentTimeMillis()/1000);
 				fleet.changeStatus( StatusType.SAIL, aimId, starttime, sailtime, new Setsail( airline ), 0 );
+				
+				Logs.debug( player.getCtx(), "继续航行 " + fleet.getBerthSnid() + " -> " + aimId + " 航行时间 =" + sailtime );
 			}
 			
 			code = ErrorCode.SUCCEED;

@@ -63,7 +63,7 @@ public class ApplyEctypeEvent extends IEvent{
 				for( int id : o.getQuestions() ){
 					buffer.writeInt( id );
 				}
-				int startId = getFarthestSid( allfleets, o.getSnid() );
+//				int startId = getFarthestSid( allfleets, o.getSnid() );
 				buffer.writeByte( 0 );
 //				List<EctypeInfo> guajiEctypes = o.getGuajiEctypes();
 //				buffer.writeByte( guajiEctypes.size() );
@@ -83,7 +83,7 @@ public class ApplyEctypeEvent extends IEvent{
 				for( int i = 0; i < size; i++ ){
 					EctypeInfo x = ectypes.get(i);
 					buffer.writeByte( x.getLevel() );
-					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter, buffer );
 					buffer.writeByte( x.getAtks().size() );
 					for( Attackattr attr : x.getAtks() )
 						attr.buildTransformStream(buffer);
@@ -105,12 +105,12 @@ public class ApplyEctypeEvent extends IEvent{
 				for( int id : o.getQuestions() ){
 					buffer.writeInt( id );
 				}
-				int startId = getFarthestSid( allfleets, o.getSnid() );
+//				int startId = getFarthestSid( allfleets, o.getSnid() );
 				List<EctypeInfo> ectypes = o.getEctypes();
 				buffer.writeByte( ectypes.size() );
 				for( EctypeInfo x : ectypes ){
 					buffer.writeByte( x.getLevel() );
-					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, startId, o.getSnid(), x, fighter, buffer );
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter, buffer );
 					buffer.writeByte( x.getAtks().size() );
 					for( Attackattr attr : x.getAtks() )
 						attr.buildTransformStream(buffer);
@@ -132,18 +132,18 @@ public class ApplyEctypeEvent extends IEvent{
 	 * @param snid
 	 * @return
 	 */
-	private int getFarthestSid( List<FleetInfo> allfleets, int snid ) {
-		int ret = snid;
-		int temp = 0;
-		for( FleetInfo fleet : allfleets ){
-			int stime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid, fleet.toShipDatas() )[0].getInt();
-			if( stime > temp ){
-				temp 	= stime;
-				ret 	= fleet.getBerthSnid();
-			}
-		}
-		return ret;
-	}
+//	private int getFarthestSid( List<FleetInfo> allfleets, int snid ) {
+//		int ret = snid;
+//		int temp = 0;
+//		for( FleetInfo fleet : allfleets ){
+//			int stime = LuaUtil.getEctypeCombat().getField( "getSailingTime" ).call( 1, fleet.getBerthSnid(), snid, fleet.toShipDatas() )[0].getInt();
+//			if( stime > temp ){
+//				temp 	= stime;
+//				ret 	= fleet.getBerthSnid();
+//			}
+//		}
+//		return ret;
+//	}
 
 	/**
 	 * 包装战斗者
