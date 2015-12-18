@@ -15,6 +15,7 @@ import cn.xgame.a.player.dock.capt.CaptainInfo;
 import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.fleet.FleetControl;
 import cn.xgame.a.player.fleet.info.FleetInfo;
+import cn.xgame.a.player.manor.info.IBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
@@ -75,6 +76,16 @@ public class LoginEvent extends IEvent{
 			
 			// 基本数据
 			player.buildTransformStream( buffer );
+			// 领地信息
+			buffer.writeInt( player.getManors().getNid() );
+			List<IBuilding> builds = player.getManors().getBuilds();
+			buffer.writeByte( builds.size() );
+			for( IBuilding o : builds ){
+				buffer.writeInt( o.getNid() );
+				buffer.writeByte( o.getIndex() );
+				buffer.writeByte( o.getStatus().ordinal() );
+				buffer.writeInt( o.getEndtime() );
+			}
 			// 母星数据
 			home.buildTransformStream( buffer );
 			home.putPlyaerInfo( player, buffer );

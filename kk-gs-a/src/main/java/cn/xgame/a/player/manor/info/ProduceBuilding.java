@@ -91,7 +91,8 @@ public class ProduceBuilding extends IBuilding{
 	}
 	
 	public void update() {
-		if( curSumCount() >= sumProduce )
+		int curSumCount = curSumCount();
+		if( curSumCount >= sumProduce )
 			return;
 		
 		// 根据已过去的时间算出 次数
@@ -102,7 +103,12 @@ public class ProduceBuilding extends IBuilding{
 		
 		// 根据次数算出总个数
 		float sumCount = times * oneProduce;
-		float single = sumCount/sumScale; // 算出单个比例
+		// 这里把超出的减掉
+		if( sumCount + curSumCount > sumProduce )
+			sumCount = sumProduce - curSumCount;
+		// 算出单个比例
+		float single = sumCount/sumScale; 
+		// 开始加到每个道具上面
 		for( Goods goods : produceTemplet ){
 			float count = goods.getCount()*single;
 			addGoods( goods.getId(), count );

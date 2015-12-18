@@ -7,17 +7,12 @@ import java.io.IOException;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.manor.ManorControl;
-import cn.xgame.a.player.manor.classes.BType;
-import cn.xgame.a.player.manor.info.BaseBuilding;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.a.world.WorldManager;
 import cn.xgame.a.world.planet.home.HomePlanet;
 import cn.xgame.config.gen.CsvGen;
-import cn.xgame.config.o.BbuildingPo;
 import cn.xgame.config.o.ReclaimPo;
 import cn.xgame.net.event.IEvent;
-import cn.xgame.system.LXConstants;
-import cn.xgame.utils.Logs;
 
 /**
  * 购买领地
@@ -53,10 +48,6 @@ public class BuyManorEvent extends IEvent{
 			if( player.changeCurrency( -reclaim.money, "购买领地" ) == -1 )
 				throw new Exception( ErrorCode.CURRENCY_LAZYWEIGHT.name() );
 			
-			// 这里看之前是否有过领地 如果是第一次购买那么默认就要添加一个基地建筑
-			if( manors.getTerritory() == null ){
-				createBaseBuilding(manors);
-			}
 			// 直接设置领地即可
 			manors.setTerritory(reclaim);
 			
@@ -73,22 +64,6 @@ public class BuyManorEvent extends IEvent{
 		}
 		sendPackage( player.getCtx(), buff );
 		
-	}
-	
-	/**
-	 * 创建一个基地建筑
-	 * @param manors
-	 */
-	private void createBaseBuilding(ManorControl manors) {
-		BbuildingPo templet = CsvGen.getBbuildingPo( LXConstants.BASE_BUILD_ID );
-		if( templet != null ){
-			BaseBuilding building = new BaseBuilding(BType.BASE, templet);
-			building.setIndex((byte) 1);
-			building.build();
-			manors.addBuilding(building);
-		}else{
-			Logs.error( "玩家第一次购买领地 创建基地建筑失败 at="+LXConstants.BASE_BUILD_ID+" 在表格没有找到" );
-		}
 	}
 
 }

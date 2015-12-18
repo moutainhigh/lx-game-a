@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.List;
 
+import x.javaplus.string.StringUtil;
 import x.javaplus.util.ErrorCode;
 
 import cn.xgame.a.player.manor.ManorControl;
@@ -44,7 +45,8 @@ public class BuildBuildingEvent extends IEvent {
 
 			// 检测是否可以建造 位置-重复-总空间
 			isCanBuild( templet, index, manors.getBuilds(), manors.getTerritory() );
-			
+			// 检测前置
+			isFront(templet, manors.getBuilds());
 			// 检测科技等级是否满足
 			// TODO
 			
@@ -82,6 +84,8 @@ public class BuildBuildingEvent extends IEvent {
 		sendPackage( player.getCtx(), buffer );
 	}
 
+
+
 	/**
 	 * 检测这个建筑是否可以建造   位置-重复-总空间
 	 * @param building
@@ -105,4 +109,21 @@ public class BuildBuildingEvent extends IEvent {
 		return true;
 	}
 
+	/**
+	 * 检查建筑前置条件
+	 * @param templet
+	 * @param builds
+	 * @throws Exception 
+	 */
+	private boolean isFront(BbuildingPo templet, List<IBuilding> builds) throws Exception {
+		if( templet.front.isEmpty() )
+			return true;
+		List<Integer> array = StringUtil.arrayToInteger(templet.front, ";");
+		for( IBuilding o : builds ){
+			if( array.indexOf( o.getNid() ) != -1 )
+				return true;
+		}
+		throw new Exception( ErrorCode.NEED_FRONT_CONDITION.name() );
+	}
+	
 }

@@ -46,7 +46,6 @@ import cn.xgame.net.event.all.pl.mail.ReadMailEvent;
 import cn.xgame.net.event.all.pl.mail.SendMailEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyPedleryEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyProduceEvent;
-import cn.xgame.net.event.all.pl.manor.ApplyManorEvent;
 import cn.xgame.net.event.all.pl.manor.ApplyBShopEvent;
 import cn.xgame.net.event.all.pl.manor.BuildBuildingEvent;
 import cn.xgame.net.event.all.pl.manor.BuyManorEvent;
@@ -155,7 +154,6 @@ public enum Events {
 	EAT_EQUIP					( 1031, 	new EatEquipEvent()				, "舰长操作-装上装备" ),
 	EAT_INTIMACY				( 1032, 	new EatIntimacyEvent()			, "舰长操作-吃亲密度丹" ),
 	// 领地
-	APP_MANOR					( 1040, 	new ApplyManorEvent() 			, "领地操作-申请领地建筑信息" ),
 	BUY_MANOR					( 1041, 	new BuyManorEvent()				, "领地操作-购买领地" ),
 	APPLY_GOODS					( 1042, 	new ApplyProduceEvent()			, "领地操作-申请产出" ),
 	BUILD_BUILDING				( 1043, 	new BuildBuildingEvent()		, "领地操作-建造建筑" ),
