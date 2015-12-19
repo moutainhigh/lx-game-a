@@ -46,7 +46,6 @@ public enum TaskType {
 		}
 	};
 	
-	
 	private final byte	number;
 	private static final Map<Byte, TaskType> numToEnum = new HashMap<Byte, TaskType>();
 	TaskType( int n ){

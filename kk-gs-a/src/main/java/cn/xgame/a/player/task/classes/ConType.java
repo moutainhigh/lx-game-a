@@ -57,10 +57,18 @@ public enum ConType {
 		}
 	},
 	
+	/** 修建建筑 */
+	BUILDSTRUCTURE(5) {
+		@Override
+		public ICondition create(TaskcndPo templet) {
+			return new YunshuDaoju( YUNSHUDAOJU, templet );
+		}
+	},
+	
 	/**
 	 * 收集道具
 	 */
-	SHOUJIDAOJU(5) {
+	SHOUJIDAOJU(6) {
 		@Override
 		public ICondition create(TaskcndPo templet) {
 			return new XiaohaoDaoju( SHOUJIDAOJU, templet );
