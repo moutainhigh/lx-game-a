@@ -44,8 +44,8 @@ public class Init {
 		
 		//------------------ 初始化领地
 		ManorControl manors = ret.getManors();
-		ReclaimPo reclaim = CsvGen.getReclaimPo(2);
 		// 设置领土
+		ReclaimPo reclaim = CsvGen.getReclaimPo(1);
 		manors.setTerritory(reclaim);
 		// 下面默认添加一个基地建筑
 		BbuildingPo templet = CsvGen.getBbuildingPo( LXConstants.BASE_BUILD_ID );
