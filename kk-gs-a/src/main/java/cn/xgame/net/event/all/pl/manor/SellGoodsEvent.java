@@ -39,7 +39,7 @@ public class SellGoodsEvent extends IEvent{
 		ErrorCode code = null;
 		try {
 			ManorControl manors = player.getManors();
-
+			
 			// 获取建筑
 			ProduceBuilding building = (ProduceBuilding) manors.getBuildByIndex( index );
 			if( building == null )

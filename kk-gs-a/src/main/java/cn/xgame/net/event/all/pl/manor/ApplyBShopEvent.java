@@ -28,6 +28,7 @@ public class ApplyBShopEvent extends IEvent{
 		byte index = data.readByte();
 		
 		ManorControl manors = player.getManors();
+		manors.update();
 		ErrorCode code = null;
 		ShopBuilding building = null;
 		try {

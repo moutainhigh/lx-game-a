@@ -63,7 +63,9 @@ public class ProduceBuilding extends IBuilding{
 	@Override
 	public void init() {
 		produces.clear();
-		rtime = (int)(System.currentTimeMillis()/1000);
+		// 这里直接接上 建筑建好的时间
+		rtime = getEndtime();
+		update();
 	}
 
 	@Override

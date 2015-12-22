@@ -83,7 +83,8 @@ public class ApplyEctypeEvent extends IEvent{
 				for( int i = 0; i < size; i++ ){
 					EctypeInfo x = ectypes.get(i);
 					buffer.writeByte( x.getLevel() );
-					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter, buffer );
+					Fighter defender = x.fighter(o.getQuestions());
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter,defender, buffer );
 					buffer.writeByte( x.getAtks().size() );
 					for( Attackattr attr : x.getAtks() )
 						attr.buildTransformStream(buffer);
@@ -110,7 +111,8 @@ public class ApplyEctypeEvent extends IEvent{
 				buffer.writeByte( ectypes.size() );
 				for( EctypeInfo x : ectypes ){
 					buffer.writeByte( x.getLevel() );
-					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter, buffer );
+					Fighter defender = x.fighter(o.getQuestions());
+					LuaUtil.getEctypeCombat().getField( "arithmeticShowData" ).call( 0, fleet.getBerthSnid(), o.getSnid(), fleet.toShipDatas(), x, fighter,defender, buffer );
 					buffer.writeByte( x.getAtks().size() );
 					for( Attackattr attr : x.getAtks() )
 						attr.buildTransformStream(buffer);

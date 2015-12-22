@@ -27,6 +27,7 @@ public class ApplyPedleryEvent extends IEvent {
 		byte index = data.readByte();
 		
 		ManorControl manors = player.getManors();
+		manors.update();
 		ErrorCode code = null;
 		PedleryBuilding building = null;
 		try {

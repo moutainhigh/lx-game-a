@@ -4,10 +4,13 @@ import java.util.List;
 
 import x.javaplus.collections.Lists;
 import x.javaplus.util.lua.Lua;
+import cn.xgame.a.player.dock.classes.IHold;
+import cn.xgame.a.player.dock.ship.ShipInfo;
 import cn.xgame.a.player.manor.ManorControl;
 import cn.xgame.a.player.manor.classes.BType;
 import cn.xgame.a.player.manor.info.BaseBuilding;
 import cn.xgame.a.player.u.Player;
+import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.config.o.BbuildingPo;
 import cn.xgame.config.o.ReclaimPo;
@@ -57,11 +60,32 @@ public class Init {
 		}else{
 			Logs.error( "玩家第一次购买领地 创建基地建筑失败 at="+LXConstants.BASE_BUILD_ID+" 在表格没有找到" );
 		}
-		
+
 		//------------------ 调用lua脚本
 		Lua lua = LuaUtil.getInit();
 		lua.getField( "createPlayerData" ).call( 0, ret );
 		
+		// 指定放入到船里面装备
+//		{ id=31051, num=1 },
+//		{ id=33001, num=1 },
+		ShipInfo ship = ret.getDocks().getApron().get(0);
+		putEquip( 31051, ship );
+		putEquip( 33001, ship );
+		ship.updateDB( ret );
+		
 		return ret;
+	}
+
+	private static void putEquip( int id, ShipInfo ship ) {
+		IHold hold = null;
+		IProp prop = IProp.create(id, 1);
+		prop.randomAttachAttr();
+		if( prop.itemType() == 1 || prop.itemType() == 2 ){
+			hold		= ship.getWeapons();
+		}
+		if( prop.itemType() == 3 ){
+			hold		= ship.getAssists();
+		}
+		hold.put(prop);
 	}
 }

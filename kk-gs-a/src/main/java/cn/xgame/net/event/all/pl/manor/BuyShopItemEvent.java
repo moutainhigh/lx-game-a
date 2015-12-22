@@ -31,6 +31,7 @@ public class BuyShopItemEvent extends IEvent{
 		int count = data.readInt();
 		
 		ManorControl manors = player.getManors();
+		manors.update();
 		ErrorCode code = null;
 		List<IProp> ret = null;
 		try {

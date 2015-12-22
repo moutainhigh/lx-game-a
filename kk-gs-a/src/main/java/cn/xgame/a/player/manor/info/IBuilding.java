@@ -75,9 +75,9 @@ public abstract class IBuilding implements IBufferStream{
 	 * 建筑完成
 	 */
 	public void build() {
-		setEndtime( 0 );
 		setStatus(BStatus.INSERVICE);
 		init();
+		setEndtime( 0 );
 	}
 
 	/**

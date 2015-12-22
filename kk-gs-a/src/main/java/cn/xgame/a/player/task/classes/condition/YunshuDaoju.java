@@ -30,6 +30,8 @@ public class YunshuDaoju extends ICondition {
 	@Override
 	public void beginExecute(Player player) {
 		StarDepot depots = player.getDepots();
+		if(templet().needitem.isEmpty())
+			return;
 		String[] array = templet().needitem.split("\\|");
 		for( String temp : array ){
 			String str[] = temp.split(";");

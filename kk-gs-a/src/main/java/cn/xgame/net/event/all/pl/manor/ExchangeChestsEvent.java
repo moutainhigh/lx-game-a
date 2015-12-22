@@ -34,6 +34,7 @@ public class ExchangeChestsEvent extends IEvent {
 		int tid = data.readInt();
 		
 		ManorControl manors = player.getManors();
+		manors.update();
 		ErrorCode code = null;
 		List<IProp> ret = Lists.newArrayList();
 		int propid = 0;

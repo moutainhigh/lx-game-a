@@ -3,6 +3,7 @@ package cn.xgame.a.player.task.classes;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.xgame.a.player.task.classes.condition.BuildStructure;
 import cn.xgame.a.player.task.classes.condition.DaodaDidian;
 import cn.xgame.a.player.task.classes.condition.DuiHua;
 import cn.xgame.a.player.task.classes.condition.WanchengFuben;
@@ -61,7 +62,7 @@ public enum ConType {
 	BUILDSTRUCTURE(5) {
 		@Override
 		public ICondition create(TaskcndPo templet) {
-			return new YunshuDaoju( YUNSHUDAOJU, templet );
+			return new BuildStructure( BUILDSTRUCTURE, templet );
 		}
 	},
 	

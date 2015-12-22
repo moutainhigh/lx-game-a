@@ -65,6 +65,7 @@ public class UpgradeBuildingEvent extends IEvent {
 		if( code == ErrorCode.SUCCEED ){
 			buffer.writeByte( index );
 			buffer.writeInt( building.getNid() );
+//			System.out.println( "建筑时间=" + building.getEndtime() );
 			buffer.writeInt( building.getEndtime() );
 			buffer.writeInt( player.getCurrency() );
 			buffer.writeByte( ret.size() );
