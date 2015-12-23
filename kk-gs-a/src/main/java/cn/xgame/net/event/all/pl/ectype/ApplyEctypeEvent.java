@@ -118,12 +118,18 @@ public class ApplyEctypeEvent extends IEvent{
 		final Comparator<ChapterInfo> comparator = new Comparator<ChapterInfo>() {
 			@Override
 			public int compare(ChapterInfo o1, ChapterInfo o2) {
+				boolean b1 = tasks.isHave(o1.getId());
+				boolean b2 = tasks.isHave(o2.getId());
 				// 1.任务优先 
-				if( tasks.isHave(o1.getId()) )
+				if( b1 && b2 )
+					return o2.wrate - o1.wrate;
+				if( b1 )
 					return -1;
-				if( tasks.isHave(o2.getId()) )
+				if( b2 )
 					return 1;
 				// 2.舰队所在星球副本优先
+				if( o1.getSnid() == fleet.getBerthSnid() && o2.getSnid() == fleet.getBerthSnid() )
+					return o2.wrate - o1.wrate;
 				if( o1.getSnid() == fleet.getBerthSnid() )
 					return -1;
 				if( o2.getSnid() == fleet.getBerthSnid() )

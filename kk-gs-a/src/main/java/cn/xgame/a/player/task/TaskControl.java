@@ -253,9 +253,21 @@ public class TaskControl implements IArrayStream,ITransformStream{
 			}
 		}
 	}
-
+	
+	/**
+	 * 是否拥有任务
+	 * @param id
+	 * @return
+	 */
 	public boolean isHave(int id) {
-		// TODO Auto-generated method stub
+		for( ITask task : yetInTasks ){
+			for( ICondition con : task.getConditions() ){
+				if( con.getType() == ConType.WANCHENGFUBEN ){
+					if( con.templet().target == id )
+						return true;
+				}
+			}
+		}
 		return false;
 	}
 

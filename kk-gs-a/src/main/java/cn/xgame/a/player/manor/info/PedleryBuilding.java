@@ -86,7 +86,9 @@ public class PedleryBuilding extends IBuilding {
 		// 先获取随机池子
 		List<Integer> pool = StringUtil.arrayToInteger( templet.content, ";");
 		// 开始随机
-		while( treasures.size() < goodclevel ){
+		int size = templet.number <= 0 ? 1 : templet.number; // 临时修改   改于12.23 to 张特
+//		int size = goodclevel; // 根据等级生成个数
+		while( treasures.size() < size && !pool.isEmpty() ){ 
 			int idx = Random.get(0, pool.size()-1);
 			treasures.add( pool.remove(idx) );
 		}
