@@ -254,6 +254,11 @@ public class TaskControl implements IArrayStream,ITransformStream{
 		}
 	}
 
+	public boolean isHave(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 
 

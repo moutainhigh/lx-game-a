@@ -48,6 +48,8 @@ public class Player extends IPlayer implements ITransformStream{
 	// 包检测
 	private PackageCheck pcheck 		= new PackageCheck();
 	
+	// 保存偶发出来的副本
+	private List<Integer> newChances 	= Lists.newArrayList();
 	
 	//////////////////////数据库相关//////////////////////////
 	
@@ -372,6 +374,9 @@ public class Player extends IPlayer implements ITransformStream{
 	}
 	public SwopManager getSwops() {
 		return swops;
+	}
+	public List<Integer> getNewChances() {
+		return newChances;
 	}
 	
 }

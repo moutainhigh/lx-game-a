@@ -19,7 +19,10 @@ import cn.xgame.config.o.EctypePo;
  * @date 2015-10-27 下午6:10:11
  */
 public class ChapterInfo extends IChapter{
-
+	
+	public byte type;
+	public byte wrate;
+	
 	// 深度时间
 	private int depthtime;
 	
@@ -31,6 +34,7 @@ public class ChapterInfo extends IChapter{
 	
 	// 难度列表
 	private List<Byte>			difficultys = Lists.newArrayList();
+
 	
 	
 	public ChapterInfo( ChapterPo templet,int sid ) {

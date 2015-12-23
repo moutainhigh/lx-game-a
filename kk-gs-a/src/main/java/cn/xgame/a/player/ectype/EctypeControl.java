@@ -26,6 +26,9 @@ import cn.xgame.utils.LuaUtil;
  */
 public class EctypeControl implements IArrayStream{
 
+	// 
+	private Player root;
+	
 	// 临时记录 玩家每天第一次的登录时间 (这里为方便计算副本在登录时候 计时)
 	private int logintime;
 	
@@ -39,7 +42,9 @@ public class EctypeControl implements IArrayStream{
 	// 常规副本难度
 	private List<StarGeneralEctype> starels = Lists.newArrayList();
 	
+	
 	public EctypeControl( Player player ) {
+		root = player;
 	}
 	
 	@Override
@@ -168,6 +173,7 @@ public class EctypeControl implements IArrayStream{
 	 */
 	public void clear(){
 		allChances.clear();
+		root.getNewChances().clear();
 		tempSnid.clear();
 		logintime = (int) (System.currentTimeMillis()/1000);
 	}
@@ -176,21 +182,29 @@ public class EctypeControl implements IArrayStream{
 	
 	/**
 	 * 根据星球获取 常规副本
-	 * @param sid
+	 * @param sid 当前舰队停靠星球ID
 	 * @return
 	 */
 	public List<ChapterInfo> getGeneralEctype( int sid ){
 		List<ChapterInfo> ret = Lists.newArrayList();
+		boolean isPratt = true;
 		try {
 			WorldManager o = WorldManager.o;
-			// 先放入本星球副本
-			IPlanet planet = o.getPlanet(sid);
+			// 先将母星副本放入
+			IPlanet planet = o.getPlanet(root.getCountryId());
 			ret.addAll( generateEctypeLevel(planet) );
+			if( sid == root.getCountryId() )
+				isPratt = false;
 			// 然后放入根据瞭望出来的星球副本信息
 			List<Integer> scope = planet.getScopePlanet();
 			for( int id : scope ){
 				ret.addAll( generateEctypeLevel(o.getPlanet(id)) );
+				if( sid == id )
+					isPratt = false;
 			}
+			// 如果前面没有普惠到舰队所在星球 那么将该星球的副本放入
+			if( isPratt )
+				ret.addAll( generateEctypeLevel(o.getPlanet(sid)) );
 		} catch (Exception e) { }
 		return ret;
 	}
