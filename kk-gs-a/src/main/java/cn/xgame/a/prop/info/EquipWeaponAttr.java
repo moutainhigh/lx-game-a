@@ -102,11 +102,11 @@ public class EquipWeaponAttr extends IProp{
 		buffer.writeByte( battleAttrs.size() );
 		for( Attackattr a : battleAttrs )
 			a.buildTransformStream( buffer );
-		buffer.writeByte( askings.size() );
-		for( int id : askings )
-			buffer.writeInt(id);
 		buffer.writeByte( answers.size() );
 		for( int id : answers )
+			buffer.writeInt(id);
+		buffer.writeByte( askings.size() );
+		for( int id : askings )
 			buffer.writeInt(id);
 	}
 	

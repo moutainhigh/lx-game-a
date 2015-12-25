@@ -78,7 +78,7 @@ public class LoginEvent extends IEvent{
 			player.buildTransformStream( buffer );
 			// 领地信息
 			buffer.writeInt( player.getManors().getNid() );
-			player.getManors().update();
+//			player.getManors().update();
 			List<IBuilding> builds = player.getManors().getBuilds();
 			buffer.writeByte( builds.size() );
 			for( IBuilding o : builds ){

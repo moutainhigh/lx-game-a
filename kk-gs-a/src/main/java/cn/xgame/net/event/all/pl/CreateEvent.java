@@ -131,7 +131,7 @@ public class CreateEvent extends IEvent {
 			player.rLastGsid();
 			
 			// 保存数据库一次
-//			PlayerManager.o.update(player);
+			PlayerManager.o.update(player);
 		}
 		
 		Logs.debug( ctx, "创建角色 " + code + ", 逻辑耗时：" + Time.endTimer() + "毫秒" );

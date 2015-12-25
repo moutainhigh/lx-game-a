@@ -164,6 +164,10 @@ public class ApplyEctypeEvent extends IEvent{
 		buffer.writeByte( x.getDefs().size() );
 		for( Attackattr attr : x.getDefs() )
 			attr.buildTransformStream(buffer);
+		
+//		System.out.println( "副本" + o.getId() + "  level=" + x.getLevel() + ", st=" + value[0].getInt() + ", ct=" + value[1].getInt() + ", wr=" + value[2].getByte() );
+//		System.out.println( "玩家数据 :" + fighter );
+//		System.out.println( "副本数据 :" + defender );
 	}
 	
 	/**

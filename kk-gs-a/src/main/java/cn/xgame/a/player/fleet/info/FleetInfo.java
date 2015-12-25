@@ -227,7 +227,7 @@ public class FleetInfo{
 			if( scale == 0 )
 				continue;
 			// 舰船本身战损
-			ship.addCurrentHp( -(int) (accuracy * scale) );
+//			ship.addCurrentHp( -(int) (accuracy * scale) );
 			if( ship.getCurrentHp() < ship.attr().getMaxHp() ){
 				ret.addLossShip( ship );
 				if( ship.getCurrentHp() == 0 ){ //如果血量为0  那么就会报废

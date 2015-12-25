@@ -2,10 +2,10 @@ package cn.xgame.a.player.mail.info;
 
 import x.javaplus.mysql.db.Condition;
 import x.javaplus.string.StringUtil;
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.player.mail.classes.IMail;
 import cn.xgame.a.player.mail.classes.MailType;
 import cn.xgame.a.player.u.Player;
-import cn.xgame.a.prop.IProp;
 import cn.xgame.config.gen.CsvGen;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDao;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
@@ -59,8 +59,7 @@ public class MailInfo extends IMail{
 		if( nid == LXConstants.CURRENCY_NID ){
 			setMoney(count);
 		}else{
-			IProp prop = IProp.create(-1, nid, count);
-			addProp(prop);
+			addProp( new AwardInfo( nid, count ) );
 		}
 	}
 	

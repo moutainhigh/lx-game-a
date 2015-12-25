@@ -86,11 +86,11 @@ public class EquipAuxiliaryAttr extends IProp{
 		buffer.writeInt( maxDur );
 		buffer.writeInt( addHp );
 		buffer.writeInt( push );
-		buffer.writeByte( askings.size() );
-		for( int id : askings )
-			buffer.writeInt(id);
 		buffer.writeByte( answers.size() );
 		for( int id : answers )
+			buffer.writeInt(id);
+		buffer.writeByte( askings.size() );
+		for( int id : askings )
 			buffer.writeInt(id);
 	}
 

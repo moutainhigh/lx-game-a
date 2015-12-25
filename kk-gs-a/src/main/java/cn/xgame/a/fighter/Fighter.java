@@ -31,6 +31,10 @@ public class Fighter {
 	// 应答 - 答
 	public List<Answers> answer = new ArrayList<Answers>();
 	
+	public String toString(){
+		return "hp=" + hp + ", attacks=[" + attacks + "]" + ", defends=[" + defends + "]" + ", asking=[" + asking + "]" + ", answer=[" + answer + "]";
+	}
+	
 	private Attackattr getAtkattr( byte type ){
 		for( Attackattr x : attacks ){
 			if( x.getType() == type )

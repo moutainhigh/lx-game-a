@@ -8,6 +8,7 @@ import java.util.List;
 import x.javaplus.collections.Lists;
 import x.javaplus.util.ErrorCode;
 
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.a.player.depot.o.StarDepot;
 import cn.xgame.a.player.mail.info.MailInfo;
 import cn.xgame.a.player.u.Player;
@@ -39,10 +40,10 @@ public class ExtractAdjunctEvent extends IEvent{
 				mail.setMoney(0);
 				// 这里领取附件道具
 				StarDepot depots = player.getDepots();
-				for( IProp prop : mail.getProps() ){
-					ret.addAll( depots.appendProp(prop) );
+				for( AwardInfo prop : mail.getProps() ){
+					ret.addAll( depots.appendProp(prop.getId(),prop.getCount()) );
 				}
-				// 然后把道具列表清空掉
+				// 然后把对应道具删掉
 				mail.clearupProps();
 				
 				// 最后保存数据库

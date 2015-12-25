@@ -9,7 +9,7 @@ import x.javaplus.string.StringUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-import cn.xgame.a.prop.IProp;
+import cn.xgame.a.award.AwardInfo;
 import cn.xgame.gen.dto.MysqlGen.MailInfoDto;
 import cn.xgame.net.netty.Netty.RW;
 
@@ -35,7 +35,7 @@ public class IMail{
 	private int 			money = 0;
 	
 	// 附件
-	private List<IProp> adjuncts = Lists.newArrayList();
+	private List<AwardInfo> adjuncts = Lists.newArrayList();
 	
 	// 发送人UID
 	private String 			senderUID = "";
@@ -112,8 +112,8 @@ public class IMail{
 		RW.writeString( buffer, content );
 		buffer.writeInt( money );
 		buffer.writeByte( adjuncts.size() );
-		for( IProp prop : adjuncts ){
-			prop.putBaseBuffer(buffer);
+		for( AwardInfo prop : adjuncts ){
+			prop.buildTransformStream(buffer);
 		}
 	}
 	
@@ -121,8 +121,7 @@ public class IMail{
 	 * 添加道具
 	 * @param prop
 	 */
-	public void addProp( IProp prop ){
-		prop.setUid(adjuncts.size());
+	public void addProp( AwardInfo prop ){
 		adjuncts.add(prop);
 	}
 	
@@ -130,7 +129,7 @@ public class IMail{
 	 * 获取道具列表
 	 * @return
 	 */
-	public List<IProp> getProps() {
+	public List<AwardInfo> getProps() {
 		return adjuncts;
 	}
 	
@@ -202,18 +201,20 @@ public class IMail{
 		this.durationtime = durationtime;
 	}
 	public void setAdjuncts(byte[] arrays) {
+		adjuncts.clear();
+		if( adjuncts == null )
+			return ;
 		ByteBuf buf = Unpooled.copiedBuffer(arrays);
 		byte size = buf.readByte();
 		for (int i = 0; i < size; i++) {
-			IProp prop = IProp.create(buf);
-			adjuncts.add(prop);
+			adjuncts.add( new AwardInfo(buf) );
 		}
 	}
 	public byte[] getAdjuncts(){
 		ByteBuf buf = Unpooled.buffer();
 		buf.writeByte( adjuncts.size() );
-		for( IProp prop : adjuncts ){
-			prop.putBuffer(buf);
+		for( AwardInfo prop : adjuncts ){
+			prop.buildTransformStream(buf);
 		}
 		return buf.array();
 	}

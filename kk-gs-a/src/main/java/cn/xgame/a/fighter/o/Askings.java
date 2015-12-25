@@ -39,6 +39,10 @@ public class Askings {
 		heavy		= asking.heavy;
 	}
 
+	public String toString(){
+		return id+"";
+	}
+	
 	/**
 	 * 改变值
 	 * @param value

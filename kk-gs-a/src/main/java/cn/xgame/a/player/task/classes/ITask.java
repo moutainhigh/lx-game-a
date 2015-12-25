@@ -132,7 +132,7 @@ public class ITask implements IBufferStream {
 		root.addExp( templet.exp );
 		// 道具 用邮件的形式发送 如果有的话
 		if( !awards.isEmpty() ){
-			MailInfo mail = new MailInfo( MailType.SYSTEM, "任务奖励", "谢谢你的帮忙!" );
+			MailInfo mail = new MailInfo( MailType.SYSTEM, templet.mailtitle, templet.mailwrite );
 			for( AwardInfo award : awards )
 				mail.addProp( award.getId(), award.getCount() );
 			root.getMails().addMail(mail);

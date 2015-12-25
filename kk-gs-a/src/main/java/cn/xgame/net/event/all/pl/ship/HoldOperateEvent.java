@@ -42,7 +42,7 @@ public class HoldOperateEvent extends IEvent{
 			IHold holds 	= ship.getHolds();
 			
 			// 个数大于0表示 放入货仓 小于0表示取出货仓
-			if( count >= 0 ){
+			if( count > 0 ){
 				// 获取道具
 				IProp prop 		= depot.getPropOfException(uid);
 				
@@ -63,12 +63,14 @@ public class HoldOperateEvent extends IEvent{
 				
 				// 放入货仓
 				ret.addAll( holds.appendProp( clone ) );
-			}else{
+			}else if( count < 0 ){
 				// 执行扣除
 				IProp prop 		= ship.getHolds().deductProp( uid, count );
 				// 成功后 就把道具放入玩家仓库
 				if( prop != null )
 					ret.addAll( depot.appendProp( prop ) );
+			}else{
+				throw new Exception( ErrorCode.OTHER_ERROR.name() );
 			}
 			
 			// 最后保存数据库

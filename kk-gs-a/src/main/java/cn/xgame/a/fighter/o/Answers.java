@@ -28,7 +28,11 @@ public class Answers {
 		heavy = answer.heavy;
 		initRespond( answer.asking );
 	}
-
+	
+	public String toString(){
+		return id+"";
+	}
+	
 	private void initRespond(String asking) {
 		if( asking.isEmpty() )
 			return ;
