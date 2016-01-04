@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
 
-//import cn.xgame.a.player.fleet.info.FleetInfo;
 import cn.xgame.a.player.u.Player;
 import cn.xgame.net.event.IEvent;
 import cn.xgame.net.netty.Netty.RW;
@@ -22,13 +21,6 @@ public class NewbieguideEvent extends IEvent{
 		String guidestatus = RW.readString(data);
 		player.setGuideStatus(guidestatus);
 		Logs.debug(player.getCtx(), "保存引导 =" + guidestatus);
-		// 这里删除掉船
-//		if( guidestatus >= 5 ){
-//			FleetInfo fleetInfo = player.getFleets().getFleetHavaShip().get(0);
-//			player.getDocks().destroyShip( fleetInfo.getShips().get(0) );
-//			if( !player.getDocks().getApron().isEmpty() )
-//				fleetInfo.addShip( player.getDocks().getApron().get(0) );
-//		}
 	}
 
 }
