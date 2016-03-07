@@ -6,12 +6,12 @@
 	
 	<gsId>1</gsId>
 	<gsName>校长的爱</gsName>
-	<gsIp>192.168.11.102</gsIp>
+	<gsIp>192.168.11.127</gsIp>
 	<gsPort>8100</gsPort>
 	<gsDatabaseName>kkgameserver</gsDatabaseName>
 	
 	<!--登陆服IP localhost-->
-	<lsAddress>192.168.11.102</lsAddress>
+	<lsAddress>192.168.11.127</lsAddress>
 	<!--登陆服端口-->
 	<lsPort>8001</lsPort>
 </config>
